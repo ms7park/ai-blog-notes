@@ -32,3 +32,10 @@
 == 2026.10.18 : 파일 생성/수정 확인 프롬프트 생략 (Auto-Approve / accept-edits) 설정 반영
 1. 파일 생성 시 "Allow creation of this file?" 질문을 묻지 않도록 `AGENTS.md`, `GEMINI.md`, `CLAUDE.md`, `.cursorrules`에 Auto-Approve 원칙 명시
 2. 에이전트 실행 모드를 `accept-edits` / `auto`로 영구 지정하여 확인 절차 없이 즉시 파일 생성/수정/명령어 실행이 자율적으로 이루어지도록 환경 구성 완료
+
+== 2026.10.18 : 브라우저 마크다운 뷰어(index.html) 및 링크 연결 구축
+1. 브라우저에서 `/docs` 하위 모든 마크다운 문서를 열람할 수 있는 통합 웹 문서 뷰어 `index.html` 생성
+2. `/docs` 하위 전 파일 및 `README.md`에 대한 직접 링크(`🔗 md`), 원본 열기, 파일 다운로드 기능 연결
+3. Marked.js 기반 실시간 마크다운 렌더링, 목차 네비게이션, 키워드 검색, 다크/라이트 테마, 코드 복사 기능 탑재
+4. 마크다운 파일 변경 시 원클릭 재생성을 위한 빌더 도구 (`tools/generate_html.py`) 제작
+
