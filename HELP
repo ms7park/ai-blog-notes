@@ -28,3 +28,7 @@
 4. 실전 보조 유틸리티 도구 (`tools/blog_helper.py`) 추가:
    - 글자수(공백 포함/제외), 읽는 예상 시간, 키워드 반복 빈도, 마크다운 소제목(H2/H3) 구조 자동 분석 기능
 5. README.md 업데이트
+
+== 2026.10.18 : 파일 생성/수정 확인 프롬프트 생략 (Auto-Approve / accept-edits) 설정 반영
+1. 파일 생성 시 "Allow creation of this file?" 질문을 묻지 않도록 `AGENTS.md`, `GEMINI.md`, `CLAUDE.md`, `.cursorrules`에 Auto-Approve 원칙 명시
+2. 에이전트 실행 모드를 `accept-edits` / `auto`로 영구 지정하여 확인 절차 없이 즉시 파일 생성/수정/명령어 실행이 자율적으로 이루어지도록 환경 구성 완료

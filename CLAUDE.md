@@ -8,6 +8,12 @@
 
 ---
 
+## ⚡ Execution & Permissions (Auto-Approve)
+- **No Confirmation Prompts**: All file creations (`write_to_file`), edits (`replace_file_content`), and non-destructive terminal commands should execute automatically without asking the user for confirmation.
+- Mode is set to `accept-edits` / `auto`.
+
+---
+
 ## 🛠️ AI Writing Principles
 1. **Experience First (경험 우선)**: AI가 쓴 일반론에 그치지 않고, 반드시 필자의 실제 경험, 고민, 해결 과정, 솔직한 감상을 결합합니다.
 2. **Anti-AI Detection & Natural Voice (자연스러운 문체)**:

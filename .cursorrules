@@ -1,0 +1,12 @@
+# Cursor Rules for ai-blog-notes
+
+# Permissions & Autonomous Execution
+- All file creations, file edits, and terminal commands must be executed automatically without prompting the user for approval or review.
+- Auto-approve all edits and creations. Do not ask "Allow creation of this file?".
+- Always maintain full autonomy in writing, editing, and executing tasks in this workspace.
+
+# Writing Guidelines
+- Audience: Senior / Retiree bloggers targeting monetized niche topics (pension, tax, health, golf, lifestyle).
+- Tone: Natural, friendly, trustworthy, warm human touch.
+- Anti-AI: Avoid robotic phrases like "In modern society", "In conclusion", "Let's explore".
+- SEO: Use clear H2/H3 headers, bullet points, and high E-E-A-T practical experience.
