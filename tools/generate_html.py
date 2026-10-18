@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 AI Blog Notes - HTML Viewer Generator
-docs/ 폴더 내 마크다운 파일들을 브라우저에서 바로 열람할 수 있는 index.html 생성기
+docs/ 폴더 내 마크다운 파일들을 브라우저에서 바로 열람할 수 있는 docs/index.html 생성기
 """
 
 import os
@@ -12,7 +12,7 @@ import re
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS_DIR = os.path.join(BASE_DIR, "docs")
 README_PATH = os.path.join(BASE_DIR, "README.md")
-OUTPUT_PATH = os.path.join(BASE_DIR, "index.html")
+OUTPUT_PATH = os.path.join(DOCS_DIR, "index.html")
 
 DOC_METADATA = [
     {
@@ -20,7 +20,8 @@ DOC_METADATA = [
         "category": "소개 & 가이드",
         "category_icon": "📌",
         "title": "프로젝트 개요 (README)",
-        "path": "README.md",
+        "file_path": "README.md",
+        "url_path": "../README.md",
         "desc": "프로젝트 목표, 디렉토리 구조 및 AI 워크플로우 종합 안내"
     },
     {
@@ -28,7 +29,8 @@ DOC_METADATA = [
         "category": "01. 수익화 전략",
         "category_icon": "💰",
         "title": "수익화 모델 4단계 총정리",
-        "path": "docs/01-strategy/01-monetization-models.md",
+        "file_path": "docs/01-strategy/01-monetization-models.md",
+        "url_path": "01-strategy/01-monetization-models.md",
         "desc": "애드센스, 제휴마케팅, 협찬, 지식창업 단계별 디지털 연금 파이프라인"
     },
     {
@@ -36,7 +38,8 @@ DOC_METADATA = [
         "category": "01. 수익화 전략",
         "category_icon": "💰",
         "title": "은퇴/시니어 고단가 니치 주제 30선",
-        "path": "docs/01-strategy/02-senior-niche-topics.md",
+        "file_path": "docs/01-strategy/02-senior-niche-topics.md",
+        "url_path": "01-strategy/02-senior-niche-topics.md",
         "desc": "연금/절세, 건강/액티브시니어, 재취업, 라이프스타일 고단가 키워드"
     },
     {
@@ -44,7 +47,8 @@ DOC_METADATA = [
         "category": "02. 플랫폼 비교",
         "category_icon": "🌐",
         "title": "블로그 플랫폼 완벽 비교 & 추천",
-        "path": "docs/02-platforms/01-platform-comparison.md",
+        "file_path": "docs/02-platforms/01-platform-comparison.md",
+        "url_path": "02-platforms/01-platform-comparison.md",
         "desc": "티스토리 vs 워드프레스 vs 네이버 블로그 장단점 및 병행 전략"
     },
     {
@@ -52,7 +56,8 @@ DOC_METADATA = [
         "category": "03. AI 워크플로우",
         "category_icon": "⚙️",
         "title": "AI 활용 블로그 작성 6단계 파이프라인",
-        "path": "docs/03-ai-workflows/01-six-step-pipeline.md",
+        "file_path": "docs/03-ai-workflows/01-six-step-pipeline.md",
+        "url_path": "03-ai-workflows/01-six-step-pipeline.md",
         "desc": "기획부터 SEO 점검까지 1시간 완성 표준 AI 글쓰기 프로세스"
     },
     {
@@ -60,7 +65,8 @@ DOC_METADATA = [
         "category": "04. 실전 프롬프트",
         "category_icon": "💬",
         "title": "블로그 작성 실전 프롬프트 라이브러리",
-        "path": "docs/04-prompts/01-practical-prompts.md",
+        "file_path": "docs/04-prompts/01-practical-prompts.md",
+        "url_path": "04-prompts/01-practical-prompts.md",
         "desc": "후킹 제목, 도입부, 본문 확장, SEO 메타태그 복사-붙여넣기 템플릿"
     },
     {
@@ -68,7 +74,8 @@ DOC_METADATA = [
         "category": "05. 글쓰기 템플릿",
         "category_icon": "📑",
         "title": "고수익 블로그 글쓰기 4대 표준 템플릿",
-        "path": "docs/05-templates/01-blog-templates.md",
+        "file_path": "docs/05-templates/01-blog-templates.md",
+        "url_path": "05-templates/01-blog-templates.md",
         "desc": "정보형, 솔직 리뷰형, 경험 에세이형, 가이드북형 마크다운 구조"
     },
     {
@@ -76,7 +83,8 @@ DOC_METADATA = [
         "category": "아이디어 메모",
         "category_icon": "📝",
         "title": "블로그 아이디어 & 영감 메모장",
-        "path": "docs/notes/memo-ideas.md",
+        "file_path": "docs/notes/memo-ideas.md",
+        "url_path": "notes/memo-ideas.md",
         "desc": "일상 속 경험과 아이디어를 메모하고 AI 초안으로 연결하는 스크래치패드"
     }
 ]
@@ -84,7 +92,7 @@ DOC_METADATA = [
 def load_documents():
     data = {}
     for doc in DOC_METADATA:
-        file_path = os.path.join(BASE_DIR, doc["path"])
+        file_path = os.path.join(BASE_DIR, doc["file_path"])
         if os.path.exists(file_path):
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
@@ -106,7 +114,7 @@ def generate_html():
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Blog Notes | 은퇴 후 노후 수입을 위한 AI 블로그 지침서</title>
+  <title>AI Blog Notes | 블로그 운영 지침서 & 가이드 뷰어</title>
   
   <!-- Pretendard Web Font -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
@@ -144,11 +152,7 @@ def generate_html():
       --card-hover: #334155;
     }}
 
-    * {{
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }}
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 
     body {{
       font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
@@ -384,6 +388,21 @@ def generate_html():
       background: var(--primary-light);
     }}
 
+    .btn-home {{
+      background: #f1f5f9;
+      color: #334155;
+    }}
+
+    .btn-naver {{
+      background: #03c75a;
+      color: #fff;
+      border-color: #03c75a;
+    }}
+    .btn-naver:hover {{
+      background: #02b14f;
+      color: #fff;
+    }}
+
     .content-area {{
       flex: 1;
       overflow-y: auto;
@@ -424,18 +443,9 @@ def generate_html():
       margin: 20px 0 8px;
     }}
 
-    .markdown-body p {{
-      margin-bottom: 14px;
-    }}
-
-    .markdown-body ul, .markdown-body ol {{
-      margin-bottom: 16px;
-      padding-left: 24px;
-    }}
-
-    .markdown-body li {{
-      margin-bottom: 6px;
-    }}
+    .markdown-body p {{ margin-bottom: 14px; }}
+    .markdown-body ul, .markdown-body ol {{ margin-bottom: 16px; padding-left: 24px; }}
+    .markdown-body li {{ margin-bottom: 6px; }}
 
     .markdown-body blockquote {{
       border-left: 4px solid var(--primary);
@@ -500,7 +510,6 @@ def generate_html():
       text-underline-offset: 3px;
     }}
 
-    /* Copy Button on Code blocks */
     .copy-btn {{
       position: absolute;
       top: 8px;
@@ -519,17 +528,9 @@ def generate_html():
     }}
 
     @media (max-width: 768px) {{
-      body {{
-        flex-direction: column;
-      }}
-      aside {{
-        width: 100%;
-        height: auto;
-        max-height: 240px;
-      }}
-      .content-area {{
-        padding: 20px;
-      }}
+      body {{ flex-direction: column; }}
+      aside {{ width: 100%; height: auto; max-height: 240px; }}
+      .content-area {{ padding: 20px; }}
     }}
   </style>
 </head>
@@ -538,9 +539,9 @@ def generate_html():
   <!-- Sidebar -->
   <aside>
     <div class="sidebar-header">
-      <div class="logo-badge">🚀 은퇴 후 디지털 연금 만들기</div>
-      <div class="site-title">📝 AI Blog Notes</div>
-      <div class="site-desc">시니어/은퇴자를 위한 AI 블로그 지침서 & 문서 뷰어</div>
+      <div class="logo-badge">📚 AI Blog Notes 지침서 뷰어</div>
+      <div class="site-title">📝 블로그 운영 가이드</div>
+      <div class="site-desc">시니어/은퇴자를 위한 AI 수익형 블로그 지침서 & 프롬프트</div>
     </div>
 
     <div class="search-box">
@@ -562,9 +563,15 @@ def generate_html():
     <header class="top-bar">
       <div class="doc-meta">
         <span class="badge-category" id="currentCategory">01. 수익화 전략</span>
-        <span class="doc-path" id="currentPath">docs/01-strategy/01-monetization-models.md</span>
+        <span class="doc-path" id="currentPath">01-strategy/01-monetization-models.md</span>
       </div>
       <div class="doc-actions">
+        <a href="../index.html" class="btn btn-home" title="메인 블로그 포털 홈으로 이동">
+          🏠 홈 포털
+        </a>
+        <a href="../blog/naver/index.html" class="btn btn-naver" title="네이버 블로그 일별 작성 포털 이동">
+          🟢 네이버 블로그
+        </a>
         <a href="#" target="_blank" class="btn" id="rawMdLink" title="브라우저 새 탭에서 마크다운 원본 열기">
           📄 원본 .md 열기
         </a>
@@ -588,7 +595,6 @@ def generate_html():
 
     let activeDocId = "readme";
 
-    // Marked options
     marked.setOptions({{
       gfm: true,
       breaks: true,
@@ -598,7 +604,6 @@ def generate_html():
       }}
     }});
 
-    // Render Navigation
     function renderNav(filter = "") {{
       const navEl = document.getElementById("navList");
       navEl.innerHTML = "";
@@ -636,9 +641,9 @@ def generate_html():
         // Direct link to the .md file
         const directLink = document.createElement("a");
         directLink.className = "nav-file-link";
-        directLink.href = doc.path;
+        directLink.href = doc.url_path;
         directLink.target = "_blank";
-        directLink.title = `원본 파일 열기: ${{doc.path}}`;
+        directLink.title = `원본 파일 열기: ${{doc.url_path}}`;
         directLink.innerHTML = "🔗 md";
         directLink.onclick = (e) => e.stopPropagation();
         item.appendChild(directLink);
@@ -647,7 +652,6 @@ def generate_html():
       }});
     }}
 
-    // Load and Render Document
     async function loadDoc(id) {{
       const doc = DOCS_DATA[id];
       if (!doc) return;
@@ -656,28 +660,25 @@ def generate_html():
       renderNav(document.getElementById("searchInput").value);
 
       document.getElementById("currentCategory").textContent = `${{doc.metadata.category_icon}} ${{doc.metadata.category}}`;
-      document.getElementById("currentPath").textContent = doc.metadata.path;
+      document.getElementById("currentPath").textContent = doc.metadata.file_path;
 
-      // Update direct links
       const rawLink = document.getElementById("rawMdLink");
-      rawLink.href = doc.metadata.path;
+      rawLink.href = doc.metadata.url_path;
       
       const downloadLink = document.getElementById("downloadMdLink");
-      downloadLink.href = doc.metadata.path;
-      downloadLink.download = doc.metadata.path.split('/').pop();
+      downloadLink.href = doc.metadata.url_path;
+      downloadLink.download = doc.metadata.file_path.split('/').pop();
 
-      // Render Markdown
       let mdText = doc.content;
 
-      // Try fetching newest content if running over http
       if (window.location.protocol.startsWith("http")) {{
         try {{
-          const res = await fetch(doc.metadata.path);
+          const res = await fetch(doc.metadata.url_path);
           if (res.ok) {{
             mdText = await res.text();
           }}
         }} catch(e) {{
-          console.warn("Using embedded content fallback", e);
+          console.warn("Using embedded fallback", e);
         }}
       }}
 
@@ -685,7 +686,6 @@ def generate_html():
       const container = document.getElementById("contentView");
       container.innerHTML = html;
 
-      // Attach copy buttons to pre blocks
       container.querySelectorAll("pre").forEach(pre => {{
         const btn = document.createElement("button");
         btn.className = "copy-btn";
@@ -700,19 +700,14 @@ def generate_html():
         pre.appendChild(btn);
       }});
 
-      // Scroll to top
       document.querySelector(".content-area").scrollTop = 0;
-      
-      // Update hash in URL
       window.location.hash = id;
     }}
 
-    // Search filter listener
     document.getElementById("searchInput").addEventListener("input", (e) => {{
       renderNav(e.target.value);
     }});
 
-    // Dark/Light Theme toggle
     const themeBtn = document.getElementById("themeBtn");
     let isDark = false;
     themeBtn.addEventListener("click", () => {{
@@ -726,7 +721,6 @@ def generate_html():
       }}
     }});
 
-    // Hash navigation support
     window.addEventListener("DOMContentLoaded", () => {{
       const hash = window.location.hash.replace("#", "");
       if (hash && DOCS_DATA[hash]) {{

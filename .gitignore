@@ -29,3 +29,4 @@ ENV/
 *.tmp
 *.bak
 scratch/
+logs/

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네이버 블로그 일별 포스팅 워크스페이스 | AI Blog Notes</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <style>
+    :root {
+      --naver-green: #03c75a;
+      --naver-green-dark: #02b14f;
+      --naver-light: #e8f9f0;
+      --naver-light-border: #c3eed6;
+      --text-main: #191f28;
+      --text-sub: #4e5968;
+      --text-muted: #8b95a1;
+      --bg: #f7f9fa;
+      --card-bg: #ffffff;
+      --border: #e5e8eb;
+      --badge-trend: #ffefe5;
+      --badge-trend-text: #ff5e00;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    .header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .naver-badge {
+      background: var(--naver-green);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .header-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .header-link {
+      font-size: 13px;
+      color: var(--text-sub);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+    }
+
+    .header-link:hover {
+      background: var(--bg);
+      color: var(--naver-green-dark);
+      border-color: var(--naver-green);
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 28px auto 0;
+      padding: 0 20px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #03c75a 0%, #009e45 100%);
+      color: #fff;
+      padding: 32px 36px;
+      border-radius: 16px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(3, 199, 90, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .hero-text h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .hero-text p {
+      font-size: 14px;
+      opacity: 0.92;
+      max-width: 600px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      padding: 12px 20px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .stat-number {
+      font-size: 22px;
+      font-weight: 800;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 750;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .trend-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .trend-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      transition: all 0.15s;
+    }
+
+    .trend-item:hover {
+      border-color: var(--naver-green);
+      background: #fff;
+    }
+
+    .trend-rank {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--naver-green-dark);
+      min-width: 24px;
+      text-align: center;
+      padding-top: 2px;
+    }
+
+    .trend-content { flex: 1; }
+
+    .trend-kw-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .trend-kw {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .trend-badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--badge-trend);
+      color: var(--badge-trend-text);
+      font-weight: 600;
+    }
+
+    .trend-title-rec {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.45;
+    }
+
+    .copy-title-btn {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    .copy-title-btn:hover {
+      border-color: var(--naver-green);
+      color: var(--naver-green-dark);
+    }
+
+    .post-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .post-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      background: #fff;
+      position: relative;
+    }
+
+    .post-card.today {
+      border-color: var(--naver-green);
+      box-shadow: 0 4px 16px rgba(3, 199, 90, 0.12);
+    }
+
+    .post-card.today::before {
+      content: "TODAY";
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      background: var(--naver-green);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .post-card-date {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--naver-green-dark);
+      margin-bottom: 6px;
+    }
+
+    .post-card-title {
+      font-size: 17px;
+      font-weight: 750;
+      margin-bottom: 10px;
+      color: var(--text-main);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .post-card-title:hover {
+      color: var(--naver-green-dark);
+      text-decoration: underline;
+    }
+
+    .post-card-desc {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .post-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .post-tag {
+      font-size: 11.5px;
+      background: var(--bg);
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .post-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px dashed var(--border);
+      padding-top: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .post-btn-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-main);
+    }
+
+    .action-btn:hover { background: var(--bg); }
+
+    .action-btn-primary {
+      background: var(--naver-green);
+      color: #fff;
+      border-color: var(--naver-green);
+    }
+
+    .action-btn-primary:hover {
+      background: var(--naver-green-dark);
+      color: #fff;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .check-icon {
+      color: var(--naver-green-dark);
+      font-weight: bold;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s;
+      z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <span class="naver-badge">NAVER BLOG</span>
+        <div class="brand-title">일별 블로그 작성 포털</div>
+      </div>
+      <div class="header-links">
+        <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
+        <a href="../../docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
+        <a href="../../docs/04-prompts/01-practical-prompts.md" class="header-link" target="_blank">💬 프롬프트 모음</a>
+        <a href="../../docs/05-templates/01-blog-templates.md" class="header-link" target="_blank">📑 서식 템플릿</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero-banner">
+      <div class="hero-text">
+        <h1>🟢 네이버 블로그 일별 포스팅 워크스페이스</h1>
+        <p>실시간 검색어와 트렌드 키워드를 발굴하고, 스마트에디터 ONE 서식에 맞춘 E-E-A-T 기반 블로그 포스팅을 매일 완성하여 안정적인 노후 파이프라인을 구축합니다.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-number">1 편</span>
+          <span class="stat-label">누적 발행 글</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">10 개</span>
+          <span class="stat-label">실시간 트렌드</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-grid">
+      <div class="left-col">
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">
+              📅 일별 포스팅 캘린더 / 목록
+            </div>
+            <div class="card-subtitle">총 1개의 일별 포스팅 작성됨</div>
+          </div>
+          <div class="post-timeline">
+            
+            <article class="post-card today">
+              <div class="post-card-date">
+                <span>📍 2026-10-18 (오늘)</span>
+              </div>
+              <a href="posts/2026-10-18.html" class="post-card-title">
+                지금이라도 금 사둘까? 2년 내 최고치 전망 속 은퇴자 실전 금 투자법 3가지
+              </a>
+              <p class="post-card-desc">
+                안녕하세요, 은퇴 후 디지털 연금 만들기를 실천하고 있는 블로그 지기입니다.
+              </p>
+              <div class="post-card-tags">
+                <span class="post-tag">#금시세</span><span class="post-tag">#금투자</span><span class="post-tag">#KRX금시장</span><span class="post-tag">#골드바</span><span class="post-tag">#노후자산관리</span>
+              </div>
+              <div class="post-card-footer">
+                <div>작성 분량: 약 1,989자 (공백 제외)</div>
+                <div class="post-btn-group">
+                  <a href="posts/2026-10-18.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/2026-10-18.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 복사</a>
+                </div>
+              </div>
+            </article>
+        
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">
+              🔥 네이버 블로그 제목 추천: 실시간 검색어 & 트렌드 Top 10
+            </div>
+            <div class="card-subtitle">2026-10-18 자동 집계 기준</div>
+          </div>
+          <p style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 16px;">
+            현재 실시간으로 대중의 관심이 집중된 키워드를 시니어/은퇴자 및 정보성 네이버 블로그 스마트블록 노출에 최적화된 매력적인 제목으로 변환한 추천안입니다.
+          </p>
+          <div class="trend-list" id="trendList">
+            
+            <div class="trend-item">
+              <div class="trend-rank">1</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">ลีดส์ พบ แมนยู</span>
+                  <span class="trend-badge">200+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> ลีดส์ พบ แมนยู 이슈 주목! LIVE ดูบอลสด ลีดส์ พบ แมนยู ... - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('ลีดส์ พบ แมนยู 이슈 주목! LIVE ดูบอลสด ลีดส์ พบ แมนยู ... - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">2</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">leeds đấu với man utd</span>
+                  <span class="trend-badge">200+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> leeds đấu với man utd 이슈 주목! Trực tiếp bóng đá Leeds - MU... - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('leeds đấu với man utd 이슈 주목! Trực tiếp bóng đá Leeds - MU... - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">3</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">나마디 조엘 진</span>
+                  <span class="trend-badge">200+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> 나마디 조엘 진 이슈 주목! 김영범, 수영 첫날 2관왕‥남자 50m·계영 800... - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('나마디 조엘 진 이슈 주목! 김영범, 수영 첫날 2관왕‥남자 50m·계영 800... - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">4</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">신인감독 김연경 시즌2</span>
+                  <span class="trend-badge">200+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> 신인감독 김연경 시즌2 이슈 주목! '신인감독 김연경2', 지난해 패배 안긴 일 명문 ... - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('신인감독 김연경 시즌2 이슈 주목! \'신인감독 김연경2\', 지난해 패배 안긴 일 명문 ... - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">5</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">leeds vs man utd</span>
+                  <span class="trend-badge">1000+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> leeds vs man utd 이슈 주목! Premier League: Three games ... - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('leeds vs man utd 이슈 주목! Premier League: Three games ... - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">6</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">리즈 유나이티드 대 맨유</span>
+                  <span class="trend-badge">10000+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> 리즈 유나이티드 대 맨유 이슈 주목! '맨체스터 UTD, 5경기 만에 승리 도전!' 리즈... - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('리즈 유나이티드 대 맨유 이슈 주목! \'맨체스터 UTD, 5경기 만에 승리 도전!\' 리즈... - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">7</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">persib bandung vs persik</span>
+                  <span class="trend-badge">200+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> persib bandung vs persik 이슈 주목! Link Live Streaming Persib v... - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('persib bandung vs persik 이슈 주목! Link Live Streaming Persib v... - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">8</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">mbc</span>
+                  <span class="trend-badge">200+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> mbc 이슈 주목! “حب أسود” قبل عرضه.. سرّ من ... - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('mbc 이슈 주목! “حب أسود” قبل عرضه.. سرّ من ... - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">9</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">明天的天氣</span>
+                  <span class="trend-badge">200+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> 明天的天氣 이슈 주목! 秋老虎持續發威晴熱東偶零星雨 - 은퇴자 관점에서 본 핵심 체크포인트
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('明天的天氣 이슈 주목! 秋老虎持續發威晴熱東偶零星雨 - 은퇴자 관점에서 본 핵심 체크포인트')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item">
+              <div class="trend-rank">10</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">김천김밥축제</span>
+                  <span class="trend-badge">100+</span>
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> 실시간 핫이슈 '김천김밥축제' 총정리! 우리가 꼭 알아야 할 핵심 내용과 일상 꿀팁
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('실시간 핫이슈 \'김천김밥축제\' 총정리! 우리가 꼭 알아야 할 핵심 내용과 일상 꿀팁')">제목 복사</button>
+            </div>
+        
+          </div>
+        </section>
+      </div>
+
+      <div class="right-col">
+        <section class="card">
+          <div class="card-title" style="margin-bottom: 14px;">
+            ✅ 네이버 C-Rank & D.I.A 체크리스트
+          </div>
+          <div class="check-item"><span class="check-icon">✓</span><div><strong>제목 키워드 앞배치</strong>: 메인 키워드를 제목 앞쪽 15자 내에 자연스럽게 배치</div></div>
+          <div class="check-item"><span class="check-icon">✓</span><div><strong>글자수 1,500~2,000자</strong>: 스마트블록 상위 노출 체류시간 확보</div></div>
+          <div class="check-item"><span class="check-icon">✓</span><div><strong>소제목(H2/H3) 3~4개</strong>: 네이버 요약 봇 친화적 구조</div></div>
+          <div class="check-item"><span class="check-icon">✓</span><div><strong>진솔한 경험담 1스푼</strong>: D.I.A 로직 가산점 핵심 요소</div></div>
+          <div class="check-item"><span class="check-icon">✓</span><div><strong>이미지 4~6장 권장</strong>: 직접 촬영한 사진이나 캡처 권장</div></div>
+        </section>
+
+        <section class="card" style="border-left: 4px solid var(--naver-green); background: #fcfdfd;">
+          <div class="card-title" style="color: var(--naver-green-dark); margin-bottom: 10px;">
+            💡 스마트에디터 서식 복사 팁
+          </div>
+          <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6;">
+            네이버 블로그 에디터(SmartEditor ONE)는 마크다운(<code>**</code>, <code>###</code>)을 직접 해석하지 않는 위지윅 에디터입니다.<br><br>
+            포스트 뷰어에서 <strong>[🟢 네이버 스마트에디터 서식 복사]</strong> 버튼을 누르면 <code>**</code> 기호 없이 <strong>진짜 굵은 글씨와 소제목</strong>으로 스마트에디터에 바로 붙여넣기됩니다.
+          </p>
+        </section>
+
+        <section class="card">
+          <div class="card-title" style="margin-bottom: 14px;">
+            ⚡ AI 원클릭 글쓰기 프롬프트
+          </div>
+          <div style="background: var(--naver-light); border: 1px solid var(--naver-light-border); border-radius: 8px; padding: 12px; font-size: 12.5px; color: #1f5135; margin-bottom: 10px;">
+            "선택한 제목과 키워드로 50대 은퇴자의 경험이 담긴 친절한 네이버 블로그 초안 1,800자를 작성해줘."
+          </div>
+          <button class="action-btn" style="width: 100%; text-align: center;" onclick="copyText('선택한 제목과 키워드로 50대 은퇴자의 진솔한 경험이 담긴 친절하고 가독성 높은 네이버 블로그 포스팅 초안 1,800자를 작성해줘. 소제목 3개와 결론, 스마트블록 태그 10개를 포함해줘.')">
+            프롬프트 복사하기
+          </button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script>
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById("toast");
+        toast.textContent = `✓ 클립보드에 복사되었습니다!`;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2000);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -39,3 +39,27 @@
 3. Marked.js 기반 실시간 마크다운 렌더링, 목차 네비게이션, 키워드 검색, 다크/라이트 테마, 코드 복사 기능 탑재
 4. 마크다운 파일 변경 시 원클릭 재생성을 위한 빌더 도구 (`tools/generate_html.py`) 제작
 
+== 2026.10.18 : 일별 네이버 블로그 작성 홈페이지(/blog/naver/) 구축 & 실시간 검색어 Top 10 반영
+1. 일별 네이버 블로그 작성 메인 허브 생성 (`blog/naver/index.html`):
+   - 일별 포스팅 캘린더/목록 관리
+   - 실시간 검색어 & 트렌드 키워드 Top 10 및 블로그 추천 제목 원클릭 복사
+   - C-Rank & D.I.A 상위노출 체크리스트 탑재
+2. 2026-10-18 오늘자 네이버 블로그 포스팅 생성 (`blog/naver/posts/2026-10-18.md` 및 `.html`):
+   - 실시간 검색어 1위 테마인 '금(Gold)' 사상 최고치 전망을 은퇴자 안전자산 관점으로 재해석한 완성형 포스팅 제작
+   - 네이버 스마트에디터 ONE 서식 호환 뷰어 및 원클릭 복사 버튼 제공
+== 2026.10.18 : 맥 슬립 대응 새벽 00시(자정) launchd(LaunchAgent) 스케줄러 전환 구축
+1. macOS 슬립(Sleep) 상태 시 cron 미실행 한계 해결 (initClaude 아키텍처 반영):
+   - `cron`은 슬립 중 놓친 잡을 재실행하지 못하므로, macOS 표준 `launchd` LaunchAgent 기반으로 전면 전환
+   - `StartCalendarInterval` (Hour: 0, Minute: 0) 적용으로 맥이 잠자고 있더라도 깨어나는 즉시 놓친 배치 자동 실행(Catch-up) 보장
+2. 실행 중 절전 차단 (`caffeinate`) 탑재:
+   - `scripts/daily-naver-blog.sh`에서 `caffeinate -i -t 600 &` 및 `caffeinate -is` 적용
+   - 배치 동작 중 유휴 슬립 방지 및 PATH 환경변수 보강
+== 2026.10.18 : 멀티 블로그 포털(index.html) 구축 및 지침서 뷰어(docs/index.html) 이동
+1. 기존 지침서 뷰어 `index.html`을 `docs/index.html`로 위치 이동:
+   - 마크다운 문서 및 상대 경로 갱신
+   - `tools/generate_html.py`의 빌드 대상을 `docs/index.html`로 전환
+2. 최상위 루트 `index.html`을 멀티 블로그 포털 허브로 신규 제작:
+   - 현재 운영 중인 채널: **🟢 네이버 블로그** (`blog/naver/index.html`, 오늘자 포스트 바로가기 연동)
+   - 향후 확장 예정 채널: **🟠 티스토리 (애드센스)** 및 **🔵 워드프레스 (독립 웹사이트/SEO)** 로드맵 카드 탑재
+   - 지침서 및 프롬프트 라이브러리 퀵 링크(`docs/index.html`) 및 최근 포스팅 타임라인 연동
+
