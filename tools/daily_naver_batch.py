@@ -10,6 +10,7 @@ import sys
 import glob
 import json
 import re
+import subprocess
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime
@@ -1208,6 +1209,111 @@ def update_naver_index_html(today_str, trends, posts):
         f.write(full_html)
     log(f"✅ blog/naver/index.html 대시보드 갱신 완료 (총 {len(posts)}개 포스트)")
 
+def update_portal_index_html(today_str, posts):
+    """최상위 루트 index.html 포털의 '오늘자 글 보기' 링크 및 '최근 작성된 일별 블로그 포스팅' 목록 자동 갱신"""
+    portal_path = os.path.join(BASE_DIR, "index.html")
+    if not os.path.exists(portal_path):
+        return
+
+    try:
+        with open(portal_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        latest_post = posts[0] if posts else None
+        latest_date = latest_post["date"] if latest_post else today_str
+
+        # 1. '오늘자 글 보기 & 서식 복사' 링크 최신화
+        content = re.sub(
+            r'<a href="blog/naver/posts/[0-9\-]+\.html" class="p-btn p-btn-sub">\s*👁️ 오늘자 글 보기 & 서식 복사\s*</a>',
+            f'<a href="blog/naver/posts/{latest_date}.html" class="p-btn p-btn-sub">\n            👁️ 오늘자 글 보기 & 서식 복사\n          </a>',
+            content
+        )
+
+        # 2. 최근 작성된 일별 블로그 포스팅 섹션 갱신 (최근 5개)
+        recent_rows_html = ""
+        for p in posts[:5]:
+            p_date = p["date"]
+            try:
+                dt = datetime.strptime(p_date, "%Y-%m-%d")
+                weekday = WEEKDAYS_KR[dt.weekday()]
+                date_display = f"{p_date} ({weekday})"
+            except Exception:
+                date_display = p_date
+
+            recent_rows_html += f"""
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-naver">네이버</span>
+          <a href="blog/naver/posts/{p_date}.html" class="post-item-title">
+            {p['title']}
+          </a>
+        </div>
+        <span class="post-item-date">{date_display}</span>
+        <a href="blog/naver/posts/{p_date}.html" class="post-item-btn">
+          👁️ 포스트 열기 & 서식 복사
+        </a>
+      </div>"""
+
+        # Section 2의 post-item-row 들을 마커 기준으로 안전하게 교체
+        marker_pattern = r'(<!-- RECENT_POSTS_LIST_START -->)([\s\S]*?)(<!-- RECENT_POSTS_LIST_END -->)'
+        m_marker = re.search(marker_pattern, content)
+        if m_marker:
+            content = content[:m_marker.start()] + f"<!-- RECENT_POSTS_LIST_START -->{recent_rows_html}\n      <!-- RECENT_POSTS_LIST_END -->" + content[m_marker.end():]
+        else:
+            # 마커가 없을 때 fallback
+            section_pattern = r'(<!-- Section 2: Recent Posts Hub -->[\s\S]*?</div>\s*)([\s\S]*?)(</section>)'
+            m = re.search(section_pattern, content)
+            if m:
+                content = content[:m.start(2)] + f"\n      <!-- RECENT_POSTS_LIST_START -->{recent_rows_html}\n      <!-- RECENT_POSTS_LIST_END -->\n    " + content[m.end(2):]
+
+        with open(portal_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        log("✅ 루트 index.html 포털 최근 포스팅 목록 동기화 완료")
+    except Exception as e:
+        log(f"⚠️ 루트 index.html 포털 동기화 오류: {e}")
+
+def git_commit_and_push(today_str, title):
+    """배치 생성 파일들을 Git에 자동 커밋하고 origin으로 푸시"""
+    try:
+        # 1. 상태 확인
+        status_res = subprocess.run(["git", "status", "--porcelain"], cwd=BASE_DIR, capture_output=True, text=True)
+        if not status_res.stdout.strip():
+            log("ℹ️ Git 변경 사항이 없어 커밋을 건너뜁니다.")
+            return
+
+        # 2. 관련 파일 staging
+        add_res = subprocess.run(["git", "add", "."], cwd=BASE_DIR, capture_output=True, text=True)
+        if add_res.returncode != 0:
+            log(f"⚠️ git add 실패: {add_res.stderr.strip()}")
+            return
+
+        # 3. 커밋 메시지 구성 및 커밋
+        clean_title = re.sub(r'[\r\n"\'`]', ' ', title).strip() if title else ""
+        if len(clean_title) > 40:
+            clean_title = clean_title[:40] + "..."
+        commit_msg = f"feat(auto): {today_str} 네이버 블로그 포스팅 자동 생성"
+        if clean_title:
+            commit_msg += f" ({clean_title})"
+
+        commit_res = subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR, capture_output=True, text=True)
+        if commit_res.returncode != 0:
+            log(f"⚠️ git commit 실패: {commit_res.stderr.strip()}")
+            return
+        log(f"✅ Git 커밋 완료: {commit_msg}")
+
+        # 4. 현재 활성 브랜치 확인
+        branch_res = subprocess.run(["git", "branch", "--show-current"], cwd=BASE_DIR, capture_output=True, text=True)
+        current_branch = branch_res.stdout.strip() or "develop"
+
+        # 5. 원격 푸시
+        push_res = subprocess.run(["git", "push", "origin", current_branch], cwd=BASE_DIR, capture_output=True, text=True)
+        if push_res.returncode == 0:
+            log(f"🚀 Git 원격 저장소 푸시 완료 (origin/{current_branch})")
+        else:
+            log(f"⚠️ git push 실패: {push_res.stderr.strip()}")
+    except Exception as e:
+        log(f"⚠️ Git 자동 커밋 및 푸시 중 오류 발생: {e}")
+
 def run_batch(target_date=None):
     """배치 메인 실행 함수"""
     now = datetime.now()
@@ -1232,14 +1338,22 @@ def run_batch(target_date=None):
     posts = scan_all_posts()
     update_naver_index_html(today_str, trends, posts)
 
-    # 4. 루트 index.html 및 전체 프로젝트 뷰어 동기화
+    # 4. 루트 index.html 멀티 블로그 포털 최근 포스트 갱신
+    update_portal_index_html(today_str, posts)
+
+    # 5. docs/index.html 전체 가이드 뷰어 동기화
     gen_script = os.path.join(BASE_DIR, "tools", "generate_html.py")
     if os.path.exists(gen_script):
         os.system(f"{sys.executable} {gen_script} > /dev/null 2>&1")
-        log("✅ 전체 가이드 뷰어(index.html) 동기화 완료")
+        log("✅ 전체 가이드 뷰어(docs/index.html) 동기화 완료")
+
+    # 6. 변경 사항 Git 자동 커밋 및 원격 푸시
+    latest_title = posts[0]["title"] if posts else trends[0]["recommended_title"]
+    git_commit_and_push(today_str, latest_title)
 
     log(f"🎉 [배치 완료] {today_str} 네이버 블로그 일별 작업이 성공적으로 끝났습니다.\n")
 
 if __name__ == "__main__":
     t_date = sys.argv[1] if len(sys.argv) > 1 else None
     run_batch(t_date)
+
