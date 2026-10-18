@@ -62,4 +62,8 @@
    - 현재 운영 중인 채널: **🟢 네이버 블로그** (`blog/naver/index.html`, 오늘자 포스트 바로가기 연동)
    - 향후 확장 예정 채널: **🟠 티스토리 (애드센스)** 및 **🔵 워드프레스 (독립 웹사이트/SEO)** 로드맵 카드 탑재
    - 지침서 및 프롬프트 라이브러리 퀵 링크(`docs/index.html`) 및 최근 포스팅 타임라인 연동
+3. README.md 업데이트:
+   - 최신 프로젝트 디렉토리 구조(index.html, docs/, blog/, scripts/) 및 AI Native 워크플로우 반영
+   - docs/index.html 가이드 뷰어 자동 동기화 완료
+
 
