@@ -133,7 +133,7 @@ def create_daily_post(date_str, weekday_str, main_trend):
 
 > **작성일**: {date_str} ({weekday_str})  
 > **카테고리**: 경제 / 시사 / 노후 자산관리 & 라이프  
-> **타겟 키워드**: {kw}, {kw} 전망, 은퇴 재테크, 노후 생활, 생활 꿀팁  
+> **타겟 키워드**: {kw}, {kw} 전망, 노후 자산관리, 맛있는 일상, 생활 꿀팁  
 > **예상 읽는 시간**: 3분 30초 (약 1,800자)  
 > **💡 네이버 블로그 작성 팁**: 네이버 스마트에디터 ONE은 마크다운 문법(`**`, `###`)을 직접 지원하지 않는 위지윅 에디터입니다. 브라우저 뷰어(`{date_str}.html`)에서 **[🟢 네이버 스마트에디터 서식 복사]** 버튼을 누르면 `**` 기호 없이 진짜 볼드/소제목 서식 그대로 깔끔하게 붙여넣기됩니다.
 
@@ -141,7 +141,7 @@ def create_daily_post(date_str, weekday_str, main_trend):
 
 ## 📌 네이버 블로그 포스팅 초안
 
-안녕하세요, 은퇴 후 디지털 연금 만들기를 실천하고 있는 블로그 지기입니다.
+안녕하세요, 든든한 노후 자산과 맛있는 일상을 가꾸는 블로그 지기 **'품미인생(品味人生)'**입니다.
 
 오늘 아침 실시간 검색어와 주요 뉴스에서 가장 뜨겁게 화제가 되고 있는 주제는 바로 **'{kw}'**입니다.  
 관련 소식({news})을 접하시고 많은 분들이 큰 관심을 갖고 계실 텐데요.
@@ -189,12 +189,12 @@ def create_daily_post(date_str, weekday_str, main_trend):
 
 여러분은 오늘 '{kw}' 소식을 보며 어떤 생각이 드셨나요? 여러분만의 생각이나 궁금하신 점이 있다면 편하게 댓글로 남겨주세요.
 
-글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 꾹 부탁드립니다. 내일도 유익한 이야기로 찾아뵙겠습니다!
+글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 꾹 부탁드립니다. 내일도 유익한 자산 정보와 맛있는 이야기로 찾아뵙겠습니다!
 
 ---
 
 ### 🏷️ 네이버 블로그 스마트블록 추천 해시태그
-#{kw.replace(' ', '')} #{kw.replace(' ', '')}전망 #은퇴라이프 #노후준비 #시니어재테크 #생활꿀팁 #실시간트렌드 #네이버블로그 #은퇴블로그 #오늘의이슈
+#{kw.replace(' ', '')} #{kw.replace(' ', '')}전망 #인생2막 #노후자산관리 #생활꿀팁 #실시간트렌드 #네이버블로그 #디지털연금 #품미인생 #오늘의이슈
 """
 
     with open(md_path, "w", encoding="utf-8") as f:
@@ -438,7 +438,7 @@ def build_post_html(date_str, weekday_str, title, keyword, md_content):
 
   <header class="top-nav">
     <div class="nav-left">
-      <span class="brand-tag">NAVER BLOG</span>
+      <span class="brand-tag">NAVER BLOG · 품미인생</span>
       <span class="nav-title">일별 포스팅: {date_str} ({weekday_str})</span>
     </div>
     <div class="nav-actions">
@@ -1093,7 +1093,7 @@ def update_naver_index_html(today_str, trends, posts):
     <div class="header-inner">
       <div class="brand-wrap">
         <span class="naver-badge">NAVER BLOG</span>
-        <div class="brand-title">일별 블로그 작성 포털</div>
+        <div class="brand-title">품미인생의 블로그 작업실</div>
       </div>
       <div class="header-links">
         <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
@@ -1107,8 +1107,8 @@ def update_naver_index_html(today_str, trends, posts):
   <div class="container">
     <section class="hero-banner">
       <div class="hero-text">
-        <h1>🟢 네이버 블로그 일별 포스팅 워크스페이스</h1>
-        <p>실시간 검색어와 트렌드 키워드를 발굴하고, 스마트에디터 ONE 서식에 맞춘 E-E-A-T 기반 블로그 포스팅을 매일 완성하여 안정적인 노후 파이프라인을 구축합니다.</p>
+        <h1>🟢 품미인생(品味人生)의 네이버 블로그 작업실</h1>
+        <p>통장은 든든하게, 입맛은 풍요롭게! 실시간 트렌드와 노후 자산관리, 맛있는 일상을 스마트에디터 ONE 서식으로 매일 완성합니다.</p>
       </div>
       <div class="hero-stats">
         <div class="stat-box">
