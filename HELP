@@ -97,3 +97,15 @@
    - `tools/daily_naver_batch.py`: `fcntl` 기반 프로세스 락(`flock`) 탑재로 중복 동시 실행 완벽 차단
    - `scripts/install-launchd.sh`: `launchd`와 `crontab`을 결합한 이중 안전망(Dual Backup) 구축 (재부팅 후에도 cron으로 00:00 자정 실행 보장, LaunchAgent 권한 가이드 안내)
    - `scripts/uninstall-launchd.sh`: launchd와 crontab 동시 정리 기능 보강
+
+== 2026.10.20 : 사용자 네이버 블로그 링크(https://blog.naver.com/ms7park) 전면 연동
+1. 네이버 블로그 작업실(`blog/naver/index.html`) 화면 링크 연결:
+   - 상단 네비게이션 헤더: `🔗 내 네이버 블로그 (ms7park) ↗` 바로가기 버튼 추가
+   - 메인 히어로 배너: `🔗 내 네이버 블로그 바로가기 (blog.naver.com/ms7park) ↗` 퀵 액션 버튼 배치
+   - 우측 사이드바: `MY BLOG - 품미인생 네이버 블로그` 바로가기 전용 프로필 카드 신설
+2. 일별 자동화 배치 스크립트(`tools/daily_naver_batch.py`) 템플릿 영구 반영:
+   - `update_naver_index_html()` 템플릿에 동일 링크 구조를 영구 반영하여 매일 자정 재생성 시에도 링크 유지 보장
+   - 일별 개별 포스트 뷰어(`build_post_html()`) 상단 메뉴에도 내 블로그 바로가기 버튼 추가
+3. 기존 생성 포스트 및 멀티 포털 동기화:
+   - 기존 포스트 뷰어(`blog/naver/posts/2026-10-18.html`, `2026-10-19.html`, `2026-10-20.html`) 상단 바에 링크 적용
+   - 최상위 루트 포털(`index.html`) 헤더 및 네이버 블로그 카드 버튼 그룹에 `🔗 내 블로그 방문 (ms7park) ↗` 연동
