@@ -11,6 +11,7 @@ import glob
 import json
 import re
 import subprocess
+import fcntl
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime
@@ -1316,6 +1317,15 @@ def git_commit_and_push(today_str, title):
 
 def run_batch(target_date=None):
     """배치 메인 실행 함수"""
+    # 동시 실행 방지 파일 락 (LaunchAgent + Cron 이중 구동 시 상호 배타 보장)
+    lock_file_path = "/tmp/daily_naver_batch.lock"
+    try:
+        lock_file = open(lock_file_path, "w")
+        fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except (BlockingIOError, OSError):
+        log("ℹ️ 이미 다른 프로세스에서 일별 배치가 실행 중입니다. 중복 실행을 방지하고 종료합니다.")
+        return
+
     now = datetime.now()
     if target_date:
         today_date = datetime.strptime(target_date, "%Y-%m-%d")

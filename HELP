@@ -84,6 +84,16 @@
 3. Git 자동 커밋 & 원격 푸시 파이프라인 구축 (`git_commit_and_push`):
    - 자정 배치 완료 직후 생성/수정된 모든 파일(`blog/naver/`, `index.html`, `docs/`, `HELP` 등)을 자동으로 `git add` -> `git commit` -> `git push origin develop` 수행하도록 연동 완료
 
-
-
-
+== 2026.10.20 : 일별 배치 미실행 원인 분석, 당일 포스팅 수동 생성 및 스케줄러 이중화(LaunchAgent + Cron) 보강
+1. 2026-10-20 배치 미실행 원인 규명:
+   - 전일 22:27 시스템 재부팅(`system boot Oct 19 22:27`) 발생
+   - 기존 LaunchAgent 등록 방식이 세션 임시 적재(`launchctl bootstrap gui/501 $PROJECT/com.user...plist`)로 되어 있었고, `~/Library/LaunchAgents/`에 plist가 복사되지 않아 재부팅 후 자동 복구되지 않음
+   - `~/Library/LaunchAgents/` 폴더 소유자가 root로 되어 있어 비root 프로세스의 plist 복사가 차단되었던 구조적 원인 발견
+2. 2026-10-20 당일 네이버 블로그 포스팅 즉시 생성 및 동기화:
+   - `scripts/daily-naver-blog.sh` 실행하여 당일 실시간 1위 트렌드('spurs vs coventry') 기반 포스팅 생성 완료
+   - `blog/naver/posts/2026-10-20.md`, `2026-10-20.html` 생성
+   - `blog/naver/index.html`(대시보드), `index.html`(멀티 포털), `docs/index.html`(통합 뷰어) 최신화 및 Git 커밋/푸시 완료
+3. 스케줄러 이중화 및 안전장치 영구 강화:
+   - `tools/daily_naver_batch.py`: `fcntl` 기반 프로세스 락(`flock`) 탑재로 중복 동시 실행 완벽 차단
+   - `scripts/install-launchd.sh`: `launchd`와 `crontab`을 결합한 이중 안전망(Dual Backup) 구축 (재부팅 후에도 cron으로 00:00 자정 실행 보장, LaunchAgent 권한 가이드 안내)
+   - `scripts/uninstall-launchd.sh`: launchd와 crontab 동시 정리 기능 보강
