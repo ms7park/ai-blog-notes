@@ -41,7 +41,7 @@ ai-blog-notes/
 ├── blog/                       # [발행] 플랫폼별 블로그 작업 공간
 │   └── naver/                  # 네이버 블로그 일별 작업실 (캘린더, 실시간 검색어 Top 10)
 │       ├── index.html          # 네이버 블로그 작업 대시보드
-│       └── posts/              # 일별 포스팅 초안 (.md, 스마트에디터 서식 .html)
+│       └── posts/              # 일별 포스팅 초안 (년월 YYYYMM/ 하위 .md, 서식 .html)
 ├── scripts/                    # [스케줄러] macOS 네이티브 배치 (initClaude 표준)
 │   ├── daily-naver-blog.sh     # caffeinate 절전 차단 & 실행 래퍼 스크립트
 │   ├── install-launchd.sh      # launchd LaunchAgent 적재 (매일 00:00 실행)
@@ -60,7 +60,7 @@ ai-blog-notes/
 1. **포털 열람 (`open index.html`)**:
    - 브라우저에서 통합 포털을 열어 오늘의 네이버 블로그 포스팅과 실시간 검색어 Top 10을 확인합니다.
 2. **원클릭 스마트에디터 복사**:
-   - `blog/naver/posts/YYYY-MM-DD.html`에서 **[🟢 네이버 스마트에디터 서식 복사]** 버튼을 눌러 `**` 기호 없이 서식 그대로 네이버 블로그에 붙여넣습니다.
+   - `blog/naver/posts/YYYYMM/YYYY-MM-DD.html`에서 **[🟢 네이버 스마트에디터 서식 복사]** 버튼을 눌러 `**` 기호 없이 서식 그대로 네이버 블로그에 붙여넣습니다.
 3. **휴먼 터치 퇴고**:
    - AI가 작성한 초안에 나의 실제 경험담, 느낀 점, 사진을 1~2장 추가하여 나만의 특별한 글을 완성합니다.
 4. **품질 점검**:

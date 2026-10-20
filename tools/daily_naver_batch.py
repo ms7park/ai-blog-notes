@@ -294,14 +294,17 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
     - post_id: '2026-10-20' (1편 메인) 또는 '2026-10-20-2' (추가 테마 글)
     - post_num: 글 순번 (1, 2, 3...)
     - force: 기존 파일 존재 시에도 강제 재생성 여부
+    - 년월(YYYYMM) 폴더 하위에 파일 생성 (예: blog/naver/posts/202610/)
     """
-    os.makedirs(POSTS_DIR, exist_ok=True)
-    md_path = os.path.join(POSTS_DIR, f"{post_id}.md")
-    html_path = os.path.join(POSTS_DIR, f"{post_id}.html")
+    ym = date_str[:7].replace("-", "")  # YYYYMM 형식 (예: 202610)
+    post_dir = os.path.join(POSTS_DIR, ym)
+    os.makedirs(post_dir, exist_ok=True)
+    md_path = os.path.join(post_dir, f"{post_id}.md")
+    html_path = os.path.join(post_dir, f"{post_id}.html")
 
     # 이미 포스팅 파일이 존재하면 force가 아닐 때 보존
     if not force and os.path.exists(md_path) and os.path.exists(html_path):
-        log(f"ℹ️ {post_id} 포스팅 파일이 이미 존재하여 보존합니다.")
+        log(f"ℹ️ posts/{ym}/{post_id} 포스팅 파일이 이미 존재하여 보존합니다.")
         return
 
     kw = trend["keyword"]
@@ -405,13 +408,13 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
 
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(md_content)
-    log(f"✅ {post_id}.md 마크다운 파일 생성 완료 (#{post_num}편: [{kw}])")
+    log(f"✅ posts/{ym}/{post_id}.md 마크다운 파일 생성 완료 (#{post_num}편: [{kw}])")
 
     # HTML 뷰어 페이지 생성
     html_content = build_post_html(post_id, date_str, weekday_str, title, kw, md_content, theme_name=theme_name, category=category)
     with open(html_path, "w", encoding="utf-8") as f:
         f.write(html_content)
-    log(f"✅ {post_id}.html 네이버 스마트에디터 전용 뷰어 생성 완료 (#{post_num}편: [{kw}])")
+    log(f"✅ posts/{ym}/{post_id}.html 네이버 스마트에디터 전용 뷰어 생성 완료 (#{post_num}편: [{kw}])")
 
 def create_daily_post(date_str, weekday_str, main_trend):
     """하위 호환 래퍼: 실시간 1위 트렌드 포스트 생성"""
@@ -653,7 +656,7 @@ def build_post_html(post_id, date_str, weekday_str, title, keyword, md_content, 
       <span class="nav-title">일별 포스팅: {date_str} ({weekday_str}){f" · {theme_name}" if theme_name else ""}</span>
     </div>
     <div class="nav-actions">
-      <a href="../index.html" class="btn">📂 네이버 블로그 홈</a>
+      <a href="../../index.html" class="btn">📂 네이버 블로그 홈</a>
       <a href="https://blog.naver.com/ms7park" target="_blank" rel="noopener noreferrer" class="btn" style="border-color: var(--naver-green); color: var(--naver-green-dark); font-weight: 700;">
         🔗 내 블로그 (ms7park) ↗
       </a>
@@ -781,8 +784,8 @@ def build_post_html(post_id, date_str, weekday_str, title, keyword, md_content, 
 </html>"""
 
 def scan_all_posts():
-    """posts/ 디렉토리의 모든 일별 글 목록을 스캔하여 메타데이터 리스트 반환"""
-    all_files = glob.glob(os.path.join(POSTS_DIR, "*.md"))
+    """posts/ 디렉토리(YYYYMM 서브폴더 포함)의 모든 일별 글 목록을 스캔하여 메타데이터 리스트 반환"""
+    all_files = glob.glob(os.path.join(POSTS_DIR, "*", "*.md")) + glob.glob(os.path.join(POSTS_DIR, "*.md"))
     
     def get_sort_key(f):
         base = os.path.basename(f).replace(".md", "")
@@ -791,7 +794,7 @@ def scan_all_posts():
         idx = int(parts[3]) if len(parts) > 3 else 1
         return (d_str, -idx)
 
-    md_files = sorted(all_files, key=get_sort_key, reverse=True)
+    md_files = sorted(list(set(all_files)), key=get_sort_key, reverse=True)
     posts = []
     
     for fpath in md_files:
@@ -800,6 +803,12 @@ def scan_all_posts():
         parts = post_id.split("-")
         date_only = "-".join(parts[:3])
         post_num = int(parts[3]) if len(parts) > 3 else 1
+
+        # 상대 경로 계산 (blog/naver 기준)
+        # 예: fpath가 blog/naver/posts/202610/2026-10-20.md 이면 rel_md는 'posts/202610/2026-10-20.md'
+        rel_md = os.path.relpath(fpath, NAVER_BLOG_DIR)
+        rel_html = rel_md[:-3] + ".html"
+        html_fpath = fpath[:-3] + ".html"
         
         try:
             with open(fpath, "r", encoding="utf-8") as f:
@@ -846,7 +855,9 @@ def scan_all_posts():
                 "desc": desc,
                 "tags": tags,
                 "char_count": char_count,
-                "has_html": os.path.exists(os.path.join(POSTS_DIR, f"{post_id}.html"))
+                "rel_md": rel_md,
+                "rel_html": rel_html,
+                "has_html": os.path.exists(html_fpath)
             })
         except Exception as e:
             log(f"포스트 파싱 오류 {fname}: {e}")
@@ -885,7 +896,7 @@ def update_naver_index_html(today_str, trends, posts):
                 </div>
                 <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">#{p['post_num']}편</span>
               </div>
-              <a href="posts/{p['post_id']}.html" class="post-card-title">
+              <a href="{p['rel_html']}" class="post-card-title">
                 {p['title']}
               </a>
               <p class="post-card-desc">
@@ -897,8 +908,8 @@ def update_naver_index_html(today_str, trends, posts):
               <div class="post-card-footer">
                 <div>작성 분량: 약 {p['char_count']:,}자 (공백 제외)</div>
                 <div class="post-btn-group">
-                  <a href="posts/{p['post_id']}.md" target="_blank" class="action-btn">📄 MD 원문</a>
-                  <a href="posts/{p['post_id']}.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 복사</a>
+                  <a href="{p['rel_md']}" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="{p['rel_html']}" class="action-btn action-btn-primary">👁️ 포스트 열기 & 복사</a>
                 </div>
               </div>
             </article>
@@ -1499,11 +1510,12 @@ def update_portal_index_html(today_str, posts):
 
         latest_post = posts[0] if posts else None
         latest_date = latest_post["date"] if latest_post else today_str
+        latest_rel_html = latest_post.get("rel_html", f"posts/{today_str[:7].replace('-', '')}/{latest_date}.html") if latest_post else f"posts/{today_str[:7].replace('-', '')}/{today_str}.html"
 
         # 1. '오늘자 글 보기 & 서식 복사' 링크 최신화
         content = re.sub(
-            r'<a href="blog/naver/posts/[0-9\-]+\.html" class="p-btn p-btn-sub">\s*👁️ 오늘자 글 보기 & 서식 복사\s*</a>',
-            f'<a href="blog/naver/posts/{latest_date}.html" class="p-btn p-btn-sub">\n            👁️ 오늘자 글 보기 & 서식 복사\n          </a>',
+            r'<a href="blog/naver/posts/[0-9a-zA-Z/_\-]+\.html" class="p-btn p-btn-sub">\s*👁️ 오늘자 글 보기 & 서식 복사\s*</a>',
+            f'<a href="blog/naver/{latest_rel_html}" class="p-btn p-btn-sub">\n            👁️ 오늘자 글 보기 & 서식 복사\n          </a>',
             content
         )
 
@@ -1519,16 +1531,18 @@ def update_portal_index_html(today_str, posts):
             except Exception:
                 date_display = p["post_id"]
 
+            p_rel = p.get('rel_html') or f"posts/{p['post_id']}.html"
+            post_link = f"blog/naver/{p_rel}"
             recent_rows_html += f"""
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
-          <a href="blog/naver/posts/{p['post_id']}.html" class="post-item-title">
+          <a href="{post_link}" class="post-item-title">
             {p['title']}
           </a>
         </div>
         <span class="post-item-date">{date_display}</span>
-        <a href="blog/naver/posts/{p['post_id']}.html" class="post-item-btn">
+        <a href="{post_link}" class="post-item-btn">
           👁️ 포스트 열기 & 서식 복사
         </a>
       </div>"""
@@ -1616,11 +1630,13 @@ def run_batch(target_date=None, force=False):
     log(f"🚀 [배치 시작] 네이버 블로그 일별 자동화 배치 실행 (기준일: {today_str} {weekday_str}요일, force={force})")
 
     # force 모드일 경우 당일자 기존 추가 포스팅 파일 정리 (새로운 트렌드 결과에 맞춰 정확히 재작성)
-    if force and os.path.exists(POSTS_DIR):
-        for f in os.listdir(POSTS_DIR):
+    ym = today_str[:7].replace("-", "")
+    target_ym_dir = os.path.join(POSTS_DIR, ym)
+    if force and os.path.exists(target_ym_dir):
+        for f in os.listdir(target_ym_dir):
             if f.startswith(f"{today_str}-") and (f.endswith(".md") or f.endswith(".html")):
                 try:
-                    os.remove(os.path.join(POSTS_DIR, f))
+                    os.remove(os.path.join(target_ym_dir, f))
                 except OSError:
                     pass
 
