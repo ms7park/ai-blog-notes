@@ -31,11 +31,11 @@ BLOG_THEMES = {
         "name": "노후 자산관리 & 연금·절세",
         "category": "경제 / 시사 / 노후 자산관리",
         "keywords": [
-            "연금", "국민연금", "기초연금", "퇴직연금", "주택연금", "개인연금", "irp", "isa", "노후자금",
+            "국민연금", "기초연금", "퇴직연금", "주택연금", "개인연금", "연금", "irp", "isa", "노후자금",
             "절세", "세금", "세액공제", "상속세", "증여세", "양도세", "취득세", "재산세", "종부세", "건보료", "건강보험료", "연말정산", "환급",
             "금리", "예금", "적금", "특판", "파킹통장", "은행", "시중은행", "저축은행", "이자", "대출",
             "주식", "증시", "코스피", "코스닥", "배당", "배당주", "삼성전자", "삼전", "하이닉스", "삼전닉스", "반도체", "엔비디아", "etf", "펀드", "채권",
-            "금", "골드", "금시세", "안전자산", "환율", "달러",
+            "금시세", "골드바", "골드", "안전자산", "환율", "달러",
             "부동산", "청약", "아파트", "분양", "전세", "월세", "임대", "상가", "경매", "공시지가",
             "지원금", "보조금", "수당", "기부", "고향사랑"
         ],
@@ -107,9 +107,10 @@ BLOG_THEMES = {
         "keywords": [
             "은퇴", "퇴직", "정년", "명퇴", "인생2막", "5060", "신중년", "시니어", "노후",
             "일자리", "재취업", "알바", "공공근로", "사회공헌", "노인일자리", "시니어클럽",
+            "택시", "개인택시", "운전", "모빌리티",
             "자격증", "국가자격증", "조경", "손해평가사", "사회복지사", "경비지도사", "주택관리사",
             "창업", "소자본", "무인매장", "귀농", "귀촌", "전원생활",
-            "스마트폰", "디지털", "ai", "chatgpt"
+            "스마트폰", "폴더블", "디지털", "ai", "chatgpt"
         ],
         "lead": "평생의 직장을 떠났다고 해서 나의 사회적 가치까지 사라지는 것은 아닙니다. 30~40년간 축적된 경륜과 지혜는 인생 2막에서 새로운 꽃을 피울 준비가 되어 있습니다.",
         "p1_title": "수입보다 보람과 활력을 찾는 신중년의 사회 참여",
@@ -223,31 +224,37 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
     if theme_info:
         theme_key = theme_info["theme_key"]
         if theme_key == "finance":
-            if any(w in kw for w in ["주식", "삼전", "하이닉스", "반도체"]):
-                return f"흔들리는 증시 속 '{kw}' 주목! 5060 은퇴자 배당·안전 자산관리 관점 대응법 3가지"
-            elif any(w in kw for w in ["기부", "고향사랑", "세금", "절세"]):
-                return f"13월의 월급 늘리는 '{kw}' 절세 비결! 은퇴자가 꼭 챙겨야 할 세액공제 알짜 혜택 총정리"
-            elif any(w in kw for w in ["금", "골드"]):
-                return f"지금이라도 금 사둘까? 사상 최고가 속 은퇴자 실전 금 투자법 3가지"
-            elif any(w in kw for w in ["연금"]):
+            if any(w in kw for w in ["연금", "국민연금", "기초연금", "퇴직연금", "주택연금", "개인연금"]):
                 return f"{kw} 수령액 개편 뉴스 총정리! 내 노후 통장에 미치는 영향과 꿀팁 3가지"
-            elif any(w in kw for w in ["예금", "적금", "금리"]):
+            elif any(w in kw for w in ["주식", "삼전", "하이닉스", "반도체", "증시", "코스피", "코스닥"]):
+                return f"흔들리는 증시 속 '{kw}' 주목! 5060 은퇴자 배당·안전 자산관리 관점 대응법 3가지"
+            elif any(w in kw for w in ["기부", "고향사랑", "세금", "절세", "연말정산", "환급"]):
+                return f"13월의 월급 늘리는 '{kw}' 절세 비결! 은퇴자가 꼭 챙겨야 할 세액공제 알짜 혜택 총정리"
+            elif any(w in kw for w in ["금시세", "골드바", "골드"]) or kw == "금":
+                return f"지금이라도 금 사둘까? 사상 최고가 속 은퇴자 실전 금 투자법 3가지"
+            elif any(w in kw for w in ["예금", "적금", "금리", "파킹통장", "은행"]):
                 return f"{kw} 금리 비교와 만기 재예치 노하우, 이자 세금 아끼는 3대 절세 비결"
+            elif any(w in kw for w in ["부동산", "아파트", "청약", "전세", "월세"]):
+                return f"변화하는 부동산 시장 속 '{kw}' 체크포인트! 은퇴자 주거 안정과 자산 방어 전략"
             else:
                 return f"노후 자산 지키는 '{kw}' 핵심 체크포인트! 은퇴 전후 꼭 알아야 할 자산관리 팁 3가지"
         elif theme_key == "health":
-            if any(w in kw for w in ["혈당", "당뇨"]):
-                return f"식후 30분 혈당 스파이크 잡는 '{kw}' 관리법! 5060 건강 지키는 실전 식단 루틴"
-            elif any(w in kw for w in ["관절", "무릎", "오십견"]):
-                return f"지긋지긋한 관절 통증 줄이는 '{kw}' 관리 노하우! 매일 10분 스트레칭과 습관 3가지"
-            elif any(w in kw for w in ["치아", "임플란트"]):
+            if any(w in kw for w in ["치아", "임플란트", "틀니", "치과"]):
                 return f"65세 이상 임플란트 건강보험 혜택과 '{kw}' 주의사항! 씹는 즐거움 되찾는 치아 관리법"
+            elif any(w in kw for w in ["혈당", "당뇨", "혈압", "고혈압", "고지혈증"]):
+                return f"식후 30분 혈당 스파이크 잡는 '{kw}' 관리법! 5060 건강 지키는 실전 식단 루틴"
+            elif any(w in kw for w in ["관절", "무릎", "오십견", "디스크", "척추", "관절염"]):
+                return f"지긋지긋한 관절 통증 줄이는 '{kw}' 관리 노하우! 매일 10분 스트레칭과 습관 3가지"
+            elif any(w in kw for w in ["눈", "안과", "백내장", "녹내장", "노안", "황반변성"]):
+                return f"침침한 눈 건강 되살리는 '{kw}' 예방 및 관리법! 5060 시니어 필수 안과 상식"
+            elif any(w in kw for w in ["검진", "건강검진", "암검진", "내시경"]):
+                return f"올해 놓치면 손해인 국가건강검진과 '{kw}' 필수 체크리스트 3가지"
             else:
                 return f"내 몸 살리는 '{kw}' 핵심 가이드! 5060 세대가 꼭 알아야 할 건강 수칙 3가지"
         elif theme_key == "food_lifestyle":
-            if any(w in kw for w in ["김장", "배추", "김치"]):
+            if any(w in kw for w in ["김장", "배추", "김치", "절임배추"]):
                 return f"올해 {kw} 비용 부담 줄이는 실전 비법! 맛과 가성비 다 잡는 품미인생 김장 노하우"
-            elif any(w in kw for w in ["맛집", "식당", "음식"]):
+            elif any(w in kw for w in ["맛집", "식당", "음식", "노포"]):
                 return f"입맛 돋우는 전국 숨은 '{kw}' 탐방기! 든든하고 건강한 품미인생 미식 가이드"
             else:
                 return f"맛있는 인생 2막을 위한 '{kw}' 식도락 가이드! 제철 밥상과 건강 챙기는 꿀팁"
@@ -256,14 +263,18 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
                 return f"은퇴 후 최고의 힐링 스포츠 '당구'! 5060 세대가 다시 당구장에 모이는 이유와 건강 효과 3가지"
             elif any(w in kw for w in ["골프", "파크골프"]):
                 return f"요즘 대세 '{kw}' 완벽 입문 가이드! 관절에 무리 없이 즐기는 실전 꿀팁 베스트 5"
-            elif any(w in kw for w in ["등산", "트레킹", "걷기"]):
+            elif any(w in kw for w in ["등산", "트레킹", "걷기", "만보"]):
                 return f"무릎 부담 없는 '{kw}' 명코스 추천! 은퇴 후 몸과 마음을 채우는 힐링 로드"
             else:
                 return f"인생 2막을 풍요롭게 채우는 취미 '{kw}'! 건강과 즐거움을 함께 잡는 3가지 노하우"
         elif theme_key == "career_life2":
-            if any(w in kw for w in ["일자리", "재취업"]):
+            if any(w in kw for w in ["택시", "개인택시", "운전", "모빌리티"]):
+                return f"은퇴 후 자유로운 인생 2막! '{kw}' 취업 및 부업 노하우와 실제 수입 체크포인트"
+            elif any(w in kw for w in ["스마트폰", "폰", "폴더블", "디지털", "ai", "chatgpt"]):
+                return f"5060을 위한 스마트 라이프! '{kw}' 최신 트렌드와 일상을 편리하게 바꾸는 핵심 기능"
+            elif any(w in kw for w in ["일자리", "재취업", "알바", "공공근로", "노인일자리"]):
                 return f"은퇴 후 활력 찾는 '{kw}' 지원제도 총정리! 5060 신중년 맞춤형 일자리 신청 노하우"
-            elif any(w in kw for w in ["자격증"]):
+            elif any(w in kw for w in ["자격증", "국가자격증"]):
                 return f"은퇴 후 평생 쓸 수 있는 '{kw}' 유망 자격증 3선! 취득 전략과 실전 활용처"
             else:
                 return f"경륜과 지혜로 꽃피우는 인생 2막! '{kw}' 소식 속 은퇴자가 발견한 새로운 가능성"
@@ -277,18 +288,19 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
     else:
         return f"실시간 핫이슈 '{kw}' 총정리! 우리가 꼭 알아야 할 핵심 내용과 일상 꿀팁"
 
-def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num=1):
+def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num=1, force=False):
     """
     개별 네이버 블로그 포스팅(.md 및 .html) 자동 생성
     - post_id: '2026-10-20' (1편 메인) 또는 '2026-10-20-2' (추가 테마 글)
     - post_num: 글 순번 (1, 2, 3...)
+    - force: 기존 파일 존재 시에도 강제 재생성 여부
     """
     os.makedirs(POSTS_DIR, exist_ok=True)
     md_path = os.path.join(POSTS_DIR, f"{post_id}.md")
     html_path = os.path.join(POSTS_DIR, f"{post_id}.html")
 
-    # 이미 포스팅 파일이 존재하면 보존
-    if os.path.exists(md_path) and os.path.exists(html_path):
+    # 이미 포스팅 파일이 존재하면 force가 아닐 때 보존
+    if not force and os.path.exists(md_path) and os.path.exists(html_path):
         log(f"ℹ️ {post_id} 포스팅 파일이 이미 존재하여 보존합니다.")
         return
 
@@ -1581,7 +1593,7 @@ def git_commit_and_push(today_str, title):
     except Exception as e:
         log(f"⚠️ Git 자동 커밋 및 푸시 중 오류 발생: {e}")
 
-def run_batch(target_date=None):
+def run_batch(target_date=None, force=False):
     """배치 메인 실행 함수"""
     # 동시 실행 방지 파일 락 (LaunchAgent + Cron 이중 구동 시 상호 배타 보장)
     lock_file_path = "/tmp/daily_naver_batch.lock"
@@ -1601,7 +1613,7 @@ def run_batch(target_date=None):
     today_str = today_date.strftime("%Y-%m-%d")
     weekday_str = WEEKDAYS_KR[today_date.weekday()]
 
-    log(f"🚀 [배치 시작] 네이버 블로그 일별 자동화 배치 실행 (기준일: {today_str} {weekday_str}요일)")
+    log(f"🚀 [배치 시작] 네이버 블로그 일별 자동화 배치 실행 (기준일: {today_str} {weekday_str}요일, force={force})")
 
     # 1. 실시간 트렌드 키워드 수집
     trends = fetch_trending_keywords()
@@ -1609,7 +1621,7 @@ def run_batch(target_date=None):
 
     # 2. 당일 메인 포스팅 생성 (실시간 검색어 1위)
     main_theme = match_blog_theme(trends[0]["keyword"], trends[0].get("news", ""))
-    create_post(today_str, today_str, weekday_str, trends[0], theme_info=main_theme, post_num=1)
+    create_post(today_str, today_str, weekday_str, trends[0], theme_info=main_theme, post_num=1, force=force)
 
     # 3. 실시간 검색어 Top 10 중 블로그 테마와 연관된 키워드 추가 포스팅 생성
     theme_posts_count = 0
@@ -1619,7 +1631,7 @@ def run_batch(target_date=None):
             theme_posts_count += 1
             post_id = f"{today_str}-{theme_posts_count + 1}"
             log(f"🎯 블로그 테마 연관 키워드 발굴 (#{t['rank']}위 [{t['keyword']}] - 테마: {theme_info['theme_name']})")
-            create_post(post_id, today_str, weekday_str, t, theme_info=theme_info, post_num=theme_posts_count + 1)
+            create_post(post_id, today_str, weekday_str, t, theme_info=theme_info, post_num=theme_posts_count + 1, force=force)
 
     log(f"📝 오늘 작성된 총 포스팅: 메인 1편 + 테마 연관 {theme_posts_count}편 = 총 {theme_posts_count + 1}편")
 
@@ -1643,6 +1655,8 @@ def run_batch(target_date=None):
     log(f"🎉 [배치 완료] {today_str} 네이버 블로그 일별 작업이 성공적으로 끝났습니다.\n")
 
 if __name__ == "__main__":
-    t_date = sys.argv[1] if len(sys.argv) > 1 else None
-    run_batch(t_date)
+    force_mode = "--force" in sys.argv
+    date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    t_date = date_args[0] if date_args else None
+    run_batch(t_date, force=force_mode)
 
