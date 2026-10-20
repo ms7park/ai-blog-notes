@@ -128,3 +128,20 @@
    - 루트 `index.html`: 최근 글 목록에 테마 태그 및 복수 편수 깔끔하게 동기화
 4. Git 자동 커밋 및 원격 저장소(`develop`) 동기화 완료
 
+== 2026.10.20 : 네이버 블로그 포스트 저장 구조 개편 (년월 YYYYMM 서브폴더 체계 적용)
+1. 년월(YYYYMM) 하위 디렉토리 생성 및 기존 파일 재배치:
+   - `blog/naver/posts/` 직하위에 모여 있던 파일들을 년월 기준 `blog/naver/posts/YYYYMM/` 디렉토리로 구조화 (예: `blog/naver/posts/202610/`)
+   - 기존 2026-10 포스트들(`2026-10-18`, `2026-10-19`, `2026-10-20` 등 5개 글)을 `git mv`로 `blog/naver/posts/202610/`으로 안전하게 이동
+   - 이동된 개별 포스트 HTML 내부 상위 홈 바로가기 링크를 `href="../../index.html"`로 경로 보정
+2. 자동화 배치(`tools/daily_naver_batch.py`) 전면 개편:
+   - `create_post`: 작성 일자 기준 `YYYYMM` 서브폴더 자동 생성 및 해당 디렉토리에 `.md`와 `.html` 저장
+   - `build_post_html`: 2depth 구조에 맞춰 상단 홈 바로가기 링크(`../../index.html`) 반영
+   - `scan_all_posts`: `POSTS_DIR` 하위의 모든 `YYYYMM/*.md` 및 하위 호환 루트 `*.md`를 재귀 탐색하고 상대 경로(`posts/YYYYMM/...`)를 메타데이터로 추출
+   - `update_naver_index_html`: 대시보드 포스트 카드 링크에 `posts/YYYYMM/파일명` 경로 자동 바인딩
+   - `update_portal_index_html`: 루트 `index.html`의 오늘자 포스트 및 최근 포스팅 목록 링크를 `blog/naver/posts/YYYYMM/파일명`으로 자동 바인딩
+   - `run_batch` force 정리: 당일자 `YYYYMM` 서브폴더 내 파일들을 대상으로 정리하도록 안전성 확보
+3. 프로젝트 문서 및 가이드 최신화:
+   - `README.md` 프로젝트 구조 및 AI 워크플로우 내 포스트 파일 경로 갱신
+   - `tools/generate_html.py` 실행으로 `docs/index.html` 가이드 뷰어 자동 동기화 완료
+
+
