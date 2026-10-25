@@ -530,56 +530,30 @@ AI 코딩 도구나 에디터로 멋진 HTML 대시보드, 포트폴리오, 또�
 ]
 
 def format_wp_markdown(date_str, weekday_str, item):
-    sc = item["scores"]
-    candidates_md = "\n".join([f"{i}. `{c}`" for i, c in enumerate(item["title_candidates"], 1)])
-    refs_md = "\n".join([f"- [{name}]({url}) (`{url}`)" for name, url in item["official_refs"]])
-    fc_md = "\n".join([f"- [x] {fc}" for fc in item["fact_checks"]])
+    refs_md = "\n".join([f"- [{name}]({url})" for name, url in item["official_refs"]])
+    clean_sections = (
+        item['sections_md']
+        .replace("## 1. 도입부: ", "## 1. ")
+        .replace("## 3. 단계별 설명: ", "## 3. ")
+        .replace("## 4. 조건별 상세 비교표: ", "## 4. ")
+        .replace("## 4. 한눈에 보는 비교표: ", "## 4. ")
+        .replace("## 5. 주의사항: ", "## 5. ")
+        .replace(" (FAQ Schema)", "")
+    )
 
     return f"""# {item['final_title']}
 
-> **작성일**: {date_str} ({weekday_str})  
-> **플랫폼**: 🔵 워드프레스 (WordPress · 구텐베르크 & Rank Math SEO 코너스톤 원고)  
-> **카테고리**: {item['category']}  
-> **Focus Keyphrase (핵심 키워드)**: `{item['focus_keyphrase']}`  
-> **URL Slug (영문 퍼머링크)**: `/{item['slug']}`  
-> **주제 평가 점수**: **{item['score']}/100점** (관심도 {sc['trend']}/5 · 의도 명확성 {sc['intent']}/5 · 경쟁 빈틈 {sc['gap']}/5 · 작성 역량 {sc['capability']}/5 · 장기 검색성 {sc['evergreen']}/5)
-
----
-
-## 🔵 워드프레스 Rank Math / Yoast SEO 메타데이터 설정표
-
-| SEO 설정 항목 | 워드프레스 입력값 (복사해서 바로 붙여넣기) |
-| :--- | :--- |
-| **Focus Keyphrase** | `{item['focus_keyphrase']}` |
-| **SEO Title** | `{item['final_title']}` |
-| **Slug (영문 URL)** | `{item['slug']}` |
-| **Meta Description** | {item['meta_desc']} |
-
-### 제목 후보 3개
-{candidates_md}
-
-### 핵심 요약 콜아웃 (Key Takeaways)
 > **💡 Key Takeaways (핵심 요약)**: {item['core_summary']}
 
 ---
 
-{item['sections_md']}
+{clean_sections}
 
 ---
 
-## 7. 공식 참고 자료 (Authoritative Outbound Links)
+## 7. 참고 자료 및 공식 확인 사이트
 
 {refs_md}
-
----
-
-## ✅ 워드프레스 발행 전 Rank Math SEO & 팩트체크 점검표
-
-{fc_md}
-- [x] 영문 퍼머링크 슬러그(`/{item['slug']}`)가 짧고 명확하게 설정되었는가?
-- [x] Focus Keyphrase(`{item['focus_keyphrase']}`)가 제목, 메타 설명, 본문 첫 문단, H2 소제목에 포함되었는가?
-- [x] 구텐베르크 표(Table)와 FAQ(3문 3답) 섹션이 포함되어 구글 리치 스니펫에 최적화되었는가?
-- [x] 네이버·티스토리 원고와 중복되지 않는 워드프레스 전용 심층 가이드북 구조로 작성되었는가?
 """
 
 def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
@@ -741,6 +715,7 @@ def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
       <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="btn" style="background: #f0f7fb; color: #005177; border-color: #bae6fd;">⚙️ WP 관리자</a>
       <a href="{post_id}.md" target="_blank" class="btn">📄 원본 MD</a>
       <button class="btn btn-wp" id="copyWpBtn">🔵 워드프레스 구텐베르크 블록 복사</button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
       <button class="btn" onclick="copyText('{seo_pack}')">🏷️ 슬러그·메타설명 복사</button>
       <button class="btn" id="copyMdBtn">📝 마크다운 복사</button>
     </div>
@@ -788,6 +763,17 @@ def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
       navigator.clipboard.writeText(text).then(() => showToast("🏷️ 워드프레스 SEO 슬러그 및 메타 설명이 복사되었습니다!"));
     }}
 
+    function getCleanPlainText() {{
+      return mdSource
+        .replace(/\\*\\*(.*?)\\*\\*/g, '$1')
+        .replace(/#{{1,6}}\\s+/g, '')
+        .replace(/^>\\s+/gm, '')
+        .replace(/^---\\s*$/gm, '──────────')
+        .replace(/^\\s*[-*]\\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .trim();
+    }}
+
     document.getElementById("copyWpBtn").addEventListener("click", () => {{
       const clone = articleEl.cloneNode(true);
       clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 22px;"));
@@ -799,15 +785,20 @@ def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
       clone.querySelectorAll("th").forEach(el => el.setAttribute("style", "background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left;"));
       clone.querySelectorAll("td").forEach(el => el.setAttribute("style", "border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151;"));
       const htmlContent = clone.innerHTML;
+      const plainText = getCleanPlainText();
       if (navigator.clipboard && window.ClipboardItem) {{
         const htmlBlob = new Blob([htmlContent], {{ type: 'text/html' }});
-        const textBlob = new Blob([mdSource], {{ type: 'text/plain' }});
+        const textBlob = new Blob([plainText], {{ type: 'text/plain' }});
         navigator.clipboard.write([new ClipboardItem({{ 'text/html': htmlBlob, 'text/plain': textBlob }})]).then(() => {{
           showToast("🔵 워드프레스 구텐베르크 블록 서식이 복사되었습니다! 에디터에 바로 붙여넣으세요.");
         }});
       }} else {{
-        navigator.clipboard.writeText(mdSource).then(() => showToast("📝 마크다운 원문이 복사되었습니다!"));
+        navigator.clipboard.writeText(plainText).then(() => showToast("📄 순수 텍스트가 복사되었습니다!"));
       }}
+    }});
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", () => {{
+      navigator.clipboard.writeText(getCleanPlainText()).then(() => showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!"));
     }});
 
     document.getElementById("copyMdBtn").addEventListener("click", () => {{
@@ -840,12 +831,14 @@ def scan_wp_posts():
             content = f.read()
         m_title = re.search(r"^#\s+(.+)$", content, re.M)
         title = m_title.group(1).strip() if m_title else post_id
+
+        matched_item = next((a for a in WP_ARTICLES if a["final_title"] == title or a["seq"] == post_num), None)
         m_cat = re.search(r">\s*\*\*카테고리\*\*:\s*(.+)$", content, re.M)
-        category = m_cat.group(1).strip() if m_cat else "WordPress SEO"
+        category = m_cat.group(1).strip() if m_cat else (matched_item["category"] if matched_item else "WordPress SEO")
         m_slug = re.search(r">\s*\*\*URL Slug \(영문 퍼머링크\)\*\*:\s*`([^`]+)`", content, re.M)
-        slug = m_slug.group(1).strip() if m_slug else "/post"
+        slug = m_slug.group(1).strip() if m_slug else (f"/{matched_item['slug']}" if matched_item else "/post")
         m_score = re.search(r">\s*\*\*주제 평가 점수\*\*:\s*\*\*([0-9]+/100점)\*\*", content, re.M)
-        score_str = m_score.group(1).strip() if m_score else "90/100점"
+        score_str = m_score.group(1).strip() if m_score else (f"{matched_item['score']}/100점" if matched_item else "90/100점")
         m_sum = re.search(r">\s*\*\*💡 Key Takeaways \(핵심 요약\)\*\*:\s*(.+)$", content, re.M)
         desc = m_sum.group(1).strip().replace("**", "") if m_sum else ""
         if len(desc) > 150:

@@ -149,6 +149,7 @@
       <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="btn" style="background: #f0f7fb; color: #005177; border-color: #bae6fd;">⚙️ WP 관리자</a>
       <a href="2026-10-25.md" target="_blank" class="btn">📄 원본 MD</a>
       <button class="btn btn-wp" id="copyWpBtn">🔵 워드프레스 구텐베르크 블록 복사</button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
       <button class="btn" onclick="copyText('Focus Keyphrase: 퇴직 후 건강보험료 계산\nSlug: /retirement-health-insurance-calculation-guide\nMeta Description: 퇴직 후 건강보험료 계산 기준과 절감 방법 총정리. 직장가입자 피부양자 자격 요건(연 소득 2,000만 원·재산 과표 5.4억 이하), 임의계속가입 신청 기한(2개월 이내), 지역가입자 모의계산 비교표를 확인하세요.')">🏷️ 슬러그·메타설명 복사</button>
       <button class="btn" id="copyMdBtn">📝 마크다운 복사</button>
     </div>
@@ -179,35 +180,11 @@
   <script id="rawMarkdown" type="text/plain">
 # 퇴직 후 건강보험료 계산 기준 및 줄이는 법: 피부양자 자격 요건 vs 임의계속가입 vs 지역가입자 비교표
 
-> **작성일**: 2026-10-25 (일)  
-> **플랫폼**: 🔵 워드프레스 (WordPress · 구텐베르크 & Rank Math SEO 코너스톤 원고)  
-> **카테고리**: Retirement & Pension (은퇴·연금·건보료)  
-> **Focus Keyphrase (핵심 키워드)**: `퇴직 후 건강보험료 계산`  
-> **URL Slug (영문 퍼머링크)**: `/retirement-health-insurance-calculation-guide`  
-> **주제 평가 점수**: **92/100점** (관심도 5/5 · 의도 명확성 5/5 · 경쟁 빈틈 4/5 · 작성 역량 4/5 · 장기 검색성 5/5)
-
----
-
-## 🔵 워드프레스 Rank Math / Yoast SEO 메타데이터 설정표
-
-| SEO 설정 항목 | 워드프레스 입력값 (복사해서 바로 붙여넣기) |
-| :--- | :--- |
-| **Focus Keyphrase** | `퇴직 후 건강보험료 계산` |
-| **SEO Title** | `퇴직 후 건강보험료 계산 기준 및 줄이는 법: 피부양자 자격 요건 vs 임의계속가입 vs 지역가입자 비교표` |
-| **Slug (영문 URL)** | `retirement-health-insurance-calculation-guide` |
-| **Meta Description** | 퇴직 후 건강보험료 계산 기준과 절감 방법 총정리. 직장가입자 피부양자 자격 요건(연 소득 2,000만 원·재산 과표 5.4억 이하), 임의계속가입 신청 기한(2개월 이내), 지역가입자 모의계산 비교표를 확인하세요. |
-
-### 제목 후보 3개
-1. `퇴직 후 건강보험료 계산 기준 및 줄이는 법: 피부양자 자격 요건 vs 임의계속가입 vs 지역가입자 비교표`
-2. `은퇴 후 건강보험료 폭탄 피하는 3가지 방법 (피부양자 소득 2,000만 원 기준·임의계속가입 신청 기간)`
-3. `퇴직자 건강보험 임의계속가입 신청 조건 및 국민건강보험공단 모의계산 확인 순서`
-
-### 핵심 요약 콜아웃 (Key Takeaways)
 > **💡 Key Takeaways (핵심 요약)**: 퇴직 후 건강보험료 부담을 줄이려면 **① 자녀·배우자 등 직장가입자의 피부양자 등록 가능 여부(연간 합산소득 2,000만 원 이하 및 재산 과세표준 5.4억 원 이하)**를 1순위로 확인해야 합니다. 피부양자 등재가 어렵다면 **② 퇴직 전 직장 건보료 수준을 최대 36개월간 유지하는 '임의계속가입'(최초 지역건보료 고지서 납부기한으로부터 2개월 이내 신청 필수)**과 **③ 일반 지역가입자 전환 보험료**를 국민건강보험공단 모의계산으로 비교해 더 저렴한 쪽을 선택하면 됩니다.
 
 ---
 
-## 1. 도입부: 퇴직 후 가장 큰 고정비, 건강보험료는 왜 갑자기 오를까요?
+## 1. 퇴직 후 가장 큰 고정비, 건강보험료는 왜 갑자기 오를까요?
 
 직장에 재직할 때는 월급에서 건강보험료의 **50%만 본인이 부담**하고 나머지 50%는 회사가 부담합니다. 또한 보수(급여) 외에 본인이 보유한 주택이나 토지에는 별도의 재산 건강보험료가 부과되지 않습니다.
 
@@ -226,7 +203,7 @@
 
 ---
 
-## 3. 단계별 설명: 퇴직 후 건강보험료 계산 및 신청하는 4단계 순서
+## 3. 퇴직 후 건강보험료 계산 및 신청하는 4단계 순서
 
 ### 1단계: 국민건강보험공단 홈페이지·앱에서 예상 지역보험료 모의계산하기
 1. [국민건강보험공단 공식 홈페이지(nhis.or.kr)](https://www.nhis.or.kr/) 또는 모바일 앱 **'The건강보험'**에 접속합니다.
@@ -248,7 +225,7 @@
 
 ---
 
-## 4. 조건별 상세 비교표: 피부양자 vs 임의계속가입 vs 일반 지역가입자
+## 4. 피부양자 vs 임의계속가입 vs 일반 지역가입자
 
 아래 표는 2026년 현행 국민건강보험법 기준 3가지 제도의 핵심 차이를 정리한 비교표입니다.
 
@@ -262,7 +239,7 @@
 
 ---
 
-## 5. 주의사항: 놓치면 불이익을 받는 3가지 핵심 예외 조건
+## 5. 놓치면 불이익을 받는 3가지 핵심 예외 조건
 
 1. **부부 동반 탈락 주의 (피부양자 연대 기준)**
    - 부부 중 한 사람이라도 연간 합산소득이 2,000만 원을 초과하면, 소득이 전혀 없는 배우자까지 **부부가 함께 피부양자에서 탈락**하여 지역가입자로 전환됩니다.
@@ -273,7 +250,7 @@
 
 ---
 
-## 6. 자주 묻는 질문 (FAQ Schema)
+## 6. 자주 묻는 질문
 
 ### Q1. 재산세 과세표준 5.4억 원은 아파트 시세로 약 얼마인가요?
 **A.** 재산세 과세표준은 시세가 아니라 **공시가격에 공정시장가액비율(주택 기준 통상 60% 등)을 곱한 금액**입니다. 따라서 과세표준 5.4억 원은 공시가격 기준 약 9억 원, 실거래 시세 기준으로는 약 12억~13억 원 안팎에 해당합니다. 정확한 과세표준 금액은 매년 7·9월 재산세 고지서 또는 위택스(Wetax)에서 확인할 수 있습니다.
@@ -286,23 +263,11 @@
 
 ---
 
-## 7. 공식 참고 자료 (Authoritative Outbound Links)
+## 7. 참고 자료 및 공식 확인 사이트
 
-- [국민건강보험공단 공식 홈페이지 (보험료 모의계산 및 피부양자 안내)](https://www.nhis.or.kr/) (`https://www.nhis.or.kr/`)
-- [정부24 퇴직 후 건강보험 임의계속가입 신청 안내](https://www.gov.kr/) (`https://www.gov.kr/`)
-- [국가법령정보센터 국민건강보험법 시행규칙](https://www.law.go.kr/) (`https://www.law.go.kr/`)
-
----
-
-## ✅ 워드프레스 발행 전 Rank Math SEO & 팩트체크 점검표
-
-- [x] 피부양자 소득 기준(연 2,000만 원 이하) 및 재산세 과세표준 기준(5.4억 원 이하) 현행 법령 일치 확인
-- [x] 임의계속가입 유지 기간(최대 36개월) 및 신청 기한(최초 지역고지서 납부기한으로부터 2개월 이내) 공단 공식 기준 일치 확인
-- [x] 지역가입자 재산 기본공제(1억 원) 및 자동차 건보료 폐지 반영 기준 점검 완료
-- [x] 영문 퍼머링크 슬러그(`/retirement-health-insurance-calculation-guide`)가 짧고 명확하게 설정되었는가?
-- [x] Focus Keyphrase(`퇴직 후 건강보험료 계산`)가 제목, 메타 설명, 본문 첫 문단, H2 소제목에 포함되었는가?
-- [x] 구텐베르크 표(Table)와 FAQ(3문 3답) 섹션이 포함되어 구글 리치 스니펫에 최적화되었는가?
-- [x] 네이버·티스토리 원고와 중복되지 않는 워드프레스 전용 심층 가이드북 구조로 작성되었는가?
+- [국민건강보험공단 공식 홈페이지 (보험료 모의계산 및 피부양자 안내)](https://www.nhis.or.kr/)
+- [정부24 퇴직 후 건강보험 임의계속가입 신청 안내](https://www.gov.kr/)
+- [국가법령정보센터 국민건강보험법 시행규칙](https://www.law.go.kr/)
 
   </script>
 
@@ -322,6 +287,17 @@
       navigator.clipboard.writeText(text).then(() => showToast("🏷️ 워드프레스 SEO 슬러그 및 메타 설명이 복사되었습니다!"));
     }
 
+    function getCleanPlainText() {
+      return mdSource
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/^>\s+/gm, '')
+        .replace(/^---\s*$/gm, '──────────')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .trim();
+    }
+
     document.getElementById("copyWpBtn").addEventListener("click", () => {
       const clone = articleEl.cloneNode(true);
       clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 22px;"));
@@ -333,15 +309,20 @@
       clone.querySelectorAll("th").forEach(el => el.setAttribute("style", "background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left;"));
       clone.querySelectorAll("td").forEach(el => el.setAttribute("style", "border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151;"));
       const htmlContent = clone.innerHTML;
+      const plainText = getCleanPlainText();
       if (navigator.clipboard && window.ClipboardItem) {
         const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-        const textBlob = new Blob([mdSource], { type: 'text/plain' });
+        const textBlob = new Blob([plainText], { type: 'text/plain' });
         navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]).then(() => {
           showToast("🔵 워드프레스 구텐베르크 블록 서식이 복사되었습니다! 에디터에 바로 붙여넣으세요.");
         });
       } else {
-        navigator.clipboard.writeText(mdSource).then(() => showToast("📝 마크다운 원문이 복사되었습니다!"));
+        navigator.clipboard.writeText(plainText).then(() => showToast("📄 순수 텍스트가 복사되었습니다!"));
       }
+    });
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(getCleanPlainText()).then(() => showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!"));
     });
 
     document.getElementById("copyMdBtn").addEventListener("click", () => {

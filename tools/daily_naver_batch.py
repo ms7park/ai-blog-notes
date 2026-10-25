@@ -338,18 +338,8 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
         theme_badge_line = ""
         tags_line = f"#{kw.replace(' ', '')} #{kw.replace(' ', '')}전망 #인생2막 #품미인생 #노후자산관리 #생활꿀팁 #실시간트렌드 #디지털연금"
 
-    # 네이버 스마트블록 친화적 마크다운 본문 템플릿
+    # 네이버 스마트블록 친화적 마크다운 본문 템플릿 (최종 발행용 내용만 구성)
     md_content = f"""# {title}
-
-> **작성일**: {date_str} ({weekday_str})  
-> **카테고리**: {category}  
-{theme_badge_line}> **타겟 키워드**: {kw}, {kw} 전망, {matched_kw}, 노후 자산관리, 맛있는 일상, 생활 꿀팁  
-> **예상 읽는 시간**: 3분 30초 (약 1,800자)  
-> **💡 네이버 블로그 작성 팁**: 네이버 스마트에디터 ONE은 마크다운 문법(`**`, `###`)을 직접 지원하지 않는 위지윅 에디터입니다. 브라우저 뷰어(`{post_id}.html`)에서 **[🟢 네이버 스마트에디터 서식 복사]** 버튼을 누르면 `**` 기호 없이 진짜 볼드/소제목 서식 그대로 깔끔하게 붙여넣기됩니다.
-
----
-
-## 📌 네이버 블로그 포스팅 초안
 
 안녕하세요, 든든한 노후 자산과 맛있는 일상을 가꾸는 블로그 지기 **'품미인생(品味人生)'**입니다.
 
@@ -400,9 +390,6 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
 
 글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 꾹 부탁드립니다. 내일도 유익한 자산 정보와 맛있는 이야기로 찾아뵙겠습니다!
 
----
-
-### 🏷️ 네이버 블로그 스마트블록 추천 해시태그
 {tags_line}
 """
 
@@ -820,11 +807,19 @@ def scan_all_posts():
 
             # 카테고리 추출
             m_cat = re.search(r">\s*\*\*카테고리\*\*:\s*(.+)$", content, re.M)
-            category = m_cat.group(1).strip() if m_cat else "경제 / 시사 / 라이프"
+            if m_cat:
+                category = m_cat.group(1).strip()
+            else:
+                matched_t = match_blog_theme(title, "")
+                category = matched_t["category"] if matched_t else "경제 / 시사 / 노후 자산관리 & 라이프"
 
             # 테마 분류 추출
             m_theme = re.search(r">\s*\*\*테마 분류\*\*:\s*(.+)$", content, re.M)
-            theme_name = m_theme.group(1).strip() if m_theme else ""
+            if m_theme:
+                theme_name = m_theme.group(1).strip()
+            else:
+                matched_t = match_blog_theme(title, "")
+                theme_name = f"{matched_t['theme_name']} (연관 키워드: {matched_t['matched_keyword']})" if matched_t else ""
             
             # 설명/요약 추출 (첫 번째 본문 단락)
             desc = ""
