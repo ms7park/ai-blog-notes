@@ -109,11 +109,32 @@
     }
     .card-title { font-size: 17px; font-weight: 750; }
     .post-card {
-      border: 2px solid var(--wf);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 20px;
       background: #fff;
       margin-bottom: 16px;
+    }
+    .post-card.today {
+      border-color: var(--wf);
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.08);
+    }
+    .cat-pill {
+      background: var(--wf-light);
+      color: var(--wf-dark);
+      border: 1px solid var(--wf-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .score-pill {
+      background: #fef3c7;
+      color: #b45309;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
     }
     .post-card-title {
       font-size: 17px;
@@ -121,7 +142,7 @@
       color: var(--text-main);
       text-decoration: none;
       display: inline-block;
-      margin: 8px 0;
+      margin-bottom: 8px;
     }
     .post-card-title:hover { color: var(--wf-dark); text-decoration: underline; }
     .file-grid {
@@ -187,17 +208,17 @@
   <div class="container">
     <section class="hero-banner">
       <div class="hero-text">
-        <h1>⚙️ 네이버 · 티스토리 8단계 통합 워크플로우 허브</h1>
-        <p>주제 수집(실시간 Top 10 & Google Trends) → 1~5점 주제 평가 → 플랫폼별 맞춤 초안 → 공식 출처 팩트체크 → 발행 및 CSV 성과 기록까지 한곳에서 관리합니다.</p>
+        <h1>⚙️ 네이버 · 티스토리 8단계 통합 워크플로우 작업실</h1>
+        <p>주제 조사 1회 → 플랫폼별 맞춤 원고 2편(티스토리 7단계 본문 + 네이버 공감 요약본) 동시 생산! 공식 출처 검증과 팩트체크를 통과한 고득점 원고를 관리합니다.</p>
       </div>
       <div class="hero-stats">
         <div class="stat-box">
-          <span class="stat-number">8 단계</span>
-          <span class="stat-label">표준 프로토콜</span>
+          <span class="stat-number">5 편</span>
+          <span class="stat-label">워크플로우 원고</span>
         </div>
         <div class="stat-box">
-          <span class="stat-number">30 분</span>
-          <span class="stat-label">일일 권장 루틴</span>
+          <span class="stat-number">8 단계</span>
+          <span class="stat-label">팩트체크 검증</span>
         </div>
       </div>
     </section>
@@ -206,25 +227,110 @@
       <div class="left-col">
         <section class="card">
           <div class="card-header">
-            <div class="card-title">📅 일별 통합 워크플로우 실행 리포트</div>
-            <span style="font-size: 12px; color: var(--text-muted);">최신: 2026-10-25 (일)</span>
+            <div class="card-title">📝 8단계 워크플로우 기반 작성 포스팅 목록</div>
+            <span style="font-size: 12px; color: var(--text-muted);">총 5편 작성됨</span>
           </div>
-          <article class="post-card">
-            <div style="font-size: 12px; font-weight: 700; color: var(--wf-dark);">📍 2026-10-25 (일) · Step 1 ~ Step 8 통합 실행본</div>
-            <a href="posts/202610/2026-10-25.html" class="post-card-title">
-              [2026-10-25] 네이버 · 티스토리 일일 통합 블로그 워크플로우 실행 리포트 (8단계)
-            </a>
-            <p style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 14px;">
-              오늘의 후보 키워드 100점 평가표, 네이버(품미인생) vs 티스토리(똑똑한 생활탐구) 주제 분리 설계, 공식 기관 팩트체크 결과 및 발행 체크리스트 종합 리포트입니다.
-            </p>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 12px;">
-              <span style="font-size: 12px; color: var(--text-muted);">연동 플랫폼: 네이버 5편 + 티스토리 3편</span>
-              <div style="display: flex; gap: 8px;">
-                <a href="posts/202610/2026-10-25.md" target="_blank" class="action-btn">📄 MD 원문</a>
-                <a href="posts/202610/2026-10-25.html" class="action-btn action-btn-primary">👁️ 워크플로우 리포트 열기</a>
+          
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wf-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 은퇴·연금·생활비</span>
+                  <span class="score-pill">🎯 평가 92/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#1편</span>
               </div>
-            </div>
-          </article>
+              <a href="posts/202610/2026-10-25.html" class="post-card-title">퇴직 후 건강보험료 계산 기준 및 줄이는 법: 피부양자 자격 요건 vs 임의계속가입 vs 지역가입자 비교표</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">퇴직 후 건강보험료 부담을 줄이려면 ① 자녀 등 직장가입자의 피부양자 등록 가능 여부(연간 합산소득 2,000만 원 이하 및 재산 과세표준 5.4억 원 이하)를 가장 먼저 확인해야 합니다. 피부양자 요건을 충족하지 못한다면 ② 퇴직 전 직장 건보료 수준을 최대 36개월...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>Step 1~8 검증 완료 · 분량: 약 4,573자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wf-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 AI·IT 활용법</span>
+                  <span class="score-pill">🎯 평가 92/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#2편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-2.html" class="post-card-title">맥(Mac)에서 Apple 계정(Apple ID) 로그인 오류 및 설정 무한 로딩 해결하는 5단계 순서</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">맥(Mac) 시스템 설정에서 Apple 계정(Apple ID) 로그인이 멈추거나 '서버에 연결할 수 없음' 오류가 발생할 때는 ① Apple 시스템 상태 페이지 확인 → ② 날짜 및 시간 자동 설정 점검 → ③ VPN·방화벽 해제 → ④ 활성 상태 보기에서 인증 프로세...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>Step 1~8 검증 완료 · 분량: 약 4,699자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25-2.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-2.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wf-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 은퇴·연금·생활비</span>
+                  <span class="score-pill">🎯 평가 90/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#3편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-3.html" class="post-card-title">연금저축펀드 vs 개인형 퇴직연금(IRP) 차이점 및 세액공제 한도·중도인출·수령 세율 비교표</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">연말정산·종합소득세 세액공제를 목적으로 한다면 ① 입출금 유연성이 높고 주식형 ETF 100% 투자가 가능한 '연금저축펀드'에 연 600만 원을 먼저 채우고, ② 나머지 연 300만 원을 '개인형 퇴직연금(IRP)'에 추가 납입하여 합산 연 900만 원 세액공제 한도(...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>Step 1~8 검증 완료 · 분량: 약 4,306자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25-3.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-3.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wf-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 AI·IT 활용법</span>
+                  <span class="score-pill">🎯 평가 90/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#4편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-4.html" class="post-card-title">GitHub와 Vercel을 이용해 무료로 개인 웹사이트·블로그 포털 배포하는 4단계 방법</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">내가 만든 HTML 파일이나 웹 프로젝트를 인터넷에 무료로 공개하려면 ① GitHub에 저장소(Repository)를 만들고 `index.html` 파일을 업로드한 뒤, ② Vercel(vercel.com)에 GitHub 계정으로 로그인하여 해당 저장소를 'Import...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>Step 1~8 검증 완료 · 분량: 약 4,791자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25-4.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-4.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wf-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 AI·IT 활용법</span>
+                  <span class="score-pill">🎯 평가 88/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#5편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-5.html" class="post-card-title">티스토리 블로그 구글 서치 콘솔(Google Search Console) 등록 및 사이트맵(sitemap.xml)·RSS 제출 방법</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">티스토리 블로그를 구글 검색에 노출시키려면 ① Google Search Console에서 [URL 접두어] 방식으로 내 티스토리 주소(`https://내주소.tistory.com/`)를 입력하고, ② [HTML 태그] 복사 후 티스토리 관리 화면의 [플러그인 → 메타태...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>Step 1~8 검증 완료 · 분량: 약 4,764자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25-5.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-5.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
+                </div>
+              </div>
+            </article>
+        
         </section>
 
         <section class="card">

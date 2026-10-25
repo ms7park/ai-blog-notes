@@ -1674,6 +1674,11 @@ def run_batch(target_date=None, force=False):
         force_arg = " --force" if force else ""
         os.system(f"{sys.executable} {tistory_script} {today_str}{force_arg}")
 
+    # 5-3. 8단계 통합 워크플로우 작업실 배치 연동 실행
+    workflow_script = os.path.join(BASE_DIR, "tools", "daily_workflow_batch.py")
+    if os.path.exists(workflow_script):
+        os.system(f"{sys.executable} {workflow_script} {today_str}")
+
     # 6. docs/index.html 전체 가이드 뷰어 동기화
     gen_script = os.path.join(BASE_DIR, "tools", "generate_html.py")
     if os.path.exists(gen_script):
