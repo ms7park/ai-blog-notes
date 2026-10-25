@@ -6,7 +6,11 @@
 
 ## 1. 3대 블로그 플랫폼 역할 분담 (네이버 · 티스토리 · 워드프레스)
 
-| 구분 | 🟢 네이버 블로그 (`품미인생`) | 🟠 티스토리 (`똑똑한 생활탐구`) | 🔵 워드프레스 (`Independent WP`) |
+- **내 워드프레스 사이트**: [https://smartlife70.wordpress.com/](https://smartlife70.wordpress.com/)
+- **워드프레스 관리자 대시보드 (wp-admin)**: [https://smartlife70.wordpress.com/wp-admin/index.php](https://smartlife70.wordpress.com/wp-admin/index.php)
+- **워드프레스 새 글 작성 화면**: [https://smartlife70.wordpress.com/wp-admin/post-new.php](https://smartlife70.wordpress.com/wp-admin/post-new.php)
+
+| 구분 | 🟢 네이버 블로그 (`품미인생`) | 🟠 티스토리 (`똑똑한 생활탐구`) | 🔵 워드프레스 (`smartlife70`) |
 | :--- | :--- | :--- | :--- |
 | **핵심 역할** | 실시간 트렌드 대응 & 이웃 소통 | Google Trends 상승 검색어 질문 해결 | **영구적 검색 자산(Cornerstone) & 독립 자산화** |
 | **발행 목표** | 하루 3~5편 (실시간 Top 10 연계) | 하루 1편 / 주 5편 (상승 검색어) | **주 2~3편 또는 하루 1편 (심층 가이드북형)** |

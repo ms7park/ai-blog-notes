@@ -737,6 +737,8 @@ def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
     <div class="nav-actions">
       <a href="../../index.html" class="btn">📂 워드프레스 작업실 홈</a>
       <a href="../../../index.html" class="btn">🏠 멀티 포털</a>
+      <a href="https://smartlife70.wordpress.com/wp-admin/post-new.php" target="_blank" rel="noopener noreferrer" class="btn" style="background: #f0f7fb; color: #005177; border-color: #bae6fd;">✍️ WP 새 글 쓰기</a>
+      <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="btn" style="background: #f0f7fb; color: #005177; border-color: #bae6fd;">⚙️ WP 관리자</a>
       <a href="{post_id}.md" target="_blank" class="btn">📄 원본 MD</a>
       <button class="btn btn-wp" id="copyWpBtn">🔵 워드프레스 구텐베르크 블록 복사</button>
       <button class="btn" onclick="copyText('{seo_pack}')">🏷️ 슬러그·메타설명 복사</button>
@@ -884,8 +886,9 @@ def build_wp_index_html(today_str, weekday_str, posts):
               <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">{p['desc']}</p>
               <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
                 <div>구텐베르크 블록 · FAQ 스키마 포함 · 분량: 약 {p['char_count']:,}자 (공백 제외)</div>
-                <div style="display:flex; gap:8px;">
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
                   <a href="{p['rel_md']}" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="https://smartlife70.wordpress.com/wp-admin/post-new.php" target="_blank" rel="noopener noreferrer" class="action-btn" style="color:var(--wp-dark); border-color:var(--wp-border); background:var(--wp-light);">✍️ WP 글쓰기</a>
                   <a href="{p['rel_html']}" class="action-btn action-btn-primary">👁️ 포스트 열기 & 블록 복사</a>
                 </div>
               </div>
@@ -1096,6 +1099,9 @@ def build_wp_index_html(today_str, weekday_str, posts):
         <div class="brand-title">워드프레스(WP) 코너스톤 SEO 작업실</div>
       </div>
       <div class="header-links">
+        <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--wp); color: #fff; border-color: var(--wp);">⚙️ 내 워드프레스 관리자 (wp-admin) ↗</a>
+        <a href="https://smartlife70.wordpress.com/wp-admin/post-new.php" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--wp-light); color: var(--wp-dark); border-color: var(--wp-border);">✍️ WP 새 글 쓰기 ↗</a>
+        <a href="https://smartlife70.wordpress.com/" target="_blank" rel="noopener noreferrer" class="header-link">🌐 내 사이트 보기 ↗</a>
         <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
         <a href="../naver/index.html" class="header-link">🟢 네이버 작업실</a>
         <a href="../tistory/index.html" class="header-link">🟠 티스토리 작업실</a>
@@ -1134,6 +1140,24 @@ def build_wp_index_html(today_str, weekday_str, posts):
       </div>
 
       <div class="right-col">
+        <section class="card" style="border: 2px solid var(--wp); background: linear-gradient(180deg, #f0f7fb 0%, #ffffff 100%);">
+          <div class="card-title" style="margin-bottom: 8px; color: var(--wp-dark);">🚀 내 워드프레스 바로가기</div>
+          <p style="font-size: 12.5px; color: var(--text-sub); margin-bottom: 12px;">
+            <strong>smartlife70.wordpress.com</strong> 관리자 대시보드 및 구텐베르크 새 글 작성 화면으로 즉시 이동합니다.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-primary" style="justify-content: center; padding: 10px;">
+              ⚙️ 워드프레스 관리자 (wp-admin) 열기 ↗
+            </a>
+            <a href="https://smartlife70.wordpress.com/wp-admin/post-new.php" target="_blank" rel="noopener noreferrer" class="action-btn" style="justify-content: center; padding: 9px; border-color: var(--wp); color: var(--wp-dark); font-weight: 700;">
+              ✍️ 워드프레스 새 글 작성하기 (post-new) ↗
+            </a>
+            <a href="https://smartlife70.wordpress.com/" target="_blank" rel="noopener noreferrer" class="action-btn" style="justify-content: center; padding: 8px;">
+              🌐 smartlife70.wordpress.com 사이트 보기 ↗
+            </a>
+          </div>
+        </section>
+
         <section class="card" style="border: 2px solid var(--wp);">
           <div class="card-title" style="margin-bottom: 12px;">📂 워드프레스 5대 필러(Pillar) 카테고리</div>
           <div style="font-size: 13px; color: var(--text-sub); display: flex; flex-direction: column; gap: 10px;">
@@ -1259,6 +1283,9 @@ def update_root_portal_with_wordpress(today_str, wp_posts):
         <div class="platform-btn-group">
           <a href="blog/wordpress/index.html" class="p-btn p-btn-wp">
             🔵 워드프레스 작업실 이동
+          </a>
+          <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="p-btn p-btn-sub" style="border-color: #bae6fd; background: #f0f7fb; color: #005177; font-weight: 700;">
+            ⚙️ 내 워드프레스 관리자 (smartlife70) ↗
           </a>
           <a href="{latest_wp_link}" class="p-btn p-btn-sub">
             👁️ 오늘자 워드프레스 글 보기 & 블록 복사
