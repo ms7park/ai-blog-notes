@@ -1309,7 +1309,10 @@ def update_root_portal_with_wordpress(today_str, wp_posts):
     m_marker = re.search(marker_pattern, content)
     if m_marker:
         existing_rows = m_marker.group(2)
-        row_blocks = re.findall(r'(<div class="post-item-row">[\s\S]*?</a>\s*</div>)', existing_rows)
+        row_blocks = re.findall(
+            r'(<div class="post-item-row">\s*<div class="post-item-left">[\s\S]*?</div>\s*<span class="post-item-date">[\s\S]*?</span>\s*<a[^>]*class="post-item-btn">[\s\S]*?</a>\s*</div>)',
+            existing_rows
+        )
         other_blocks = [b for b in row_blocks if "tag-wp" not in b][:6]
         combined_html = wp_rows + "\n      " + "\n      ".join(other_blocks)
         content = content[:m_marker.start()] + f"<!-- RECENT_POSTS_LIST_START -->{combined_html}\n      <!-- RECENT_POSTS_LIST_END -->" + content[m_marker.end():]

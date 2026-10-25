@@ -1868,7 +1868,10 @@ def update_root_portal_with_tistory(today_str, tistory_posts):
             existing_rows
         )
         # 조금 더 안전하게 각 row 단위로 분리하여 tag-naver만 유지
-        row_blocks = re.findall(r'(<div class="post-item-row">[\s\S]*?</a>\s*</div>)', existing_rows)
+        row_blocks = re.findall(
+            r'(<div class="post-item-row">\s*<div class="post-item-left">[\s\S]*?</div>\s*<span class="post-item-date">[\s\S]*?</span>\s*<a[^>]*class="post-item-btn">[\s\S]*?</a>\s*</div>)',
+            existing_rows
+        )
         naver_blocks = [b for b in row_blocks if "tag-naver" in b][:6]
         combined_html = tistory_rows + "\n      " + "\n      ".join(naver_blocks)
         content = content[:m_marker.start()] + f"<!-- RECENT_POSTS_LIST_START -->{combined_html}\n      <!-- RECENT_POSTS_LIST_END -->" + content[m_marker.end():]
