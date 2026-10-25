@@ -29,4 +29,6 @@ ENV/
 *.tmp
 *.bak
 scratch/
-logs/
+logs/*.log
+logs/*.out
+logs/*.err
