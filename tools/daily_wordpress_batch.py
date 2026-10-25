@@ -1129,8 +1129,9 @@ def build_wp_index_html(today_str, weekday_str, posts):
       </div>
       <div class="header-links">
         <a href="../../index.html" class="header-link">🏠 블로그 홈</a>
-        <a href="../naver/index.html" class="header-link">🟢 네이버 작업실</a>
-        <a href="../tistory/index.html" class="header-link">🟠 티스토리 작업실</a>
+        <a href="../naver/index.html" class="header-link" style="background: #e6f9ed; color: #009f47; border-color: #bbf7d0; font-weight: 700;">🟢 네이버 작업실</a>
+        <a href="../tistory/index.html" class="header-link" style="background: #fff7ed; color: #c2410c; border-color: #fed7aa; font-weight: 700;">🟠 티스토리 작업실</a>
+        <a href="index.html" class="header-link" style="background: #f0f7fb; color: #0073aa; border-color: #bae6fd; font-weight: 700;">🔵 워드프레스 작업실</a>
         <a href="../../docs/index.html#wordpress-guide" class="header-link">📚 워드프레스 SEO 가이드</a>
       </div>
     </div>
