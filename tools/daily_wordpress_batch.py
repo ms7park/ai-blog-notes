@@ -1145,6 +1145,17 @@ def build_wp_index_html(today_str, weekday_str, posts):
       <div class="hero-text">
         <h1>🔵 워드프레스(WordPress) 구텐베르크 & 구글 SEO 작업실</h1>
         <p>포털 제약 없는 100% 나만의 독립 디지털 자산! 영문 URL 슬러그, Rank Math 메타 설명, Key Takeaways, 비교표, FAQ 스키마(3문 3답)까지 갖춘 코너스톤 콘텐츠를 관리합니다.</p>
+        <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="https://trends.google.com/trends/?geo=KR" target="_blank" rel="noopener noreferrer" style="background: #fff; color: var(--wp-dark); padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none;">
+            📊 Google Trends 상승 검색어 확인 ↗
+          </a>
+          <a href="https://search.google.com/search-console/" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid rgba(255,255,255,0.35);">
+            🔍 Google Search Console ↗
+          </a>
+          <a href="https://adsense.google.com/start/" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid rgba(255,255,255,0.35);">
+            💰 Google AdSense ↗
+          </a>
+        </div>
       </div>
       <div class="hero-stats">
         <div class="stat-box">

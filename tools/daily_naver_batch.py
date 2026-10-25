@@ -1416,8 +1416,14 @@ def update_naver_index_html(today_str, trends, posts):
         <h1>🟢 품미인생(品味人生)의 네이버 블로그 작업실</h1>
         <p>통장은 든든하게, 입맛은 풍요롭게! 실시간 트렌드와 노후 자산관리, 맛있는 일상을 스마트에디터 ONE 서식으로 매일 완성합니다.</p>
         <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
-          <a href="https://blog.naver.com/ms7park" target="_blank" rel="noopener noreferrer" style="background: #fff; color: var(--naver-green-dark); padding: 8px 16px; border-radius: 8px; font-size: 13.5px; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: inline-flex; align-items: center; gap: 6px;">
-            <span>🔗 내 네이버 블로그 바로가기 (blog.naver.com/ms7park)</span> <span>↗</span>
+          <a href="https://datalab.naver.com/" target="_blank" rel="noopener noreferrer" style="background: #fff; color: var(--naver-green-dark); padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none;">
+            📊 네이버 데이터랩 (검색어 트렌드) ↗
+          </a>
+          <a href="https://creator-advisor.naver.com/" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid rgba(255,255,255,0.35);">
+            📈 네이버 크리에이터 어드바이저 ↗
+          </a>
+          <a href="https://adpost.naver.com/" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid rgba(255,255,255,0.35);">
+            💰 네이버 애드포스트 ↗
           </a>
         </div>
       </div>
