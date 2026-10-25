@@ -96,3 +96,8 @@ ai-blog-notes/
 4. **품질 점검**:
    - `python tools/blog_helper.py draft.md`로 글자수, 소제목 구조, 키워드 빈도를 확인하고 최종 발행합니다.
 
+Focus Keyphrase: 퇴직 후 건강보험료 계산
+Slug: /retirement-health-insurance-calculation-guide
+Meta Description: 퇴직 후 건강보험료 계산 기준과 절감 방법 총정리. 
+직장가입자 피부양자 자격 요건(연 소득 2,000만 원·재산 과표 5.4억 이하), 
+임의계속가입 신청 기한(2개월 이내), 지역가입자 모의계산 비교표를 확인하세요.

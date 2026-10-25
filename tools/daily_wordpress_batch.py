@@ -710,14 +710,10 @@ def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
     </div>
     <div class="nav-actions">
       <a href="../../index.html" class="btn">📂 워드프레스 작업실 홈</a>
-      <a href="../../../index.html" class="btn">🏠 멀티 포털</a>
-      <a href="https://smartlife70.wordpress.com/wp-admin/post-new.php" target="_blank" rel="noopener noreferrer" class="btn" style="background: #f0f7fb; color: #005177; border-color: #bae6fd;">✍️ WP 새 글 쓰기</a>
-      <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="btn" style="background: #f0f7fb; color: #005177; border-color: #bae6fd;">⚙️ WP 관리자</a>
-      <a href="{post_id}.md" target="_blank" class="btn">📄 원본 MD</a>
+      <a href="{post_id}.md" target="_blank" class="btn">📄 원본 MD 열기</a>
       <button class="btn btn-wp" id="copyWpBtn">🔵 워드프레스 구텐베르크 블록 복사</button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
-      <button class="btn" onclick="copyText('{seo_pack}')">🏷️ 슬러그·메타설명 복사</button>
-      <button class="btn" id="copyMdBtn">📝 마크다운 복사</button>
+      <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
     </div>
   </header>
 

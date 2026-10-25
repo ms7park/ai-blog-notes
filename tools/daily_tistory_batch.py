@@ -909,9 +909,6 @@ def build_tistory_post_html(post_id, date_str, weekday_str, trend_item, md_conte
     </div>
     <div class="nav-actions">
       <a href="../../index.html" class="btn">📂 티스토리 작업실 홈</a>
-      <a href="https://www.tistory.com/" target="_blank" rel="noopener noreferrer" class="btn" style="border-color: var(--tistory); color: var(--tistory-dark); font-weight: 700;">
-        🔗 티스토리 바로가기 ↗
-      </a>
       <a href="{post_id}.md" target="_blank" class="btn">📄 원본 MD 열기</a>
       <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·인용구 서식 그대로 붙여넣기 됩니다">
         🟠 티스토리 에디터(기본모드) 서식 복사
