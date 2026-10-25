@@ -1089,6 +1089,46 @@ def build_wp_index_html(today_str, weekday_str, posts):
       font-size: 13.5px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.2s;
     }}
     .toast.show {{ opacity: 1; transform: translateX(-50%) translateY(-10px); }}
+    .pagination-bar {{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }}
+    .page-btn {{
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }}
+    .page-btn:hover:not(:disabled) {{
+      border-color: var(--wp);
+      color: var(--wp-dark);
+      background: var(--wp-light);
+    }}
+    .page-btn.active {{
+      background: var(--wp);
+      color: #fff;
+      border-color: var(--wp);
+    }}
+    .page-btn:disabled {{
+      opacity: 0.4;
+      cursor: not-allowed;
+    }}
   </style>
 </head>
 <body>
@@ -1099,10 +1139,7 @@ def build_wp_index_html(today_str, weekday_str, posts):
         <div class="brand-title">워드프레스(WP) 코너스톤 SEO 작업실</div>
       </div>
       <div class="header-links">
-        <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--wp); color: #fff; border-color: var(--wp);">⚙️ 내 워드프레스 관리자 (wp-admin) ↗</a>
-        <a href="https://smartlife70.wordpress.com/wp-admin/post-new.php" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--wp-light); color: var(--wp-dark); border-color: var(--wp-border);">✍️ WP 새 글 쓰기 ↗</a>
-        <a href="https://smartlife70.wordpress.com/" target="_blank" rel="noopener noreferrer" class="header-link">🌐 내 사이트 보기 ↗</a>
-        <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
+        <a href="../../index.html" class="header-link">🏠 블로그 홈</a>
         <a href="../naver/index.html" class="header-link">🟢 네이버 작업실</a>
         <a href="../tistory/index.html" class="header-link">🟠 티스토리 작업실</a>
         <a href="../../docs/index.html#wordpress-guide" class="header-link">📚 워드프레스 SEO 가이드</a>
@@ -1135,27 +1172,26 @@ def build_wp_index_html(today_str, weekday_str, posts):
             <div class="card-title">📝 워드프레스 코너스톤(Cornerstone) 포스팅 목록</div>
             <span style="font-size: 12px; color: var(--text-muted);">총 {len(posts)}편 작성됨</span>
           </div>
-          {post_cards_html}
+          <div id="wpPostList">
+            {post_cards_html}
+          </div>
+          <div class="pagination-bar" id="wpPagination"></div>
         </section>
       </div>
 
       <div class="right-col">
-        <section class="card" style="border: 2px solid var(--wp); background: linear-gradient(180deg, #f0f7fb 0%, #ffffff 100%);">
-          <div class="card-title" style="margin-bottom: 8px; color: var(--wp-dark);">🚀 내 워드프레스 바로가기</div>
-          <p style="font-size: 12.5px; color: var(--text-sub); margin-bottom: 12px;">
-            <strong>smartlife70.wordpress.com</strong> 관리자 대시보드 및 구텐베르크 새 글 작성 화면으로 즉시 이동합니다.
-          </p>
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-primary" style="justify-content: center; padding: 10px;">
-              ⚙️ 워드프레스 관리자 (wp-admin) 열기 ↗
-            </a>
-            <a href="https://smartlife70.wordpress.com/wp-admin/post-new.php" target="_blank" rel="noopener noreferrer" class="action-btn" style="justify-content: center; padding: 9px; border-color: var(--wp); color: var(--wp-dark); font-weight: 700;">
-              ✍️ 워드프레스 새 글 작성하기 (post-new) ↗
-            </a>
-            <a href="https://smartlife70.wordpress.com/" target="_blank" rel="noopener noreferrer" class="action-btn" style="justify-content: center; padding: 8px;">
-              🌐 smartlife70.wordpress.com 사이트 보기 ↗
-            </a>
+        <section class="card" style="border: 2px solid var(--wp); background: #f8fcff;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+            <span style="background: var(--wp); color: #fff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">MY BLOG</span>
+            <div class="card-title" style="margin: 0; font-size: 15px;">내 워드프레스 (smartlife70)</div>
           </div>
+          <p style="font-size: 13px; color: var(--text-sub); line-height: 1.55; margin-bottom: 14px;">
+            작업실에서 완성된 구텐베르크 블록 서식을 복사한 뒤, 실제 운영 중인 내 워드프레스 관리자 화면에서 바로 새 글로 발행하세요.
+          </p>
+          <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 10px; font-weight: 700; font-size: 13px; width: 100%;">
+            <span>🌐 내 워드프레스 바로가기 (wp-admin)</span>
+            <span style="font-size: 12px;">↗</span>
+          </a>
         </section>
 
         <section class="card" style="border: 2px solid var(--wp);">
@@ -1211,12 +1247,55 @@ def build_wp_index_html(today_str, weekday_str, posts):
       }});
       document.getElementById("wpStatus").textContent = done + "/6 항목 완료";
     }}
+    function initPagination(listId, pagId, perPage) {{
+      const container = document.getElementById(listId);
+      const pag = document.getElementById(pagId);
+      if (!container || !pag) return;
+      const items = Array.from(container.querySelectorAll(".post-card"));
+      const totalPages = Math.ceil(items.length / perPage);
+      if (totalPages <= 1) {{
+        pag.style.display = "none";
+        return;
+      }}
+      let currentPage = 1;
+      function render(page) {{
+        currentPage = page;
+        items.forEach((el, idx) => {{
+          const p = Math.floor(idx / perPage) + 1;
+          el.style.display = (p === currentPage) ? "" : "none";
+        }});
+        pag.innerHTML = "";
+        const prevBtn = document.createElement("button");
+        prevBtn.className = "page-btn";
+        prevBtn.textContent = "‹ 이전";
+        prevBtn.disabled = (currentPage === 1);
+        prevBtn.onclick = () => render(currentPage - 1);
+        pag.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {{
+          const btn = document.createElement("button");
+          btn.className = "page-btn" + (i === currentPage ? " active" : "");
+          btn.textContent = i;
+          btn.onclick = () => render(i);
+          pag.appendChild(btn);
+        }}
+
+        const nextBtn = document.createElement("button");
+        nextBtn.className = "page-btn";
+        nextBtn.textContent = "다음 ›";
+        nextBtn.disabled = (currentPage === totalPages);
+        nextBtn.onclick = () => render(currentPage + 1);
+        pag.appendChild(nextBtn);
+      }}
+      render(1);
+    }}
     window.addEventListener("DOMContentLoaded", () => {{
       const chks = document.querySelectorAll(".wp-chk");
       chks.forEach((c, i) => {{
         if (localStorage.getItem("wp_seo_chk_" + i) === "1") c.checked = true;
       }});
       updateWpCount();
+      initPagination("wpPostList", "wpPagination", 5);
     }});
   </script>
 </body>
@@ -1283,15 +1362,6 @@ def update_root_portal_with_wordpress(today_str, wp_posts):
         <div class="platform-btn-group">
           <a href="blog/wordpress/index.html" class="p-btn p-btn-wp">
             🔵 워드프레스 작업실 이동
-          </a>
-          <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="p-btn p-btn-sub" style="border-color: #bae6fd; background: #f0f7fb; color: #005177; font-weight: 700;">
-            ⚙️ 내 워드프레스 관리자 (smartlife70) ↗
-          </a>
-          <a href="{latest_wp_link}" class="p-btn p-btn-sub">
-            👁️ 오늘자 워드프레스 글 보기 & 블록 복사
-          </a>
-          <a href="docs/index.html#wordpress-guide" class="p-btn p-btn-sub">
-            📖 워드프레스 구축·SEO 가이드
           </a>
         </div>
       </div>

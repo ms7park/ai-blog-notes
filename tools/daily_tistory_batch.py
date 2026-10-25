@@ -1608,6 +1608,47 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
       opacity: 1;
       transform: translateX(-50%) translateY(-10px);
     }}
+
+    .pagination-bar {{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }}
+    .page-btn {{
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }}
+    .page-btn:hover:not(:disabled) {{
+      border-color: var(--tistory);
+      color: var(--tistory-dark);
+      background: var(--tistory-light);
+    }}
+    .page-btn.active {{
+      background: var(--tistory);
+      color: #fff;
+      border-color: var(--tistory);
+    }}
+    .page-btn:disabled {{
+      opacity: 0.4;
+      cursor: not-allowed;
+    }}
   </style>
 </head>
 <body>
@@ -1619,9 +1660,8 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
         <div class="brand-title">똑똑한 생활탐구 · 티스토리 작업실</div>
       </div>
       <div class="header-links">
+        <a href="../../index.html" class="header-link">🏠 블로그 홈</a>
         <a href="https://trends.google.com/trends/?geo=KR" target="_blank" rel="noopener noreferrer" class="header-link" style="border-color: #2563eb; color: #1d4ed8;">📈 Google Trends 열기 ↗</a>
-        <a href="https://www.tistory.com/" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--tistory); color: #fff; border-color: var(--tistory);">🔗 티스토리 홈 ↗</a>
-        <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
         <a href="../naver/index.html" class="header-link">🟢 네이버 작업실</a>
         <a href="../wordpress/index.html" class="header-link" style="background: #f0f7fb; color: #0073aa; border-color: #bae6fd;">🔵 워드프레스 작업실</a>
         <a href="../../docs/index.html#tistory-guide" class="header-link">📚 티스토리 가이드</a>
@@ -1665,9 +1705,10 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
             <div class="card-title">📝 티스토리 검색형 포스팅 목록 (7단계 표준 템플릿)</div>
             <div class="card-subtitle">총 {len(posts)}편 작성됨</div>
           </div>
-          <div class="post-timeline">
+          <div class="post-timeline" id="tistoryPostList">
             {post_cards_html}
           </div>
+          <div class="pagination-bar" id="tistoryPagination"></div>
         </section>
 
         <section class="card">
@@ -1685,6 +1726,20 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
       </div>
 
       <div class="right-col">
+        <section class="card" style="border: 2px solid var(--tistory); background: #fffcf9;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+            <span style="background: var(--tistory); color: #fff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">MY BLOG</span>
+            <div class="card-title" style="margin: 0; font-size: 15px;">똑똑한 생활탐구 티스토리</div>
+          </div>
+          <p style="font-size: 13px; color: var(--text-sub); line-height: 1.55; margin-bottom: 14px;">
+            작업실에서 완성된 티스토리 에디터 서식을 복사한 뒤, 실제 운영 중인 내 티스토리 블로그에 바로 새 글로 발행하세요.
+          </p>
+          <a href="https://www.tistory.com/" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 10px; font-weight: 700; font-size: 13px;">
+            <span>🌐 내 티스토리 바로가기 (tistory.com)</span>
+            <span style="font-size: 12px;">↗</span>
+          </a>
+        </section>
+
         <section class="card" style="border: 2px solid var(--tistory);">
           <div class="card-title" style="margin-bottom: 12px;">📂 티스토리 5대 추천 카테고리 비중</div>
           <div style="font-size: 13px; color: var(--text-sub); display: flex; flex-direction: column; gap: 10px;">
@@ -1742,12 +1797,56 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
       document.getElementById("adsStatus").textContent = done + "/6 항목 완료";
     }}
 
+    function initPagination(listId, pagId, perPage) {{
+      const container = document.getElementById(listId);
+      const pag = document.getElementById(pagId);
+      if (!container || !pag) return;
+      const items = Array.from(container.querySelectorAll(".post-card"));
+      const totalPages = Math.ceil(items.length / perPage);
+      if (totalPages <= 1) {{
+        pag.style.display = "none";
+        return;
+      }}
+      let currentPage = 1;
+      function render(page) {{
+        currentPage = page;
+        items.forEach((el, idx) => {{
+          const p = Math.floor(idx / perPage) + 1;
+          el.style.display = (p === currentPage) ? "" : "none";
+        }});
+        pag.innerHTML = "";
+        const prevBtn = document.createElement("button");
+        prevBtn.className = "page-btn";
+        prevBtn.textContent = "‹ 이전";
+        prevBtn.disabled = (currentPage === 1);
+        prevBtn.onclick = () => render(currentPage - 1);
+        pag.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {{
+          const btn = document.createElement("button");
+          btn.className = "page-btn" + (i === currentPage ? " active" : "");
+          btn.textContent = i;
+          btn.onclick = () => render(i);
+          pag.appendChild(btn);
+        }}
+
+        const nextBtn = document.createElement("button");
+        nextBtn.className = "page-btn";
+        nextBtn.textContent = "다음 ›";
+        nextBtn.disabled = (currentPage === totalPages);
+        nextBtn.onclick = () => render(currentPage + 1);
+        pag.appendChild(nextBtn);
+      }}
+      render(1);
+    }}
+
     window.addEventListener("DOMContentLoaded", () => {{
       const chks = document.querySelectorAll(".ads-chk");
       chks.forEach((c, i) => {{
         if (localStorage.getItem("tistory_ads_chk_" + i) === "1") c.checked = true;
       }});
       updateAdsCount();
+      initPagination("tistoryPostList", "tistoryPagination", 5);
     }});
   </script>
 </body>
@@ -1819,12 +1918,6 @@ def update_root_portal_with_tistory(today_str, tistory_posts):
         <div class="platform-btn-group">
           <a href="blog/tistory/index.html" class="p-btn p-btn-tistory">
             🟠 티스토리 블로그 작업실 이동
-          </a>
-          <a href="{latest_t_link}" class="p-btn p-btn-sub">
-            👁️ 오늘자 티스토리 글 보기 & 서식 복사
-          </a>
-          <a href="docs/index.html#tistory-guide" class="p-btn p-btn-sub">
-            📖 티스토리 개설·운영 가이드
           </a>
         </div>
       </div>

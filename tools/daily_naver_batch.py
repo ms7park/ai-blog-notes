@@ -1355,6 +1355,47 @@ def update_naver_index_html(today_str, trends, posts):
       opacity: 1;
       transform: translateX(-50%) translateY(-10px);
     }}
+
+    .pagination-bar {{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }}
+    .page-btn {{
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }}
+    .page-btn:hover:not(:disabled) {{
+      border-color: var(--naver-green);
+      color: var(--naver-green-dark);
+      background: var(--naver-light);
+    }}
+    .page-btn.active {{
+      background: var(--naver-green);
+      color: #fff;
+      border-color: var(--naver-green);
+    }}
+    .page-btn:disabled {{
+      opacity: 0.4;
+      cursor: not-allowed;
+    }}
   </style>
 </head>
 <body>
@@ -1366,10 +1407,9 @@ def update_naver_index_html(today_str, trends, posts):
         <div class="brand-title">품미인생의 블로그 작업실</div>
       </div>
       <div class="header-links">
-        <a href="https://blog.naver.com/ms7park" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--naver-green); color: #fff; border-color: var(--naver-green); font-weight: 700;">🔗 내 네이버 블로그 (ms7park) ↗</a>
+        <a href="../../index.html" class="header-link">🏠 블로그 홈</a>
         <a href="../tistory/index.html" class="header-link" style="background: #fff7ed; color: #c2410c; border-color: #fed7aa; font-weight: 700;">🟠 티스토리 작업실</a>
         <a href="../wordpress/index.html" class="header-link" style="background: #f0f7fb; color: #0073aa; border-color: #bae6fd; font-weight: 700;">🔵 워드프레스 작업실</a>
-        <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
         <a href="../../docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
       </div>
     </div>
@@ -1407,9 +1447,10 @@ def update_naver_index_html(today_str, trends, posts):
             </div>
             <div class="card-subtitle">총 {len(posts)}개의 일별 포스팅 작성됨</div>
           </div>
-          <div class="post-timeline">
+          <div class="post-timeline" id="naverPostList">
             {post_cards_html}
           </div>
+          <div class="pagination-bar" id="naverPagination"></div>
         </section>
 
         <section class="card">
@@ -1490,6 +1531,53 @@ def update_naver_index_html(today_str, trends, posts):
         setTimeout(() => toast.classList.remove("show"), 2000);
       }});
     }}
+
+    function initPagination(listId, pagId, perPage) {{
+      const container = document.getElementById(listId);
+      const pag = document.getElementById(pagId);
+      if (!container || !pag) return;
+      const items = Array.from(container.querySelectorAll(".post-card"));
+      const totalPages = Math.ceil(items.length / perPage);
+      if (totalPages <= 1) {{
+        pag.style.display = "none";
+        return;
+      }}
+      let currentPage = 1;
+      function render(page) {{
+        currentPage = page;
+        items.forEach((el, idx) => {{
+          const p = Math.floor(idx / perPage) + 1;
+          el.style.display = (p === currentPage) ? "" : "none";
+        }});
+        pag.innerHTML = "";
+        const prevBtn = document.createElement("button");
+        prevBtn.className = "page-btn";
+        prevBtn.textContent = "‹ 이전";
+        prevBtn.disabled = (currentPage === 1);
+        prevBtn.onclick = () => render(currentPage - 1);
+        pag.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {{
+          const btn = document.createElement("button");
+          btn.className = "page-btn" + (i === currentPage ? " active" : "");
+          btn.textContent = i;
+          btn.onclick = () => render(i);
+          pag.appendChild(btn);
+        }}
+
+        const nextBtn = document.createElement("button");
+        nextBtn.className = "page-btn";
+        nextBtn.textContent = "다음 ›";
+        nextBtn.disabled = (currentPage === totalPages);
+        nextBtn.onclick = () => render(currentPage + 1);
+        pag.appendChild(nextBtn);
+      }}
+      render(1);
+    }}
+
+    window.addEventListener("DOMContentLoaded", () => {{
+      initPagination("naverPostList", "naverPagination", 5);
+    }});
   </script>
 </body>
 </html>"""
