@@ -10,6 +10,9 @@ import os
 import sys
 import glob
 import re
+import fcntl
+import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -828,13 +831,19 @@ def scan_wp_posts():
         m_title = re.search(r"^#\s+(.+)$", content, re.M)
         title = m_title.group(1).strip() if m_title else post_id
 
-        matched_item = next((a for a in WP_ARTICLES if a["final_title"] == title or a["seq"] == post_num), None)
-        m_cat = re.search(r">\s*\*\*카테고리\*\*:\s*(.+)$", content, re.M)
-        category = m_cat.group(1).strip() if m_cat else (matched_item["category"] if matched_item else "WordPress SEO")
-        m_slug = re.search(r">\s*\*\*URL Slug \(영문 퍼머링크\)\*\*:\s*`([^`]+)`", content, re.M)
-        slug = m_slug.group(1).strip() if m_slug else (f"/{matched_item['slug']}" if matched_item else "/post")
-        m_score = re.search(r">\s*\*\*주제 평가 점수\*\*:\s*\*\*([0-9]+/100점)\*\*", content, re.M)
-        score_str = m_score.group(1).strip() if m_score else (f"{matched_item['score']}/100점" if matched_item else "90/100점")
+        html_path = fpath[:-3] + ".html"
+        html_content_str = ""
+        if os.path.exists(html_path):
+            with open(html_path, "r", encoding="utf-8") as hf:
+                html_content_str = hf.read()
+
+        matched_item = next((a for a in WP_ARTICLES if a["final_title"] == title), None)
+        m_cat = re.search(r">\s*\*\*카테고리\*\*:\s*(.+)$", content, re.M) or re.search(r'<span class="badge">📂\s*([^<]+)</span>', html_content_str)
+        category = m_cat.group(1).strip() if m_cat else (matched_item["category"] if matched_item else "Retirement & Pension (은퇴·연금·건보료)")
+        m_slug = re.search(r">\s*\*\*URL Slug \(영문 퍼머링크\)\*\*:\s*`([^`]+)`", content, re.M) or re.search(r'<span class="badge">🔗 Slug:\s*([^<]+)</span>', html_content_str)
+        slug = m_slug.group(1).strip() if m_slug else (f"/{matched_item['slug']}" if matched_item else "/cornerstone-guide")
+        m_score = re.search(r">\s*\*\*주제 평가 점수\*\*:\s*\*\*([0-9]+/100점)\*\*", content, re.M) or re.search(r'<span class="badge">🎯 평가 점수:\s*([0-9]+/100점)</span>', html_content_str)
+        score_str = m_score.group(1).strip() if m_score else (f"{matched_item['score']}/100점" if matched_item else "92/100점")
         m_sum = re.search(r">\s*\*\*💡 Key Takeaways \(핵심 요약\)\*\*:\s*(.+)$", content, re.M)
         desc = m_sum.group(1).strip().replace("**", "") if m_sum else ""
         if len(desc) > 150:
@@ -1419,24 +1428,177 @@ def update_root_portal_with_wordpress(today_str, wp_posts):
         f.write(content)
     log("✅ 루트 index.html 포털에 워드프레스(WP) 작업실 및 최신 코너스톤 포스팅 연동 완료")
 
-def run_wordpress_batch(target_date=None):
+def fetch_daily_wp_articles(today_str):
+    """당일 Google Trends 상승 검색어 기반 워드프레스 코너스톤 SEO 원고 동적 생성"""
+    if today_str == "2026-10-25":
+        return WP_ARTICLES
+
+    url = "https://trends.google.co.kr/trending/rss?geo=KR"
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    raw_trends = []
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            xml_data = resp.read()
+        root = ET.fromstring(xml_data)
+        for item in root.findall(".//item")[:10]:
+            title = item.find("title").text if item.find("title") is not None else ""
+            news_items = item.findall("{https://trends.google.com/trending/rss}news_item")
+            news_title = news_items[0].find("{https://trends.google.com/trending/rss}news_item_title").text if news_items else ""
+            if title:
+                raw_trends.append({"keyword": title.strip(), "news": news_title.strip()})
+    except Exception as e:
+        log(f"⚠️ WordPress Google Trends RSS 수집 실패 (기본 코너스톤 주제 사용): {e}")
+
+    if not raw_trends:
+        raw_trends = [
+            {"keyword": "국민연금 수령액", "news": "국민연금 예상 수령액 조회 및 연기연금·조기연금 비교"},
+            {"keyword": "생성형 AI 활용", "news": "AI 활용 검색엔진 최적화 및 팩트체크 실전 가이드"}
+        ]
+
+    # 상위 트렌드 1~2개를 워드프레스 코너스톤 7단계 심층 가이드로 변환
+    daily_articles = []
+    pillar_templates = [
+        {
+            "category": "Retirement & Pension (은퇴·연금·건보료)",
+            "slug_prefix": "retirement-pension-guide",
+            "score": 92,
+            "official_refs": [
+                ("국민연금공단 공식 홈페이지", "https://www.nps.or.kr/"),
+                ("국민건강보험공단 공식 누리집", "https://www.nhis.or.kr/"),
+                ("금융감독원 통합연금포털", "https://100lifeplan.fss.or.kr/")
+            ]
+        },
+        {
+            "category": "AI & Automation (AI·자동화·IT 가이드)",
+            "slug_prefix": "ai-seo-automation-guide",
+            "score": 94,
+            "official_refs": [
+                ("Google 검색 센터 (SEO 기본 가이드)", "https://developers.google.com/search/docs?hl=ko"),
+                ("Google Search Console 공식 사이트", "https://search.google.com/search-console/"),
+                ("WordPress 공식 문서", "https://wordpress.org/documentation/")
+            ]
+        }
+    ]
+
+    for idx, t in enumerate(raw_trends[:2], 1):
+        kw = t["keyword"]
+        news = t["news"] or f"{kw} 관련 공식 기준 및 확인 방법"
+        tpl = pillar_templates[(idx - 1) % len(pillar_templates)]
+        slug = f"{tpl['slug_prefix']}-{today_str.replace('-', '')}-{idx}"
+        final_title = f"{kw} 핵심 기준 및 공식 확인 방법 총정리: 신청 조건·단계별 절차·비교표 ({today_str})"
+        core_summary = (
+            f"**{kw}** 관련하여 독자가 가장 많이 찾는 핵심 자격 기준, 공식 사이트 확인 절차, 조건별 비교표 및 자주 묻는 질문(FAQ)을 한눈에 정리했습니다. "
+            f"단기 뉴스({news})를 넘어 실제 적용 시 반드시 확인해야 할 공식 기관 기준과 주의사항을 먼저 점검하세요."
+        )
+        sections_md = f"""## 1. '{kw}' 왜 지금 정확한 공식 기준과 절차를 확인해야 할까요?
+
+최근 주요 관심사로 떠오른 **'{kw}'**({news})와 관련하여 단순 뉴스 요약을 넘어 내 조건에 어떻게 적용되는지, 공식 조회 및 신청 절차는 무엇인지 찾는 분들이 많습니다.
+
+특히 제도·금융·IT·생활 정보는 시점과 개인별 자격 요건에 따라 적용 기준이 달라질 수 있으므로, 반드시 **1순위 공식 기관 안내 페이지**를 기준으로 단계별 절차를 확인해야 시행착오를 줄일 수 있습니다.
+
+---
+
+## 2. 핵심 내용 요약 (Key Takeaways)
+
+- **핵심 점검 대상**: '{kw}' 관련 대상자 요건, 계산·적용 기준 및 공식 온라인 확인 경로
+- **필수 준비 사항**: 본인 인증 수단(간편인증·금융인증서) 및 기준 연도({today_str[:4]}년) 최신 공고 확인
+- **핵심 체크포인트**: 신청 기한, 우대·예외 조건, 수수료·세금 등 비용 구조를 사전에 비교표를 통해 대조
+
+---
+
+## 3. '{kw}' 공식 기준 확인 및 실행하는 4단계 절차
+
+### 1단계: 공식 기관 누리집 접속 및 대상 여부 조회
+1. 하단 참고 자료에 안내된 공식 기관 홈페이지 또는 전용 모바일 앱에 접속합니다.
+2. 상단 검색창 또는 자주 찾는 메뉴에서 **'{kw}'** 관련 조회·안내 메뉴를 선택합니다.
+
+### 2단계: 개인별 조건 입력 및 모의 확인
+1. 본인의 연령, 소득·자산 구간 또는 사용 환경을 선택하여 해당 여부를 확인합니다.
+2. 필요한 구비 서류나 사전 설정 항목이 있는지 체크리스트로 메모합니다.
+
+### 3단계: 조건별 유불리 비교 후 신청·설정 진행
+1. 아래 4번 섹션의 **조건별 상세 비교표**를 참고하여 본인에게 가장 유리한 방식을 선택합니다.
+2. 온라인 신청 또는 설정 완료 후 접수 내역(또는 적용 상태)을 최종 확인합니다.
+
+---
+
+## 4. '{kw}' 조건별 선택 기준 상세 비교표
+
+| 비교 항목 | ① 기본(표준) 적용 방식 | ② 우대·최적화 적용 방식 | ③ 사전 확인 및 주의사항 |
+| :--- | :--- | :--- | :--- |
+| **핵심 대상** | 일반 신청자 및 기본 요건 충족자 | 일정 기간·소득·자격 요건 충족자 | 예외 조건 및 중복 적용 제한 대상 |
+| **확인 경로** | 공식 홈페이지 일반 안내 메뉴 | 마이페이지 맞춤 모의계산·조회 | 고객센터 및 최신 공고문 원문 대조 |
+| **권장 활용법** | 기본 절차와 준비물 사전 파악 | 본인 조건 대입 후 혜택·효율 극대화 | 기한 경과 및 필수 서류 누락 방지 |
+
+---
+
+## 5. 자주 묻는 질문 (FAQ)
+
+### Q1. '{kw}' 관련 기준은 어디서 가장 정확하게 확인할 수 있나요?
+**A.** 블로그나 커뮤니티의 요약 정보는 작성 시점에 따라 기준이 다를 수 있으므로, 반드시 본문 하단에 링크된 **정부·공공기관 및 공식 고객센터 누리집**에서 최신 기준을 최종 확인하시기 바랍니다.
+
+### Q2. 온라인으로 바로 조회하거나 신청할 수 있나요?
+**A.** 네, 대부분의 조회 및 신청 절차는 공식 홈페이지와 모바일 앱에서 간편인증(카카오·네이버·PASS 등) 로그인 후 별도 방문 없이 즉시 확인 가능합니다.
+
+### Q3. 신청 전 가장 주의해야 할 점은 무엇인가요?
+**A.** 신청 기한(또는 설정 적용 시점)과 본인 자격 요건 충족 여부를 먼저 확인해야 하며, 특히 기존 혜택이나 설정과 중복 제한이 있는지 비교표를 통해 점검하는 것이 안전합니다."""
+
+        daily_articles.append({
+            "seq": idx,
+            "category": tpl["category"],
+            "topic": f"{kw} 핵심 기준 및 공식 확인 가이드",
+            "focus_keyphrase": f"{kw} 확인 방법",
+            "slug": slug,
+            "meta_desc": f"{kw} 핵심 기준과 공식 사이트 확인 방법 총정리. 단계별 절차, 조건별 비교표, 자주 묻는 질문(FAQ 3문 3답)을 확인하세요.",
+            "score": tpl["score"],
+            "final_title": final_title,
+            "core_summary": core_summary,
+            "sections_md": sections_md,
+            "official_refs": tpl["official_refs"]
+        })
+
+    return daily_articles
+
+def run_wordpress_batch(target_date=None, force=False):
+    lock_file_path = "/tmp/daily_wordpress_batch.lock"
+    try:
+        lock_file = open(lock_file_path, "w")
+        fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except (BlockingIOError, OSError):
+        log("ℹ️ 이미 다른 프로세스에서 워드프레스 배치가 실행 중입니다.")
+        return
+
     now = datetime.now()
     today_date = datetime.strptime(target_date, "%Y-%m-%d") if target_date else now
     today_str = today_date.strftime("%Y-%m-%d")
     weekday_str = WEEKDAYS_KR[today_date.weekday()]
     ym = today_str[:7].replace("-", "")
 
+    log(f"🚀 [워드프레스 배치 시작] 워드프레스 코너스톤 SEO 글 생성 (기준일: {today_str} {weekday_str}요일, force={force})")
+
     wp_post_dir = os.path.join(POSTS_DIR, ym)
     os.makedirs(wp_post_dir, exist_ok=True)
 
-    for idx, item in enumerate(WP_ARTICLES, 1):
-        post_id = today_str if idx == 1 else f"{today_str}-{idx}"
-        md_content = format_wp_markdown(today_str, weekday_str, item)
-        html_content = build_wp_post_html(post_id, today_str, weekday_str, item, md_content)
+    articles_to_create = fetch_daily_wp_articles(today_str)
+    created_count = 0
 
-        with open(os.path.join(wp_post_dir, f"{post_id}.md"), "w", encoding="utf-8") as f:
-            f.write(md_content)
-        with open(os.path.join(wp_post_dir, f"{post_id}.html"), "w", encoding="utf-8") as f:
+    for idx, item in enumerate(articles_to_create, 1):
+        post_id = today_str if idx == 1 else f"{today_str}-{idx}"
+        md_path = os.path.join(wp_post_dir, f"{post_id}.md")
+        html_path = os.path.join(wp_post_dir, f"{post_id}.html")
+
+        if os.path.exists(md_path) and os.path.exists(html_path) and not force:
+            log(f"ℹ️ 이미 워드프레스 포스트({post_id})가 존재합니다. HTML 뷰어만 최신화합니다.")
+            with open(md_path, "r", encoding="utf-8") as f:
+                md_content = f.read()
+        else:
+            md_content = format_wp_markdown(today_str, weekday_str, item)
+            with open(md_path, "w", encoding="utf-8") as f:
+                f.write(md_content)
+            created_count += 1
+
+        html_content = build_wp_post_html(post_id, today_str, weekday_str, item, md_content)
+        with open(html_path, "w", encoding="utf-8") as f:
             f.write(html_content)
 
     posts = scan_wp_posts()
@@ -1445,8 +1607,9 @@ def run_wordpress_batch(target_date=None):
         f.write(build_wp_index_html(today_str, weekday_str, posts))
 
     update_root_portal_with_wordpress(today_str, posts)
-    log(f"🎉 [워드프레스 배치 완료] {today_str} 워드프레스 코너스톤 SEO 포스팅 {len(WP_ARTICLES)}편 생성 완료")
+    log(f"🎉 [워드프레스 배치 완료] {today_str} 워드프레스 코너스톤 SEO 포스팅 처리 완료 (신규/갱신 {len(articles_to_create)}편)")
 
 if __name__ == "__main__":
+    force_mode = "--force" in sys.argv
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    run_wordpress_batch(date_args[0] if date_args else None)
+    run_wordpress_batch(date_args[0] if date_args else None, force=force_mode)

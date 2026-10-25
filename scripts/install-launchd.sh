@@ -12,7 +12,10 @@ UID_NUM="$(id -u)"
 LABEL="com.user.daily-naver-blog"
 
 mkdir -p "$PROJECT_DIR/logs"
-chmod +x "$PROJECT_DIR/scripts/daily-naver-blog.sh" "$PROJECT_DIR/tools/daily_naver_batch.py"
+chmod +x "$PROJECT_DIR/scripts/daily-naver-blog.sh" \
+         "$PROJECT_DIR/tools/daily_naver_batch.py" \
+         "$PROJECT_DIR/tools/daily_tistory_batch.py" \
+         "$PROJECT_DIR/tools/daily_wordpress_batch.py"
 
 DEST="$HOME/Library/LaunchAgents"
 BOOTSTRAP_TARGET="$PLIST_FILE"

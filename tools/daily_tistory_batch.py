@@ -1076,10 +1076,16 @@ def scan_tistory_posts():
             with open(fpath, "r", encoding="utf-8") as f:
                 content = f.read()
 
+            html_path = fpath[:-3] + ".html"
+            html_content_str = ""
+            if os.path.exists(html_path):
+                with open(html_path, "r", encoding="utf-8") as hf:
+                    html_content_str = hf.read()
+
             m_title = re.search(r"^#\s+(.+)$", content, re.M)
             title = m_title.group(1).strip() if m_title else post_id
 
-            m_cat = re.search(r">\s*\*\*카테고리\*\*:\s*(.+)$", content, re.M)
+            m_cat = re.search(r">\s*\*\*카테고리\*\*:\s*(.+)$", content, re.M) or re.search(r'<span class="badge">📂 카테고리:\s*([^<]+)</span>', html_content_str)
             if m_cat:
                 category = m_cat.group(1).strip()
             elif "연금" in title or "건강보험" in title:
@@ -1089,10 +1095,10 @@ def scan_tistory_posts():
             else:
                 category = "제품 비교·사용법"
 
-            m_kw = re.search(r">\s*\*\*Google Trends 상승 검색어\*\*:\s*`?([^`\n]+)`?", content, re.M)
+            m_kw = re.search(r">\s*\*\*Google Trends 상승 검색어\*\*:\s*`?([^`\n]+)`?", content, re.M) or re.search(r'<span class="badge">📈 Google Trends 상승 검색어:\s*\[([^\]]+)\]</span>', html_content_str)
             trend_kw = m_kw.group(1).strip() if m_kw else ""
 
-            m_score = re.search(r">\s*\*\*주제 평가 점수\*\*:\s*\*\*([0-9]+/100점)\*\*", content, re.M)
+            m_score = re.search(r">\s*\*\*주제 평가 점수\*\*:\s*\*\*([0-9]+/100점)\*\*", content, re.M) or re.search(r'<span class="badge badge-score">🎯 주제 평가 점수:\s*([0-9]+/100점)</span>', html_content_str)
             if m_score:
                 score_str = m_score.group(1).strip()
             elif "AI" in title or "ChatGPT" in title:

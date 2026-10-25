@@ -1671,7 +1671,7 @@ def git_commit_and_push(today_str, title):
         clean_title = re.sub(r'[\r\n"\'`]', ' ', title).strip() if title else ""
         if len(clean_title) > 40:
             clean_title = clean_title[:40] + "..."
-        commit_msg = f"feat(auto): {today_str} 네이버 블로그 포스팅 자동 생성"
+        commit_msg = f"feat(auto): {today_str} 네이버·티스토리·워드프레스 블로그 포스팅 자동 생성"
         if clean_title:
             commit_msg += f" ({clean_title})"
 
@@ -1757,25 +1757,30 @@ def run_batch(target_date=None, force=False):
     # 5-2. 티스토리 일별 자동화 배치 연동 실행 (Google Trends 상승 검색어 기반)
     tistory_script = os.path.join(BASE_DIR, "tools", "daily_tistory_batch.py")
     if os.path.exists(tistory_script):
-        force_arg = " --force" if force else ""
-        os.system(f"{sys.executable} {tistory_script} {today_str}{force_arg}")
+        t_cmd = [sys.executable, tistory_script, today_str]
+        if force:
+            t_cmd.append("--force")
+        subprocess.run(t_cmd, cwd=BASE_DIR)
 
     # 5-3. 워드프레스(WordPress) 코너스톤 SEO 작업실 배치 연동 실행
     wp_script = os.path.join(BASE_DIR, "tools", "daily_wordpress_batch.py")
     if os.path.exists(wp_script):
-        os.system(f"{sys.executable} {wp_script} {today_str}")
+        wp_cmd = [sys.executable, wp_script, today_str]
+        if force:
+            wp_cmd.append("--force")
+        subprocess.run(wp_cmd, cwd=BASE_DIR)
 
     # 6. docs/index.html 전체 가이드 뷰어 동기화
     gen_script = os.path.join(BASE_DIR, "tools", "generate_html.py")
     if os.path.exists(gen_script):
-        os.system(f"{sys.executable} {gen_script} > /dev/null 2>&1")
+        subprocess.run([sys.executable, gen_script], cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         log("✅ 전체 가이드 뷰어(docs/index.html) 동기화 완료")
 
     # 7. 변경 사항 Git 자동 커밋 및 원격 푸시
     latest_title = posts[0]["title"] if posts else trends[0]["recommended_title"]
     git_commit_and_push(today_str, latest_title)
 
-    log(f"🎉 [배치 완료] {today_str} 네이버 블로그 일별 작업이 성공적으로 끝났습니다.\n")
+    log(f"🎉 [통합 배치 완료] {today_str} 네이버 · 티스토리 · 워드프레스 일별 블로그 작업이 성공적으로 끝났습니다.\n")
 
 if __name__ == "__main__":
     force_mode = "--force" in sys.argv
