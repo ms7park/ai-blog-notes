@@ -70,6 +70,51 @@ DOC_METADATA = [
         "desc": "기획부터 SEO 점검까지 1시간 완성 표준 AI 글쓰기 프로세스"
     },
     {
+        "id": "daily-workflow",
+        "category": "03. AI 워크플로우",
+        "category_icon": "⚙️",
+        "title": "일일 통합 블로그 워크플로우 (daily-workflow)",
+        "file_path": "workflow/daily-workflow.md",
+        "url_path": "../workflow/daily-workflow.md",
+        "desc": "네이버·티스토리 주제 수집부터 팩트체크·발행·성과 기록까지 8단계 표준 절차"
+    },
+    {
+        "id": "wf-topic-selection",
+        "category": "03. AI 워크플로우",
+        "category_icon": "🎯",
+        "title": "주제 선정 규칙 및 100점 평가표 (topic-selection)",
+        "file_path": "workflow/topic-selection.md",
+        "url_path": "../workflow/topic-selection.md",
+        "desc": "실시간 이슈 vs 장기 검색 질문 구분 기준 및 5대 평가 루브릭"
+    },
+    {
+        "id": "wf-article-production",
+        "category": "03. AI 워크플로우",
+        "category_icon": "✍️",
+        "title": "초안 생성·검증·편집 절차 (article-production)",
+        "file_path": "workflow/article-production.md",
+        "url_path": "../workflow/article-production.md",
+        "desc": "주제 조사 1회 → 플랫폼별 원고 2편 분리 제작 및 팩트체크 프로세스"
+    },
+    {
+        "id": "wf-publishing",
+        "category": "03. AI 워크플로우",
+        "category_icon": "✅",
+        "title": "발행 전 최종 체크리스트 (publishing)",
+        "file_path": "workflow/publishing.md",
+        "url_path": "../workflow/publishing.md",
+        "desc": "발행 전 3대 팩트체크 질문 및 네이버·티스토리 점검표"
+    },
+    {
+        "id": "wf-performance-review",
+        "category": "03. AI 워크플로우",
+        "category_icon": "📈",
+        "title": "주간 성과 분석 및 개선 가이드 (performance-review)",
+        "file_path": "workflow/performance-review.md",
+        "url_path": "../workflow/performance-review.md",
+        "desc": "노출·클릭·체류시간 분석 및 다음 주 확장 주제 선정 루프"
+    },
+    {
         "id": "practical-prompts",
         "category": "04. 실전 프롬프트",
         "category_icon": "💬",
@@ -79,13 +124,112 @@ DOC_METADATA = [
         "desc": "후킹 제목, 도입부, 본문 확장, SEO 메타태그 복사-붙여넣기 템플릿"
     },
     {
+        "id": "prompt-topic-selection",
+        "category": "04. 실전 프롬프트",
+        "category_icon": "💬",
+        "title": "통합 주제 선정 프롬프트 (prompts/topic-selection)",
+        "file_path": "prompts/topic-selection.md",
+        "url_path": "../prompts/topic-selection.md",
+        "desc": "실시간 Top 10 & Google Trends 상승 검색어 100점 평가 프롬프트"
+    },
+    {
+        "id": "prompt-naver-draft",
+        "category": "04. 실전 프롬프트",
+        "category_icon": "🟢",
+        "title": "네이버 초안 작성 프롬프트 (prompts/naver-draft)",
+        "file_path": "prompts/naver-draft.md",
+        "url_path": "../prompts/naver-draft.md",
+        "desc": "품미인생 페르소나 및 스마트블록 최적화 초안 생성 프롬프트"
+    },
+    {
+        "id": "prompt-tistory-draft",
+        "category": "04. 실전 프롬프트",
+        "category_icon": "🟠",
+        "title": "티스토리 검색형 초안 프롬프트 (prompts/tistory-draft)",
+        "file_path": "prompts/tistory-draft.md",
+        "url_path": "../prompts/tistory-draft.md",
+        "desc": "구글 검색 유입용 7단계 정보 글 & 비교표 생성 프롬프트"
+    },
+    {
+        "id": "prompt-fact-check",
+        "category": "04. 실전 프롬프트",
+        "category_icon": "🔍",
+        "title": "팩트체크 & 품질 검증 프롬프트 (prompts/fact-check)",
+        "file_path": "prompts/fact-check.md",
+        "url_path": "../prompts/fact-check.md",
+        "desc": "할루시네이션 수치, 가상 경험담, 과장 제목 교정 프롬프트"
+    },
+    {
         "id": "blog-templates",
-        "category": "05. 글쓰기 템플릿",
+        "category": "05. 글쓰기 템플릿 & 가이드라인",
         "category_icon": "📑",
         "title": "고수익 블로그 글쓰기 4대 표준 템플릿",
         "file_path": "docs/05-templates/01-blog-templates.md",
         "url_path": "05-templates/01-blog-templates.md",
         "desc": "정보형, 솔직 리뷰형, 경험 에세이형, 가이드북형 마크다운 구조"
+    },
+    {
+        "id": "guide-writing-style",
+        "category": "05. 글쓰기 템플릿 & 가이드라인",
+        "category_icon": "✒️",
+        "title": "공통 문체 및 글쓰기 원칙 (guidelines/writing-style)",
+        "file_path": "guidelines/writing-style.md",
+        "url_path": "../guidelines/writing-style.md",
+        "desc": "결론 선제시, 가짜 경험 금지, 플랫폼별 톤앤매너 구분"
+    },
+    {
+        "id": "guide-naver-blog",
+        "category": "05. 글쓰기 템플릿 & 가이드라인",
+        "category_icon": "🟢",
+        "title": "네이버 블로그 가이드라인 (guidelines/naver-blog)",
+        "file_path": "guidelines/naver-blog.md",
+        "url_path": "../guidelines/naver-blog.md",
+        "desc": "C-Rank & D.I.A 스마트블록 상위 노출 및 해시태그 규칙"
+    },
+    {
+        "id": "guide-tistory-seo",
+        "category": "05. 글쓰기 템플릿 & 가이드라인",
+        "category_icon": "🟠",
+        "title": "티스토리 SEO & 애드센스 가이드 (guidelines/tistory-seo)",
+        "file_path": "guidelines/tistory-seo.md",
+        "url_path": "../guidelines/tistory-seo.md",
+        "desc": "구글 E-E-A-T 7대 규칙, 비교표, 서치 콘솔 색인 관리"
+    },
+    {
+        "id": "guide-source-policy",
+        "category": "05. 글쓰기 템플릿 & 가이드라인",
+        "category_icon": "🏛️",
+        "title": "공식 출처 검증 및 인용 정책 (guidelines/source-policy)",
+        "file_path": "guidelines/source-policy.md",
+        "url_path": "../guidelines/source-policy.md",
+        "desc": "1순위 공신력 기관 목록 및 가정 조건·미확인 수치 처리 원칙"
+    },
+    {
+        "id": "topic-backlog",
+        "category": "06. 주제 백로그 & 주간 리뷰",
+        "category_icon": "🗂️",
+        "title": "유망 주제 대기열 (topics/topic-backlog)",
+        "file_path": "topics/topic-backlog.md",
+        "url_path": "../topics/topic-backlog.md",
+        "desc": "5대 카테고리별 100점 평가 완료된 미작성 주제 목록"
+    },
+    {
+        "id": "topic-calendar",
+        "category": "06. 주제 백로그 & 주간 리뷰",
+        "category_icon": "📅",
+        "title": "주간·월간 발행 캘린더 (topics/topic-calendar)",
+        "file_path": "topics/topic-calendar.md",
+        "url_path": "../topics/topic-calendar.md",
+        "desc": "요일별 네이버·티스토리 발행 리듬 및 차주 예정 스케줄"
+    },
+    {
+        "id": "weekly-review",
+        "category": "06. 주제 백로그 & 주간 리뷰",
+        "category_icon": "📊",
+        "title": "주간 블로그 성과 리뷰 (logs/weekly-review)",
+        "file_path": "logs/weekly-review.md",
+        "url_path": "../logs/weekly-review.md",
+        "desc": "주간 발행 요약, 노출·클릭 점검 및 차주 확장 주제 기록"
     },
     {
         "id": "memo-ideas",

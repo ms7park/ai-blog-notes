@@ -38,13 +38,38 @@ ai-blog-notes/
 │   ├── 04-prompts/             # [프롬프트] 제목, 도입부, 본문, 경험 결합 실전 프롬프트 모음
 │   ├── 05-templates/           # [템플릿] 정보형, 리뷰형, 비교분석형, 일상에세이형 글쓰기 틀
 │   └── notes/                  # [메모] 블로그 아이디어 및 영감 기록장
+├── workflow/                   # [워크플로우] 네이버·티스토리 공통 8단계 작업 절차
+│   ├── daily-workflow.md       # 매일 수행할 작업 순서(Step 1~8)와 30분 시간 배분
+│   ├── topic-selection.md      # 네이버·티스토리 주제 선정 규칙 및 100점 평가 루브릭
+│   ├── article-production.md   # 주제 조사 1회 → 플랫폼별 원고 2편 제작·검증 절차
+│   ├── publishing.md           # 발행 전 3대 팩트체크 및 플랫폼별 점검 체크리스트
+│   └── performance-review.md   # 주간 성과 분석(노출·클릭·체류시간) 및 다음 주 계획
+├── prompts/                    # [표준 프롬프트] 단계별 즉시 복사 AI 프롬프트
+│   ├── topic-selection.md      # 통합 주제 선정 및 100점 평가 프롬프트
+│   ├── naver-draft.md          # 네이버 블로그 품미인생 초안 작성 프롬프트
+│   ├── tistory-draft.md        # 티스토리 7단계 검색형 정보 글 작성 프롬프트
+│   └── fact-check.md           # 초안 사실관계·수치·가상 경험 검증 프롬프트
+├── guidelines/                 # [가이드라인] 문체·SEO·출처 검증 원칙
+│   ├── writing-style.md        # 공통 문체(결론 선제시, 가짜 경험 금지) 및 톤앤매너
+│   ├── naver-blog.md           # 네이버 C-Rank & D.I.A 스마트블록 최적화 규칙
+│   ├── tistory-seo.md          # 티스토리 구글 E-E-A-T SEO 및 애드센스 규칙
+│   └── source-policy.md        # 1순위 공신력 출처 및 미확인 수치 처리 정책
+├── topics/                     # [주제 관리] 백로그 및 주간·월간 캘린더
+│   ├── topic-backlog.md        # 5대 카테고리별 미작성 유망 주제 대기열
+│   └── topic-calendar.md       # 주간·월간 발행 스케줄 캘린더
+├── logs/                       # [기록] 배치 로그 및 발행·성과 기록
+│   ├── publishing-log.csv      # 일자별 네이버·티스토리 발행 이력 및 성과 CSV
+│   └── weekly-review.md        # 주간 성과 리뷰 및 차주 확장 주제 기록
 ├── blog/                       # [발행] 플랫폼별 블로그 작업 공간
 │   ├── naver/                  # 🟢 네이버 블로그 일별 작업실 (캘린더, 실시간 검색어 Top 10)
 │   │   ├── index.html          # 네이버 블로그 작업 대시보드
 │   │   └── posts/              # 일별 포스팅 초안 (년월 YYYYMM/ 하위 .md, 서식 .html)
-│   └── tistory/                # 🟠 티스토리 블로그 작업실 (Google Trends 100점 평가 & 애드센스)
-│       ├── index.html          # 티스토리 작업 대시보드 (주제 평가표, 5대 카테고리, 체크리스트)
-│       └── posts/              # 티스토리 7단계 검색형 포스팅 (년월 YYYYMM/ 하위 .md, .html)
+│   ├── tistory/                # 🟠 티스토리 블로그 작업실 (Google Trends 100점 평가 & 애드센스)
+│   │   ├── index.html          # 티스토리 작업 대시보드 (주제 평가표, 5대 카테고리, 체크리스트)
+│   │   └── posts/              # 티스토리 7단계 검색형 포스팅 (년월 YYYYMM/ 하위 .md, .html)
+│   └── workflow/               # ⚙️ 통합 워크플로우 작업실 (Step 1~8 일일 실행 리포트)
+│       ├── index.html          # 워크플로우 허브 대시보드
+│       └── posts/              # 일별 통합 워크플로우 실행 리포트 (.md, .html)
 ├── scripts/                    # [스케줄러] macOS 네이티브 배치 (initClaude 표준)
 │   ├── daily-naver-blog.sh     # caffeinate 절전 차단 & 실행 래퍼 스크립트
 │   ├── install-launchd.sh      # launchd LaunchAgent 적재 (매일 00:00 실행)

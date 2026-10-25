@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네이버 · 티스토리 통합 워크플로우 작업실 | AI Blog Notes</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    :root {
+      --wf: #4f46e5;
+      --wf-dark: #4338ca;
+      --wf-light: #eef2ff;
+      --wf-border: #c7d2fe;
+      --text-main: #191f28;
+      --text-sub: #4e5968;
+      --text-muted: #8b95a1;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e5e8eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+    .header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 12px; }
+    .wf-badge {
+      background: var(--wf);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .brand-title { font-size: 18px; font-weight: 800; }
+    .header-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .header-link {
+      font-size: 13px;
+      color: var(--text-sub);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .header-link:hover { border-color: var(--wf); color: var(--wf-dark); }
+    .container { max-width: 1120px; margin: 28px auto 0; padding: 0 20px; }
+    .hero-banner {
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      color: #fff;
+      padding: 32px 36px;
+      border-radius: 16px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .hero-text h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .hero-text p { font-size: 14px; opacity: 0.94; max-width: 650px; }
+    .hero-stats { display: flex; gap: 16px; }
+    .stat-box {
+      background: rgba(255, 255, 255, 0.16);
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .stat-number { font-size: 21px; font-weight: 800; display: block; }
+    .stat-label { font-size: 12px; opacity: 0.9; }
+    .main-grid { display: grid; grid-template-columns: 1fr 350px; gap: 24px; }
+    @media (max-width: 920px) { .main-grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title { font-size: 17px; font-weight: 750; }
+    .post-card {
+      border: 2px solid var(--wf);
+      border-radius: 12px;
+      padding: 20px;
+      background: #fff;
+      margin-bottom: 16px;
+    }
+    .post-card-title {
+      font-size: 17px;
+      font-weight: 750;
+      color: var(--text-main);
+      text-decoration: none;
+      display: inline-block;
+      margin: 8px 0;
+    }
+    .post-card-title:hover { color: var(--wf-dark); text-decoration: underline; }
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 600px) { .file-grid { grid-template-columns: 1fr; } }
+    .file-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      background: var(--bg);
+      text-decoration: none;
+      color: var(--text-main);
+      transition: all 0.15s;
+    }
+    .file-item:hover {
+      border-color: var(--wf);
+      background: var(--wf-light);
+    }
+    .file-item-title { font-size: 13.5px; font-weight: 750; color: var(--wf-dark); margin-bottom: 4px; }
+    .file-item-desc { font-size: 12px; color: var(--text-sub); }
+    .action-btn {
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-btn-primary { background: var(--wf); color: #fff; border-color: var(--wf); }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #111827; color: #fff; padding: 12px 24px; border-radius: 8px;
+      font-size: 13.5px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.2s;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <span class="wf-badge">WORKFLOW HUB</span>
+        <div class="brand-title">네이버 · 티스토리 통합 워크플로우 작업실</div>
+      </div>
+      <div class="header-links">
+        <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
+        <a href="../naver/index.html" class="header-link">🟢 네이버 작업실</a>
+        <a href="../tistory/index.html" class="header-link">🟠 티스토리 작업실</a>
+        <a href="../../docs/index.html#daily-workflow" class="header-link">📚 워크플로우 문서 뷰어</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero-banner">
+      <div class="hero-text">
+        <h1>⚙️ 네이버 · 티스토리 8단계 통합 워크플로우 허브</h1>
+        <p>주제 수집(실시간 Top 10 & Google Trends) → 1~5점 주제 평가 → 플랫폼별 맞춤 초안 → 공식 출처 팩트체크 → 발행 및 CSV 성과 기록까지 한곳에서 관리합니다.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-number">8 단계</span>
+          <span class="stat-label">표준 프로토콜</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">30 분</span>
+          <span class="stat-label">일일 권장 루틴</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-grid">
+      <div class="left-col">
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">📅 일별 통합 워크플로우 실행 리포트</div>
+            <span style="font-size: 12px; color: var(--text-muted);">최신: 2026-10-25 (일)</span>
+          </div>
+          <article class="post-card">
+            <div style="font-size: 12px; font-weight: 700; color: var(--wf-dark);">📍 2026-10-25 (일) · Step 1 ~ Step 8 통합 실행본</div>
+            <a href="posts/202610/2026-10-25.html" class="post-card-title">
+              [2026-10-25] 네이버 · 티스토리 일일 통합 블로그 워크플로우 실행 리포트 (8단계)
+            </a>
+            <p style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 14px;">
+              오늘의 후보 키워드 100점 평가표, 네이버(품미인생) vs 티스토리(똑똑한 생활탐구) 주제 분리 설계, 공식 기관 팩트체크 결과 및 발행 체크리스트 종합 리포트입니다.
+            </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 12px;">
+              <span style="font-size: 12px; color: var(--text-muted);">연동 플랫폼: 네이버 5편 + 티스토리 3편</span>
+              <div style="display: flex; gap: 8px;">
+                <a href="posts/202610/2026-10-25.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                <a href="posts/202610/2026-10-25.html" class="action-btn action-btn-primary">👁️ 워크플로우 리포트 열기</a>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">📂 표준 워크플로우 · 프롬프트 · 가이드라인 파일 체계</div>
+            <a href="../../docs/index.html#daily-workflow" style="font-size: 12.5px; color: var(--wf-dark); font-weight: 700; text-decoration: none;">전체 문서 뷰어로 열기 →</a>
+          </div>
+          <div class="file-grid">
+            <a href="../../workflow/daily-workflow.md" target="_blank" class="file-item">
+              <div class="file-item-title">📋 workflow/daily-workflow.md</div>
+              <div class="file-item-desc">매일 수행할 8단계 작업 순서와 30분 시간 배분</div>
+            </a>
+            <a href="../../workflow/topic-selection.md" target="_blank" class="file-item">
+              <div class="file-item-title">🎯 workflow/topic-selection.md</div>
+              <div class="file-item-desc">네이버·티스토리 주제 선정 규칙 및 100점 평가표</div>
+            </a>
+            <a href="../../workflow/article-production.md" target="_blank" class="file-item">
+              <div class="file-item-title">✍️ workflow/article-production.md</div>
+              <div class="file-item-desc">주제 조사 1회 → 플랫폼별 원고 2편 제작·검증 절차</div>
+            </a>
+            <a href="../../workflow/publishing.md" target="_blank" class="file-item">
+              <div class="file-item-title">✅ workflow/publishing.md</div>
+              <div class="file-item-desc">발행 전 필수 3대 팩트체크 및 플랫폼별 점검표</div>
+            </a>
+            <a href="../../workflow/performance-review.md" target="_blank" class="file-item">
+              <div class="file-item-title">📈 workflow/performance-review.md</div>
+              <div class="file-item-desc">주간 성과 분석(노출·클릭·체류시간) 및 다음 주 계획</div>
+            </a>
+            <a href="../../topics/topic-backlog.md" target="_blank" class="file-item">
+              <div class="file-item-title">🗂️ topics/topic-backlog.md</div>
+              <div class="file-item-desc">5대 카테고리별 미작성 유망 주제 대기열 & 캘린더</div>
+            </a>
+            <a href="../../prompts/fact-check.md" target="_blank" class="file-item">
+              <div class="file-item-title">🔍 prompts/fact-check.md</div>
+              <div class="file-item-desc">초안 사실관계·수치·가상 경험 검증 전용 프롬프트</div>
+            </a>
+            <a href="../../logs/publishing-log.csv" target="_blank" class="file-item">
+              <div class="file-item-title">📊 logs/publishing-log.csv</div>
+              <div class="file-item-desc">일자별 네이버·티스토리 발행 이력 및 성과 기록 CSV</div>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <div class="right-col">
+        <section class="card" style="border: 2px solid var(--wf);">
+          <div class="card-title" style="margin-bottom: 10px;">🤖 매일 Claude Code / AI 실행 명령</div>
+          <p style="font-size: 12.5px; color: var(--text-sub); margin-bottom: 12px;">
+            저장소 루트에서 아래 명령을 복사해 입력하면 주제 중복 확인 → 후보 평가 → 승인 후 초안 생성 → 팩트체크까지 표준 절차대로 실행됩니다.
+          </p>
+          <button class="action-btn action-btn-primary" style="width: 100%; justify-content: center; padding: 10px;" onclick="copyText('이 저장소의 README.md와 workflow/daily-workflow.md를 먼저 읽어 주세요.\n\n오늘의 블로그 콘텐츠 작업을 시작합니다.\n\n1. topics/topic-backlog.md에서 기존 주제와 중복되는 항목을 확인합니다.\n2. 네이버 블로그용 실시간 이슈 주제 후보와 티스토리용 검색형 주제 후보를 구분합니다.\n3. 실제 최신 검색 데이터를 확인할 수 없는 경우 검색량이나 순위를 추측하지 말고, 추가 조사가 필요한 항목으로 표시합니다.\n4. 후보별 검색 의도, 장기성, 경쟁 콘텐츠의 빈틈, 사실 확인 가능성을 평가합니다.\n5. 우선 작성할 주제를 추천하고, 선정 이유와 필요한 출처를 제시합니다.\n6. 제가 주제를 승인하기 전에는 최종 게시글을 발행하거나 기존 파일을 덮어쓰지 마세요.\n7. 승인된 주제에 대해서만 해당 플랫폼의 작성 지침에 따라 초안을 생성합니다.\n8. fact-check.md와 publishing.md 기준으로 검토하고, 미확인 사실과 발행 전 점검 항목을 별도로 출력합니다.\n\n우선 주제 후보와 평가 결과부터 보여 주세요.')">
+            📋 일일 워크플로우 시작 명령 복사
+          </button>
+        </section>
+
+        <section class="card">
+          <div class="card-title" style="margin-bottom: 12px;">⏱️ 매일 30분 표준 시간 배분</div>
+          <div style="font-size: 13px; color: var(--text-sub); display: flex; flex-direction: column; gap: 8px;">
+            <div style="display:flex; justify-content:space-between;"><span>1. 주제 수집 및 선정</span><strong>5분</strong></div>
+            <div style="display:flex; justify-content:space-between;"><span>2. 공식 자료 확인</span><strong>5분</strong></div>
+            <div style="display:flex; justify-content:space-between;"><span>3. 플랫폼별 AI 초안 작성</span><strong>10분</strong></div>
+            <div style="display:flex; justify-content:space-between;"><span>4. 사실 검증 및 편집</span><strong>7분</strong></div>
+            <div style="display:flex; justify-content:space-between;"><span>5. 발행 및 CSV 기록</span><strong>3분</strong></div>
+            <div style="display:flex; justify-content:space-between; border-top:1px solid var(--border); padding-top:8px; color:var(--wf-dark);"><strong>일일 합계</strong><strong>총 30분</strong></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">✓ 클립보드에 복사되었습니다!</div>
+  <script>
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const t = document.getElementById("toast");
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2200);
+      });
+    }
+  </script>
+</body>
+</html>

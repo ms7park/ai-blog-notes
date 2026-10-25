@@ -191,6 +191,19 @@
    - #3편 (`2026-10-25-3.md` / `.html` · 제품 비교·사용법 · 80/100점 · 상승 검색어 `[주얼리]`):
      * `순금(24K) 주얼리 vs 골드바 vs KRX 금현물 구매 방법 및 수수료·세금 비교표`
 
+== 2026.10.25 : 네이버·티스토리 8단계 통합 워크플로우 체계(workflow/prompts/guidelines/topics/logs) 및 작업실 구축
+1. 표준 워크플로우 디렉토리 및 15개 핵심 문서 구축:
+   - `workflow/`: `daily-workflow.md`, `topic-selection.md`, `article-production.md`, `publishing.md`, `performance-review.md`
+   - `prompts/`: `topic-selection.md`, `naver-draft.md`, `tistory-draft.md`, `fact-check.md`
+   - `guidelines/`: `writing-style.md`, `naver-blog.md`, `tistory-seo.md`, `source-policy.md`
+   - `topics/`: `topic-backlog.md`, `topic-calendar.md`
+   - `logs/`: `publishing-log.csv` (네이버·티스토리 발행 이력 CSV), `weekly-review.md` (10월 4주차 주간 리뷰)
+2. 통합 워크플로우 작업실 및 일별 실행 리포트 생성 (`blog/workflow/`, `tools/daily_workflow_batch.py`):
+   - `blog/workflow/index.html`: 8단계 워크플로우 대시보드 및 Claude Code / AI 일일 실행 명령 원클릭 복사 탑재
+   - `blog/workflow/posts/202610/2026-10-25.md` & `.html`: 오늘자 네이버·티스토리 통합 워크플로우 8단계 실행 리포트 작성
+3. 문서 뷰어(`docs/index.html`) 및 루트 포털(`index.html`) 전체 동기화 후 Git 커밋 & 원격 저장소 푸시 완료
+
+
 
 
 
