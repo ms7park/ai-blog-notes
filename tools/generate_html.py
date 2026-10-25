@@ -61,6 +61,15 @@ DOC_METADATA = [
         "desc": "티스토리 개설부터 서치콘솔, 애드센스 준비, Google Trends 상승 검색어 100점 평가 및 7단계 템플릿"
     },
     {
+        "id": "wordpress-guide",
+        "category": "02. 플랫폼 비교",
+        "category_icon": "🔵",
+        "title": "워드프레스(WP) 구축·구글 SEO 및 수익화 가이드",
+        "file_path": "docs/02-platforms/03-wordpress-guide.md",
+        "url_path": "02-platforms/03-wordpress-guide.md",
+        "desc": "워드프레스 영문 슬러그, Rank Math SEO, 구텐베르크 8단계 코너스톤 템플릿 및 FAQ 스키마 전략"
+    },
+    {
         "id": "six-step-pipeline",
         "category": "03. AI 워크플로우",
         "category_icon": "⚙️",
@@ -151,6 +160,15 @@ DOC_METADATA = [
         "desc": "구글 검색 유입용 7단계 정보 글 & 비교표 생성 프롬프트"
     },
     {
+        "id": "prompt-wordpress-draft",
+        "category": "04. 실전 프롬프트",
+        "category_icon": "🔵",
+        "title": "워드프레스 코너스톤 초안 프롬프트 (prompts/wordpress-draft)",
+        "file_path": "prompts/wordpress-draft.md",
+        "url_path": "../prompts/wordpress-draft.md",
+        "desc": "영문 Slug, Meta Description, Key Takeaways, 비교표, FAQ 3문 3답 생성 프롬프트"
+    },
+    {
         "id": "prompt-fact-check",
         "category": "04. 실전 프롬프트",
         "category_icon": "🔍",
@@ -194,6 +212,15 @@ DOC_METADATA = [
         "file_path": "guidelines/tistory-seo.md",
         "url_path": "../guidelines/tistory-seo.md",
         "desc": "구글 E-E-A-T 7대 규칙, 비교표, 서치 콘솔 색인 관리"
+    },
+    {
+        "id": "guide-wordpress-seo",
+        "category": "05. 글쓰기 템플릿 & 가이드라인",
+        "category_icon": "🔵",
+        "title": "워드프레스 SEO & 구텐베르크 가이드 (guidelines/wordpress-seo)",
+        "file_path": "guidelines/wordpress-seo.md",
+        "url_path": "../guidelines/wordpress-seo.md",
+        "desc": "Rank Math / Yoast 온페이지 SEO 8대 규칙 및 FAQ 스키마 가이드"
     },
     {
         "id": "guide-source-policy",

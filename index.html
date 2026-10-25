@@ -451,6 +451,17 @@
       background: var(--tistory-light);
       color: var(--tistory);
     }
+    .tag-wp {
+      background: var(--wp-light);
+      color: var(--wp);
+    }
+    .p-btn-wp {
+      background: var(--wp);
+      color: #fff;
+    }
+    .p-btn-wp:hover {
+      background: #005177;
+    }
     .p-btn-tistory {
       background: var(--tistory);
       color: #fff;
@@ -509,7 +520,7 @@
         <a href="docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
         <a href="blog/naver/index.html" class="header-link header-link-naver">🟢 네이버 블로그 포털</a>
         <a href="blog/tistory/index.html" class="header-link" style="background: var(--tistory-light); color: var(--tistory); border-color: #fed7aa;">🟠 티스토리 포털</a>
-        <a href="blog/workflow/index.html" class="header-link" style="background: #eef2ff; color: #4338ca; border-color: #c7d2fe;">⚙️ 워크플로우 허브</a>
+        <a href="blog/wordpress/index.html" class="header-link" style="background: var(--wp-light); color: var(--wp); border-color: #bae6fd;">🔵 워드프레스 포털</a>
       </div>
     </div>
   </header>
@@ -624,40 +635,46 @@
         </div>
       </div>
 
-      <!-- Platform 3: WordPress (Coming Soon) -->
+      <!-- Platform 3: WordPress (Active) -->
       <div class="platform-card wordpress">
         <div>
           <div class="platform-card-header">
             <div class="platform-brand">
               <div class="platform-logo">W</div>
-              <div class="platform-name">워드프레스 (WP)</div>
+              <div class="platform-name">워드프레스 (WP) · 코너스톤</div>
             </div>
-            <span class="status-badge badge-soon">🔵 3단계 확장 예정</span>
+            <span class="status-badge badge-active">🟢 운영 중</span>
           </div>
 
           <p class="platform-desc">
-            포털의 제약 없는 100% 나만의 독립 웹사이트! 장기적인 구글 글로벌 검색 노출 및 디지털 지식 상품(PDF 전자책 등) 판매 확장.
+            포털의 제약 없는 100% 나만의 독립 웹사이트! <strong>영문 슬러그 · Rank Math SEO · 비교표 · FAQ 스키마</strong>가 완비된 코너스톤 가이드북으로 구글 장기 검색 유입을 구축합니다.
           </p>
 
           <div class="platform-meta-box">
             <div class="meta-row">
-              <span class="meta-label">구축 상태</span>
-              <span class="meta-value" style="color: var(--wp);">SEO 아키텍처 준비 중</span>
+              <span class="meta-label">운영 목표</span>
+              <span class="meta-value" style="color: var(--wp);">코너스톤 심층 가이드 (8단계 워크플로우)</span>
             </div>
             <div class="meta-row">
               <span class="meta-label">주요 타겟</span>
-              <span class="meta-value">Google 글로벌 검색 엔진 (SEO)</span>
+              <span class="meta-value">Google 글로벌/국내 SEO (Rank Math)</span>
             </div>
             <div class="meta-row">
               <span class="meta-label">수익 모델</span>
-              <span class="meta-value">애드센스, 지식창업, 자체 상품</span>
+              <span class="meta-value">애드센스(100% 자체광고), 전자책, 제휴</span>
             </div>
           </div>
         </div>
 
         <div class="platform-btn-group">
-          <a href="docs/index.html#platform-comparison" class="p-btn p-btn-sub">
-            📖 워드프레스 구축 가이드 보기
+          <a href="blog/wordpress/index.html" class="p-btn p-btn-wp">
+            🔵 워드프레스 작업실 이동
+          </a>
+          <a href="blog/wordpress/posts/202610/2026-10-25.html" class="p-btn p-btn-sub">
+            👁️ 오늘자 워드프레스 글 보기 & 블록 복사
+          </a>
+          <a href="docs/index.html#wordpress-guide" class="p-btn p-btn-sub">
+            📖 워드프레스 구축·SEO 가이드
           </a>
         </div>
       </div>
@@ -678,16 +695,47 @@
       <!-- RECENT_POSTS_LIST_START -->
       <div class="post-item-row">
         <div class="post-item-left">
+          <span class="post-platform-tag tag-wp">워드프레스</span>
+          <a href="blog/wordpress/posts/202610/2026-10-25.html" class="post-item-title">
+            퇴직 후 건강보험료 계산 기준 및 줄이는 법: 피부양자 자격 요건 vs 임의계속가입 vs 지역가입자 비교표
+          </a>
+        </div>
+        <span class="post-item-date">2026-10-25 (일 · /retirement-health-insurance-calculation-guide · 평가 92/100점)</span>
+        <a href="blog/wordpress/posts/202610/2026-10-25.html" class="post-item-btn">
+          👁️ 포스트 열기 & 블록 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-wp">워드프레스</span>
+          <a href="blog/wordpress/posts/202610/2026-10-25-2.html" class="post-item-title">
+            맥(Mac)에서 Apple 계정(Apple ID) 로그인 오류 및 설정 무한 로딩 해결하는 5단계 순서
+          </a>
+        </div>
+        <span class="post-item-date">2026-10-25 (일 · /mac-apple-account-login-error-fix · 평가 92/100점)</span>
+        <a href="blog/wordpress/posts/202610/2026-10-25-2.html" class="post-item-btn">
+          👁️ 포스트 열기 & 블록 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-wp">워드프레스</span>
+          <a href="blog/wordpress/posts/202610/2026-10-25-3.html" class="post-item-title">
+            연금저축펀드 vs 개인형 퇴직연금(IRP) 차이점 및 세액공제 한도·중도인출·수령 세율 비교표
+          </a>
+        </div>
+        <span class="post-item-date">2026-10-25 (일 · /pension-savings-fund-vs-irp-comparison · 평가 90/100점)</span>
+        <a href="blog/wordpress/posts/202610/2026-10-25-3.html" class="post-item-btn">
+          👁️ 포스트 열기 & 블록 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
           <span class="post-platform-tag tag-tistory">티스토리</span>
           <a href="blog/tistory/posts/202610/2026-10-25.html" class="post-item-title">
             ChatGPT 등 AI로 블로그 초안 작성 후 사실관계(팩트체크) 검증하는 5단계 방법
           </a>
         </div>
-        <span class="post-item-date">2026-10-25 (일 · AI·IT 활용법 · 평가 96/100점)</span>
-        <a href="blog/tistory/posts/202610/2026-10-25.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-tistory">티스토리</span>
@@ -695,11 +743,6 @@
             국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)
           </a>
         </div>
-        <span class="post-item-date">2026-10-25 (일 · 은퇴·연금·생활비 · 평가 88/100점)</span>
-        <a href="blog/tistory/posts/202610/2026-10-25-2.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-tistory">티스토리</span>
@@ -707,11 +750,6 @@
             순금(24K) 주얼리 vs 골드바 vs KRX 금현물 구매 방법 및 수수료·세금 비교표
           </a>
         </div>
-        <span class="post-item-date">2026-10-25 (일 · 제품 비교·사용법 · 평가 80/100점)</span>
-        <a href="blog/tistory/posts/202610/2026-10-25-3.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
@@ -731,27 +769,6 @@
           <span class="post-platform-tag tag-naver">네이버</span>
           <a href="blog/naver/posts/202610/2026-10-25-3.html" class="post-item-title">
             맛있는 인생 2막을 위한 '송강' 식도락 가이드! 제철 밥상과 건강 챙기는 꿀팁
-          </a>
-        </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
-          <span class="post-platform-tag tag-naver">네이버</span>
-          <a href="blog/naver/posts/202610/2026-10-25-4.html" class="post-item-title">
-            반계리 은행나무 금리 비교와 만기 재예치 노하우, 이자 세금 아끼는 3대 절세 비결
-          </a>
-        </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
-          <span class="post-platform-tag tag-naver">네이버</span>
-          <a href="blog/naver/posts/202610/2026-10-25-5.html" class="post-item-title">
-            인생 2막을 풍요롭게 채우는 취미 '본드걸'! 건강과 즐거움을 함께 잡는 3가지 노하우
-          </a>
-        </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
-          <span class="post-platform-tag tag-naver">네이버</span>
-          <a href="blog/naver/posts/202610/2026-10-24.html" class="post-item-title">
-            맛있는 인생 2막을 위한 '상어' 식도락 가이드! 제철 밥상과 건강 챙기는 꿀팁
           </a>
         </div>
       <!-- RECENT_POSTS_LIST_END -->
@@ -784,7 +801,7 @@
           <div class="doc-card-desc">연금, 절세, 건강 등 시니어 특화 키워드</div>
         </a>
 
-        <a href="blog/workflow/index.html" class="doc-link-card" style="border-color: #c7d2fe; background: #eef2ff;">
+        <a href="docs/index.html#daily-workflow" class="doc-link-card" style="border-color: #bae6fd; background: #f0f7fb;">
           <div class="doc-icon">⚙️</div>
           <div class="doc-card-title">8단계 통합 워크플로우 작업실</div>
           <div class="doc-card-desc">네이버·티스토리 주제 평가, 팩트체크, CSV 발행 기록 허브</div>

@@ -1368,10 +1368,9 @@ def update_naver_index_html(today_str, trends, posts):
       <div class="header-links">
         <a href="https://blog.naver.com/ms7park" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--naver-green); color: #fff; border-color: var(--naver-green); font-weight: 700;">🔗 내 네이버 블로그 (ms7park) ↗</a>
         <a href="../tistory/index.html" class="header-link" style="background: #fff7ed; color: #c2410c; border-color: #fed7aa; font-weight: 700;">🟠 티스토리 작업실</a>
+        <a href="../wordpress/index.html" class="header-link" style="background: #f0f7fb; color: #0073aa; border-color: #bae6fd; font-weight: 700;">🔵 워드프레스 작업실</a>
         <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
         <a href="../../docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
-        <a href="../../docs/04-prompts/01-practical-prompts.md" class="header-link" target="_blank">💬 프롬프트 모음</a>
-        <a href="../../docs/05-templates/01-blog-templates.md" class="header-link" target="_blank">📑 서식 템플릿</a>
       </div>
     </div>
   </header>
@@ -1674,10 +1673,10 @@ def run_batch(target_date=None, force=False):
         force_arg = " --force" if force else ""
         os.system(f"{sys.executable} {tistory_script} {today_str}{force_arg}")
 
-    # 5-3. 8단계 통합 워크플로우 작업실 배치 연동 실행
-    workflow_script = os.path.join(BASE_DIR, "tools", "daily_workflow_batch.py")
-    if os.path.exists(workflow_script):
-        os.system(f"{sys.executable} {workflow_script} {today_str}")
+    # 5-3. 워드프레스(WordPress) 코너스톤 SEO 작업실 배치 연동 실행
+    wp_script = os.path.join(BASE_DIR, "tools", "daily_wordpress_batch.py")
+    if os.path.exists(wp_script):
+        os.system(f"{sys.executable} {wp_script} {today_str}")
 
     # 6. docs/index.html 전체 가이드 뷰어 동기화
     gen_script = os.path.join(BASE_DIR, "tools", "generate_html.py")

@@ -1623,6 +1623,7 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
         <a href="https://www.tistory.com/" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--tistory); color: #fff; border-color: var(--tistory);">🔗 티스토리 홈 ↗</a>
         <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
         <a href="../naver/index.html" class="header-link">🟢 네이버 작업실</a>
+        <a href="../wordpress/index.html" class="header-link" style="background: #f0f7fb; color: #0073aa; border-color: #bae6fd;">🔵 워드프레스 작업실</a>
         <a href="../../docs/index.html#tistory-guide" class="header-link">📚 티스토리 가이드</a>
       </div>
     </div>

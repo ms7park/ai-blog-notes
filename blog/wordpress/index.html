@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>워드프레스(WordPress) 코너스톤 SEO 작업실 | AI Blog Notes</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    :root {
+      --wp: #0073aa;
+      --wp-dark: #005177;
+      --wp-light: #f0f7fb;
+      --wp-border: #bae6fd;
+      --text-main: #191f28;
+      --text-sub: #4e5968;
+      --text-muted: #8b95a1;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e5e8eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+    .header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 12px; }
+    .wp-badge {
+      background: var(--wp);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .brand-title { font-size: 18px; font-weight: 800; }
+    .header-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .header-link {
+      font-size: 13px;
+      color: var(--text-sub);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .header-link:hover { border-color: var(--wp); color: var(--wp-dark); }
+    .container { max-width: 1120px; margin: 28px auto 0; padding: 0 20px; }
+    .hero-banner {
+      background: linear-gradient(135deg, #0073aa 0%, #005177 100%);
+      color: #fff;
+      padding: 32px 36px;
+      border-radius: 16px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(0, 115, 170, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .hero-text h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .hero-text p { font-size: 14px; opacity: 0.94; max-width: 650px; }
+    .hero-stats { display: flex; gap: 16px; }
+    .stat-box {
+      background: rgba(255, 255, 255, 0.16);
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .stat-number { font-size: 21px; font-weight: 800; display: block; }
+    .stat-label { font-size: 12px; opacity: 0.9; }
+    .main-grid { display: grid; grid-template-columns: 1fr 350px; gap: 24px; }
+    @media (max-width: 920px) { .main-grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title { font-size: 17px; font-weight: 750; }
+    .post-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      background: #fff;
+      margin-bottom: 16px;
+    }
+    .post-card.today {
+      border-color: var(--wp);
+      box-shadow: 0 4px 14px rgba(0, 115, 170, 0.08);
+    }
+    .cat-pill {
+      background: var(--wp-light);
+      color: var(--wp-dark);
+      border: 1px solid var(--wp-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .slug-pill {
+      background: #f1f5f9;
+      color: #334155;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: monospace;
+    }
+    .score-pill {
+      background: #fef3c7;
+      color: #b45309;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .post-card-title {
+      font-size: 17px;
+      font-weight: 750;
+      color: var(--text-main);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .post-card-title:hover { color: var(--wp-dark); text-decoration: underline; }
+    .action-btn {
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-btn-primary { background: var(--wp); color: #fff; border-color: var(--wp); }
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #111827; color: #fff; padding: 12px 24px; border-radius: 8px;
+      font-size: 13.5px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.2s;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <span class="wp-badge">WORDPRESS BLOG</span>
+        <div class="brand-title">워드프레스(WP) 코너스톤 SEO 작업실</div>
+      </div>
+      <div class="header-links">
+        <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
+        <a href="../naver/index.html" class="header-link">🟢 네이버 작업실</a>
+        <a href="../tistory/index.html" class="header-link">🟠 티스토리 작업실</a>
+        <a href="../../docs/index.html#wordpress-guide" class="header-link">📚 워드프레스 SEO 가이드</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero-banner">
+      <div class="hero-text">
+        <h1>🔵 워드프레스(WordPress) 구텐베르크 & 구글 SEO 작업실</h1>
+        <p>포털 제약 없는 100% 나만의 독립 디지털 자산! 영문 URL 슬러그, Rank Math 메타 설명, Key Takeaways, 비교표, FAQ 스키마(3문 3답)까지 갖춘 코너스톤 콘텐츠를 관리합니다.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-number">5 편</span>
+          <span class="stat-label">코너스톤 원고</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">Rank Math</span>
+          <span class="stat-label">SEO 최적화</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-grid">
+      <div class="left-col">
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">📝 워드프레스 코너스톤(Cornerstone) 포스팅 목록</div>
+            <span style="font-size: 12px; color: var(--text-muted);">총 5편 작성됨</span>
+          </div>
+          
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wp-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 Retirement & Pension (은퇴·연금·건보료)</span>
+                  <span class="slug-pill">🔗 /retirement-health-insurance-calculation-guide</span>
+                  <span class="score-pill">🎯 92/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#1편</span>
+              </div>
+              <a href="posts/202610/2026-10-25.html" class="post-card-title">퇴직 후 건강보험료 계산 기준 및 줄이는 법: 피부양자 자격 요건 vs 임의계속가입 vs 지역가입자 비교표</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">퇴직 후 건강보험료 부담을 줄이려면 ① 자녀·배우자 등 직장가입자의 피부양자 등록 가능 여부(연간 합산소득 2,000만 원 이하 및 재산 과세표준 5.4억 원 이하)를 1순위로 확인해야 합니다. 피부양자 등재가 어렵다면 ② 퇴직 전 직장 건보료 수준을 최대 36개월간 ...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>구텐베르크 블록 · FAQ 스키마 포함 · 분량: 약 4,702자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 블록 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wp-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 AI & Tech Guide (AI·IT 매뉴얼)</span>
+                  <span class="slug-pill">🔗 /mac-apple-account-login-error-fix</span>
+                  <span class="score-pill">🎯 92/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#2편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-2.html" class="post-card-title">맥(Mac)에서 Apple 계정(Apple ID) 로그인 오류 및 설정 무한 로딩 해결하는 5단계 순서</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">맥(Mac) 시스템 설정에서 Apple 계정(Apple ID) 로그인이 멈추거나 '서버에 연결할 수 없음' 오류가 발생할 때는 ① Apple 시스템 상태 페이지 확인 → ② 날짜 및 시간 자동 설정 점검 → ③ VPN·방화벽 해제 → ④ 활성 상태 보기에서 인증 프로세...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>구텐베르크 블록 · FAQ 스키마 포함 · 분량: 약 4,557자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25-2.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-2.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 블록 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wp-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 Tax & Asset Management (절세·자산관리)</span>
+                  <span class="slug-pill">🔗 /pension-savings-fund-vs-irp-comparison</span>
+                  <span class="score-pill">🎯 90/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#3편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-3.html" class="post-card-title">연금저축펀드 vs 개인형 퇴직연금(IRP) 차이점 및 세액공제 한도·중도인출·수령 세율 비교표</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">연말정산·종합소득세 세액공제를 목적으로 한다면 ① 입출금 유연성이 높고 주식형 ETF 100% 투자가 가능한 '연금저축펀드'에 연 600만 원을 먼저 채우고, ② 나머지 연 300만 원을 '개인형 퇴직연금(IRP)'에 추가 납입하여 합산 연 900만 원 세액공제 한도(...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>구텐베르크 블록 · FAQ 스키마 포함 · 분량: 약 4,135자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25-3.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-3.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 블록 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wp-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 AI & Tech Guide (AI·IT 매뉴얼)</span>
+                  <span class="slug-pill">🔗 /deploy-static-website-github-vercel-guide</span>
+                  <span class="score-pill">🎯 90/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#4편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-4.html" class="post-card-title">GitHub와 Vercel을 이용해 무료로 개인 웹사이트·블로그 포털 배포하는 4단계 방법</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">직접 만든 HTML 파일이나 웹 프로젝트를 인터넷에 무료로 공개하려면 ① GitHub에 저장소(Repository)를 만들고 `index.html` 파일을 업로드한 뒤, ② Vercel(vercel.com)에 GitHub 계정으로 로그인하여 해당 저장소를 'Import...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>구텐베르크 블록 · FAQ 스키마 포함 · 분량: 약 4,445자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25-4.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-4.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 블록 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wp-dark);">📍 2026-10-25 (일)</span>
+                  <span class="cat-pill">📂 AI & Tech Guide (AI·IT 매뉴얼)</span>
+                  <span class="slug-pill">🔗 /google-search-console-sitemap-rss-setup-guide</span>
+                  <span class="score-pill">🎯 88/100점</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#5편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-5.html" class="post-card-title">블로그 구글 서치 콘솔(Google Search Console) 등록 및 사이트맵(sitemap.xml)·RSS 제출 4단계 방법</a>
+              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">새로 개설한 워드프레스나 티스토리 블로그를 구글 검색에 빠르게 노출시키려면 ① Google Search Console에서 내 사이트 주소를 등록하고, ② HTML 메타태그(또는 DNS 레코드)로 소유권을 확인한 뒤, ③ [Sitemaps] 메뉴에 `sitemap.xml...</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
+                <div>구텐베르크 블록 · FAQ 스키마 포함 · 분량: 약 4,430자 (공백 제외)</div>
+                <div style="display:flex; gap:8px;">
+                  <a href="posts/202610/2026-10-25-5.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-5.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 블록 복사</a>
+                </div>
+              </div>
+            </article>
+        
+        </section>
+      </div>
+
+      <div class="right-col">
+        <section class="card" style="border: 2px solid var(--wp);">
+          <div class="card-title" style="margin-bottom: 12px;">📂 워드프레스 5대 필러(Pillar) 카테고리</div>
+          <div style="font-size: 13px; color: var(--text-sub); display: flex; flex-direction: column; gap: 10px;">
+            <div><strong>1. Retirement & Pension (30%)</strong><br><span style="font-size:12px; color:var(--text-muted);">퇴직 후 건보료, 국민연금, 노후 현금흐름 마스터 가이드</span></div>
+            <div><strong>2. Tax & Asset Management (25%)</strong><br><span style="font-size:12px; color:var(--text-muted);">연금저축·IRP·ISA 절세 비교 및 안전자산 포트폴리오</span></div>
+            <div><strong>3. AI & Tech Guide (25%)</strong><br><span style="font-size:12px; color:var(--text-muted);">ChatGPT·Mac·GitHub·Vercel·서치콘솔 기술 매뉴얼</span></div>
+            <div><strong>4. Senior Health & Benefits (10%)</strong><br><span style="font-size:12px; color:var(--text-muted);">국가검진, 임플란트 건보 혜택, 정부지원금 조건</span></div>
+            <div><strong>5. Active Lifestyle & Gear (10%)</strong><br><span style="font-size:12px; color:var(--text-muted);">파크골프 공인 장비, 트레킹, 생활가전 스펙 비교</span></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-title" style="margin-bottom: 12px;">✅ Rank Math / Yoast 온페이지 SEO 체크리스트</div>
+          <label class="check-row"><input type="checkbox" class="wp-chk" onchange="updateWpCount()"> <span>고유주소(Permalink)를 짧은 영문 하이픈 슬러그로 설정했다</span></label>
+          <label class="check-row"><input type="checkbox" class="wp-chk" onchange="updateWpCount()"> <span>Focus Keyphrase를 제목·메타설명·첫 문단·H2에 포함했다</span></label>
+          <label class="check-row"><input type="checkbox" class="wp-chk" onchange="updateWpCount()"> <span>도입부 직후 Key Takeaways 요약 박스를 배치했다</span></label>
+          <label class="check-row"><input type="checkbox" class="wp-chk" onchange="updateWpCount()"> <span>구텐베르크 비교표(Table)와 FAQ(3문 3답) 블록을 넣었다</span></label>
+          <label class="check-row"><input type="checkbox" class="wp-chk" onchange="updateWpCount()"> <span>1순위 공식 기관 외부 링크(Outbound Link)를 연결했다</span></label>
+          <label class="check-row"><input type="checkbox" class="wp-chk" onchange="updateWpCount()"> <span>네이버·티스토리 원고와 중복되지 않는 독립 원고로 작성했다</span></label>
+          <div id="wpStatus" style="margin-top: 10px; font-size: 12.5px; font-weight: 700; color: var(--wp-dark);">0/6 항목 완료</div>
+        </section>
+
+        <section class="card">
+          <div class="card-title" style="margin-bottom: 10px;">⚡ 워드프레스 코너스톤 AI 프롬프트</div>
+          <p style="font-size: 12.5px; color: var(--text-sub); margin-bottom: 12px;">
+            영문 슬러그, 메타 설명, Key Takeaways, 비교표, FAQ 3문 3답을 한 번에 생성하는 워드프레스 전용 프롬프트입니다.
+          </p>
+          <button class="action-btn action-btn-primary" style="width: 100%; justify-content: center; padding: 10px;" onclick="copyText('# 워드프레스(WordPress) 검색형 코너스톤 블로그 글 작성 지침\n\n당신은 구글 SEO(E-E-A-T)와 워드프레스 구텐베르크(Gutenberg) 에디터 구조에 정통한 전문 콘텐츠 에디터입니다.\n1. 상단에 워드프레스 SEO 메타데이터(Focus Keyphrase, SEO Title, 영문 URL Slug, Meta Description 155자 이내)를 먼저 제시합니다.\n2. 도입부 직후 Key Takeaways(핵심 요약 콜아웃)를 배치합니다.\n3. 본문은 단계별 가이드(H2/H3) + 조건별 비교표(Table) + 주의사항으로 구성합니다.\n4. 하단에 구글 리치 스니펫용 자주 묻는 질문(FAQ 3문 3답)과 1순위 공식 기관 참고 자료 링크를 포함합니다.')">
+            📋 워드프레스 SEO 프롬프트 복사
+          </button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">✓ 클립보드에 복사되었습니다!</div>
+  <script>
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const t = document.getElementById("toast");
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2200);
+      });
+    }
+    function updateWpCount() {
+      const chks = document.querySelectorAll(".wp-chk");
+      let done = 0;
+      chks.forEach((c, i) => {
+        if (c.checked) done++;
+        localStorage.setItem("wp_seo_chk_" + i, c.checked ? "1" : "0");
+      });
+      document.getElementById("wpStatus").textContent = done + "/6 항목 완료";
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+      const chks = document.querySelectorAll(".wp-chk");
+      chks.forEach((c, i) => {
+        if (localStorage.getItem("wp_seo_chk_" + i) === "1") c.checked = true;
+      });
+      updateWpCount();
+    });
+  </script>
+</body>
+</html>
