@@ -447,6 +447,17 @@
       background: var(--naver-light);
       color: var(--naver-dark);
     }
+    .tag-tistory {
+      background: var(--tistory-light);
+      color: var(--tistory);
+    }
+    .p-btn-tistory {
+      background: var(--tistory);
+      color: #fff;
+    }
+    .p-btn-tistory:hover {
+      background: #c2410c;
+    }
 
     .post-item-title {
       font-size: 15px;
@@ -497,6 +508,7 @@
         <a href="https://blog.naver.com/ms7park" target="_blank" rel="noopener noreferrer" class="header-link" style="border-color: var(--naver); color: var(--naver-dark); font-weight: 700;">🔗 내 블로그 (ms7park) ↗</a>
         <a href="docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
         <a href="blog/naver/index.html" class="header-link header-link-naver">🟢 네이버 블로그 포털</a>
+        <a href="blog/tistory/index.html" class="header-link" style="background: var(--tistory-light); color: var(--tistory); border-color: #fed7aa;">🟠 티스토리 포털</a>
       </div>
     </div>
   </header>
@@ -567,40 +579,46 @@
         </div>
       </div>
 
-      <!-- Platform 2: Tistory (Coming Soon) -->
+      <!-- Platform 2: Tistory (Active) -->
       <div class="platform-card tistory">
         <div>
           <div class="platform-card-header">
             <div class="platform-brand">
               <div class="platform-logo">T</div>
-              <div class="platform-name">티스토리 블로그</div>
+              <div class="platform-name">티스토리 · 똑똑한 생활탐구</div>
             </div>
-            <span class="status-badge badge-soon">🟠 2단계 확장 예정</span>
+            <span class="status-badge badge-active">🟢 운영 중</span>
           </div>
 
           <p class="platform-desc">
-            구글 애드센스(AdSense) 연동으로 안정적인 달러($) 수익 창출! 연금, 절세, 정부지원금 등 고단가 정보성 키워드 중심 운영.
+            <strong>Google Trends 상승 검색어</strong>를 장기 검색형 질문(방법·비교·절차)으로 전환! 공식 자료 검증과 7단계 구성으로 구글 검색 유입 및 애드센스 수익을 구축합니다.
           </p>
 
           <div class="platform-meta-box">
             <div class="meta-row">
-              <span class="meta-label">구축 상태</span>
-              <span class="meta-value" style="color: var(--tistory);">플랫폼 전략 가이드 완성</span>
+              <span class="meta-label">운영 목표</span>
+              <span class="meta-value" style="color: var(--tistory);">하루 1편 / 주 5편 (100점 평가 선별)</span>
             </div>
             <div class="meta-row">
               <span class="meta-label">주요 타겟</span>
-              <span class="meta-value">다음(Daum) & 구글 E-E-A-T</span>
+              <span class="meta-value">구글(Google) SEO & 다음 검색</span>
             </div>
             <div class="meta-row">
               <span class="meta-label">수익 모델</span>
-              <span class="meta-value">구글 애드센스 달러 파이프라인</span>
+              <span class="meta-value">구글 애드센스(AdSense) 달러 수익</span>
             </div>
           </div>
         </div>
 
         <div class="platform-btn-group">
-          <a href="docs/index.html#platform-comparison" class="p-btn p-btn-sub">
-            📖 티스토리 공략 가이드 보기
+          <a href="blog/tistory/index.html" class="p-btn p-btn-tistory">
+            🟠 티스토리 블로그 작업실 이동
+          </a>
+          <a href="blog/tistory/posts/202610/2026-10-25.html" class="p-btn p-btn-sub">
+            👁️ 오늘자 티스토리 글 보기 & 서식 복사
+          </a>
+          <a href="docs/index.html#tistory-guide" class="p-btn p-btn-sub">
+            📖 티스토리 개설·운영 가이드
           </a>
         </div>
       </div>
@@ -659,16 +677,47 @@
       <!-- RECENT_POSTS_LIST_START -->
       <div class="post-item-row">
         <div class="post-item-left">
+          <span class="post-platform-tag tag-tistory">티스토리</span>
+          <a href="blog/tistory/posts/202610/2026-10-25.html" class="post-item-title">
+            ChatGPT 등 AI로 블로그 초안 작성 후 사실관계(팩트체크) 검증하는 5단계 방법
+          </a>
+        </div>
+        <span class="post-item-date">2026-10-25 (일 · AI·IT 활용법 · 평가 96/100점)</span>
+        <a href="blog/tistory/posts/202610/2026-10-25.html" class="post-item-btn">
+          👁️ 포스트 열기 & 서식 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-tistory">티스토리</span>
+          <a href="blog/tistory/posts/202610/2026-10-25-2.html" class="post-item-title">
+            국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)
+          </a>
+        </div>
+        <span class="post-item-date">2026-10-25 (일 · 은퇴·연금·생활비 · 평가 88/100점)</span>
+        <a href="blog/tistory/posts/202610/2026-10-25-2.html" class="post-item-btn">
+          👁️ 포스트 열기 & 서식 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-tistory">티스토리</span>
+          <a href="blog/tistory/posts/202610/2026-10-25-3.html" class="post-item-title">
+            순금(24K) 주얼리 vs 골드바 vs KRX 금현물 구매 방법 및 수수료·세금 비교표
+          </a>
+        </div>
+        <span class="post-item-date">2026-10-25 (일 · 제품 비교·사용법 · 평가 80/100점)</span>
+        <a href="blog/tistory/posts/202610/2026-10-25-3.html" class="post-item-btn">
+          👁️ 포스트 열기 & 서식 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
           <a href="blog/naver/posts/202610/2026-10-25.html" class="post-item-title">
             웨스트 햄 대 사우샘프턴 이슈 주목! West Ham United vs Southampt... - 은퇴자 관점에서 본 핵심 체크포인트
           </a>
         </div>
-        <span class="post-item-date">2026-10-25 (일)</span>
-        <a href="blog/naver/posts/202610/2026-10-25.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
@@ -676,11 +725,6 @@
             내 몸 살리는 '한의사' 핵심 가이드! 5060 세대가 꼭 알아야 할 건강 수칙 3가지
           </a>
         </div>
-        <span class="post-item-date">2026-10-25 (일 · 시니어 건강 & 웰빙 (연관 키워드: 의사))</span>
-        <a href="blog/naver/posts/202610/2026-10-25-2.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
@@ -688,11 +732,6 @@
             맛있는 인생 2막을 위한 '송강' 식도락 가이드! 제철 밥상과 건강 챙기는 꿀팁
           </a>
         </div>
-        <span class="post-item-date">2026-10-25 (일 · 품미인생 & 맛있는 일상 (연관 키워드: 배))</span>
-        <a href="blog/naver/posts/202610/2026-10-25-3.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
@@ -700,11 +739,6 @@
             반계리 은행나무 금리 비교와 만기 재예치 노하우, 이자 세금 아끼는 3대 절세 비결
           </a>
         </div>
-        <span class="post-item-date">2026-10-25 (일 · 노후 자산관리 & 연금·절세 (연관 키워드: 은행))</span>
-        <a href="blog/naver/posts/202610/2026-10-25-4.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
@@ -712,11 +746,6 @@
             인생 2막을 풍요롭게 채우는 취미 '본드걸'! 건강과 즐거움을 함께 잡는 3가지 노하우
           </a>
         </div>
-        <span class="post-item-date">2026-10-25 (일 · 시니어 취미 & 스포츠·여행 (연관 키워드: 카메라))</span>
-        <a href="blog/naver/posts/202610/2026-10-25-5.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
@@ -724,35 +753,6 @@
             맛있는 인생 2막을 위한 '상어' 식도락 가이드! 제철 밥상과 건강 챙기는 꿀팁
           </a>
         </div>
-        <span class="post-item-date">2026-10-24 (토 · 품미인생 & 맛있는 일상 (연관 키워드: 감))</span>
-        <a href="blog/naver/posts/202610/2026-10-24.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
-          <span class="post-platform-tag tag-naver">네이버</span>
-          <a href="blog/naver/posts/202610/2026-10-24-2.html" class="post-item-title">
-            맛있는 인생 2막을 위한 '사과' 식도락 가이드! 제철 밥상과 건강 챙기는 꿀팁
-          </a>
-        </div>
-        <span class="post-item-date">2026-10-24 (토 · 품미인생 & 맛있는 일상 (연관 키워드: 사과))</span>
-        <a href="blog/naver/posts/202610/2026-10-24-2.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
-          <span class="post-platform-tag tag-naver">네이버</span>
-          <a href="blog/naver/posts/202610/2026-10-24-3.html" class="post-item-title">
-            맛있는 인생 2막을 위한 '화재' 식도락 가이드! 제철 밥상과 건강 챙기는 꿀팁
-          </a>
-        </div>
-        <span class="post-item-date">2026-10-24 (토 · 품미인생 & 맛있는 일상 (연관 키워드: 감))</span>
-        <a href="blog/naver/posts/202610/2026-10-24-3.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
       <!-- RECENT_POSTS_LIST_END -->
     </section>
 

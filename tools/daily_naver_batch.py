@@ -1367,6 +1367,7 @@ def update_naver_index_html(today_str, trends, posts):
       </div>
       <div class="header-links">
         <a href="https://blog.naver.com/ms7park" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--naver-green); color: #fff; border-color: var(--naver-green); font-weight: 700;">🔗 내 네이버 블로그 (ms7park) ↗</a>
+        <a href="../tistory/index.html" class="header-link" style="background: #fff7ed; color: #c2410c; border-color: #fed7aa; font-weight: 700;">🟠 티스토리 작업실</a>
         <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
         <a href="../../docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
         <a href="../../docs/04-prompts/01-practical-prompts.md" class="header-link" target="_blank">💬 프롬프트 모음</a>
@@ -1666,6 +1667,12 @@ def run_batch(target_date=None, force=False):
 
     # 5. 루트 index.html 멀티 블로그 포털 최근 포스트 갱신
     update_portal_index_html(today_str, posts)
+
+    # 5-2. 티스토리 일별 자동화 배치 연동 실행 (Google Trends 상승 검색어 기반)
+    tistory_script = os.path.join(BASE_DIR, "tools", "daily_tistory_batch.py")
+    if os.path.exists(tistory_script):
+        force_arg = " --force" if force else ""
+        os.system(f"{sys.executable} {tistory_script} {today_str}{force_arg}")
 
     # 6. docs/index.html 전체 가이드 뷰어 동기화
     gen_script = os.path.join(BASE_DIR, "tools", "generate_html.py")

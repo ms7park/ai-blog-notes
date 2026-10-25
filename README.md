@@ -39,16 +39,20 @@ ai-blog-notes/
 │   ├── 05-templates/           # [템플릿] 정보형, 리뷰형, 비교분석형, 일상에세이형 글쓰기 틀
 │   └── notes/                  # [메모] 블로그 아이디어 및 영감 기록장
 ├── blog/                       # [발행] 플랫폼별 블로그 작업 공간
-│   └── naver/                  # 네이버 블로그 일별 작업실 (캘린더, 실시간 검색어 Top 10)
-│       ├── index.html          # 네이버 블로그 작업 대시보드
-│       └── posts/              # 일별 포스팅 초안 (년월 YYYYMM/ 하위 .md, 서식 .html)
+│   ├── naver/                  # 🟢 네이버 블로그 일별 작업실 (캘린더, 실시간 검색어 Top 10)
+│   │   ├── index.html          # 네이버 블로그 작업 대시보드
+│   │   └── posts/              # 일별 포스팅 초안 (년월 YYYYMM/ 하위 .md, 서식 .html)
+│   └── tistory/                # 🟠 티스토리 블로그 작업실 (Google Trends 100점 평가 & 애드센스)
+│       ├── index.html          # 티스토리 작업 대시보드 (주제 평가표, 5대 카테고리, 체크리스트)
+│       └── posts/              # 티스토리 7단계 검색형 포스팅 (년월 YYYYMM/ 하위 .md, .html)
 ├── scripts/                    # [스케줄러] macOS 네이티브 배치 (initClaude 표준)
 │   ├── daily-naver-blog.sh     # caffeinate 절전 차단 & 실행 래퍼 스크립트
 │   ├── install-launchd.sh      # launchd LaunchAgent 적재 (매일 00:00 실행)
 │   ├── uninstall-launchd.sh    # launchd 등록 해제 스크립트
 │   └── launchd/                # com.user.daily-naver-blog.plist
 └── tools/                      # [도구] 보조 분석 및 자동화 스크립트
-    ├── daily_naver_batch.py    # 실시간 트렌드 수집 & 일별 포스팅 자동 생성 배치
+    ├── daily_naver_batch.py    # 네이버 실시간 트렌드 수집 & 일별 포스팅 자동 생성 배치
+    ├── daily_tistory_batch.py  # 티스토리 Google Trends 상승 검색어 평가 & 7단계 글 생성 배치
     ├── generate_html.py        # docs/index.html 가이드 뷰어 갱신 빌더
     └── blog_helper.py          # 글자수, 키워드 밀도, SEO 구조 분석 CLI 도구
 ```

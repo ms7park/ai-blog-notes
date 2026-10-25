@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[2026-10-25] 티스토리 포스팅 | 국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+  <style>
+    :root {
+      --tistory: #ea580c;
+      --tistory-dark: #c2410c;
+      --tistory-light: #fff7ed;
+      --tistory-border: #fed7aa;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-tag {
+      background: var(--tistory);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-main);
+    }
+
+    .btn:hover { background: #f3f4f6; }
+
+    .btn-tistory {
+      background: var(--tistory);
+      color: var(--white);
+      border-color: var(--tistory);
+    }
+    .btn-tistory:hover { background: var(--tistory-dark); color: var(--white); }
+
+    .container {
+      max-width: 860px;
+      margin: 32px auto 0;
+      padding: 0 16px;
+    }
+
+    .meta-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--tistory);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .meta-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--tistory-light);
+      color: var(--tistory-dark);
+      border: 1px solid var(--tistory-border);
+    }
+
+    .badge-score {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .post-title {
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      color: #111827;
+    }
+
+    .meta-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      background: var(--bg);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .meta-info-item span { color: var(--text-muted); margin-right: 6px; }
+    .meta-info-item strong { color: var(--text-main); }
+
+    .editor-preview {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .editor-preview h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--tistory);
+      color: #111;
+    }
+
+    .editor-preview h2 {
+      font-size: 19.5px;
+      font-weight: 750;
+      margin: 34px 0 14px;
+      color: #111827;
+      border-left: 4px solid var(--tistory);
+      padding-left: 12px;
+    }
+
+    .editor-preview h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      margin: 24px 0 10px;
+      color: #1f2937;
+    }
+
+    .editor-preview p {
+      margin-bottom: 16px;
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: #374151;
+      word-break: keep-all;
+    }
+
+    .editor-preview ul, .editor-preview ol {
+      margin: 12px 0 20px 22px;
+    }
+
+    .editor-preview li {
+      margin-bottom: 8px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #374151;
+    }
+
+    .editor-preview blockquote {
+      border: 1px solid var(--tistory-border);
+      border-left: 4px solid var(--tistory);
+      background: var(--tistory-light);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      color: #7c2d12;
+      font-size: 14.5px;
+    }
+
+    .editor-preview table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 24px;
+      font-size: 14px;
+    }
+
+    .editor-preview th {
+      background: #fff7ed;
+      color: #9a3412;
+      font-weight: 700;
+      border: 1px solid #fed7aa;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .editor-preview td {
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      color: #374151;
+      vertical-align: top;
+    }
+
+    .editor-preview tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+
+    .editor-preview a {
+      color: var(--tistory-dark);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="brand-tag">TISTORY · 똑똑한 생활탐구</span>
+      <span class="nav-title">티스토리 정보형 포스팅: 2026-10-25 (일) · 은퇴·연금·생활비</span>
+    </div>
+    <div class="nav-actions">
+      <a href="../../index.html" class="btn">📂 티스토리 작업실 홈</a>
+      <a href="https://www.tistory.com/" target="_blank" rel="noopener noreferrer" class="btn" style="border-color: var(--tistory); color: var(--tistory-dark); font-weight: 700;">
+        🔗 티스토리 바로가기 ↗
+      </a>
+      <a href="2026-10-25-2.md" target="_blank" class="btn">📄 원본 MD 열기</a>
+      <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·인용구 서식 그대로 붙여넣기 됩니다">
+        🟠 티스토리 에디터(기본모드) 서식 복사
+      </button>
+      <button class="btn" id="copyMarkdownBtn" title="티스토리 마크다운 모드용 원문을 복사합니다">
+        📝 마크다운 원문 복사
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="meta-card">
+      <div class="meta-badges">
+        <span class="badge">📂 카테고리: 은퇴·연금·생활비</span>
+        <span class="badge">📈 Google Trends 상승 검색어: [경상수지]</span>
+        <span class="badge badge-score">🎯 주제 평가 점수: 88/100점</span>
+      </div>
+      <h1 class="post-title">국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)</h1>
+
+      <div class="meta-info-grid">
+        <div class="meta-info-item">
+          <span>작성일자:</span><strong>2026-10-25 (일)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>타겟 검색엔진:</span><strong>구글(Google) & 다음(Daum)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>글 구성:</span><strong>티스토리 7단계 표준 템플릿 (표 포함)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>수익화 타겟:</span><strong>구글 애드센스 승인·노출 최적화</strong>
+        </div>
+      </div>
+    </div>
+
+    <article class="editor-preview" id="postArticle"></article>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script id="rawMarkdown" type="text/plain">
+# 국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)
+
+> **작성일**: 2026-10-25 (일)  
+> **플랫폼**: 티스토리 블로그 (구글 검색 & 애드센스 최적화 정보형)  
+> **카테고리**: 은퇴·연금·생활비  
+> **Google Trends 상승 검색어**: `경상수지` (500+)  
+> **주제 평가 점수**: **88/100점** (관심도 4/5 · 의도 명확성 5/5 · 경쟁 빈틈 4/5 · 작성 역량 4/5 · 장기 검색성 5/5)  
+> **검색 질문(Search Intent)**: '경상수지' 등 거시경제 지표와 물가·환율 변동이 내 국민연금 수령액 및 노후 자산에 미치는 영향과 공식 조회 방법은?
+
+---
+
+## 💡 티스토리 발행용 메타 정보 & 제목 후보
+
+### 1) 제목 후보 3개
+1. `국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)`
+2. `경상수지·물가 변동 시 국민연금 수령액은 어떻게 바뀔까? 공식 사이트 확인 절차`
+3. `은퇴 전 필수 확인! 국민연금·퇴직연금 예상 수령액 계산 방법과 물가 연동 기준`
+
+### 2) 최종 추천 제목
+**국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)**
+
+### 3) 핵심 답변 요약 (도입부 상단 배치용)
+> **📌 핵심 요약**: 국민연금 예상 수령액은 **국민연금공단 '내 연금 알아보기' 공식 누리집** 또는 **모바일 앱 '내 곁에 국민연금'**에서 공동·금융·간편인증 로그인 후 1분 만에 조회할 수 있습니다. 특히 경상수지·환율·소비자물가지수 등 거시경제 지표가 변동하더라도, 국민연금은 **매년 전국소비자물가변동률을 반영해 수령액을 인상(실질가치 보전)**하므로 은퇴 후 인플레이션 방어에 가장 핵심적인 현금 흐름 역할을 합니다.
+
+---
+
+## 1. 도입부: 왜 지금 국민연금 예상 수령액과 물가 반영 기준을 확인해야 할까요?
+
+최근 Google Trends에서 **'경상수지'** 관련 뉴스(韓 2분기 경상흑자 세계 2위...‘제조업 강국’ 독·일 합계마저 제쳐)가 상승 검색어로 주목받으면서 환율, 수출입 경기, 물가 흐름이 내 노후 자산에 어떤 영향을 주는지 궁금해하는 분들이 많습니다.
+
+은퇴를 앞두거나 이미 은퇴 생활을 시작한 분들에게 가장 중요한 질문은 단순한 경제 뉴스 요약이 아니라 **"물가가 오를 때 내 연금 수령액은 실제로 어떻게 계산되며, 어디서 정확한 금액을 확인할 수 있는가?"**입니다. 이 글에서는 공식 기관 자료를 바탕으로 **국민연금 예상 수령액 조회 절차, 물가상승률 연동 구조, 수령 시기별(조기·정상·연기) 비교표, 그리고 확인 시 주의사항**을 단계별로 정리합니다.
+
+---
+
+## 2. 핵심 내용 요약 (결론 먼저 보기)
+
+바쁜 분들을 위해 가장 중요한 핵심 답변을 먼저 요약합니다.
+
+- **공식 조회처**: 국민연금공단 [내 연금 알아보기](https://www.nps.or.kr/) 또는 금융감독원 [통합연금포털](https://100lifeplan.fss.or.kr/)
+- **준비물**: 간편인증(카카오·네이버·토스·PASS 등) 또는 공동·금융인증서
+- **물가 연동 핵심 원칙**: 국민연금은 매년 1월 전년도 **전국소비자물가변동률**을 반영하여 기본연금액을 인상합니다(국민연금법 제51조 기준).
+- **조회 전 필수 확인**: 모의계산 결과는 **현재 가치(현재 소득 기준)**로 산출되므로, 향후 납부 기간과 소득 변동에 따라 실제 수령액은 달라질 수 있습니다.
+
+---
+
+## 3. 단계별 설명: 공식 사이트에서 국민연금 예상 수령액 확인하는 순서
+
+### 1단계: 국민연금공단 '내 연금 알아보기' 접속 및 본인 인증
+1. PC 또는 스마트폰 브라우저에서 [국민연금공단 공식 홈페이지(nps.or.kr)](https://www.nps.or.kr/)에 접속합니다.
+2. 메인 화면 자주 찾는 서비스에서 **[내 연금 알아보기]** 메뉴를 클릭합니다.
+3. 간편인증(카카오톡, 네이버, PASS 등) 또는 금융인증서로 로그인합니다.
+
+### 2단계: 예상연금액 조회 및 가입내역 확인
+1. 상단 메뉴 중 **[예상연금액 조회]** → **[국민연금 예상연금액 알아보기]**를 선택합니다.
+2. 화면에 표시되는 **총 가입 개월 수**, **납부한 총 보험료**, 그리고 **만 65세(출생연도별 정상 수령 연령)부터 매월 받게 될 예상 노령연금액(세전 기준)**을 확인합니다.
+
+### 3단계: 미래 소득·가입기간 가정 조건 입력해 비교하기
+1. 퇴직 후 **임의계속가입**을 고려 중이거나 소득이 변경된 경우 **[상세연금 조회]** 또는 **[모의계산]** 메뉴를 엽니다.
+2. 만 60세 이후에도 추가 납부할 예상 기간과 기준소득월액을 입력하면, 추가 납부 시 늘어나는 월 예상 수령액을 비교할 수 있습니다.
+
+### 4단계: 통합연금포털에서 개인연금·퇴직연금까지 한 번에 합산하기
+1. 국민연금 외에 퇴직연금(IRP)과 연금저축 계좌가 있다면 금융감독원 [통합연금포털(100lifeplan.fss.or.kr)](https://100lifeplan.fss.or.kr/)에 접속합니다.
+2. **[내 연금 조회]**를 신청(최초 신청 시 영업일 기준 약 3일 소요)하면 연령대별 전체 연금 합산 수령표를 한눈에 내려받을 수 있습니다.
+
+---
+
+## 4. 사례 및 조건별 비교표: 수령 시기(조기·정상·연기)에 따른 수령률 차이
+
+국민연금은 본인의 건강 상태, 퇴직 후 소득 유무, 생활비 필요 시점에 따라 수령 개시 시점을 조정할 수 있습니다. 아래 표는 **국민연금법상 기준 수령률(정상 수령 = 100% 가정)**을 비교한 공식 기준표입니다.
+
+| 구분 | 신청 가능 시기 (출생연도별 정상 연령 기준) | 연금 수령률 변화 (가정 조건 명시) | 유리한 대상 및 특징 |
+| :--- | :--- | :--- | :--- |
+| **조기노령연금** | 정상 수령 연령보다 **최대 5년 일찍** 신청 (소득이 있는 업무에 종사하지 않을 것) | 1년 앞당길 때마다 **연 6%p(월 0.5%p) 감액** (5년 조기 수령 시 최대 30% 감액된 70% 수령) | 은퇴 직후 소득 공백기가 길어 당장 생활비 현금 흐름이 급한 경우 |
+| **정상 노령연금** | 출생연도별 기준 연령 (1969년생 이후 **만 65세**) | **기본연금액 100%** + 부양가족연금액 (매년 물가상승률 반영) | 가장 표준적인 수령 방식 |
+| **연기연금** | 정상 수령 연령부터 **최대 5년 늦춰** 신청 (전부 또는 일부 50~90% 연기 가능) | 1년 연기할 때마다 **연 7.2%p(월 0.6%p) 증액** (5년 연기 시 최대 36% 증액된 136% 수령) | 은퇴 후 다른 근로·사업소득이 있거나 건강보험료·종합소득세 분산이 필요한 경우 |
+
+> **※ 표 해석 시 유의사항**: 위 수령률(감액 연 6%, 증액 연 7.2%)은 현행 국민연금법 기준이며, 개인의 총 가입기간·평균소득월액·기대여명 및 소득 유무에 따라 손익분기점이 달라집니다.
+
+---
+
+## 5. 주의사항: 조회 전 반드시 체크해야 할 3가지 예외 조건
+
+1. **출생연도별 정상 수령 개시 연령 차이 확인**
+   - 1957~1960년생은 만 62세, 1961~1964년생은 만 63세, 1965~1968년생은 만 64세, **1969년생 이후부터 만 65세**입니다. 본인의 출생연도 기준 연령을 먼저 확인하세요.
+2. **소득 활동에 따른 노령연금 감액 제도 (재직자 노령연금)**
+   - 연금 수령 개시 후에도 일정 기준(전체 가입자 평균소득월액, A값)을 초과하는 근로·사업소득이 있으면 수령 초기 최대 5년간 연금액의 일부가 감액될 수 있습니다.
+3. **건강보험료 피부양자 자격 및 세금 영향**
+   - 국민연금(공적연금) 수령액은 건강보험료 피부양자 소득 요건(연 2,000만 원 이하 기준) 산정 시 **세전 연금액 전체가 포함**되므로, 퇴직 후 자녀의 건강보험 피부양자로 등록할 계획이라면 연간 수령 총액을 반드시 사전 점검해야 합니다.
+
+---
+
+## 6. 결론: 지금 바로 실행할 다음 행동 3가지
+
+1. 오늘 바로 [국민연금공단 내 연금 알아보기](https://www.nps.or.kr/)에 로그인해 **내 총 가입 개월 수와 만 65세 기준 월 예상 수령액**을 확인하고 메모해 두세요.
+2. 최소 가입기간(10년, 120개월)이 부족하거나 수령액을 늘리고 싶다면 **임의계속가입** 또는 **추납(추후납부) 제도** 대상인지 공단 지사(국번 없이 1355)를 통해 확인하세요.
+3. 퇴직 후 건강보험료 피부양자 유지 여부가 중요하다면, 연간 국민연금 예상 수령액과 금융소득 합산액이 연 2,000만 원을 넘지 않는지 함께 계산해 보시기 바랍니다.
+
+---
+
+## 7. 참고 자료 및 공식 확인 사이트
+
+- [국민연금공단 공식 홈페이지 (내 연금 알아보기)](https://www.nps.or.kr/) (`https://www.nps.or.kr/`)
+- [국민건강보험공단 공식 사이트 (보험료 모의계산)](https://www.nhis.or.kr/) (`https://www.nhis.or.kr/`)
+- [금융감독원 통합연금포털](https://100lifeplan.fss.or.kr/) (`https://100lifeplan.fss.or.kr/`)
+- [한국은행 경제통계시스템 (ECOS)](https://ecos.bok.or.kr/) (`https://ecos.bok.or.kr/`)
+
+---
+
+## ✅ 발행 전 검토 체크리스트 (사실 확인 항목)
+
+- [x] 조기노령연금 감액률(1년당 6%, 최대 5년 30%) 및 연기연금 증액률(1년당 7.2%, 최대 5년 36%)이 현행 국민연금법 기준과 일치함
+- [x] 1969년생 이후 노령연금 정상 수령 개시 연령(만 65세) 기준 확인 완료
+- [x] 건강보험 피부양자 소득 요건(연간 합산소득 2,000만 원 이하) 공식 기준 일치 확인
+- [x] 공식 자료와 본문 내 숫자·기준이 일치하는가?
+- [x] 제목이 본문에서 실제로 답하는 질문과 정확히 일치하는가?
+- [x] 직접 해보지 않은 일을 본인의 경험처럼 과장해 표현하지 않았는가?
+- [x] 네이버 블로그 원고와 중복되지 않는 티스토리 전용 구조(단계별 설명·비교표·공식 출처)로 작성되었는가?
+
+  </script>
+
+  <script>
+    const mdSource = document.getElementById("rawMarkdown").textContent.trim();
+    const articleEl = document.getElementById("postArticle");
+    articleEl.innerHTML = marked.parse(mdSource);
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    function getTistoryOptimizedHtml() {
+      const clone = articleEl.cloneNode(true);
+      clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 22px; line-height: 1.4;"));
+      clone.querySelectorAll("h2").forEach(el => el.setAttribute("style", "font-size: 19px; font-weight: bold; color: #c2410c; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid #ea580c; padding-left: 10px;"));
+      clone.querySelectorAll("h3, h4").forEach(el => el.setAttribute("style", "font-size: 16.5px; font-weight: bold; color: #1f2937; margin-top: 22px; margin-bottom: 10px;"));
+      clone.querySelectorAll("p").forEach(el => el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin-bottom: 16px; word-break: keep-all;"));
+      clone.querySelectorAll("blockquote").forEach(el => el.setAttribute("style", "background-color: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid #ea580c; padding: 16px 20px; margin: 20px 0; border-radius: 6px; color: #7c2d12; font-style: normal; font-size: 15px;"));
+      clone.querySelectorAll("table").forEach(el => el.setAttribute("style", "width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px;"));
+      clone.querySelectorAll("th").forEach(el => el.setAttribute("style", "background-color: #fff7ed; color: #9a3412; font-weight: bold; border: 1px solid #fed7aa; padding: 10px 12px; text-align: left;"));
+      clone.querySelectorAll("td").forEach(el => el.setAttribute("style", "border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151;"));
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 14px 0 20px 22px;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.75; margin-bottom: 8px; color: #374151;"));
+      return clone.innerHTML;
+    }
+
+    document.getElementById("copyTistoryHtmlBtn").addEventListener("click", async () => {
+      const htmlContent = getTistoryOptimizedHtml();
+      let success = false;
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([mdSource], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          success = true;
+        } catch(e) {}
+      }
+      if (!success) {
+        await navigator.clipboard.writeText(mdSource);
+      }
+      showToast("🟠 티스토리 기본모드 서식(표·소제목 포함)이 복사되었습니다! 에디터에 바로 붙여넣으세요.");
+    });
+
+    document.getElementById("copyMarkdownBtn").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(mdSource);
+      showToast("📝 티스토리 마크다운 원문이 복사되었습니다!");
+    });
+  </script>
+</body>
+</html>

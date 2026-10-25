@@ -52,6 +52,15 @@ DOC_METADATA = [
         "desc": "티스토리 vs 워드프레스 vs 네이버 블로그 장단점 및 병행 전략"
     },
     {
+        "id": "tistory-guide",
+        "category": "02. 플랫폼 비교",
+        "category_icon": "🟠",
+        "title": "티스토리 개설·운영 & Google Trends 실전 가이드",
+        "file_path": "docs/02-platforms/02-tistory-guide.md",
+        "url_path": "02-platforms/02-tistory-guide.md",
+        "desc": "티스토리 개설부터 서치콘솔, 애드센스 준비, Google Trends 상승 검색어 100점 평가 및 7단계 템플릿"
+    },
+    {
         "id": "six-step-pipeline",
         "category": "03. AI 워크플로우",
         "category_icon": "⚙️",

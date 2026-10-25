@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>티스토리 블로그 작업실 (Google Trends & AdSense) | AI Blog Notes</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <style>
+    :root {
+      --tistory: #ea580c;
+      --tistory-dark: #c2410c;
+      --tistory-light: #fff7ed;
+      --tistory-border: #fed7aa;
+      --text-main: #191f28;
+      --text-sub: #4e5968;
+      --text-muted: #8b95a1;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e5e8eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    .header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tistory-badge {
+      background: var(--tistory);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .header-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .header-link {
+      font-size: 13px;
+      color: var(--text-sub);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+      font-weight: 600;
+    }
+
+    .header-link:hover {
+      background: var(--bg);
+      color: var(--tistory-dark);
+      border-color: var(--tistory);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 28px auto 0;
+      padding: 0 20px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+      color: #fff;
+      padding: 32px 36px;
+      border-radius: 16px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(234, 88, 12, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .hero-text h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .hero-text p {
+      font-size: 14px;
+      opacity: 0.94;
+      max-width: 640px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 16px;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .stat-number {
+      font-size: 21px;
+      font-weight: 800;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 24px;
+    }
+
+    @media (max-width: 920px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 750;
+      color: var(--text-main);
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .post-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .post-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      background: #fff;
+      position: relative;
+    }
+
+    .post-card.today {
+      border-color: var(--tistory);
+      box-shadow: 0 4px 16px rgba(234, 88, 12, 0.1);
+    }
+
+    .post-card-date {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--tistory-dark);
+      margin-bottom: 8px;
+    }
+
+    .cat-pill {
+      background: var(--tistory-light);
+      color: var(--tistory-dark);
+      border: 1px solid var(--tistory-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .score-pill {
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .post-card-title {
+      font-size: 17px;
+      font-weight: 750;
+      margin-bottom: 10px;
+      color: var(--text-main);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .post-card-title:hover {
+      color: var(--tistory-dark);
+      text-decoration: underline;
+    }
+
+    .post-card-desc {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .post-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px dashed var(--border);
+      padding-top: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .post-btn-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .action-btn-primary {
+      background: var(--tistory);
+      color: #fff;
+      border-color: var(--tistory);
+    }
+    .action-btn-primary:hover {
+      background: var(--tistory-dark);
+    }
+
+    .trend-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trend-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .trend-rank {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--tistory-dark);
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .trend-content { flex: 1; }
+
+    .trend-kw-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .trend-kw {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .trend-traffic {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #fee2e2;
+      color: #b91c1c;
+      font-weight: 700;
+    }
+
+    .trend-badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .trend-title-rec {
+      font-size: 13px;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    .copy-title-btn {
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s;
+      z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <span class="tistory-badge">TISTORY BLOG</span>
+        <div class="brand-title">똑똑한 생활탐구 · 티스토리 작업실</div>
+      </div>
+      <div class="header-links">
+        <a href="https://trends.google.com/trends/?geo=KR" target="_blank" rel="noopener noreferrer" class="header-link" style="border-color: #2563eb; color: #1d4ed8;">📈 Google Trends 열기 ↗</a>
+        <a href="https://www.tistory.com/" target="_blank" rel="noopener noreferrer" class="header-link" style="background: var(--tistory); color: #fff; border-color: var(--tistory);">🔗 티스토리 홈 ↗</a>
+        <a href="../../index.html" class="header-link">🏠 멀티 블로그 포털</a>
+        <a href="../naver/index.html" class="header-link">🟢 네이버 작업실</a>
+        <a href="../../docs/index.html#tistory-guide" class="header-link">📚 티스토리 가이드</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero-banner">
+      <div class="hero-text">
+        <h1>🟠 티스토리 검색형 블로그 & 애드센스 작업실</h1>
+        <p>Google Trends 상승 검색어에서 독자의 구체적인 질문을 발굴하고, 공식 자료 검증과 7단계 표준 구성으로 오래 검색되는 정보 자산을 축적합니다.</p>
+        <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="https://trends.google.com/trends/?geo=KR" target="_blank" rel="noopener noreferrer" style="background: #fff; color: var(--tistory-dark); padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none;">
+            📊 Google Trends 상승 검색어 확인 ↗
+          </a>
+          <a href="https://search.google.com/search-console/" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid rgba(255,255,255,0.35);">
+            🔍 Google Search Console ↗
+          </a>
+          <a href="https://adsense.google.com/start/" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid rgba(255,255,255,0.35);">
+            💰 Google AdSense ↗
+          </a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-number">3 편</span>
+          <span class="stat-label">누적 정보형 글</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">하루 1편</span>
+          <span class="stat-label">권장 발행 목표</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-grid">
+      <div class="left-col">
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">📝 티스토리 검색형 포스팅 목록 (7단계 표준 템플릿)</div>
+            <div class="card-subtitle">총 3편 작성됨</div>
+          </div>
+          <div class="post-timeline">
+            
+            <article class="post-card today">
+              <div class="post-card-date">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span>📍 2026-10-25 (오늘 작성)</span>
+                  <span class="cat-pill">📂 AI·IT 활용법</span>
+                  <span class="score-pill">🎯 평가 96/100점</span>
+                </div>
+                <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">#1편</span>
+              </div>
+              <a href="posts/202610/2026-10-25.html" class="post-card-title">
+                ChatGPT 등 AI로 블로그 초안 작성 후 사실관계(팩트체크) 검증하는 5단계 방법
+              </a>
+              <p class="post-card-desc">
+                ChatGPT, Claude, Gemini 등 생성형 AI로 블로그 초안을 작성할 때 가장 중요한 절차는 발행 전 5단계 사실관계 검증(팩트체크)입니다. ① AI에게 출처 URL과 기준 연도를 함께 요구하고, ② 숫자·세율·가격·정책은 반드시 공식 기관 사이트 원문과 ...
+              </p>
+              <div class="post-card-footer">
+                <div>상승 검색어: <strong>엔비디아</strong> · 분량: 약 4,285자 (공백 제외)</div>
+                <div class="post-btn-group">
+                  <a href="posts/202610/2026-10-25.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div class="post-card-date">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span>📍 2026-10-25 (오늘 작성)</span>
+                  <span class="cat-pill">📂 은퇴·연금·생활비</span>
+                  <span class="score-pill">🎯 평가 88/100점</span>
+                </div>
+                <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">#2편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-2.html" class="post-card-title">
+                국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)
+              </a>
+              <p class="post-card-desc">
+                국민연금 예상 수령액은 국민연금공단 '내 연금 알아보기' 공식 누리집 또는 모바일 앱 '내 곁에 국민연금'에서 공동·금융·간편인증 로그인 후 1분 만에 조회할 수 있습니다. 특히 경상수지·환율·소비자물가지수 등 거시경제 지표가 변동하더라도, 국민연금은 매년 전국소비자물...
+              </p>
+              <div class="post-card-footer">
+                <div>상승 검색어: <strong>경상수지</strong> · 분량: 약 3,977자 (공백 제외)</div>
+                <div class="post-btn-group">
+                  <a href="posts/202610/2026-10-25-2.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-2.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
+                </div>
+              </div>
+            </article>
+        
+            <article class="post-card today">
+              <div class="post-card-date">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span>📍 2026-10-25 (오늘 작성)</span>
+                  <span class="cat-pill">📂 제품 비교·사용법</span>
+                  <span class="score-pill">🎯 평가 80/100점</span>
+                </div>
+                <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">#3편</span>
+              </div>
+              <a href="posts/202610/2026-10-25-3.html" class="post-card-title">
+                순금(24K) 주얼리 vs 골드바 vs KRX 금현물 구매 방법 및 수수료·세금 비교표
+              </a>
+              <p class="post-card-desc">
+                실물 금이나 파인주얼리를 구매할 때는 사용 목적(착용·선물용 vs 순수 자산 투자용)에 따라 구매 경로를 구분해야 합니다. 순금(24K) 주얼리와 골드바는 구매 시 부가가치세 10%와 세공 공임비(약 5~15% 이상)가 추가되므로 단기 시세차익 목적에는 불리하며, 수수...
+              </p>
+              <div class="post-card-footer">
+                <div>상승 검색어: <strong>주얼리</strong> · 분량: 약 3,724자 (공백 제외)</div>
+                <div class="post-btn-group">
+                  <a href="posts/202610/2026-10-25-3.md" target="_blank" class="action-btn">📄 MD 원문</a>
+                  <a href="posts/202610/2026-10-25-3.html" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
+                </div>
+              </div>
+            </article>
+        
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title">📈 Google Trends 상승 검색어 → 티스토리 주제 변환 & 100점 평가표</div>
+            <div class="card-subtitle">2026-10-25 기준 자동 분석</div>
+          </div>
+          <p style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 16px;">
+            단순 실시간 이슈는 보류하고, <strong>5대 평가 기준(관심도·의도 명확성·경쟁 빈틈·작성 역량·장기 검색성)</strong>에서 70점 이상을 획득한 주제를 구체적인 질문 해결형 글로 변환합니다.
+          </p>
+          <div class="trend-list">
+            
+            <div class="trend-item" style="">
+              <div class="trend-rank">1</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">스포츠조선</span>
+                  <span class="trend-traffic">500+</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">📂 단기 이슈 (네이버 권장)</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">🎯 44/100점 (낮음 (티스토리 보류))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 단기 실시간 이슈('스포츠조선')로 장기 검색 지속성이 낮음 → 공식 제도·방법·비교 질문으로 전환 필요
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> [보류] '스포츠조선' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(2/5) · 경쟁 글 빈틈(2/5) · 작성 역량(2/5) · 장기 검색성(1/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('[보류] \'스포츠조선\' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="">
+              <div class="trend-rank">2</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">kbs</span>
+                  <span class="trend-traffic">200+</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">📂 단기 이슈 (네이버 권장)</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">🎯 44/100점 (낮음 (티스토리 보류))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 단기 실시간 이슈('kbs')로 장기 검색 지속성이 낮음 → 공식 제도·방법·비교 질문으로 전환 필요
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> [보류] 'kbs' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(2/5) · 경쟁 글 빈틈(2/5) · 작성 역량(2/5) · 장기 검색성(1/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('[보류] \'kbs\' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="">
+              <div class="trend-rank">3</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">네이마르</span>
+                  <span class="trend-traffic">200+</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">📂 단기 이슈 (네이버 권장)</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">🎯 44/100점 (낮음 (티스토리 보류))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 단기 실시간 이슈('네이마르')로 장기 검색 지속성이 낮음 → 공식 제도·방법·비교 질문으로 전환 필요
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> [보류] '네이마르' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(2/5) · 경쟁 글 빈틈(2/5) · 작성 역량(2/5) · 장기 검색성(1/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('[보류] \'네이마르\' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="">
+              <div class="trend-rank">4</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">할리우드</span>
+                  <span class="trend-traffic">100+</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">📂 단기 이슈 (네이버 권장)</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">🎯 44/100점 (낮음 (티스토리 보류))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 단기 실시간 이슈('할리우드')로 장기 검색 지속성이 낮음 → 공식 제도·방법·비교 질문으로 전환 필요
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> [보류] '할리우드' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(2/5) · 경쟁 글 빈틈(2/5) · 작성 역량(2/5) · 장기 검색성(1/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('[보류] \'할리우드\' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="background: #fffaf5; border-color: #fdba74;">
+              <div class="trend-rank">5</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">경상수지</span>
+                  <span class="trend-traffic">500+</span>
+                  <span class="trend-badge" style="background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">📂 은퇴·연금·생활비</span>
+                  <span class="trend-badge" style="background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">🎯 88/100점 (높음 (추천))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> '경상수지' 등 거시경제 지표와 물가·환율 변동이 내 국민연금 수령액 및 노후 자산에 미치는 영향과 공식 조회 방법은?
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> 국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(5/5) · 경쟁 글 빈틈(4/5) · 작성 역량(4/5) · 장기 검색성(5/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('국민연금 예상 수령액 조회 방법 및 물가상승률 반영 기준 정리 (경상수지·경제지표 확인법)')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="">
+              <div class="trend-rank">6</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">양부남</span>
+                  <span class="trend-traffic">200+</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">📂 단기 이슈 (네이버 권장)</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">🎯 44/100점 (낮음 (티스토리 보류))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 단기 실시간 이슈('양부남')로 장기 검색 지속성이 낮음 → 공식 제도·방법·비교 질문으로 전환 필요
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> [보류] '양부남' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(2/5) · 경쟁 글 빈틈(2/5) · 작성 역량(2/5) · 장기 검색성(1/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('[보류] \'양부남\' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="background: #fffaf5; border-color: #fdba74;">
+              <div class="trend-rank">7</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">주얼리</span>
+                  <span class="trend-traffic">200+</span>
+                  <span class="trend-badge" style="background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">📂 제품 비교·사용법</span>
+                  <span class="trend-badge" style="background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">🎯 80/100점 (높음 (추천))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 순금(24K) 주얼리·골드바·KRX 금현물 구매 시 공임비·부가세·수수료 차이와 구매 전 확인 사항은?
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> 순금(24K) 주얼리 vs 골드바 vs KRX 금현물 구매 방법 및 수수료·세금 비교표
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(4/5) · 경쟁 글 빈틈(4/5) · 작성 역량(4/5) · 장기 검색성(4/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('순금(24K) 주얼리 vs 골드바 vs KRX 금현물 구매 방법 및 수수료·세금 비교표')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="">
+              <div class="trend-rank">8</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">조진웅</span>
+                  <span class="trend-traffic">200+</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">📂 단기 이슈 (네이버 권장)</span>
+                  <span class="trend-badge" style="background: #f1f5f9; color: #64748b;">🎯 44/100점 (낮음 (티스토리 보류))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 단기 실시간 이슈('조진웅')로 장기 검색 지속성이 낮음 → 공식 제도·방법·비교 질문으로 전환 필요
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> [보류] '조진웅' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(2/5) · 경쟁 글 빈틈(2/5) · 작성 역량(2/5) · 장기 검색성(1/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('[보류] \'조진웅\' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="background: #fffaf5; border-color: #fdba74;">
+              <div class="trend-rank">9</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">에르메스</span>
+                  <span class="trend-traffic">200+</span>
+                  <span class="trend-badge" style="background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">📂 제품 비교·사용법</span>
+                  <span class="trend-badge" style="background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">🎯 80/100점 (높음 (추천))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 순금(24K) 주얼리·골드바·KRX 금현물 구매 시 공임비·부가세·수수료 차이와 구매 전 확인 사항은?
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> 순금(24K) 주얼리 vs 골드바 vs KRX 금현물 구매 방법 및 수수료·세금 비교표
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(4/5) · 검색 의도 명확성(4/5) · 경쟁 글 빈틈(4/5) · 작성 역량(4/5) · 장기 검색성(4/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('순금(24K) 주얼리 vs 골드바 vs KRX 금현물 구매 방법 및 수수료·세금 비교표')">제목 복사</button>
+            </div>
+        
+            <div class="trend-item" style="background: #fffaf5; border-color: #fdba74;">
+              <div class="trend-rank">10</div>
+              <div class="trend-content">
+                <div class="trend-kw-row">
+                  <span class="trend-kw">엔비디아</span>
+                  <span class="trend-traffic">500+</span>
+                  <span class="trend-badge" style="background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">📂 AI·IT 활용법</span>
+                  <span class="trend-badge" style="background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">🎯 96/100점 (높음 (추천))</span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px;">
+                  <strong>변환된 검색 질문:</strong> 생성형 AI(ChatGPT 등) 트렌드 확산 속 AI로 블로그 초안을 작성하고 공식 자료로 사실관계(팩트체크)를 검증하는 구체적인 방법은?
+                </div>
+                <div class="trend-title-rec">
+                  <strong>추천 제목:</strong> ChatGPT 등 AI로 블로그 초안 작성 후 사실관계(팩트체크) 검증하는 5단계 방법
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                  세부 평가: 관심도 상승(5/5) · 검색 의도 명확성(5/5) · 경쟁 글 빈틈(4/5) · 작성 역량(5/5) · 장기 검색성(5/5)
+                </div>
+              </div>
+              <button class="copy-title-btn" onclick="copyText('ChatGPT 등 AI로 블로그 초안 작성 후 사실관계(팩트체크) 검증하는 5단계 방법')">제목 복사</button>
+            </div>
+        
+          </div>
+        </section>
+      </div>
+
+      <div class="right-col">
+        <section class="card" style="border: 2px solid var(--tistory);">
+          <div class="card-title" style="margin-bottom: 12px;">📂 티스토리 5대 추천 카테고리 비중</div>
+          <div style="font-size: 13px; color: var(--text-sub); display: flex; flex-direction: column; gap: 10px;">
+            <div><strong>1. 은퇴·연금·생활비 (30%)</strong><br><span style="font-size:12px; color:var(--text-muted);">국민연금, 개인연금, 퇴직 후 건보료, 생활비 계산</span></div>
+            <div><strong>2. AI·IT 활용법 (25%)</strong><br><span style="font-size:12px; color:var(--text-muted);">ChatGPT, AI 사실 검증, 맥·스마트폰 사용법, 자동화</span></div>
+            <div><strong>3. 제품 비교·사용법 (25%)</strong><br><span style="font-size:12px; color:var(--text-muted);">사양·기능 비교표, 구매 전 확인사항, 수수료·세금 비교</span></div>
+            <div><strong>4. 골프·취미 (10%)</strong><br><span style="font-size:12px; color:var(--text-muted);">골프·파크골프 연습, 장비 선택, 취미 정보</span></div>
+            <div><strong>5. 반려동물·생활정보 (10%)</strong><br><span style="font-size:12px; color:var(--text-muted);">사료 성분, 반려동물 용품, 일상 문제 해결</span></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-title" style="margin-bottom: 12px;">✅ 애드센스 준비 체크리스트 (6단계)</div>
+          <label class="check-row"><input type="checkbox" class="ads-chk" onchange="updateAdsCount()"> <span>블로그 제목(똑똑한 생활탐구)과 소개를 작성했다</span></label>
+          <label class="check-row"><input type="checkbox" class="ads-chk" onchange="updateAdsCount()"> <span>주제에 맞는 5대 카테고리를 정리했다</span></label>
+          <label class="check-row"><input type="checkbox" class="ads-chk" onchange="updateAdsCount()"> <span>독자에게 도움이 되는 공개 글을 발행했다</span></label>
+          <label class="check-row"><input type="checkbox" class="ads-chk" onchange="updateAdsCount()"> <span>복사·반복된 콘텐츠와 사실 오류를 점검했다</span></label>
+          <label class="check-row"><input type="checkbox" class="ads-chk" onchange="updateAdsCount()"> <span>문의 방법과 개인정보처리방침 안내를 준비했다</span></label>
+          <label class="check-row"><input type="checkbox" class="ads-chk" onchange="updateAdsCount()"> <span>구글 서치 콘솔 등록 및 <code>/sitemap.xml</code>, <code>/rss</code> 제출을 완료했다</span></label>
+          <div id="adsStatus" style="margin-top: 10px; font-size: 12.5px; font-weight: 700; color: var(--tistory-dark);">0/6 항목 완료</div>
+        </section>
+
+        <section class="card">
+          <div class="card-title" style="margin-bottom: 10px;">⚡ 티스토리 검색형 AI 작성 프롬프트</div>
+          <p style="font-size: 12.5px; color: var(--text-sub); margin-bottom: 12px;">
+            제목 후보 3개, 핵심 답변 요약, 7단계 본문, 비교표, 공식 참고 자료 및 팩트체크 항목을 한 번에 생성하는 표준 프롬프트입니다.
+          </p>
+          <button class="action-btn action-btn-primary" style="width: 100%; text-align: center; padding: 10px;" onclick="copyText('# 티스토리 검색형 블로그 글 작성 지침\n\n당신은 정확성과 실용성을 중시하는 블로그 편집자입니다.\n독자가 검색을 통해 유입되어 궁금한 문제를 해결할 수 있는 티스토리용 정보 글을 작성합니다.\n\n- 주제: [작성할 주제]\n- 주요 독자: [5060 은퇴 준비자 및 일반 검색 독자]\n- 검색할 질문: [독자가 해결하려는 구체적인 방법·비교·조건 질문]\n- 참고 자료: [공식 기관 URL]\n\n작성 규칙:\n1. 검색 질문에 대한 핵심 답변을 도입부에서 먼저 제시합니다.\n2. 본문은 7단계(도입부 → 핵심 요약 → 단계별 설명 → 사례/비교표 → 주의사항 → 결론 → 참고 자료)로 구성합니다.\n3. 확인되지 않은 통계, 가격, 정책, 가상 개인 경험을 만들지 않습니다.\n4. 출력 형식: 1) 제목 후보 3개, 2) 최종 추천 제목, 3) 핵심 답변 요약, 4) 완성된 본문, 5) 사실 확인 항목, 6) 참고 자료 목록, 7) 발행 전 체크리스트')">
+            📋 티스토리 AI 작성 프롬프트 복사
+          </button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script>
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById("toast");
+        toast.textContent = "✓ 클립보드에 복사되었습니다!";
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2200);
+      });
+    }
+
+    function updateAdsCount() {
+      const chks = document.querySelectorAll(".ads-chk");
+      let done = 0;
+      chks.forEach((c, i) => {
+        if (c.checked) done++;
+        localStorage.setItem("tistory_ads_chk_" + i, c.checked ? "1" : "0");
+      });
+      document.getElementById("adsStatus").textContent = done + "/6 항목 완료";
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const chks = document.querySelectorAll(".ads-chk");
+      chks.forEach((c, i) => {
+        if (localStorage.getItem("tistory_ads_chk_" + i) === "1") c.checked = true;
+      });
+      updateAdsCount();
+    });
+  </script>
+</body>
+</html>
