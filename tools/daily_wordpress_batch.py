@@ -560,12 +560,22 @@ def format_wp_markdown(date_str, weekday_str, item):
 """
 
 def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
-    title = item["final_title"]
+    m_title = re.search(r"^#\s+(.+)$", md_content, re.M)
+    raw_title = m_title.group(1).strip() if m_title else item["final_title"]
+    title = re.sub(r"\s*\(\d{4}-\d{2}-\d{2}\)\s*$", "", raw_title)
     cat_name = item["category"]
     score = item["score"]
     slug = item["slug"]
+    focus_kp = item["focus_keyphrase"]
+    m_kw = re.search(r"^#\s+(.+?)\s+핵심 기준 및 공식 확인 방법 총정리", title)
+    if m_kw:
+        focus_kp = f"{m_kw.group(1).strip()} 확인 방법"
+    elif "핵심 기준 및 공식 확인 방법 총정리" in title:
+        kw_part = title.split("핵심 기준 및 공식 확인 방법 총정리")[0].strip()
+        if kw_part:
+            focus_kp = f"{kw_part} 확인 방법"
     meta_desc = item["meta_desc"].replace("'", "\\'").replace('"', '&quot;')
-    seo_pack = f"Focus Keyphrase: {item['focus_keyphrase']}\\nSlug: /{slug}\\nMeta Description: {meta_desc}"
+    seo_pack = f"Focus Keyphrase: {focus_kp}\\nSlug: /{slug}\\nMeta Description: {meta_desc}"
 
     return f"""<!DOCTYPE html>
 <html lang="ko">
@@ -730,7 +740,7 @@ def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
       </div>
       <h1 class="post-title">{title}</h1>
       <div class="meta-info-grid">
-        <div class="meta-info-item"><span>Focus Keyphrase:</span><strong>{item['focus_keyphrase']}</strong></div>
+        <div class="meta-info-item"><span>Focus Keyphrase:</span><strong>{focus_kp}</strong></div>
         <div class="meta-info-item"><span>URL Slug:</span><strong>/{slug}</strong></div>
         <div class="meta-info-item"><span>구조:</span><strong>Key Takeaways + 비교표 + FAQ 3문 3답</strong></div>
         <div class="meta-info-item"><span>타겟:</span><strong>Google 글로벌/국내 SEO & AdSense</strong></div>
@@ -829,7 +839,8 @@ def scan_wp_posts():
         with open(fpath, "r", encoding="utf-8") as f:
             content = f.read()
         m_title = re.search(r"^#\s+(.+)$", content, re.M)
-        title = m_title.group(1).strip() if m_title else post_id
+        raw_title = m_title.group(1).strip() if m_title else post_id
+        title = re.sub(r"\s*\(\d{4}-\d{2}-\d{2}\)\s*$", "", raw_title)
 
         html_path = fpath[:-3] + ".html"
         html_content_str = ""
@@ -869,11 +880,15 @@ def build_wp_index_html(today_str, weekday_str, posts):
     for p in posts:
         is_today = (p["date_only"] == today_str)
         today_class = " today" if is_today else ""
+        try:
+            p_weekday = WEEKDAYS_KR[datetime.strptime(p["date_only"], "%Y-%m-%d").weekday()]
+        except Exception:
+            p_weekday = weekday_str
         post_cards_html += f"""
             <article class="post-card{today_class}">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <span style="font-size:12.5px; font-weight:700; color:var(--wp-dark);">📍 {p['date_only']} ({weekday_str})</span>
+                  <span style="font-size:12.5px; font-weight:700; color:var(--wp-dark);">📍 {p['date_only']} ({p_weekday})</span>
                   <span class="cat-pill">📂 {p['category']}</span>
                   <span class="slug-pill">🔗 {p['slug']}</span>
                   <span class="score-pill">🎯 {p['score_str']}</span>
@@ -1485,7 +1500,7 @@ def fetch_daily_wp_articles(today_str):
         news = t["news"] or f"{kw} 관련 공식 기준 및 확인 방법"
         tpl = pillar_templates[(idx - 1) % len(pillar_templates)]
         slug = f"{tpl['slug_prefix']}-{today_str.replace('-', '')}-{idx}"
-        final_title = f"{kw} 핵심 기준 및 공식 확인 방법 총정리: 신청 조건·단계별 절차·비교표 ({today_str})"
+        final_title = f"{kw} 핵심 기준 및 공식 확인 방법 총정리: 신청 조건·단계별 절차·비교표"
         core_summary = (
             f"**{kw}** 관련하여 독자가 가장 많이 찾는 핵심 자격 기준, 공식 사이트 확인 절차, 조건별 비교표 및 자주 묻는 질문(FAQ)을 한눈에 정리했습니다. "
             f"단기 뉴스({news})를 넘어 실제 적용 시 반드시 확인해야 할 공식 기관 기준과 주의사항을 먼저 점검하세요."
