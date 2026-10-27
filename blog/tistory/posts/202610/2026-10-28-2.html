@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[2026-10-28] 티스토리 포스팅 | 단발 공식 기준 및 단계별 확인 방법 정리 (필수 체크리스트·비교표)</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+  <style>
+    :root {
+      --tistory: #ea580c;
+      --tistory-dark: #c2410c;
+      --tistory-light: #fff7ed;
+      --tistory-border: #fed7aa;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-tag {
+      background: var(--tistory);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-main);
+    }
+
+    .btn:hover { background: #f3f4f6; }
+
+    .btn-tistory {
+      background: var(--tistory);
+      color: var(--white);
+      border-color: var(--tistory);
+    }
+    .btn-tistory:hover { background: var(--tistory-dark); color: var(--white); }
+
+    .container {
+      max-width: 860px;
+      margin: 32px auto 0;
+      padding: 0 16px;
+    }
+
+    .meta-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--tistory);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .meta-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--tistory-light);
+      color: var(--tistory-dark);
+      border: 1px solid var(--tistory-border);
+    }
+
+    .badge-score {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .post-title {
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      color: #111827;
+    }
+
+    .meta-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      background: var(--bg);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .meta-info-item span { color: var(--text-muted); margin-right: 6px; }
+    .meta-info-item strong { color: var(--text-main); }
+
+    .editor-preview {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .editor-preview h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--tistory);
+      color: #111;
+    }
+
+    .editor-preview h2 {
+      font-size: 19.5px;
+      font-weight: 750;
+      margin: 34px 0 14px;
+      color: #111827;
+      border-left: 4px solid var(--tistory);
+      padding-left: 12px;
+    }
+
+    .editor-preview h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      margin: 24px 0 10px;
+      color: #1f2937;
+    }
+
+    .editor-preview p {
+      margin-bottom: 16px;
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: #374151;
+      word-break: keep-all;
+    }
+
+    .editor-preview ul, .editor-preview ol {
+      margin: 12px 0 20px 22px;
+    }
+
+    .editor-preview li {
+      margin-bottom: 8px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #374151;
+    }
+
+    .editor-preview blockquote {
+      border: 1px solid var(--tistory-border);
+      border-left: 4px solid var(--tistory);
+      background: var(--tistory-light);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      color: #7c2d12;
+      font-size: 14.5px;
+    }
+
+    .editor-preview table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 24px;
+      font-size: 14px;
+    }
+
+    .editor-preview th {
+      background: #fff7ed;
+      color: #9a3412;
+      font-weight: 700;
+      border: 1px solid #fed7aa;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .editor-preview td {
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      color: #374151;
+      vertical-align: top;
+    }
+
+    .editor-preview tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+
+    .editor-preview a {
+      color: var(--tistory-dark);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="brand-tag">TISTORY · 똑똑한 생활탐구</span>
+      <span class="nav-title">티스토리 정보형 포스팅: 2026-10-28 (수) · 반려동물·생활정보</span>
+    </div>
+    <div class="nav-actions">
+      <a href="../../index.html" class="btn">📂 티스토리 작업실 홈</a>
+      <a href="2026-10-28-2.md" target="_blank" class="btn">📄 원본 MD 열기</a>
+      <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·인용구 서식 그대로 붙여넣기 됩니다">
+        🟠 티스토리 에디터(기본모드) 서식 복사
+      </button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">
+        📄 순수 텍스트 복사 (** 제거)
+      </button>
+      <button class="btn" id="copyMarkdownBtn" title="티스토리 마크다운 모드용 원문을 복사합니다">
+        📝 마크다운 원문 복사
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="meta-card">
+      <div class="meta-badges">
+        <span class="badge">📂 카테고리: 반려동물·생활정보</span>
+        <span class="badge">📈 Google Trends 상승 검색어: [단발]</span>
+        <span class="badge badge-score">🎯 주제 평가 점수: 76/100점</span>
+      </div>
+      <h1 class="post-title">단발 공식 기준 및 단계별 확인 방법 정리 (필수 체크리스트·비교표)</h1>
+
+      <div class="meta-info-grid">
+        <div class="meta-info-item">
+          <span>작성일자:</span><strong>2026-10-28 (수)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>타겟 검색엔진:</span><strong>구글(Google) & 다음(Daum)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>글 구성:</span><strong>티스토리 7단계 표준 템플릿 (표 포함)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>수익화 타겟:</span><strong>구글 애드센스 승인·노출 최적화</strong>
+        </div>
+      </div>
+    </div>
+
+    <article class="editor-preview" id="postArticle"></article>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script id="rawMarkdown" type="text/plain">
+# 단발 공식 기준 및 단계별 확인 방법 정리 (필수 체크리스트·비교표)
+
+> **📌 핵심 요약**: **단발** 관련하여 검색 독자가 가장 많이 궁금해하는 **핵심 적용 기준, 공식 누리집 확인 절차, 조건별 비교표 및 사전 주의사항**을 7단계로 정리했습니다. 단기 뉴스(유인영, 칼단발로 분위기 확 바뀌었다...고양이상 미모 '눈길' [★해시태그])만 보고 판단하기보다 [질병관리청 국가건강정보포털](https://health.kdca.go.kr/)의 최신 공시 기준을 통해 본인 조건과 예외 요건을 먼저 대조해 보시기 바랍니다.
+
+---
+
+## 1. '단발' 왜 지금 정확한 기준과 확인 절차를 알아두어야 할까요?
+
+최근 Google Trends에서 **'단발'** 관련 검색 관심도가 빠르게 상승하고 있습니다(유인영, 칼단발로 분위기 확 바뀌었다...고양이상 미모 '눈길' [★해시태그]). 많은 분들이 관련 뉴스를 접하지만, 정작 내 상황에 어떻게 적용되는지, 어디서 정확한 공식 기준을 조회할 수 있는지는 한눈에 파악하기 쉽지 않습니다.
+
+특히 **반려동물·생활정보** 분야의 정보는 작성 시점이나 개인별 조건(연령·소득·사용 환경·가입 시기)에 따라 결과가 크게 달라집니다. 이 글에서는 검증된 공식 기관 자료를 바탕으로 **'단발' 핵심 확인 순서, 조건별 비교표, 그리고 놓치기 쉬운 주의사항**을 체계적으로 정리합니다.
+
+---
+
+## 2. 핵심 내용 요약 (결론 먼저 보기)
+
+- **1순위 공식 확인처**: [질병관리청 국가건강정보포털](https://health.kdca.go.kr/)
+- **핵심 점검 질문**: 단발 관련 공식 기준·성분·대상자 조건을 확인하고 실생활 문제를 해결하는 방법은?
+- **사전 준비 사항**: 본인 조건 확인을 위한 간편인증(또는 공식 앱) 및 당해 연도(2026년) 최신 안내문 대조
+- **핵심 원칙**: 블로그·커뮤니티의 요약글은 참고용으로 활용하고, 최종 신청·결제·설정은 반드시 공식 누리집 원문을 기준으로 진행합니다.
+
+---
+
+## 3. 공식 사이트에서 '단발' 기준 확인 및 적용하는 4단계 순서
+
+### 1단계: 공식 기관 누리집 접속 및 메뉴 검색
+1. PC 또는 스마트폰 브라우저에서 [질병관리청 국가건강정보포털](https://health.kdca.go.kr/)에 접속합니다.
+2. 상단 통합검색창에 **'단발'**를 입력하거나 관련 분야(**반려동물·생활정보**) 안내 메뉴로 이동합니다.
+
+### 2단계: 기준 연도(2026년) 및 대상 조건 대조하기
+1. 안내 페이지 상단에 표시된 **시행일(또는 최종 업데이트 일자)**이 최신 기준인지 확인합니다.
+2. 본인에게 해당하는 연령, 자격 요건, 사양 또는 이용 조건을 체크리스트로 표시합니다.
+
+### 3단계: 조건별 비용·혜택·사양 비교하기
+1. 단일 선택지만 보지 말고 아래 4번 섹션의 **조건별 비교표**처럼 표준 기준과 우대·대안 옵션을 나란히 놓고 비교합니다.
+2. 수수료, 세금, 유지비 또는 감액·예외 규정이 있는지 세부 항목을 확인합니다.
+
+### 4단계: 온라인 조회·설정 완료 및 증빙 기록 보관
+1. 모의계산이나 온라인 신청·설정을 마친 뒤에는 처리 결과 화면(접수번호 또는 설정 완료 내역)을 캡처하거나 메모해 둡니다.
+2. 추가 문의가 필요한 경우 공식 고객센터를 통해 본인 조건을 재확인합니다.
+
+---
+
+## 4. '단발' 조건별 선택 기준 및 확인 사항 비교표
+
+아래 표는 **단발** 확인 시 반드시 구분해야 할 **기본 적용 기준 vs 우대·대안 기준 vs 예외 주의사항**을 요약한 비교표입니다. (※ 세부 수치는 개인별 조건 및 공고 시점에 따라 달라질 수 있습니다.)
+
+| 비교 항목 | ① 기본(표준) 적용 기준 | ② 우대·최적화 활용 방안 | ③ 사전 확인 및 예외 조건 |
+| :--- | :--- | :--- | :--- |
+| **핵심 확인 대상** | 일반 대상자 및 기본 요건 충족 시 | 장기 유지·비대면·특례 요건 충족 시 | 중복 제한 및 자격 제외 대상 여부 |
+| **조회 경로** | [질병관리청 국가건강정보포털](https://health.kdca.go.kr/) 기본 안내 | 마이페이지 모의계산 및 상세 비교 | 최신 공고문 원문 및 고객센터 문의 |
+| **비용·수수료 구조** | 표준 요율·기본 사양 적용 | 감면·비과세·수수료 우대 조건 확인 | 중도 해지·변경 시 불이익 유무 점검 |
+| **권장 점검 시기** | 신청·구매·설정 전 1차 확인 | 최종 결정 직전 1:1 조건 대입 | 기준 변경 시점 및 정기 갱신 시기 |
+
+---
+
+## 5. '단발' 확인 시 놓치기 쉬운 3가지 주의사항
+
+1. **과거 연도 기준 정보와 최신 기준 혼동 주의**
+   - 인터넷 검색 결과 상단에 노출된 글이라도 작성 연도가 지났다면 세율, 기준 금액, 메뉴 명칭이 변경되었을 수 있습니다. 반드시 **2026년 현행 기준**인지 확인하세요.
+2. **개인별 예외 조건 및 중복 적용 여부 점검**
+   - 동일한 제도나 제품이라도 가구 소득, 기존 가입 이력, 기기 버전에 따라 적용 여부가 달라집니다. 본문 하단 공식 참고 사이트에서 예외 조항을 꼭 살펴보세요.
+3. **비공식 링크나 사칭 문자 주의**
+   - 신청이나 조회를 진행할 때는 문자 메시지의 단축 URL을 누르지 말고, 포털에서 공식 기관명을 직접 검색해 접속하는 것이 안전합니다.
+
+---
+
+## 6. 마무리 및 오늘 바로 실천할 체크리스트
+
+1. 오늘 안내해 드린 [질병관리청 국가건강정보포털](https://health.kdca.go.kr/)에 접속해 **'단발'** 관련 본인 해당 여부를 먼저 조회해 보세요.
+2. 비교표의 3가지 기준(기본 조건 · 우대 방안 · 예외 사항)을 메모해 두면 불필요한 비용이나 시행착오를 크게 줄일 수 있습니다.
+
+---
+
+## 7. 참고 자료 및 공식 확인 사이트
+
+- [질병관리청 국가건강정보포털](https://health.kdca.go.kr/)
+- [외교부 해외안전여행 공식 사이트 (국가별 여행경보)](https://www.0404.go.kr/)
+- [농림축산검역본부 국가동물보호정보시스템](https://www.animal.go.kr/)
+- [식품의약품안전처 식품안전나라](https://www.foodsafetykorea.go.kr/)
+
+  </script>
+
+  <script>
+    const mdSource = document.getElementById("rawMarkdown").textContent.trim();
+    const articleEl = document.getElementById("postArticle");
+    articleEl.innerHTML = marked.parse(mdSource);
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    function getCleanPlainText() {
+      return mdSource
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/^>\s+/gm, '')
+        .replace(/^---\s*$/gm, '──────────')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .trim();
+    }
+
+    function getTistoryOptimizedHtml() {
+      const clone = articleEl.cloneNode(true);
+      clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 22px; line-height: 1.4;"));
+      clone.querySelectorAll("h2").forEach(el => el.setAttribute("style", "font-size: 19px; font-weight: bold; color: #c2410c; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid #ea580c; padding-left: 10px;"));
+      clone.querySelectorAll("h3, h4").forEach(el => el.setAttribute("style", "font-size: 16.5px; font-weight: bold; color: #1f2937; margin-top: 22px; margin-bottom: 10px;"));
+      clone.querySelectorAll("p").forEach(el => el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin-bottom: 16px; word-break: keep-all;"));
+      clone.querySelectorAll("blockquote").forEach(el => el.setAttribute("style", "background-color: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid #ea580c; padding: 16px 20px; margin: 20px 0; border-radius: 6px; color: #7c2d12; font-style: normal; font-size: 15px;"));
+      clone.querySelectorAll("table").forEach(el => el.setAttribute("style", "width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px;"));
+      clone.querySelectorAll("th").forEach(el => el.setAttribute("style", "background-color: #fff7ed; color: #9a3412; font-weight: bold; border: 1px solid #fed7aa; padding: 10px 12px; text-align: left;"));
+      clone.querySelectorAll("td").forEach(el => el.setAttribute("style", "border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151;"));
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 14px 0 20px 22px;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.75; margin-bottom: 8px; color: #374151;"));
+      return clone.innerHTML;
+    }
+
+    document.getElementById("copyTistoryHtmlBtn").addEventListener("click", async () => {
+      const htmlContent = getTistoryOptimizedHtml();
+      const plainText = getCleanPlainText();
+      let success = false;
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          success = true;
+        } catch(e) {}
+      }
+      if (!success) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      showToast("🟠 티스토리 기본모드 서식(표·소제목 포함)이 복사되었습니다! 에디터에 바로 붙여넣으세요.");
+    });
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", async () => {
+      const plainText = getCleanPlainText();
+      await navigator.clipboard.writeText(plainText);
+      showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!");
+    });
+
+    document.getElementById("copyMarkdownBtn").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(mdSource);
+      showToast("📝 티스토리 마크다운 원문이 복사되었습니다!");
+    });
+  </script>
+</body>
+</html>
