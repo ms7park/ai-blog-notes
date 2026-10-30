@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[2026-10-31] 티스토리 포스팅 | 스마트폰(갤럭시·아이폰) 글자 크기·돋보기·보이스피싱 차단 초기 설정 비교 및 적용 순서</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+  <style>
+    :root {
+      --tistory: #ea580c;
+      --tistory-dark: #c2410c;
+      --tistory-light: #fff7ed;
+      --tistory-border: #fed7aa;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-tag {
+      background: var(--tistory);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-main);
+    }
+
+    .btn:hover { background: #f3f4f6; }
+
+    .btn-tistory {
+      background: var(--tistory);
+      color: var(--white);
+      border-color: var(--tistory);
+    }
+    .btn-tistory:hover { background: var(--tistory-dark); color: var(--white); }
+
+    .container {
+      max-width: 860px;
+      margin: 32px auto 0;
+      padding: 0 16px;
+    }
+
+    .meta-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--tistory);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .meta-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--tistory-light);
+      color: var(--tistory-dark);
+      border: 1px solid var(--tistory-border);
+    }
+
+    .badge-score {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .post-title {
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      color: #111827;
+    }
+
+    .meta-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      background: var(--bg);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .meta-info-item span { color: var(--text-muted); margin-right: 6px; }
+    .meta-info-item strong { color: var(--text-main); }
+
+    .editor-preview {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .editor-preview h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--tistory);
+      color: #111;
+    }
+
+    .editor-preview h2 {
+      font-size: 19.5px;
+      font-weight: 750;
+      margin: 34px 0 14px;
+      color: #111827;
+      border-left: 4px solid var(--tistory);
+      padding-left: 12px;
+    }
+
+    .editor-preview h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      margin: 24px 0 10px;
+      color: #1f2937;
+    }
+
+    .editor-preview p {
+      margin-bottom: 16px;
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: #374151;
+      word-break: keep-all;
+    }
+
+    .editor-preview ul, .editor-preview ol {
+      margin: 12px 0 20px 22px;
+    }
+
+    .editor-preview li {
+      margin-bottom: 8px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #374151;
+    }
+
+    .editor-preview blockquote {
+      border: 1px solid var(--tistory-border);
+      border-left: 4px solid var(--tistory);
+      background: var(--tistory-light);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      color: #7c2d12;
+      font-size: 14.5px;
+    }
+
+    .editor-preview table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 24px;
+      font-size: 14px;
+    }
+
+    .editor-preview th {
+      background: #fff7ed;
+      color: #9a3412;
+      font-weight: 700;
+      border: 1px solid #fed7aa;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .editor-preview td {
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      color: #374151;
+      vertical-align: top;
+    }
+
+    .editor-preview tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+
+    .editor-preview a {
+      color: var(--tistory-dark);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="brand-tag">TISTORY · 똑똑한 생활탐구</span>
+      <span class="nav-title">티스토리 정보형 포스팅: 2026-10-31 (토) · AI·IT 활용법</span>
+    </div>
+    <div class="nav-actions">
+      <a href="../../index.html" class="btn">📂 티스토리 작업실 홈</a>
+      <a href="2026-10-31.md" target="_blank" class="btn">📄 원본 MD 열기</a>
+      <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·인용구 서식 그대로 붙여넣기 됩니다">
+        🟠 티스토리 에디터(기본모드) 서식 복사
+      </button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">
+        📄 순수 텍스트 복사 (** 제거)
+      </button>
+      <button class="btn" id="copyMarkdownBtn" title="티스토리 마크다운 모드용 원문을 복사합니다">
+        📝 마크다운 원문 복사
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="meta-card">
+      <div class="meta-badges">
+        <span class="badge">📂 카테고리: AI·IT 활용법</span>
+        <span class="badge">📈 Google Trends 상승 검색어: [스마트폰 초기 설정]</span>
+        <span class="badge badge-score">🎯 주제 평가 점수: 92/100점</span>
+      </div>
+      <h1 class="post-title">스마트폰(갤럭시·아이폰) 글자 크기·돋보기·보이스피싱 차단 초기 설정 비교 및 적용 순서</h1>
+
+      <div class="meta-info-grid">
+        <div class="meta-info-item">
+          <span>작성일자:</span><strong>2026-10-31 (토)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>타겟 검색엔진:</span><strong>구글(Google) & 다음(Daum)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>글 구성:</span><strong>티스토리 7단계 표준 템플릿 (표 포함)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>수익화 타겟:</span><strong>구글 애드센스 승인·노출 최적화</strong>
+        </div>
+      </div>
+    </div>
+
+    <article class="editor-preview" id="postArticle"></article>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script id="rawMarkdown" type="text/plain">
+# 스마트폰(갤럭시·아이폰) 글자 크기·돋보기·보이스피싱 차단 초기 설정 비교 및 적용 순서
+
+> **📌 핵심 요약**: 스마트폰을 눈의 피로 없이 안전하게 사용하려면 개통 직후 **① 글자 크기 및 화면 확대 조정, ② 돋보기(확대기) 단축키 등록, ③ 출처 불명 앱 설치 차단(갤럭시 '보안 위험 자동 차단' / 아이폰 '안전성 확인'), ④ 통신사·금융사 스팸 및 보이스피싱 의심 번호 경고 설정** 등 4가지를 먼저 완료해야 합니다.
+
+---
+
+## 1. 스마트폰을 바꾼 뒤 왜 '가독성'과 '보안 설정'을 가장 먼저 점검해야 할까요?
+
+스마트폰으로 뉴스 검색, 모바일 뱅킹, 카카오톡, 건강보험·국민연금 조회까지 모든 일상을 처리하는 시대입니다. 하지만 기본 출고 상태 그대로 사용하면 작은 글씨 때문에 눈이 쉽게 피로해지고, 문자 메시지(스미싱)에 포함된 인터넷 주소를 잘못 눌러 악성 앱이 설치되는 보안 사고에 노출되기 쉽습니다.
+
+다행히 삼성 갤럭시(One UI)와 애플 아이폰(iOS) 모두 별도의 유료 앱을 설치하지 않아도 **운영체제 기본 설정만으로 글자 가독성을 높이고 악성 앱 설치를 원천 차단하는 기능**을 제공합니다. 이 글에서는 **갤럭시 vs 아이폰 핵심 설정 경로 비교표와 5분 만에 끝내는 4단계 설정 순서**를 정리합니다.
+
+---
+
+## 2. 핵심 내용 요약 (결론 먼저 보기)
+
+- **갤럭시 핵심 설정 2가지**:
+  1. `[설정] → [디스플레이] → [글자 크기와 스타일]` 또는 `[쉬운 사용 모드]` 활성화
+  2. `[설정] → [보안 및 개인정보 보호] → [보안 위험 자동 차단]` 켜기 (문자 링크를 통한 악성 APK 설치 차단)
+- **아이폰 핵심 설정 2가지**:
+  1. `[설정] → [디스플레이 및 밝기] → [텍스트 크기]` 및 `[확대/축소(화면 확대)]` 설정
+  2. `[설정] → [Safari] → [위조된 웹사이트 경고]` 및 `[알 수 없는 발신자 소음 처리]` 켜기
+
+---
+
+## 3. 단계별 설명: 스마트폰 가독성 & 보안 초기 설정 4단계 순서
+
+### 1단계: 눈이 편안한 '글자 크기'와 '굵은 텍스트' 설정하기
+단순히 글자만 키우면 한 화면에 들어오는 정보량이 줄어들 수 있으므로 **'글자 굵게 표시'**를 함께 켜면 선명도가 훨씬 높아집니다.
+1. **삼성 갤럭시**: `[설정] → [디스플레이] → [글자 크기와 스타일]`에서 **'글자 굵게'** 토글을 켜고, 하단 슬라이더를 좌우로 움직여 3~4단계로 조절합니다.
+2. **애플 아이폰**: `[설정] → [디스플레이 및 밝기]`에서 **'볼드체 텍스트(굵은 텍스트)'**를 켜고, **[텍스트 크기]**를 눌러 원하는 크기로 맞춥니다.
+
+### 2단계: 작은 약품 설명서·영수증을 크게 보는 '돋보기' 단축키 켜기
+카메라를 고배율 확대경처럼 써서 깨알 같은 제품 성분표나 서류 글씨를 읽을 수 있는 기능입니다.
+1. **삼성 갤럭시**: `[설정] → [접근성] → [시각 보조] → [돋보기]`로 이동해 **'돋보기 바로가기'**를 켭니다. 화면 우측 하단 접근성 버튼이나 측면 버튼 조합으로 즉시 실행할 수 있습니다.
+2. **애플 아이폰**: `[설정] → [제어 센터]`에서 **'확대기'**를 포함 항목에 추가합니다. 화면 우측 상단을 쓸어내려 제어 센터에서 돋보기 아이콘을 바로 실행할 수 있습니다.
+
+### 3단계: 스미싱·보이스피싱 악성 앱 설치 원천 차단하기 (가장 중요)
+택배 배송 조회, 청첩장, 부고장, 건강검진 안내를 사칭한 문자 링크를 눌렀을 때 스마트폰을 보호하는 핵심 안전장치입니다.
+1. **삼성 갤럭시 ('보안 위험 자동 차단' 활성화)**:
+   - `[설정] → [보안 및 개인정보 보호] → [보안 위험 자동 차단]` 메뉴로 들어가 스위치를 **'켜짐(ON)'**으로 바꿉니다.
+   - 이 기능을 켜면 공인된 스토어(Galaxy Store, Google Play) 외의 출처에서 악성 앱(`.apk`)이 몰래 설치되는 것을 시스템이 즉시 차단합니다.
+2. **애플 아이폰 (Safari 보안 및 발신자 필터링)**:
+   - `[설정] → [앱] → [Safari]`에서 **'위조된 웹사이트 경고'**를 켭니다.
+   - `[설정] → [앱] → [메시지]`에서 **'알 수 없는 발신자 필터링'**을 켜서 저장되지 않은 번호로 온 스미싱 문자를 별도 탭으로 분리합니다.
+
+### 4단계: 긴급 SOS 및 의료 정보(비상 연락처) 등록하기
+1. 갤럭시의 `[설정] → [안전 및 긴급] → [의료 정보]` 또는 아이폰의 `[건강] 앱 → [의료 정보]`에 본인의 혈액형, 복용 중인 약, 가족 비상연락처를 입력해 둡니다.
+2. 위급 상황 시 잠금 화면을 풀지 않고도 구급대원이 가족에게 연락하고 기저질환 정보를 확인할 수 있습니다.
+
+---
+
+## 4. 삼성 갤럭시(Android) vs 애플 아이폰(iOS) 주요 설정 경로 비교표
+
+| 설정 목적 | 📱 삼성 갤럭시 (One UI 6 이상 기준) | 🍎 애플 아이폰 (iOS 17/18 이상 기준) | 권장 설정 상태 |
+| :--- | :--- | :--- | :--- |
+| **글자 크기 및 굵기 확대** | `[설정] → [디스플레이] → [글자 크기와 스타일]` | `[설정] → [디스플레이 및 밝기] → [텍스트 크기]` | **글자 굵게 ON** + 크기 1단계 확대 |
+| **홈 화면 아이콘 크게 보기** | `[설정] → [디스플레이] → [쉬운 사용 모드]` | `[설정] → [디스플레이 및 밝기] → [디스플레이 확대/축소]` | 아이콘·배율이 작게 느껴질 때 **확대 선택** |
+| **실물 글씨 확대경(돋보기)** | `[설정] → [접근성] → [시각 보조] → [돋보기]` | `[설정] → [제어 센터] → [확대기] 추가` | 제어 센터·바로가기에 등록 후 상시 활용 |
+| **악성 앱·피싱 사이트 차단** | `[설정] → [보안 및 개인정보 보호] → [보안 위험 자동 차단]` | `[설정] → [Safari] → [위조된 웹사이트 경고]` | **반드시 활성화 (보이스피싱 예방 핵심)** |
+| **스팸 전화·문자 자동 경고** | `[전화] 앱 → [설정] → [발신번호 표시 및 스팸 보호]` | `[설정] → [전화] → [알 수 없는 발신자 소음 처리]` | 스팸 자동 알림 ON (모르는 번호 주의) |
+
+---
+
+## 5. 스마트폰 보안 사고를 예방하는 3가지 생활 수칙
+
+1. **문자·카카오톡으로 온 `.apk` 설치 파일이나 원격제어 앱 절대 설치 금지**
+   - 검찰, 경찰, 금융감독원, 카드사, 국민건강보험공단 등 어떠한 공공·금융기관도 문자 링크를 통해 앱 설치나 원격제어 앱(TeamViewer, AnyDesk 등) 실행을 요구하지 않습니다.
+2. **신분증 사진·비밀번호 메모를 일반 사진첩(갤러리)에 그대로 보관하지 않기**
+   - 만약 악성 앱에 감염되면 사진첩에 저장된 주민등록증·운전면허증·보안카드 사진이 가장 먼저 유출되어 비대면 대출이나 알뜰폰 개통에 악용될 수 있습니다. 반드시 보관해야 한다면 암호로 잠그는 **'보안 폴더(갤럭시)'**나 **'가려진 항목(아이폰)'**을 이용하세요.
+3. **공공장소 무료 Wi-Fi 연결 시 금융 거래 자제**
+   - 비밀번호가 걸려 있지 않은 개방형 무료 와이파이에서는 은행 이체나 인증서 로그인을 피하고, 금융 앱을 쓸 때는 모바일 데이터(LTE/5G) 상태에서 실행하는 것이 안전합니다.
+
+---
+
+## 6. 마무리 및 오늘 바로 점검할 체크리스트
+
+1. 지금 내 스마트폰의 `[설정] → [보안 및 개인정보 보호]`(갤럭시)를 열어 **'보안 위험 자동 차단'**이 켜져 있는지 1순위로 확인하세요.
+2. 부모님이나 배우자의 스마트폰에도 **글자 굵게 표시**와 **스팸 번호 표시 기능**을 함께 켜 드리면 눈의 피로와 금융 사기 위험을 동시에 크게 줄일 수 있습니다.
+
+---
+
+## 7. 참고 자료 및 공식 확인 사이트
+
+- [삼성전자 서비스 공식 홈페이지 (갤럭시 보안 위험 자동 차단 안내)](https://www.samsungsvc.co.kr/)
+- [Apple 공식 고객지원 (iPhone 접근성 및 디스플레이 설정)](https://support.apple.com/ko-kr)
+- [한국인터넷진흥원(KISA) 보호나라 스미싱·보이스피싱 예방 안내](https://www.boho.or.kr/)
+
+  </script>
+
+  <script>
+    const mdSource = document.getElementById("rawMarkdown").textContent.trim();
+    const articleEl = document.getElementById("postArticle");
+    articleEl.innerHTML = marked.parse(mdSource);
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    function getCleanPlainText() {
+      return mdSource
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/^>\s+/gm, '')
+        .replace(/^---\s*$/gm, '──────────')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .trim();
+    }
+
+    function getTistoryOptimizedHtml() {
+      const clone = articleEl.cloneNode(true);
+      clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 22px; line-height: 1.4;"));
+      clone.querySelectorAll("h2").forEach(el => el.setAttribute("style", "font-size: 19px; font-weight: bold; color: #c2410c; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid #ea580c; padding-left: 10px;"));
+      clone.querySelectorAll("h3, h4").forEach(el => el.setAttribute("style", "font-size: 16.5px; font-weight: bold; color: #1f2937; margin-top: 22px; margin-bottom: 10px;"));
+      clone.querySelectorAll("p").forEach(el => el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin-bottom: 16px; word-break: keep-all;"));
+      clone.querySelectorAll("blockquote").forEach(el => el.setAttribute("style", "background-color: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid #ea580c; padding: 16px 20px; margin: 20px 0; border-radius: 6px; color: #7c2d12; font-style: normal; font-size: 15px;"));
+      clone.querySelectorAll("table").forEach(el => el.setAttribute("style", "width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px;"));
+      clone.querySelectorAll("th").forEach(el => el.setAttribute("style", "background-color: #fff7ed; color: #9a3412; font-weight: bold; border: 1px solid #fed7aa; padding: 10px 12px; text-align: left;"));
+      clone.querySelectorAll("td").forEach(el => el.setAttribute("style", "border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151;"));
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 14px 0 20px 22px;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.75; margin-bottom: 8px; color: #374151;"));
+      return clone.innerHTML;
+    }
+
+    document.getElementById("copyTistoryHtmlBtn").addEventListener("click", async () => {
+      const htmlContent = getTistoryOptimizedHtml();
+      const plainText = getCleanPlainText();
+      let success = false;
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          success = true;
+        } catch(e) {}
+      }
+      if (!success) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      showToast("🟠 티스토리 기본모드 서식(표·소제목 포함)이 복사되었습니다! 에디터에 바로 붙여넣으세요.");
+    });
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", async () => {
+      const plainText = getCleanPlainText();
+      await navigator.clipboard.writeText(plainText);
+      showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!");
+    });
+
+    document.getElementById("copyMarkdownBtn").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(mdSource);
+      showToast("📝 티스토리 마크다운 원문이 복사되었습니다!");
+    });
+  </script>
+</body>
+</html>
