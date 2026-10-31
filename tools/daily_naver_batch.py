@@ -122,30 +122,111 @@ BLOG_THEMES = {
     }
 }
 
+# 중복 및 오매칭 방지를 위한 네이버 블로그 검증된 시니어·은퇴 상록수 주제 풀
+NAVER_CURATED_TOPICS = [
+    {"keyword": "국민연금", "traffic": "1000+", "news_title": "국민연금 예상 수령액 조회 및 연기·조기수령 비교"},
+    {"keyword": "기초연금", "traffic": "800+", "news_title": "만 65세 이상 기초연금 수급자격 및 부부 감액 기준"},
+    {"keyword": "국가건강검진", "traffic": "1500+", "news_title": "올해 국가건강검진 대상자 조회 및 6대 암검진 체크리스트"},
+    {"keyword": "연말정산 절세", "traffic": "600+", "news_title": "은퇴자·시니어를 위한 연금저축·IRP·ISA 세액공제 절세 팁"},
+    {"keyword": "파크골프", "traffic": "1200+", "news_title": "전국 파크골프장 인기 코스 및 입문자 장비 선택 노하우"},
+    {"keyword": "치과 임플란트", "traffic": "900+", "news_title": "만 65세 이상 임플란트·틀니 건강보험 본인부담 30% 적용 기준"},
+    {"keyword": "정기예금", "traffic": "2000+", "news_title": "시중은행·저축은행 정기예금 금리 비교 및 비과세종합저축 활용법"},
+    {"keyword": "시니어 일자리", "traffic": "700+", "news_title": "사회공헌 및 신중년 경력형 시니어 일자리 신청 방법"},
+    {"keyword": "식후 혈당", "traffic": "1100+", "news_title": "식후 30분 걷기와 당뇨·혈당 스파이크 예방 식단 루틴"},
+    {"keyword": "주택연금", "traffic": "900+", "news_title": "공시가격 12억 이하 주택연금 가입 조건 및 월 수령액 계산"},
+    {"keyword": "건강보험 피부양자", "traffic": "1300+", "news_title": "퇴직 후 건강보험료 피부양자 소득 2,000만 원 기준 및 임의계속가입"},
+    {"keyword": "김장 절임배추", "traffic": "1000+", "news_title": "가계부 부담 줄이는 알뜰 김장 준비와 제철 식재료 보관법"},
+    {"keyword": "당구 취미", "traffic": "700+", "news_title": "5060 세대가 다시 찾는 실내 힐링 스포츠 당구의 건강 효과"},
+    {"keyword": "백내장 노안", "traffic": "800+", "news_title": "침침한 눈 건강 지키는 백내장·녹내장 초기 증상과 안과 검진"},
+    {"keyword": "배당 ETF", "traffic": "1100+", "news_title": "매달 따박따박 월급처럼 받는 월배당 ETF와 ISA 절세 계좌 활용"},
+    {"keyword": "관절 스트레칭", "traffic": "900+", "news_title": "무릎·허리 관절 통증 줄이는 매일 10분 걷기와 하체 근력 운동"},
+    {"keyword": "고향사랑기부제", "traffic": "850+", "news_title": "10만 원 기부하고 13만 원 혜택 받는 세액공제 및 답례품 추천"},
+    {"keyword": "국내 온천여행", "traffic": "750+", "news_title": "부부가 함께 떠나기 좋은 가을·겨울 국내 온천 및 기차여행 코스"}
+]
+
+BLOCKED_NAVER_KEYWORDS = {
+    "은행나무", "반계리", "화재", "참사", "상어", "사토시", "노원구", "하림", "금양",
+    "현대자동차", "브라이튼", "김천상무", "황희찬", "송강", "감우성", "오윤아", "김헌곤",
+    "한준수", "류현진", "스비톨리나", "본드걸", "아나운서", "전두환", "박진영", "신진서", "신진 서"
+}
+
 def match_blog_theme(keyword, news_title=""):
     """
-    트렌드 키워드 및 뉴스가 품미인생 블로그 테마(자산, 건강, 음식, 취미, 인생2막)와
-    연관성이 있는지 판별하고 매칭된 테마 정보를 반환.
-    연관이 없으면 None 반환.
+    트렌드 키워드 자체(keyword)가 품미인생 블로그 테마(자산, 건강, 음식, 취미, 인생2막)와
+    정확히 연관성이 있는지 판별하고 매칭된 테마 정보를 반환.
+    - 뉴스 본문 내 우연한 단어 일치(예: 화재 뉴스에 음식 단어, 연예인 뉴스에 건강 단어)로 인한 오매칭을 원천 차단합니다.
     """
-    target = f"{keyword} {news_title}".lower()
+    kw_clean = keyword.strip()
+    kw_low = kw_clean.lower()
+
+    if not kw_clean:
+        return None
+    if re.search(r'(?<![a-z])vs(?![a-z])', kw_low) or " 대 " in kw_clean:
+        return None
+    if any(b in kw_clean for b in BLOCKED_NAVER_KEYWORDS):
+        return None
+
     for theme_key, theme_info in BLOG_THEMES.items():
-        for kw in theme_info["keywords"]:
-            if kw in target:
-                return {
-                    "theme_key": theme_key,
-                    "theme_name": theme_info["name"],
-                    "category": theme_info["category"],
-                    "matched_keyword": kw,
-                    "lead": theme_info["lead"],
-                    "p1_title": theme_info["p1_title"],
-                    "p1_desc": theme_info["p1_desc"],
-                    "p2_title": theme_info["p2_title"],
-                    "p2_desc": theme_info["p2_desc"],
-                    "p3_title": theme_info["p3_title"],
-                    "p3_desc": theme_info["p3_desc"],
-                }
+        for ck in theme_info["keywords"]:
+            ck_low = ck.lower().strip()
+            # 영문 키워드는 단어 경계 확인 (예: 'al'이 'ai'나 일반 단어에 오매칭되지 않도록)
+            if re.match(r'^[a-z0-9\s]+$', ck_low):
+                if re.search(r'(?<![a-z0-9])' + re.escape(ck_low) + r'(?![a-z0-9])', kw_low):
+                    return {
+                        "theme_key": theme_key,
+                        "theme_name": theme_info["name"],
+                        "category": theme_info["category"],
+                        "matched_keyword": ck,
+                        "lead": theme_info["lead"],
+                        "p1_title": theme_info["p1_title"],
+                        "p1_desc": theme_info["p1_desc"],
+                        "p2_title": theme_info["p2_title"],
+                        "p2_desc": theme_info["p2_desc"],
+                        "p3_title": theme_info["p3_title"],
+                        "p3_desc": theme_info["p3_desc"],
+                    }
+            else:
+                if ck_low in kw_low:
+                    return {
+                        "theme_key": theme_key,
+                        "theme_name": theme_info["name"],
+                        "category": theme_info["category"],
+                        "matched_keyword": ck,
+                        "lead": theme_info["lead"],
+                        "p1_title": theme_info["p1_title"],
+                        "p1_desc": theme_info["p1_desc"],
+                        "p2_title": theme_info["p2_title"],
+                        "p2_desc": theme_info["p2_desc"],
+                        "p3_title": theme_info["p3_title"],
+                        "p3_desc": theme_info["p3_desc"],
+                    }
     return None
+
+def get_existing_naver_signatures(exclude_date=None):
+    all_files = glob.glob(os.path.join(POSTS_DIR, "*", "*.md")) + glob.glob(os.path.join(POSTS_DIR, "*.md"))
+    titles = set()
+    keywords = set()
+    for fpath in set(all_files):
+        fname = os.path.basename(fpath).replace(".md", "")
+        parts = fname.split("-")
+        date_only = "-".join(parts[:3])
+        if exclude_date and date_only == exclude_date:
+            continue
+        try:
+            with open(fpath, "r", encoding="utf-8") as f:
+                first_line = f.readline().strip()
+            if first_line.startswith("# "):
+                titles.add(first_line[2:].strip())
+            html_path = fpath[:-3] + ".html"
+            if os.path.exists(html_path):
+                with open(html_path, "r", encoding="utf-8") as hf:
+                    h_str = hf.read()
+                m_kw = re.search(r'실시간 트렌드:\s*\[([^\]]+)\]', h_str)
+                if m_kw:
+                    keywords.add(m_kw.group(1).strip().lower())
+        except Exception:
+            pass
+    return {"titles": titles, "keywords": keywords}
 
 def log(msg):
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -156,7 +237,7 @@ def log(msg):
         f.write(formatted + "\n")
 
 def fetch_trending_keywords():
-    """Google Trends RSS 및 Fallback을 통한 실시간 검색어 Top 10 수집 (블로그 테마 자동 매칭)"""
+    """Google Trends RSS 및 Curated Fallback을 통한 검색어 Top 10 수집 (블로그 테마 자동 매칭)"""
     url = "https://trends.google.co.kr/trending/rss?geo=KR"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     trends = []
@@ -180,24 +261,11 @@ def fetch_trending_keywords():
                 "news_title": news_title
             })
     except Exception as e:
-        log(f"⚠️ 트렌드 RSS 수집 실패 (Fallback 키워드 사용): {e}")
+        log(f"⚠️ 트렌드 RSS 수집 실패 (Curated 시니어 키워드 사용): {e}")
 
-    # Fallback 키워드 (오프라인/에러 대비)
     if len(trends) < 10:
-        fallbacks = [
-            {"keyword": "금 (Gold)", "traffic": "2000+", "news_title": "안전자산 금 시세 최고치 경신"},
-            {"keyword": "국민연금", "traffic": "1000+", "news_title": "국민연금 수령액 인상 및 개혁안 발표"},
-            {"keyword": "기초연금", "traffic": "800+", "news_title": "기초연금 40만원 단계적 인상 및 감액 기준"},
-            {"keyword": "건강검진", "traffic": "1500+", "news_title": "올해 국가건강검진 대상자 및 필수 수검 항목"},
-            {"keyword": "절세 혜택", "traffic": "600+", "news_title": "은퇴자를 위한 ISA 및 IRP 연말정산 절세 팁"},
-            {"keyword": "파크골프", "traffic": "1200+", "news_title": "전국 파크골프장 인기 코스 및 예약 노하우"},
-            {"keyword": "임플란트", "traffic": "900+", "news_title": "65세 이상 임플란트 건강보험 적용 기준"},
-            {"keyword": "정기예금", "traffic": "2000+", "news_title": "시중은행 특판 고금리 예적금 금리 비교"},
-            {"keyword": "시니어 일자리", "traffic": "700+", "news_title": "사회공헌 및 공공 시니어 일자리 신청 방법"},
-            {"keyword": "혈당 관리", "traffic": "1100+", "news_title": "식후 30분 걷기와 연속혈당측정기 활용법"}
-        ]
         needed = 10 - len(trends)
-        trends.extend(fallbacks[:needed])
+        trends.extend(NAVER_CURATED_TOPICS[:needed])
 
     # 키워드별 테마 분석 및 블로그 추천 제목 생성
     results = []
@@ -218,7 +286,7 @@ def fetch_trending_keywords():
     return results
 
 def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
-    """트렌드 키워드를 네이버 블로그 스마트블록 상위노출용 매력적인 제목으로 변환"""
+    """트렌드 키워드를 네이버 블로그 스마트블록 상위노출용 매력적인 제목으로 변환 (단어 중복 방지)"""
     kw = keyword.strip()
     
     if theme_info:
@@ -226,12 +294,12 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
         if theme_key == "finance":
             if any(w in kw for w in ["연금", "국민연금", "기초연금", "퇴직연금", "주택연금", "개인연금"]):
                 return f"{kw} 수령액 개편 뉴스 총정리! 내 노후 통장에 미치는 영향과 꿀팁 3가지"
-            elif any(w in kw for w in ["주식", "삼전", "하이닉스", "반도체", "증시", "코스피", "코스닥"]):
-                return f"흔들리는 증시 속 '{kw}' 주목! 5060 은퇴자 배당·안전 자산관리 관점 대응법 3가지"
+            elif any(w in kw for w in ["주식", "삼전", "하이닉스", "반도체", "증시", "코스피", "코스닥", "etf", "배당"]):
+                return f"흔들리는 증시 속 '{kw}' 주목! 5060 은퇴자 배당·안전 자산관리 대응법 3가지"
             elif any(w in kw for w in ["기부", "고향사랑", "세금", "절세", "연말정산", "환급"]):
-                return f"13월의 월급 늘리는 '{kw}' 절세 비결! 은퇴자가 꼭 챙겨야 할 세액공제 알짜 혜택 총정리"
-            elif any(w in kw for w in ["금시세", "골드바", "골드"]) or kw == "금":
-                return f"지금이라도 금 사둘까? 사상 최고가 속 은퇴자 실전 금 투자법 3가지"
+                return f"13월의 월급 늘리는 '{kw}' 핵심 가이드! 은퇴자가 꼭 챙겨야 할 세액공제 혜택 총정리"
+            elif any(w in kw for w in ["금시세", "골드바", "골드"]) or kw in ("금", "금 (Gold)"):
+                return f"지금이라도 금 사둘까? 안전자산 '{kw}' 투자 전 은퇴자가 꼭 알아야 할 체크포인트 3가지"
             elif any(w in kw for w in ["예금", "적금", "금리", "파킹통장", "은행"]):
                 return f"{kw} 금리 비교와 만기 재예치 노하우, 이자 세금 아끼는 3대 절세 비결"
             elif any(w in kw for w in ["부동산", "아파트", "청약", "전세", "월세"]):
@@ -240,20 +308,20 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
                 return f"노후 자산 지키는 '{kw}' 핵심 체크포인트! 은퇴 전후 꼭 알아야 할 자산관리 팁 3가지"
         elif theme_key == "health":
             if any(w in kw for w in ["치아", "임플란트", "틀니", "치과"]):
-                return f"65세 이상 임플란트 건강보험 혜택과 '{kw}' 주의사항! 씹는 즐거움 되찾는 치아 관리법"
+                return f"만 65세 이상 '{kw}' 건강보험 30% 혜택과 치과 치료 전 필수 확인사항 3가지"
             elif any(w in kw for w in ["혈당", "당뇨", "혈압", "고혈압", "고지혈증"]):
-                return f"식후 30분 혈당 스파이크 잡는 '{kw}' 관리법! 5060 건강 지키는 실전 식단 루틴"
+                return f"식후 30분 혈당 스파이크 잡는 '{kw}' 실천법! 5060 건강 지키는 실전 식단과 걷기 루틴"
             elif any(w in kw for w in ["관절", "무릎", "오십견", "디스크", "척추", "관절염"]):
-                return f"지긋지긋한 관절 통증 줄이는 '{kw}' 관리 노하우! 매일 10분 스트레칭과 습관 3가지"
+                return f"지긋지긋한 통증 줄이는 '{kw}' 실천 노하우! 매일 10분 스트레칭과 생활 습관 3가지"
             elif any(w in kw for w in ["눈", "안과", "백내장", "녹내장", "노안", "황반변성"]):
-                return f"침침한 눈 건강 되살리는 '{kw}' 예방 및 관리법! 5060 시니어 필수 안과 상식"
+                return f"침침한 눈 건강 되살리는 '{kw}' 예방 가이드! 5060 시니어 필수 안과 상식 3가지"
             elif any(w in kw for w in ["검진", "건강검진", "암검진", "내시경"]):
-                return f"올해 놓치면 손해인 국가건강검진과 '{kw}' 필수 체크리스트 3가지"
+                return f"올해 놓치면 손해인 '{kw}' 대상자 조회 및 수검 전 필수 체크리스트 3가지"
             else:
                 return f"내 몸 살리는 '{kw}' 핵심 가이드! 5060 세대가 꼭 알아야 할 건강 수칙 3가지"
         elif theme_key == "food_lifestyle":
             if any(w in kw for w in ["김장", "배추", "김치", "절임배추"]):
-                return f"올해 {kw} 비용 부담 줄이는 실전 비법! 맛과 가성비 다 잡는 품미인생 김장 노하우"
+                return f"올해 '{kw}' 비용 부담 줄이는 실전 비법! 맛과 가성비 다 잡는 품미인생 김장 노하우"
             elif any(w in kw for w in ["맛집", "식당", "음식", "노포"]):
                 return f"입맛 돋우는 전국 숨은 '{kw}' 탐방기! 든든하고 건강한 품미인생 미식 가이드"
             else:
@@ -266,7 +334,7 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
             elif any(w in kw for w in ["등산", "트레킹", "걷기", "만보"]):
                 return f"무릎 부담 없는 '{kw}' 명코스 추천! 은퇴 후 몸과 마음을 채우는 힐링 로드"
             else:
-                return f"인생 2막을 풍요롭게 채우는 취미 '{kw}'! 건강과 즐거움을 함께 잡는 3가지 노하우"
+                return f"인생 2막을 풍요롭게 채우는 '{kw}' 가이드! 건강과 즐거움을 함께 잡는 3가지 노하우"
         elif theme_key == "career_life2":
             if any(w in kw for w in ["택시", "개인택시", "운전", "모빌리티"]):
                 return f"은퇴 후 자유로운 인생 2막! '{kw}' 취업 및 부업 노하우와 실제 수입 체크포인트"
@@ -277,16 +345,9 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
             elif any(w in kw for w in ["자격증", "국가자격증"]):
                 return f"은퇴 후 평생 쓸 수 있는 '{kw}' 유망 자격증 3선! 취득 전략과 실전 활용처"
             else:
-                return f"경륜과 지혜로 꽃피우는 인생 2막! '{kw}' 소식 속 은퇴자가 발견한 새로운 가능성"
+                return f"경륜과 지혜로 꽃피우는 인생 2막! '{kw}' 핵심 준비 전략과 체크포인트 3가지"
 
-    # 일반/시사 기본 제목 생성 (Rank 1 및 비테마)
-    if news_title:
-        clean_news = re.sub(r"\[.*?\]", "", news_title).strip()
-        if len(clean_news) > 28:
-            clean_news = clean_news[:28] + "..."
-        return f"{kw} 이슈 주목! {clean_news} - 은퇴자 관점에서 본 핵심 체크포인트"
-    else:
-        return f"실시간 핫이슈 '{kw}' 총정리! 우리가 꼭 알아야 할 핵심 내용과 일상 꿀팁"
+    return f"[보류] '{kw}' — 단기 이슈성 검색어 (시니어·은퇴 테마 외 키워드)"
 
 def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num=1, force=False):
     """
@@ -1694,7 +1755,7 @@ def git_commit_and_push(today_str, title):
     except Exception as e:
         log(f"⚠️ Git 자동 커밋 및 푸시 중 오류 발생: {e}")
 
-def run_batch(target_date=None, force=False):
+def run_batch(target_date=None, force=False, naver_only=False):
     """배치 메인 실행 함수"""
     # 동시 실행 방지 파일 락 (LaunchAgent + Cron 이중 구동 시 상호 배타 보장)
     lock_file_path = "/tmp/daily_naver_batch.lock"
@@ -1721,31 +1782,64 @@ def run_batch(target_date=None, force=False):
     target_ym_dir = os.path.join(POSTS_DIR, ym)
     if force and os.path.exists(target_ym_dir):
         for f in os.listdir(target_ym_dir):
-            if f.startswith(f"{today_str}-") and (f.endswith(".md") or f.endswith(".html")):
+            if (f.startswith(f"{today_str}-") or f.startswith(f"{today_str}.")) and (f.endswith(".md") or f.endswith(".html")):
                 try:
                     os.remove(os.path.join(target_ym_dir, f))
                 except OSError:
                     pass
 
+    existing_sigs = get_existing_naver_signatures(exclude_date=today_str if force else None)
+
     # 1. 실시간 트렌드 키워드 수집
     trends = fetch_trending_keywords()
-    log(f"📊 실시간 트렌드 {len(trends)}개 수집 완료: 1위 [{trends[0]['keyword']}] - {trends[0]['recommended_title']}")
+    log(f"📊 실시간 트렌드 {len(trends)}개 수집 완료")
 
-    # 2. 당일 메인 포스팅 생성 (실시간 검색어 1위)
-    main_theme = match_blog_theme(trends[0]["keyword"], trends[0].get("news", ""))
-    create_post(today_str, today_str, weekday_str, trends[0], theme_info=main_theme, post_num=1, force=force)
+    # 2. 품미인생 5대 테마와 정확히 일치하고 기작성 중복이 아닌 키워드만 선별 (최대 2편)
+    selected_items = []
+    for t in trends:
+        theme_info = t.get("theme") or match_blog_theme(t["keyword"], t.get("news", ""))
+        if not theme_info:
+            continue
+        kw_low = t["keyword"].strip().lower()
+        title_cand = t["recommended_title"]
+        if title_cand in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
+            continue
+        selected_items.append((t, theme_info))
+        existing_sigs["titles"].add(title_cand)
+        existing_sigs["keywords"].add(kw_low)
+        if len(selected_items) >= 2:
+            break
 
-    # 3. 실시간 검색어 Top 10 중 블로그 테마와 연관된 키워드 추가 포스팅 생성
-    theme_posts_count = 0
-    for t in trends[1:]:
-        theme_info = match_blog_theme(t["keyword"], t.get("news", ""))
-        if theme_info:
-            theme_posts_count += 1
-            post_id = f"{today_str}-{theme_posts_count + 1}"
-            log(f"🎯 블로그 테마 연관 키워드 발굴 (#{t['rank']}위 [{t['keyword']}] - 테마: {theme_info['theme_name']})")
-            create_post(post_id, today_str, weekday_str, t, theme_info=theme_info, post_num=theme_posts_count + 1, force=force)
+    # 3. 만약 실시간 트렌드 중 적합한 신규 테마 키워드가 없다면 검증된 상록수 풀(NAVER_CURATED_TOPICS)에서 1편 선택
+    if not selected_items:
+        for cur in NAVER_CURATED_TOPICS:
+            kw_low = cur["keyword"].strip().lower()
+            theme_info = match_blog_theme(cur["keyword"], cur["news_title"])
+            if not theme_info:
+                continue
+            rec_title = generate_blog_title_for_trend(cur["keyword"], cur["news_title"], theme_info)
+            if rec_title in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
+                continue
+            t_obj = {
+                "rank": 1,
+                "keyword": cur["keyword"],
+                "badge": cur["traffic"],
+                "news": cur["news_title"],
+                "recommended_title": rec_title,
+                "theme": theme_info
+            }
+            selected_items.append((t_obj, theme_info))
+            existing_sigs["titles"].add(rec_title)
+            existing_sigs["keywords"].add(kw_low)
+            break
 
-    log(f"📝 오늘 작성된 총 포스팅: 메인 1편 + 테마 연관 {theme_posts_count}편 = 총 {theme_posts_count + 1}편")
+    created_count = 0
+    for idx, (t_item, th_info) in enumerate(selected_items, 1):
+        post_id = today_str if idx == 1 else f"{today_str}-{idx}"
+        create_post(post_id, today_str, weekday_str, t_item, theme_info=th_info, post_num=idx, force=force)
+        created_count += 1
+
+    log(f"📝 오늘 작성된 네이버 블로그 포스팅: 총 {created_count}편 (오매칭·중복 원천 차단 완료)")
 
     # 4. 전체 포스트 스캔 및 블로그 대시보드 갱신
     posts = scan_all_posts()
@@ -1753,6 +1847,9 @@ def run_batch(target_date=None, force=False):
 
     # 5. 루트 index.html 멀티 블로그 포털 최근 포스트 갱신
     update_portal_index_html(today_str, posts)
+
+    if naver_only:
+        return
 
     # 5-2. 티스토리 일별 자동화 배치 연동 실행 (Google Trends 상승 검색어 기반)
     tistory_script = os.path.join(BASE_DIR, "tools", "daily_tistory_batch.py")
@@ -1784,7 +1881,8 @@ def run_batch(target_date=None, force=False):
 
 if __name__ == "__main__":
     force_mode = "--force" in sys.argv
+    naver_only_mode = "--naver-only" in sys.argv
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
     t_date = date_args[0] if date_args else None
-    run_batch(t_date, force=force_mode)
+    run_batch(t_date, force=force_mode, naver_only=naver_only_mode)
 
