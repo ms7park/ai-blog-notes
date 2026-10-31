@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[2026-11-01] 워드프레스 포스팅 #1 | 만 65세 이상 비과세 종합저축 가입 자격(5,000만 원 한도) 및 일반 과세 예금·중개형 ISA 세후 이자 비교표</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+  <style>
+    :root {
+      --wp: #0073aa;
+      --wp-dark: #005177;
+      --wp-light: #f0f7fb;
+      --wp-border: #bae6fd;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .brand-tag {
+      background: var(--wp);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .nav-title { font-size: 15px; font-weight: 700; }
+    .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-main);
+    }
+    .btn:hover { background: #f3f4f6; }
+    .btn-wp { background: var(--wp); color: #fff; border-color: var(--wp); }
+    .btn-wp:hover { background: var(--wp-dark); color: #fff; }
+    .container { max-width: 880px; margin: 32px auto 0; padding: 0 16px; }
+    .meta-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--wp);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .meta-badges { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--wp-light);
+      color: var(--wp-dark);
+      border: 1px solid var(--wp-border);
+    }
+    .post-title { font-size: 23px; font-weight: 800; line-height: 1.4; margin-bottom: 14px; color: #111827; }
+    .meta-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      background: var(--bg);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .meta-info-item span { color: var(--text-muted); margin-right: 6px; }
+    .editor-preview {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .editor-preview h1 { font-size: 24px; font-weight: 800; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--wp); }
+    .editor-preview h2 { font-size: 19.5px; font-weight: 750; margin: 34px 0 14px; color: #111827; border-left: 4px solid var(--wp); padding-left: 12px; }
+    .editor-preview h3 { font-size: 16.5px; font-weight: 700; margin: 24px 0 10px; color: #1f2937; }
+    .editor-preview p { margin-bottom: 16px; font-size: 15.5px; line-height: 1.85; color: #374151; word-break: keep-all; }
+    .editor-preview ul, .editor-preview ol { margin: 12px 0 20px 22px; }
+    .editor-preview li { margin-bottom: 8px; font-size: 15px; line-height: 1.75; color: #374151; }
+    .editor-preview blockquote {
+      border: 1px solid var(--wp-border);
+      border-left: 5px solid var(--wp);
+      background: var(--wp-light);
+      padding: 16px 20px;
+      margin: 20px 0 24px;
+      border-radius: 6px;
+      color: #0c4a6e;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
+    }
+    .editor-preview blockquote p { margin-bottom: 0; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; }
+    .editor-preview hr { border: 0; border-top: 1px solid #f1f5f9; margin: 26px 0; }
+    .editor-preview table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px; }
+    .editor-preview th { background: var(--wp-light); color: #0c4a6e; font-weight: 700; border: 1px solid var(--wp-border); padding: 10px 12px; text-align: left; }
+    .editor-preview td { border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151; vertical-align: top; }
+    .editor-preview tr:nth-child(even) td { background: #f9fafb; }
+    .editor-preview pre { background: #1e293b; color: #f8fafc; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 16px 0; }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #111827; color: #fff; padding: 12px 24px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="brand-tag">WORDPRESS · #1편</span>
+      <span class="nav-title">2026-11-01 (일) · Tax & Asset Management (절세·자산관리)</span>
+    </div>
+    <div class="nav-actions">
+      <a href="../../index.html" class="btn">📂 워드프레스 작업실 홈</a>
+      <a href="2026-11-01.md" target="_blank" class="btn">📄 원본 MD 열기</a>
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="워드프레스 제목 입력란에 붙여넣을 제목만 복사합니다">📋 제목만 복사</button>
+      <button class="btn btn-wp" id="copyWpBtn" title="워드프레스 구텐베르크 에디터에 적정 소제목 크기(20px)·요약박스·표 서식 그대로 붙여넣기 됩니다">🔵 워드프레스 구텐베르크 서식 복사</button>
+      <button class="btn" id="copyWpHtmlCodeBtn" style="border-color: #bae6fd; background: #f0f7fb; color: #0073aa;" title="구텐베르크 '사용자 정의 HTML' 블록에 붙여넣으면 원문 색상·배경·크기가 100% 그대로 유지됩니다">💻 사용자 정의 HTML 블록 코드 복사</button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
+      <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="meta-card">
+      <div class="meta-badges">
+        <span class="badge">🔵 WordPress Cornerstone SEO</span>
+        <span class="badge">📂 Tax & Asset Management (절세·자산관리)</span>
+        <span class="badge">🔗 Slug: /senior-non-taxable-comprehensive-savings-guide</span>
+        <span class="badge">🎯 평가 점수: 95/100점</span>
+      </div>
+      <h1 class="post-title">만 65세 이상 비과세 종합저축 가입 자격(5,000만 원 한도) 및 일반 과세 예금·중개형 ISA 세후 이자 비교표</h1>
+      <div class="meta-info-grid">
+        <div class="meta-info-item"><span>Focus Keyphrase:</span><strong>비과세 종합저축 가입조건 한도</strong></div>
+        <div class="meta-info-item"><span>URL Slug:</span><strong>/senior-non-taxable-comprehensive-savings-guide</strong></div>
+        <div class="meta-info-item"><span>구조:</span><strong>Key Takeaways + 비교표 + FAQ 3문 3답</strong></div>
+        <div class="meta-info-item"><span>타겟:</span><strong>Google 글로벌/국내 SEO & AdSense</strong></div>
+      </div>
+    </div>
+
+    <article class="editor-preview" id="postArticle"></article>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script id="rawMarkdown" type="text/plain">
+# 만 65세 이상 비과세 종합저축 가입 자격(5,000만 원 한도) 및 일반 과세 예금·중개형 ISA 세후 이자 비교표
+
+> **💡 Key Takeaways (핵심 요약)**: **비과세 종합저축**은 조세특례제한법에 따라 **만 65세 이상 거주자(법령상 요건 충족 대상자), 장애인, 독립유공자, 기초생활수급자** 등이 전 금융기관 합산 **1인당 원금 5,000만 원(부부 합산 최대 1억 원) 한도** 내에서 발생하는 이자·배당소득세(**15.4%**)를 **전액 면제(0%)**받는 제도입니다. 단, **가입 직전 3개 과세기간 중 단 1회라도 금융소득종합과세 대상자(연간 과세 이자·배당 2,000만 원 초과)**였던 이력이 있으면 신규 가입이 제한되므로, 금융소득이 2,000만 원을 넘기 전에 우선적으로 한도를 확보해야 합니다.
+
+---
+
+## 1. 정기예금 이자 세금 15.4%를 0원으로 만드는 '비과세 종합저축'의 핵심 가치
+
+일반 정기예금이나 적금에서 이자를 받을 때는 **이자소득세 14%와 지방소득세 1.4%를 합친 15.4%**가 원천징수됩니다. 예를 들어 5,000만 원을 연 4.0% 정기예금에 1년간 예치하면 세전 이자는 200만 원이지만, 세금 30만 8,000원을 공제하고 실제로는 **169만 2,000원**만 수령하게 됩니다.
+
+반면 **비과세 종합저축**으로 등록해 가입하면 세금 30만 8,000원이 전액 면제되어 **200만 원 전액을 그대로 수령**할 수 있을 뿐만 아니라, 해당 이자·배당 소득은 **국세청 금융소득종합과세(연 2,000만 원 기준)와 국민건강보험 피부양자 소득 산정에서도 완전히 제외**됩니다.
+
+---
+
+## 2. 비과세 종합저축 한도 조회 및 가입하는 4단계 절차
+
+### 1단계: 가입 자격 및 '직전 3개년 금융소득종합과세' 이력 점검
+1. 주민등록상 **만 65세 이상 거주자**(조세특례제한법상 기준 충족자), 장애인, 독립유공자, 국가유공자 상이자, 기초생활수급자 등에 해당하는지 확인합니다.
+2. **필수 배제 요건 확인**: 가입 신청 연도 직전 3개 과세기간(예: 2026년 가입 신청 시 2023~2025년) 중 **단 1회라도 연간 과세 대상 이자·배당소득 합계액이 2,000만 원을 초과**한 적이 있다면 비과세 종합저축에 가입할 수 없습니다.
+
+### 2단계: 주거래 은행 앱 또는 창구에서 '통합 잔여 한도' 조회하기
+1. 비과세 종합저축의 **5,000만 원 한도는 개별 은행별 한도가 아니라 전 금융기관(시중은행·지방은행·저축은행·상호금융·증권사·보험사) 합산 한도**입니다.
+2. 과거에 가입해 둔 구 '세금우대종합저축'이나 타 금융사 비과세 계좌가 있다면 그 계약금액만큼 5,000만 원에서 차감되므로, 은행 앱이나 창구에서 **[비과세 종합저축 한도 조회]**를 먼저 실행해 쓰지 않는 휴면·저금리 계좌의 비과세 한도를 해지 정리합니다.
+
+### 3단계: 금리가 가장 높은 정기예금 또는 증권사 고배당 계좌에 한도 배정
+1. 5,000만 원 한도는 계좌 개수와 상관없이 여러 금융기관에 나누어 등록할 수 있습니다(예: A은행 정기예금 3,000만 원 + B저축은행 정기예금 2,000만 원).
+2. 금리가 연 0.1~1.0% 수준인 입출금 통장에 비과세 한도를 등록하면 절세 실익이 거의 없으므로, **가장 높은 확정 금리를 주는 정기예금**이나 **증권사 비과세 종합저축 계좌(국내 상장 고배당주·ETF)**에 5,000만 원 한도를 우선 배정합니다.
+
+### 4단계: 부부 동시 가입(합산 1억 원) 및 초과 자금 ISA·상호금융 분산
+1. 부부가 모두 만 65세 이상 등 자격 요건을 충족한다면 각자 명의로 5,000만 원씩 가입해 **부부 합산 원금 1억 원**까지 비과세 혜택을 누릴 수 있습니다.
+2. 5,000만 원을 초과하는 여유 자금은 **중개형/신탁형 ISA(연 2,000만 원, 총 1억 원 한도)**와 신협·농협·수협·새마을금고 **조합원 예탁금(1인당 3,000만 원 한도, 농어촌특별세 1.4% 저율과세)** 순으로 배치하면 세금 부담을 최소화할 수 있습니다.
+
+---
+
+## 3. 일반 과세 예금 vs 비과세 종합저축 vs 중개형 ISA vs 상호금융 예탁금 비교표
+
+| 비교 항목 | 일반 과세 정기예금 | 비과세 종합저축 | 중개형 / 신탁형 ISA (3년 유지) | 상호금융 조합원 예탁금 |
+| --- | --- | --- | --- | --- |
+| **가입 대상** | 제한 없음 | **만 65세 이상 등 법정 요건 충족자** (직전 3개년 종합과세자 제외) | 만 19세 이상 거주자 (직전 3개년 종합과세자 제외) | 해당 조합(신협·농협·새마을금고 등) 출자 조합원·준조합원 |
+| **1인당 원금 한도** | 제한 없음 | 전 금융기관 합산 **5,000만 원** | 연 2,000만 원 (**총 1억 원**) | 전 조합 합산 **3,000만 원** |
+| **적용 세율** | **15.4%** (소득세 14%+지방세 1.4%) | **0% (전액 비과세)** | 순이익 200만(서민형 400만) 비과세, 초과분 **9.9% 분리과세** | **1.4%** (소득세 면제, 농어촌특별세만 부과) |
+| **5,000만 원·연 4% 가정 시 세후 실수령 이자** | 1,692,000원 *(세금 308,000원 차감)* | **2,000,000원 (세금 0원)** | **2,000,000원** *(비과세 한도 내 세금 0원)* | 1,972,000원 *(3,000만 원 한도 기준 비례 적용 시 1.4% 과세)* |
+| **금융소득종합과세 및 건보료 소득 합산** | **합산됨** (연 1천만/2천만 원 기준 주의) | **완전 제외** | **완전 제외 (분리과세 종결)** | **완전 제외 (분리과세 종결)** |
+
+---
+
+## 4. 자주 묻는 질문
+
+### Q1. 정기예금을 가입한 뒤에 나중에 비과세 종합저축으로 전환할 수 있나요?
+**A.** 불가합니다. 이미 일반 과세로 개설된 정기예금이나 적금을 사후에 비과세 종합저축으로 변경할 수는 없으며, 반드시 **신규 가입 시점에 '비과세 종합저축' 적용을 신청**하고 한도를 배정받아야 합니다.
+
+### Q2. 비과세 종합저축 한도 5,000만 원은 이자까지 포함한 금액인가요, 원금 기준인가요?
+**A.** 거치식 예금(정기예금)은 **가입 원금 합계액 5,000만 원** 기준이며, 적립식 적금은 **월 납입액 × 계약 개월 수(계약 총액) 5,000만 원** 기준입니다. 다만 만기 시 이자가 원금에 합산되어 재예치되는 회전식·월복리 상품의 경우 원리금 합계액이 5,000만 원을 초과하지 않도록 원금을 약간 여유 있게 설정하는 것이 안전합니다.
+
+### Q3. 증권사에서도 비과세 종합저축 계좌를 만들 수 있나요?
+**A.** 네, 가능합니다. 전 금융기관 합산 한도(5,000만 원)가 남아 있다면 증권사에서 비과세 종합저축 계좌를 개설해 국내 상장 주식의 배당금이나 ETF 분배금을 **15.4% 배당소득세 없이 100% 비과세**로 수령할 수 있습니다.
+
+---
+
+## 5. 참고 자료 및 공식 확인 사이트
+
+- [전국은행연합회 소비자포털 (비과세종합저축 안내 및 예금금리 비교)](https://portal.kfb.or.kr/)
+- [국세청 홈택스 조세특례제한법 비과세 종합저축 세법 안내](https://www.hometax.go.kr/)
+- [금융감독원 금융상품한눈에 공식 비교 공시](https://finlife.fss.or.kr/)
+
+  </script>
+
+  <script>
+    const mdSource = document.getElementById("rawMarkdown").textContent.trim();
+    const articleEl = document.getElementById("postArticle");
+
+    // 1) marked.js가 한글 문장 내 범위 물결표(예: 60~70% ... 3.3~5.5%)를 취소선(<del>)으로 오인하는 버그 완벽 차단
+    // 2) CommonMark에서 **괄호)**조사, **[대괄호]**조사, *"따옴표"*조사 형태일 때 별표가 남는 버그 완벽 보정
+    function parseMarkdownSafe(md) {
+      let html = marked.parse(md);
+      html = html
+        .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+        .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+      return html;
+    }
+
+    articleEl.innerHTML = parseMarkdownSafe(mdSource);
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => showToast("🏷️ 워드프레스 SEO 슬러그 및 메타 설명이 복사되었습니다!"));
+    }
+
+    function convertMarkdownTablesToReadableList(mdText) {
+      const lines = mdText.split("\n");
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.startsWith("|") && line.endsWith("|") && i + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[i + 1].trim())) {
+          const headers = line.slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+          i += 2;
+          while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+            const cells = lines[i].trim().slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+            const rowTitle = cells[0] || "항목";
+            out.push(`■ [${rowTitle}]`);
+            for (let c = 1; c < headers.length; c++) {
+              out.push(`  • ${headers[c] || "항목"}: ${cells[c] || "-"}`);
+            }
+            out.push("");
+            i++;
+          }
+        } else {
+          out.push(lines[i]);
+          i++;
+        }
+      }
+      return out.join("\n");
+    }
+
+    function getCleanPlainText() {
+      return convertMarkdownTablesToReadableList(mdSource)
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/^>\s+/gm, '')
+        .replace(/^---\s*$/gm, '')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    }
+
+    function normalizeTableForWordPress(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 20px 0 24px; border: 1px solid #d1d5db; font-size: 14.5px; line-height: 1.6;");
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "26%", "26%", "26%"];
+        else if (colCount > 0) widths = Array(colCount).fill(Math.floor(100 / colCount) + "%");
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeader = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          const cleanHtml = cell.innerHTML.replace(/[]\s*/g, "").trim();
+          if (isHeader) {
+            td.setAttribute("style", `${wStyle}background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = `<strong>${cleanHtml}</strong>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = (cIdx === 0) ? "font-weight: bold; color: #111827; " : "color: #374151; ";
+            td.setAttribute("style", `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #d1d5db; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = (cIdx === 0 && !cleanHtml.includes("<strong")) ? `<strong>${cleanHtml}</strong>` : cleanHtml;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    // 워드프레스 구텐베르크 에디터 붙여넣기 최적화:
+    // 1) 최상단 중복 제목(H1) 제거 (제목 입력란에 별도 입력)
+    // 2) H2가 워드프레스 기본 테마에서 40px 초대형 글씨로 나오는 문제를 해결하기 위해
+    //    네이버·티스토리와 동일한 크기(약 20px, H3 레벨 + <strong> + 파란색 포인트 바 ▍)로 변환
+    // 3) 기존 H3(1단계, 2단계 등)는 17px 굵은 문단(▪ 1단계: ...)으로 변환하여 위계 질서 확립
+    // 4) <blockquote>(Key Takeaways)가 테두리 없는 일반 글씨로 풀리는 문제를 해결하기 위해 1x1 요약 박스 테이블로 변환
+    // 5) 검은색 실선(<hr>)을 깔끔한 문단 여백으로 대체
+    function getWordPressOptimizedHtml(forCustomHtmlBlock = false) {
+      const clone = articleEl.cloneNode(true);
+
+      // 1. 본문 최상단 중복 H1 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 2. 검은색 가로줄(<hr>) 제거
+      clone.querySelectorAll("hr").forEach(el => el.remove());
+
+      // 3. 본문 내 일반 표(Table) 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        el.replaceWith(normalizeTableForWordPress(el));
+      });
+
+      // 4. <blockquote>(핵심 요약)를 테두리가 유지되는 1x1 요약 박스 테이블로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 14px 0 26px; border: 1px solid #bae6fd; background-color: #f0f7fb;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #bae6fd; border-left: 5px solid #0073aa; background-color: #f0f7fb; padding: 16px 20px; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;">${innerHtml}</td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // 5. 기존 H3, H4(1단계, 2단계, Q1 등)를 먼저 17px 굵은 서브헤딩 문단으로 변환 (H2 -> H3 변환과 충돌 방지)
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        const pSub = document.createElement("p");
+        pSub.setAttribute("style", "font-size: 17px; font-weight: bold; color: #1e293b; margin: 22px 0 10px 0; line-height: 1.5; word-break: keep-all;");
+        const cleanTxt = el.innerHTML.trim();
+        const prefix = (cleanTxt.startsWith("▪") || cleanTxt.startsWith("①") || cleanTxt.startsWith("②") || cleanTxt.startsWith("③")) ? "" : "▪ ";
+        pSub.innerHTML = `<strong><span style="color: #0073aa;">${prefix}</span>${cleanTxt}</strong>`;
+        el.replaceWith(pSub);
+      });
+
+      // 6. H2 중간제목(1. ..., 2. ..., 3. ...)을 워드프레스에서 과도하게 커지지 않는 적정 크기(20px, H3 + <strong>)로 변환
+      clone.querySelectorAll("h2").forEach(el => {
+        if (forCustomHtmlBlock) {
+          el.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 32px 0 14px 0; padding-left: 12px; border-left: 4px solid #0073aa; line-height: 1.45; word-break: keep-all;");
+        } else {
+          const h3 = document.createElement("h3");
+          h3.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 30px 0 14px 0; line-height: 1.45; word-break: keep-all;");
+          h3.innerHTML = `<strong><span style="color: #0073aa; font-weight: 900; margin-right: 6px;">▍</span>${el.innerHTML}</strong>`;
+          el.replaceWith(h3);
+        }
+      });
+
+      // 7. 문단 및 목록 스타일 정리
+      clone.querySelectorAll("p").forEach(el => {
+        if (!el.getAttribute("style")) {
+          el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin: 0 0 16px 0; word-break: keep-all;");
+        }
+      });
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 12px 0 20px 22px; color: #374151;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.8; margin-bottom: 8px; color: #374151; word-break: keep-all;"));
+      clone.querySelectorAll("a").forEach(el => el.setAttribute("style", "color: #0073aa; font-weight: bold; text-decoration: underline;"));
+
+      return clone.innerHTML;
+    }
+
+    async function copyWpRichHtml(htmlContent, plainText) {
+      let copied = false;
+      try {
+        const tempDiv = document.createElement("div");
+        tempDiv.contentEditable = "true";
+        tempDiv.style.position = "fixed";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.top = "0";
+        tempDiv.style.opacity = "0";
+        tempDiv.style.backgroundColor = "#ffffff";
+        tempDiv.style.color = "#1f2937";
+        tempDiv.innerHTML = htmlContent;
+        document.body.appendChild(tempDiv);
+
+        const range = document.createRange();
+        range.selectNodeContents(tempDiv);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copied = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      } catch (e) {}
+
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          copied = true;
+        } catch (e) {}
+      }
+
+      if (!copied && navigator.clipboard) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      return copied;
+    }
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 워드프레스 제목 입력란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyWpBtn").addEventListener("click", async () => {
+      const htmlContent = getWordPressOptimizedHtml(false);
+      const plainText = getCleanPlainText();
+      await copyWpRichHtml(htmlContent, plainText);
+      showToast("🔵 워드프레스 구텐베르크 서식(중간제목 크기 축소·요약박스·취소선 오류 제거)이 복사되었습니다!");
+    });
+
+    document.getElementById("copyWpHtmlCodeBtn").addEventListener("click", async () => {
+      const htmlContent = `<div class="wp-custom-article" style="font-family: Pretendard, -apple-system, sans-serif; color: #1f2937; line-height: 1.8;">\n` + getWordPressOptimizedHtml(true) + `\n</div>`;
+      await navigator.clipboard.writeText(htmlContent);
+      showToast("💻 구텐베르크 '사용자 정의 HTML' 블록용 코드가 복사되었습니다! (/html 입력 후 붙여넣기)");
+    });
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(getCleanPlainText()).then(() => showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!"));
+    });
+
+    document.getElementById("copyMdBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(mdSource).then(() => showToast("📝 마크다운 원문이 복사되었습니다!"));
+    });
+  </script>
+</body>
+</html>
