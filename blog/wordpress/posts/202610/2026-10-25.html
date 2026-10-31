@@ -116,17 +116,22 @@
     .editor-preview li { margin-bottom: 8px; font-size: 15px; line-height: 1.75; color: #374151; }
     .editor-preview blockquote {
       border: 1px solid var(--wp-border);
-      border-left: 4px solid var(--wp);
+      border-left: 5px solid var(--wp);
       background: var(--wp-light);
       padding: 16px 20px;
-      margin: 20px 0;
-      border-radius: 8px;
+      margin: 20px 0 24px;
+      border-radius: 6px;
       color: #0c4a6e;
-      font-size: 14.5px;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
     }
+    .editor-preview blockquote p { margin-bottom: 0; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; }
+    .editor-preview hr { border: 0; border-top: 1px solid #f1f5f9; margin: 26px 0; }
     .editor-preview table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px; }
     .editor-preview th { background: var(--wp-light); color: #0c4a6e; font-weight: 700; border: 1px solid var(--wp-border); padding: 10px 12px; text-align: left; }
     .editor-preview td { border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151; vertical-align: top; }
+    .editor-preview tr:nth-child(even) td { background: #f9fafb; }
     .editor-preview pre { background: #1e293b; color: #f8fafc; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 16px 0; }
     .toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
@@ -145,7 +150,9 @@
     <div class="nav-actions">
       <a href="../../index.html" class="btn">📂 워드프레스 작업실 홈</a>
       <a href="2026-10-25.md" target="_blank" class="btn">📄 원본 MD 열기</a>
-      <button class="btn btn-wp" id="copyWpBtn">🔵 워드프레스 구텐베르크 블록 복사</button>
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="워드프레스 제목 입력란에 붙여넣을 제목만 복사합니다">📋 제목만 복사</button>
+      <button class="btn btn-wp" id="copyWpBtn" title="워드프레스 구텐베르크 에디터에 적정 소제목 크기(20px)·요약박스·표 서식 그대로 붙여넣기 됩니다">🔵 워드프레스 구텐베르크 서식 복사</button>
+      <button class="btn" id="copyWpHtmlCodeBtn" style="border-color: #bae6fd; background: #f0f7fb; color: #0073aa;" title="구텐베르크 '사용자 정의 HTML' 블록에 붙여넣으면 원문 색상·배경·크기가 100% 그대로 유지됩니다">💻 사용자 정의 HTML 블록 코드 복사</button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
       <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
     </div>
@@ -182,24 +189,13 @@
 
 ## 1. 퇴직 후 가장 큰 고정비, 건강보험료는 왜 갑자기 오를까요?
 
-직장에 재직할 때는 월급에서 건강보험료의 **50%만 본인이 부담**하고 나머지 50%는 회사가 부담합니다. 또한 보수(급여) 외에 본인이 보유한 주택이나 토지에는 별도의 재산 건강보험료가 부과되지 않습니다.
+직장에 재직할 때는 월급에서 건강보험료의 **50%만 본인이 부담**하고 나머지 50%는 회사가 부담합니다. 또한 급여(보수월액) 외에 본인이 보유한 주택이나 토지에는 별도의 재산 건강보험료가 부과되지 않습니다.
 
-그러나 퇴직 후 **지역가입자**로 전환되면 회사가 부담하던 50%가 사라질 뿐만 아니라, **소득(공적연금·이자·배당·근로·사업소득)과 재산(주택·토지 과세표준, 기본공제 1억 원 적용)**을 합산해 보험료를 부과하기 때문에 체감 부담이 급격히 커집니다. 이 가이드에서는 국민건강보험공단 공식 기준을 바탕으로 **퇴직 직후 반드시 비교해야 할 3가지 선택지(피부양자 · 임의계속가입 · 지역가입자) 비교표와 모의계산 절차**를 상세히 정리합니다.
-
----
-
-## 2. 핵심 내용 요약 (Key Takeaways)
-
-- **1순위 검토 (월 보험료 0원)**: 직장가입자(자녀·배우자)의 **피부양자 등재**
-  - 핵심 조건: 연간 합산소득 **2,000만 원 이하** + 재산세 과세표준 합계 **5.4억 원 이하**(5.4억 초과~9억 이하는 연 소득 1,000만 원 이하)
-- **2순위 검토 (최대 36개월 직장 수준 유지)**: **임의계속가입 신청**
-  - 핵심 조건: 퇴직 전 18개월 기간 중 통산 1년 이상 직장가입자 자격을 유지한 사람
-  - **필수 신청 기한**: 지역가입자 전환 후 받은 **최초 지역보험료 고지서 납부기한에서 2개월이 지나기 전**까지 공단에 신청 필수
-- **3순위 검토**: 무주택이거나 소득·재산이 적어 지역가입자 보험료가 임의계속가입 보험료보다 낮은 경우 별도 신청 없이 **지역가입자** 유지
+그러나 퇴직 후 **지역가입자**로 전환되면 회사가 부담하던 50%가 사라질 뿐만 아니라, **소득(공적연금·이자·배당·근로·사업소득)과 재산(주택·토지 과세표준, 기본공제 1억 원 적용)**을 합산해 보험료를 산정하기 때문에 체감 부담이 크게 늘어납니다. 아래에서 국민건강보험공단 공식 기준을 바탕으로 **퇴직 직후 반드시 비교해야 할 3가지 선택지(피부양자 · 임의계속가입 · 지역가입자)**와 모의계산 절차를 순서대로 살펴보겠습니다.
 
 ---
 
-## 3. 퇴직 후 건강보험료 계산 및 신청하는 4단계 순서
+## 2. 퇴직 후 건강보험료 계산 및 신청하는 4단계 순서
 
 ### 1단계: 국민건강보험공단 홈페이지·앱에서 예상 지역보험료 모의계산하기
 1. [국민건강보험공단 공식 홈페이지(nhis.or.kr)](https://www.nhis.or.kr/) 또는 모바일 앱 **'The건강보험'**에 접속합니다.
@@ -208,25 +204,25 @@
 
 ### 2단계: 퇴직 전 직장 건강보험료(본인부담금)와 비교하기
 1. 급여명세서 또는 공단 앱의 **[직장보험료 조회]**에서 퇴직 직전 본인이 부담하던 월 건강보험료(장기요양보험료 포함)를 확인합니다.
-2. 정확한 임의계속보험료는 **퇴직 전 12개월간 보수월액 평균**을 기준으로 산정되므로, 공단 고객센터(`1577-1000`)에 전화해 **'예상 지역보험료 vs 예상 임의계속보험료'**를 비교 요청하면 가장 정확합니다.
+2. 정확한 임의계속보험료는 **퇴직 전 12개월간 보수월액 평균**을 기준으로 산정되므로, 공단 고객센터(`1577-1000`)에 전화해 **'예상 지역보험료 vs 예상 임의계속보험료'**를 비교해 달라고 요청하면 가장 정확합니다.
 
 ### 3단계: 피부양자 자격 요건 충족 여부 점검하기
 자녀나 배우자가 직장가입자라면 아래 두 가지 요건을 모두 충족하는지 확인합니다.
-1. **소득 요건**: 이자·배당·사업·근로·공적연금(국민연금 등 세전 수령액) 합산 소득이 **연 2,000만 원 이하**일 것 (사업자등록이 있는 경우 사업소득이 '0원'이어야 함).
-2. **재산 요건**: 토지·건축물·주택의 지방세법상 **재산세 과세표준 합계액이 5.4억 원 이하**일 것 (과세표준 5.4억 초과~9억 원 이하인 경우 연간 소득이 1,000만 원 이하여야 유지 가능).
+1. **소득 요건**: 이자·배당·사업·근로·공적연금(국민연금 등 세전 수령액 100%) 합산 소득이 **연 2,000만 원 이하**여야 합니다. 이때 이자·배당 등 금융소득은 연 1,000만 원 이하일 경우 피부양자 소득 산정에서 제외(0원 처리)되지만, 연 1,000만 원을 초과하면 세전 금융소득 전액이 합산됩니다. 사업자등록이 있는 경우에는 사업소득이 '0원'이어야 합니다.
+2. **재산 요건**: 토지·건축물·주택의 지방세법상 **재산세 과세표준 합계액이 5.4억 원 이하**여야 합니다. 과세표준 합계액이 5.4억 원 초과~9억 원 이하인 경우에는 연간 합산소득이 1,000만 원 이하여야 자격을 유지할 수 있습니다.
 
 ### 4단계: 임의계속가입 신청 또는 피부양자 자격취득 신고하기
-1. **피부양자 등록 시**: 직장가입자인 가족의 회사 인사·총무부서를 통해 퇴직일로부터 90일 이내에 `피부양자 자격(취득) 신고서`와 가족관계증명서를 제출합니다.
-2. **임의계속가입 신청 시**: 최초 지역건보료 고지서 납부기한으로부터 **2개월 이내**에 공단 지사 방문, 팩스, 또는 'The건강보험' 앱/홈페이지에서 신청합니다.
+1. **피부양자 등록 시**: 직장가입자인 가족의 회사 인사·총무부서를 통해 퇴직일로부터 90일 이내에 `피부양자 자격(취득) 신고서`와 가족관계증명서를 제출합니다(90일 이내 신고 시 퇴직일 다음 날로 소급 적용).
+2. **임의계속가입 신청 시**: 퇴직 전 18개월 기간 중 통산 1년 이상 직장가입자 자격을 유지했다면 신청할 수 있습니다. 반드시 **최초 지역건보료 고지서 납부기한으로부터 2개월이 지나기 전**에 공단 지사 방문, 팩스, 또는 'The건강보험' 앱·홈페이지에서 신청해야 합니다.
 
 ---
 
-## 4. 피부양자 vs 임의계속가입 vs 일반 지역가입자
+## 3. 피부양자 vs 임의계속가입 vs 일반 지역가입자 비교표
 
 아래 표는 2026년 현행 국민건강보험법 기준 3가지 제도의 핵심 차이를 정리한 비교표입니다.
 
 | 비교 항목 | ① 직장가입자 피부양자 | ② 임의계속가입자 | ③ 일반 지역가입자 |
-| :--- | :--- | :--- | :--- |
+| --- | --- | --- | --- |
 | **월 납부 보험료** | **0원** (직장가입자 가족에 포함) | 퇴직 전 직장 본인부담 보험료 수준 | 소득 + 재산(기본공제 1억 적용) 합산 부과 |
 | **핵심 자격 조건** | 연 합산소득 **2,000만 원 이하** & 재산 과표 **5.4억 이하** | 퇴직 전 18개월 내 통산 **1년 이상** 직장가입자 유지 | 국내 거주자 중 직장가입자·피부양자가 아닌 자 |
 | **유지 가능 기간** | 소득·재산 요건 충족 시 계속 유지 | 퇴직일 다음 날부터 **최대 36개월(3년)** | 별도 기간 제한 없음 |
@@ -235,31 +231,31 @@
 
 ---
 
-## 5. 놓치면 불이익을 받는 3가지 핵심 예외 조건
+## 4. 놓치면 불이익을 받는 3가지 핵심 주의사항
 
 1. **부부 동반 탈락 주의 (피부양자 연대 기준)**
    - 부부 중 한 사람이라도 연간 합산소득이 2,000만 원을 초과하면, 소득이 전혀 없는 배우자까지 **부부가 함께 피부양자에서 탈락**하여 지역가입자로 전환됩니다.
 2. **사적연금(연금저축·IRP)과 공적연금(국민연금)의 차이**
    - 건강보험 피부양자 소득 산정 시 **국민연금·공무원연금 등 공적연금은 세전 수령액 100%가 반영**되지만, 현행 기준 사적연금(연금저축·IRP 등)은 분리과세 한도 내 수령 시 건보료 소득 산정에서 제외됩니다.
-3. **임의계속가입 중도 해지 가능 여부**
+3. **임의계속가입 중도 해지(탈퇴) 활용**
    - 임의계속가입 기간 중 재산을 처분하거나 소득이 줄어 일반 지역보험료가 더 낮아지면, 공단에 **임의계속 탈퇴 신청**을 하여 언제든 지역가입자로 전환할 수 있습니다.
 
 ---
 
-## 6. 자주 묻는 질문
+## 5. 자주 묻는 질문
 
 ### Q1. 재산세 과세표준 5.4억 원은 아파트 시세로 약 얼마인가요?
-**A.** 재산세 과세표준은 시세가 아니라 **공시가격에 공정시장가액비율(주택 기준 통상 60% 등)을 곱한 금액**입니다. 따라서 과세표준 5.4억 원은 공시가격 기준 약 9억 원, 실거래 시세 기준으로는 약 12억~13억 원 안팎에 해당합니다. 정확한 과세표준 금액은 매년 7·9월 재산세 고지서 또는 위택스(Wetax)에서 확인할 수 있습니다.
+**A.** 재산세 과세표준은 실거래 시세가 아니라 **공시가격에 공정시장가액비율(주택 기준 통상 60% 등)을 곱한 금액**입니다. 따라서 과세표준 5.4억 원은 공시가격 기준 약 9억 원, 실거래 시세 기준으로는 약 12억~13억 원 안팎에 해당합니다. 정확한 과세표준 금액은 매년 7·9월 재산세 고지서 또는 위택스(Wetax)에서 확인할 수 있습니다.
 
 ### Q2. 임의계속가입 신청 기한(납부기한 후 2개월)이 지나면 구제 방법이 없나요?
-**A.** 국민건강보험법상 최초 지역보험료 고지서 납부기한으로부터 2개월이 경과하면 임의계속가입 신청이 불가합니다. 따라서 퇴직 직후 첫 지역보험료 고지서를 받는 즉시 공단 고객센터(`1577-1000`)에 전화해 금액을 비교하는 것이 가장 중요합니다.
+**A.** 국민건강보험법상 최초 지역보험료 고지서 납부기한으로부터 2개월이 경과하면 임의계속가입 신청이 불가능합니다. 따라서 퇴직 직후 첫 지역보험료 고지서를 받는 즉시 공단 고객센터(`1577-1000`)에 문의해 금액을 비교하는 것이 가장 중요합니다.
 
 ### Q3. 퇴직 후 소득이 줄었는데 지역보험료에 과거 소득이 반영되어 높게 나오면 어떻게 하나요?
-**A.** 퇴직이나 폐업 등으로 소득이 중단·감소된 경우, 공단에 **퇴직증명서(또는 해촉증명서, 폐업사실증명원)를 제출해 '소득 정산(조정) 신청'**을 하면 현재 감소된 소득 기준으로 보험료를 즉시 낮출 수 있습니다.
+**A.** 퇴직이나 폐업 등으로 소득이 중단·감소된 경우, 공단에 **퇴직증명서(또는 해촉증명서, 폐업사실증명원)를 제출해 '소득 정산(조정) 신청'**을 하면 현재 감소된 소득 기준으로 보험료를 즉시 조정받을 수 있습니다.
 
 ---
 
-## 7. 참고 자료 및 공식 확인 사이트
+## 6. 참고 자료 및 공식 확인 사이트
 
 - [국민건강보험공단 공식 홈페이지 (보험료 모의계산 및 피부양자 안내)](https://www.nhis.or.kr/)
 - [정부24 퇴직 후 건강보험 임의계속가입 신청 안내](https://www.gov.kr/)
@@ -270,51 +266,238 @@
   <script>
     const mdSource = document.getElementById("rawMarkdown").textContent.trim();
     const articleEl = document.getElementById("postArticle");
-    articleEl.innerHTML = marked.parse(mdSource);
+
+    // 1) marked.js가 한글 문장 내 범위 물결표(예: 60~70% ... 3.3~5.5%)를 취소선(<del>)으로 오인하는 버그 완벽 차단
+    // 2) CommonMark에서 **괄호)**조사, **[대괄호]**조사, *"따옴표"*조사 형태일 때 별표가 남는 버그 완벽 보정
+    function parseMarkdownSafe(md) {
+      let html = marked.parse(md);
+      html = html
+        .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+        .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+      return html;
+    }
+
+    articleEl.innerHTML = parseMarkdownSafe(mdSource);
 
     function showToast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg;
       t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 2500);
+      setTimeout(() => t.classList.remove("show"), 2800);
     }
 
     function copyText(text) {
       navigator.clipboard.writeText(text).then(() => showToast("🏷️ 워드프레스 SEO 슬러그 및 메타 설명이 복사되었습니다!"));
     }
 
+    function convertMarkdownTablesToReadableList(mdText) {
+      const lines = mdText.split("\n");
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.startsWith("|") && line.endsWith("|") && i + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[i + 1].trim())) {
+          const headers = line.slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+          i += 2;
+          while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+            const cells = lines[i].trim().slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+            const rowTitle = cells[0] || "항목";
+            out.push(`■ [${rowTitle}]`);
+            for (let c = 1; c < headers.length; c++) {
+              out.push(`  • ${headers[c] || "항목"}: ${cells[c] || "-"}`);
+            }
+            out.push("");
+            i++;
+          }
+        } else {
+          out.push(lines[i]);
+          i++;
+        }
+      }
+      return out.join("\n");
+    }
+
     function getCleanPlainText() {
-      return mdSource
-        .replace(/\*\*(.*?)\*\*/g, '$1')
+      return convertMarkdownTablesToReadableList(mdSource)
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
         .replace(/#{1,6}\s+/g, '')
         .replace(/^>\s+/gm, '')
-        .replace(/^---\s*$/gm, '──────────')
+        .replace(/^---\s*$/gm, '')
         .replace(/^\s*[-*]\s+/gm, '• ')
         .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
         .trim();
     }
 
-    document.getElementById("copyWpBtn").addEventListener("click", () => {
-      const clone = articleEl.cloneNode(true);
-      clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 22px;"));
-      clone.querySelectorAll("h2").forEach(el => el.setAttribute("style", "font-size: 19.5px; font-weight: bold; color: #005177; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid #0073aa; padding-left: 10px;"));
-      clone.querySelectorAll("h3, h4").forEach(el => el.setAttribute("style", "font-size: 16.5px; font-weight: bold; color: #1f2937; margin-top: 22px; margin-bottom: 10px;"));
-      clone.querySelectorAll("p").forEach(el => el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin-bottom: 16px;"));
-      clone.querySelectorAll("blockquote").forEach(el => el.setAttribute("style", "background-color: #f0f7fb; border: 1px solid #bae6fd; border-left: 4px solid #0073aa; padding: 16px 20px; margin: 20px 0; border-radius: 6px; color: #0c4a6e; font-size: 15px;"));
-      clone.querySelectorAll("table").forEach(el => el.setAttribute("style", "width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px;"));
-      clone.querySelectorAll("th").forEach(el => el.setAttribute("style", "background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left;"));
-      clone.querySelectorAll("td").forEach(el => el.setAttribute("style", "border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151;"));
-      const htmlContent = clone.innerHTML;
-      const plainText = getCleanPlainText();
-      if (navigator.clipboard && window.ClipboardItem) {
-        const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-        const textBlob = new Blob([plainText], { type: 'text/plain' });
-        navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]).then(() => {
-          showToast("🔵 워드프레스 구텐베르크 블록 서식이 복사되었습니다! 에디터에 바로 붙여넣으세요.");
+    function normalizeTableForWordPress(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 20px 0 24px; border: 1px solid #d1d5db; font-size: 14.5px; line-height: 1.6;");
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "26%", "26%", "26%"];
+        else if (colCount > 0) widths = Array(colCount).fill(Math.floor(100 / colCount) + "%");
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeader = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          const cleanHtml = cell.innerHTML.replace(/[]\s*/g, "").trim();
+          if (isHeader) {
+            td.setAttribute("style", `${wStyle}background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = `<strong>${cleanHtml}</strong>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = (cIdx === 0) ? "font-weight: bold; color: #111827; " : "color: #374151; ";
+            td.setAttribute("style", `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #d1d5db; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = (cIdx === 0 && !cleanHtml.includes("<strong")) ? `<strong>${cleanHtml}</strong>` : cleanHtml;
+          }
+          tr.appendChild(td);
         });
-      } else {
-        navigator.clipboard.writeText(plainText).then(() => showToast("📄 순수 텍스트가 복사되었습니다!"));
+        tbody.appendChild(tr);
+      });
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    // 워드프레스 구텐베르크 에디터 붙여넣기 최적화:
+    // 1) 최상단 중복 제목(H1) 제거 (제목 입력란에 별도 입력)
+    // 2) H2가 워드프레스 기본 테마에서 40px 초대형 글씨로 나오는 문제를 해결하기 위해
+    //    네이버·티스토리와 동일한 크기(약 20px, H3 레벨 + <strong> + 파란색 포인트 바 ▍)로 변환
+    // 3) 기존 H3(1단계, 2단계 등)는 17px 굵은 문단(▪ 1단계: ...)으로 변환하여 위계 질서 확립
+    // 4) <blockquote>(Key Takeaways)가 테두리 없는 일반 글씨로 풀리는 문제를 해결하기 위해 1x1 요약 박스 테이블로 변환
+    // 5) 검은색 실선(<hr>)을 깔끔한 문단 여백으로 대체
+    function getWordPressOptimizedHtml(forCustomHtmlBlock = false) {
+      const clone = articleEl.cloneNode(true);
+
+      // 1. 본문 최상단 중복 H1 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 2. 검은색 가로줄(<hr>) 제거
+      clone.querySelectorAll("hr").forEach(el => el.remove());
+
+      // 3. 본문 내 일반 표(Table) 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        el.replaceWith(normalizeTableForWordPress(el));
+      });
+
+      // 4. <blockquote>(핵심 요약)를 테두리가 유지되는 1x1 요약 박스 테이블로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 14px 0 26px; border: 1px solid #bae6fd; background-color: #f0f7fb;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #bae6fd; border-left: 5px solid #0073aa; background-color: #f0f7fb; padding: 16px 20px; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;">${innerHtml}</td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // 5. 기존 H3, H4(1단계, 2단계, Q1 등)를 먼저 17px 굵은 서브헤딩 문단으로 변환 (H2 -> H3 변환과 충돌 방지)
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        const pSub = document.createElement("p");
+        pSub.setAttribute("style", "font-size: 17px; font-weight: bold; color: #1e293b; margin: 22px 0 10px 0; line-height: 1.5; word-break: keep-all;");
+        const cleanTxt = el.innerHTML.trim();
+        const prefix = (cleanTxt.startsWith("▪") || cleanTxt.startsWith("①") || cleanTxt.startsWith("②") || cleanTxt.startsWith("③")) ? "" : "▪ ";
+        pSub.innerHTML = `<strong><span style="color: #0073aa;">${prefix}</span>${cleanTxt}</strong>`;
+        el.replaceWith(pSub);
+      });
+
+      // 6. H2 중간제목(1. ..., 2. ..., 3. ...)을 워드프레스에서 과도하게 커지지 않는 적정 크기(20px, H3 + <strong>)로 변환
+      clone.querySelectorAll("h2").forEach(el => {
+        if (forCustomHtmlBlock) {
+          el.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 32px 0 14px 0; padding-left: 12px; border-left: 4px solid #0073aa; line-height: 1.45; word-break: keep-all;");
+        } else {
+          const h3 = document.createElement("h3");
+          h3.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 30px 0 14px 0; line-height: 1.45; word-break: keep-all;");
+          h3.innerHTML = `<strong><span style="color: #0073aa; font-weight: 900; margin-right: 6px;">▍</span>${el.innerHTML}</strong>`;
+          el.replaceWith(h3);
+        }
+      });
+
+      // 7. 문단 및 목록 스타일 정리
+      clone.querySelectorAll("p").forEach(el => {
+        if (!el.getAttribute("style")) {
+          el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin: 0 0 16px 0; word-break: keep-all;");
+        }
+      });
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 12px 0 20px 22px; color: #374151;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.8; margin-bottom: 8px; color: #374151; word-break: keep-all;"));
+      clone.querySelectorAll("a").forEach(el => el.setAttribute("style", "color: #0073aa; font-weight: bold; text-decoration: underline;"));
+
+      return clone.innerHTML;
+    }
+
+    async function copyWpRichHtml(htmlContent, plainText) {
+      let copied = false;
+      try {
+        const tempDiv = document.createElement("div");
+        tempDiv.contentEditable = "true";
+        tempDiv.style.position = "fixed";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.top = "0";
+        tempDiv.style.opacity = "0";
+        tempDiv.style.backgroundColor = "#ffffff";
+        tempDiv.style.color = "#1f2937";
+        tempDiv.innerHTML = htmlContent;
+        document.body.appendChild(tempDiv);
+
+        const range = document.createRange();
+        range.selectNodeContents(tempDiv);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copied = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      } catch (e) {}
+
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          copied = true;
+        } catch (e) {}
       }
+
+      if (!copied && navigator.clipboard) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      return copied;
+    }
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 워드프레스 제목 입력란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyWpBtn").addEventListener("click", async () => {
+      const htmlContent = getWordPressOptimizedHtml(false);
+      const plainText = getCleanPlainText();
+      await copyWpRichHtml(htmlContent, plainText);
+      showToast("🔵 워드프레스 구텐베르크 서식(중간제목 크기 축소·요약박스·취소선 오류 제거)이 복사되었습니다!");
+    });
+
+    document.getElementById("copyWpHtmlCodeBtn").addEventListener("click", async () => {
+      const htmlContent = `<div class="wp-custom-article" style="font-family: Pretendard, -apple-system, sans-serif; color: #1f2937; line-height: 1.8;">\n` + getWordPressOptimizedHtml(true) + `\n</div>`;
+      await navigator.clipboard.writeText(htmlContent);
+      showToast("💻 구텐베르크 '사용자 정의 HTML' 블록용 코드가 복사되었습니다! (/html 입력 후 붙여넣기)");
     });
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", () => {

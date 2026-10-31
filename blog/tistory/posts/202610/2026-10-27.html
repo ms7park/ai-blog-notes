@@ -212,13 +212,28 @@
 
     .editor-preview blockquote {
       border: 1px solid var(--tistory-border);
-      border-left: 4px solid var(--tistory);
+      border-left: 5px solid var(--tistory);
       background: var(--tistory-light);
       padding: 16px 20px;
-      margin: 20px 0;
-      border-radius: 8px;
+      margin: 20px 0 24px;
+      border-radius: 6px;
       color: #7c2d12;
-      font-size: 14.5px;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .editor-preview blockquote p {
+      margin-bottom: 0;
+      color: #7c2d12;
+      font-size: 15.5px;
+      line-height: 1.8;
+    }
+
+    .editor-preview hr {
+      border: 0;
+      border-top: 1px solid #f1f5f9;
+      margin: 26px 0;
     }
 
     .editor-preview table {
@@ -275,6 +290,45 @@
       opacity: 1;
       transform: translateX(-50%) translateY(-10px);
     }
+
+    .table-helper-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin: 16px 0 8px;
+      font-size: 12.5px;
+      color: #9a3412;
+    }
+    .table-helper-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .table-helper-btn {
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid #fdba74;
+      background: #ffffff;
+      color: #c2410c;
+      transition: all 0.15s;
+    }
+    .table-helper-btn.primary {
+      background: #ea580c;
+      color: #ffffff;
+      border-color: #ea580c;
+    }
+    .table-helper-btn:hover {
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
@@ -287,11 +341,17 @@
     <div class="nav-actions">
       <a href="../../index.html" class="btn">📂 티스토리 작업실 홈</a>
       <a href="2026-10-27.md" target="_blank" class="btn">📄 원본 MD 열기</a>
-      <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·인용구 서식 그대로 붙여넣기 됩니다">
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="티스토리 제목 입력란에 붙여넣을 제목만 복사합니다">
+        📋 제목만 복사
+      </button>
+      <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·요약박스 서식 그대로 붙여넣기 됩니다">
         🟠 티스토리 에디터(기본모드) 서식 복사
       </button>
-      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">
-        📄 순수 텍스트 복사 (** 제거)
+      <button class="btn" id="copyTableOnlyBtn" style="border-color: #fdba74; background: #fff7ed; color: #c2410c;" title="본문 내 표(Table)만 티스토리 깨짐 방지 서식으로 따로 복사합니다">
+        📊 표(Table)만 깨짐 방지 복사
+      </button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 및 표 기호를 모두 정돈한 깨끗한 텍스트로 복사합니다">
+        📄 순수 텍스트 복사 (**·표 기호 제거)
       </button>
       <button class="btn" id="copyMarkdownBtn" title="티스토리 마크다운 모드용 원문을 복사합니다">
         📝 마크다운 원문 복사
@@ -316,7 +376,7 @@
           <span>타겟 검색엔진:</span><strong>구글(Google) & 다음(Daum)</strong>
         </div>
         <div class="meta-info-item">
-          <span>글 구성:</span><strong>티스토리 7단계 표준 템플릿 (표 포함)</strong>
+          <span>글 구성:</span><strong>티스토리 7단계 표준 템플릿 (표 깨짐 방지 적용)</strong>
         </div>
         <div class="meta-info-item">
           <span>수익화 타겟:</span><strong>구글 애드센스 승인·노출 최적화</strong>
@@ -338,60 +398,47 @@
 
 ## 1. 해외여행 준비, 왜 항공권 예약보다 '외교부 여행경보' 확인이 먼저일까요?
 
-최근 Google Trends에서 **'여행경보'** 관련 검색 관심도가 크게 상승했습니다. 은퇴 후 여유 시간을 활용해 해외 패키지여행이나 자유여행을 계획하더라도, 방문하려는 국가나 특정 주(State)·도시의 치안 상황, 자연재해, 분쟁 여부에 따라 **외교부 여행경보 단계가 수시로 조정**될 수 있습니다.
+은퇴 후 여유 시간을 활용해 해외 패키지여행이나 자유여행을 계획하더라도, 방문하려는 국가나 특정 주(State)·도시의 치안 상황, 자연재해, 분쟁 여부에 따라 **외교부 여행경보 단계가 수시로 조정**될 수 있습니다.
 
-여행경보 단계는 단순한 참고 사항이 아니라 **현지 체류 안전, 항공편 취소·환불 위약금 분쟁 기준, 그리고 해외여행자보험 약관상 면책 여부**와 직결되는 중요한 공식 기준입니다. 이 글에서는 외교부 해외안전여행 공식 기준을 바탕으로 **1~4단계 여행경보 비교표, 국가·지역별 실시간 조회 절차, 그리고 출국 전 필수 안전 체크리스트**를 정리합니다.
-
----
-
-## 2. 핵심 내용 요약 (결론 먼저 보기)
-
-- **공식 조회처**: 외교부 [해외안전여행 공식 누리집(0404.go.kr)](https://www.0404.go.kr/) 및 모바일 앱 **'해외안전여행(영사콜센터)'**
-- **여행경보 4단계 색상 구분**:
-  1. **1단계 (남색경보)**: 여행유의 — 신변안전 위험 요인 숙지 및 대비
-  2. **2단계 (황색경보)**: 여행자제 — 불필요한 여행 자제 및 체류자 신변안전 특별 유의
-  3. **특별여행주의보 (2.5단계 성격)**: 단기적 긴급 위험 발생 시 발령 (여행 취소·연기 권고)
-  4. **3단계 (적색경보)**: 출국권고 — 여행 취소·연기 및 체류자 긴급 용무 외 철수 권고
-  5. **4단계 (흑색경보)**: 여행금지 — 방문 금지 및 즉시 대피·철수 (**여권법상 무단 방문 시 처벌**)
-- **24시간 긴급 연락처**: 외교부 영사콜센터 (`+82-2-3210-0404`, 무료전화 앱 지원)
+여행경보 단계는 단순한 참고 사항이 아니라 **현지 체류 안전, 항공편 취소·환불 위약금 분쟁 기준, 그리고 해외여행자보험 약관상 면책 여부**와 직결되는 중요한 공식 기준입니다. 외교부 해외안전여행 공식 기준을 바탕으로 **국가·지역별 실시간 조회 절차, 1~4단계 여행경보 비교표, 그리고 출국 전 필수 안전 체크리스트**를 정리합니다.
 
 ---
 
-## 3. 외교부 공식 사이트에서 국가·지역별 여행경보 확인하는 4단계 순서
+## 2. 외교부 공식 사이트에서 국가·지역별 여행경보 확인하는 4단계 순서
 
 ### 1단계: 외교부 해외안전여행(0404.go.kr) 접속 및 국가 검색
 1. PC 또는 스마트폰 브라우저에서 [외교부 해외안전여행 공식 사이트(0404.go.kr)](https://www.0404.go.kr/)에 접속합니다.
 2. 메인 화면 검색창에 방문 예정인 **국가명(예: 일본, 베트남, 태국, 튀르키예 등)**을 입력하거나 세계지도에서 대륙을 선택합니다.
 
 ### 2단계: 국가 내 '세부 지역별(주·도시)' 경보 지도 확인하기
-1. 한 국가 안에서도 수도나 주요 관광지는 1단계(남색)이지만, 국경 인접 지역이나 특정 주는 3단계(적색) 또는 특별여행주의보가 발령되어 있는 경우가 많습니다.
+1. 한 국가 안에서도 수도나 주요 관광지는 1단계(남색, 여행유의)이지만, 국경 인접 지역이나 특정 주는 3단계(적색, 출국권고) 또는 특별여행주의보가 발령되어 있는 경우가 많습니다.
 2. 국가 상세 페이지의 **[여행경보 지도]** 이미지를 확대하여 본인이 실제로 이동할 **도시와 경유지**가 어느 색상 구간에 속하는지 정확히 대조합니다.
 
 ### 3단계: 최근 안전공지 및 입국 허가·비자 규정 함께 점검하기
 1. 같은 화면 하단의 **[최신 안전소식]** 탭을 열어 현지 재외공관(대사관·총영사관)이 올린 최근 감염병, 기상 악화, 소매치기 주의보 등을 확인합니다.
 2. 전자여행허가(ESTA, eTA 등)나 여권 잔여 유효기간(통상 **6개월 이상 권장**) 요건도 함께 점검합니다.
 
-### 4단계: '동행서비스(해외안전여행 등록)' 및 모바일 앱 설치하기
+### 4단계: '동행서비스(해외안전여행 등록)' 및 영사콜센터 앱 설치하기
 1. 출국 전 해외안전여행 사이트에서 **[동행서비스]**에 여행 일정과 현지 연락처, 국내 비상연락처를 등록해 두면 현지에서 위급 상황 발생 시 대사관의 신속한 안전 확인 및 안내를 받을 수 있습니다.
-2. 스마트폰에 외교부 **'해외안전여행'** 공식 앱을 설치해 위치 기반 안전 알림 푸시를 켜 둡니다.
+2. 스마트폰에 외교부 **'해외안전여행(영사콜센터)'** 공식 앱을 설치해 위치 기반 안전 알림 푸시를 켜 두고, 24시간 긴급 연락처인 **영사콜센터(`+82-2-3210-0404`, 무료전화 앱 지원)**를 저장합니다.
 
 ---
 
-## 4. 외교부 여행경보 단계별 기준 및 행동 요령 상세 비교표
+## 3. 외교부 여행경보 단계별 기준 및 행동 요령 상세 비교표
 
 아래 표는 외교부 여행경보제도의 **단계별 색상, 발령 기준, 여행 예정자 및 체류자 행동 지침**을 비교한 공식 기준표입니다.
 
 | 경보 단계 (색상) | 명칭 | 여행 예정자 행동 지침 | 현지 체류자 행동 지침 | 법적 강제성 및 보험·취소 영향 |
-| :--- | :--- | :--- | :--- | :--- |
-| **1단계 (🟦 남색)** | **여행유의** | 위험 요인 사전 숙지 및 안전 대비 | 신변안전 유의 (야간 단독 외출 자제 등) | 일반 여행 가능 / 해외여행자보험 정상 가입 가능 |
-| **2단계 (🟨 황색)** | **여행자제** | 여행 필요성 신중 검토 (불필요 시 자제) | 신변안전 **특별 유의** | 일부 보험사 특약 제한 가능성 확인 필요 |
+| --- | --- | --- | --- | --- |
+| **1단계 (남색)** | **여행유의** | 위험 요인 사전 숙지 및 안전 대비 | 신변안전 유의 (야간 단독 외출 자제 등) | 일반 여행 가능 / 해외여행자보험 정상 가입 가능 |
+| **2단계 (황색)** | **여행자제** | 여행 필요성 신중 검토 (불필요 시 자제) | 신변안전 **특별 유의** | 일부 보험사 특약 제한 가능성 확인 필요 |
 | **특별여행주의보** | **단기 긴급주의** | **여행 취소 또는 연기 권고** (2단계 이상~3단계 준함) | 긴급 용무가 아닌 한 안전 지역으로 이동 | 발령 기간(최대 90일 단위 연장) 수시 확인 필수 |
-| **3단계 (🟥 적색)** | **출국권고** | **여행 취소 또는 연기** | 긴급한 용무가 아닌 한 **출국(철수) 권고** | 소비자분쟁해결기준상 위약금 감면·면제 핵심 기준 (계약 시점·약관 확인) |
-| **4단계 (⬛ 흑색)** | **여행금지** | **여행 금지 준수** (예외적 여권사용 허가 없는 방문 불가) | **즉시 대피 및 철수** | **여권법 제17조 및 제26조 위반 시 형사처벌 대상** / 여행자보험 가입·보상 제한 |
+| **3단계 (적색)** | **출국권고** | **여행 취소 또는 연기** | 긴급한 용무가 아닌 한 **출국(철수) 권고** | 소비자분쟁해결기준상 위약금 감면·면제 핵심 기준 (계약 시점·약관 확인) |
+| **4단계 (흑색)** | **여행금지** | **여행 금지 준수** (예외적 여권사용 허가 없는 방문 불가) | **즉시 대피 및 철수** | **여권법 제17조 및 제26조 위반 시 형사처벌 대상** / 여행자보험 가입·보상 제한 |
 
 ---
 
-## 5. 출국 전 놓치기 쉬운 3가지 주의사항
+## 4. 출국 전 놓치기 쉬운 3가지 주의사항
 
 1. **해외여행자보험 가입 시 '전쟁·내란·여행경보 3~4단계 지역' 면책 약관 확인**
    - 대부분의 해외여행자보험은 출국 전 이미 외교부 **3단계(출국권고)·4단계(여행금지)** 또는 **특별여행주의보**가 발령된 지역으로 방문할 경우 신규 가입이 거절되거나, 현지에서 발생한 사고에 대해 보상이 제한될 수 있습니다. 가입 전 보험사 약관을 반드시 확인하세요.
@@ -402,7 +449,7 @@
 
 ---
 
-## 6. 마무리 및 출국 전 3분 실천 체크리스트
+## 5. 마무리 및 출국 전 3분 실천 체크리스트
 
 1. 오늘 바로 [외교부 해외안전여행(0404.go.kr)](https://www.0404.go.kr/)에서 내가 갈 국가뿐만 아니라 **방문할 세부 도시가 몇 단계 경보 지역인지** 지도 색상으로 확인하세요.
 2. 스마트폰 연락처에 **영사콜센터(`+82-2-3210-0404`)**와 방문국 **대한민국 대사관 긴급 당직 전화번호**를 미리 저장해 두세요.
@@ -410,7 +457,7 @@
 
 ---
 
-## 7. 참고 자료 및 공식 확인 사이트
+## 6. 참고 자료 및 공식 확인 사이트
 
 - [외교부 해외안전여행 공식 누리집 (국가별 여행경보 조회)](https://www.0404.go.kr/)
 - [외교부 여권안내 홈페이지](https://www.passport.go.kr/)
@@ -421,63 +468,345 @@
   <script>
     const mdSource = document.getElementById("rawMarkdown").textContent.trim();
     const articleEl = document.getElementById("postArticle");
-    articleEl.innerHTML = marked.parse(mdSource);
+
+    // CommonMark(marked.js)에서 **괄호)**조사, **[대괄호]**조사, *"따옴표"*조사 형태일 때
+    // 별표(** / *)가 풀리지 않고 그대로 노출되는 한국어 마크다운 파싱 버그 완벽 보정
+    function parseMarkdownWithKoreanSupport(md) {
+      let html = marked.parse(md);
+      html = html
+        .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+      .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+      return html;
+    }
+
+    articleEl.innerHTML = parseMarkdownWithKoreanSupport(mdSource);
 
     function showToast(message) {
       const toast = document.getElementById("toast");
       toast.textContent = message;
       toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2800);
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    // 마크다운 표(| ... |)를 줄글(불릿 카드)로 변환하여 순수 텍스트 복사 시 표가 깨지지 않게 처리
+    function convertMarkdownTablesToReadableList(mdText) {
+      const lines = mdText.split("\n");
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.startsWith("|") && line.endsWith("|") && i + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[i + 1].trim())) {
+          const headers = line.slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+          i += 2;
+          while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+            const cells = lines[i].trim().slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+            const rowTitle = cells[0] || "항목";
+            out.push(`■ [${rowTitle}]`);
+            for (let c = 1; c < headers.length; c++) {
+              const hName = headers[c] || `항목 ${c}`;
+              const cVal = cells[c] || "-";
+              out.push(`  • ${hName}: ${cVal}`);
+            }
+            out.push("");
+            i++;
+          }
+        } else {
+          out.push(lines[i]);
+          i++;
+        }
+      }
+      return out.join("\n");
     }
 
     function getCleanPlainText() {
-      return mdSource
-        .replace(/\*\*(.*?)\*\*/g, '$1')
+      return convertMarkdownTablesToReadableList(mdSource)
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
         .replace(/#{1,6}\s+/g, '')
         .replace(/^>\s+/gm, '')
-        .replace(/^---\s*$/gm, '──────────')
+        .replace(/^---\s*$/gm, '')
         .replace(/^\s*[-*]\s+/gm, '• ')
         .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
         .trim();
     }
 
+    // 티스토리 KEditor(기본모드)에 붙여넣었을 때 표(Table)가 절대 깨지지 않도록
+    // <thead>/<th>를 단일 <tbody><tr><td> 구조 + 명시적 열 너비(%) + border="1" 속성으로 정규화
+    function normalizeTableForTistory(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("data-ke-align", "alignLeft");
+      newTable.setAttribute("data-ke-style", "style1");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 20px 0 24px; border: 1px solid #d1d5db; font-size: 14px; line-height: 1.6;");
+
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+
+        // 열 개수별 최적 너비 배분 (첫 번째 열 '선정기준액 비율' 등이 두 줄로 어색하게 꺾이지 않도록 22% 배정)
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "25%", "25%", "28%"];
+        else if (colCount === 5) widths = ["17%", "20%", "20%", "21%", "22%"];
+        else if (colCount > 0) {
+          const w = Math.floor(100 / colCount) + "%";
+          widths = Array(colCount).fill(w);
+        }
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeaderRow = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          const isFirstCol = (cIdx === 0);
+
+          if (isHeaderRow) {
+            td.setAttribute(
+              "style",
+              `${wStyle}background-color: #fff7ed; color: #9a3412; font-weight: bold; border: 1px solid #d1d5db; padding: 10px 10px; text-align: left; vertical-align: middle; word-break: keep-all;`
+            );
+            td.innerHTML = `<span style="color: #9a3412; font-weight: bold;">${cell.innerHTML}</span>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = isFirstCol ? "font-weight: bold; color: #111827; " : "color: #374151; ";
+            td.setAttribute(
+              "style",
+              `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #d1d5db; padding: 10px 10px; text-align: left; vertical-align: middle; word-break: keep-all;`
+            );
+            td.innerHTML = cell.innerHTML;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    function convertTableElementToReadableText(tableEl) {
+      const rows = Array.from(tableEl.querySelectorAll("tr"));
+      if (rows.length < 2) return tableEl.innerText;
+      const headers = Array.from(rows[0].querySelectorAll("th, td")).map(c => c.innerText.trim());
+      const out = [];
+      for (let r = 1; r < rows.length; r++) {
+        const cells = Array.from(rows[r].querySelectorAll("th, td")).map(c => c.innerText.trim());
+        if (!cells.length) continue;
+        out.push(`■ [${cells[0]}]`);
+        for (let c = 1; c < headers.length; c++) {
+          out.push(`  • ${headers[c]}: ${cells[c] || "-"}`);
+        }
+        out.push("");
+      }
+      return out.join("\n").trim();
+    }
+
+    // 원문 페이지(editor-preview)의 디자인과 100% 동일하게 티스토리 기본모드에 붙여넣어지도록 변환
+    // 1) <blockquote> -> 티스토리 스킨의 큰따옴표(“) 및 가운데 정렬을 막기 위해 1x1 요약 박스 테이블로 변환
+    // 2) <hr> -> 티스토리 스킨에서 '...'(점 3개)로 바뀌는 현상을 막기 위해 제거 (소제목 여백으로 구분)
+    // 3) <h2> -> 원문과 동일하게 왼쪽 주황색 포인트 바(▍) + 진한 남색(#111827) 제목 스타일 유지
+    // 4) <h1> -> 티스토리 제목 입력란과 중복되지 않도록 본문 복사 시 제거
     function getTistoryOptimizedHtml() {
       const clone = articleEl.cloneNode(true);
-      clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 22px; line-height: 1.4;"));
-      clone.querySelectorAll("h2").forEach(el => el.setAttribute("style", "font-size: 19px; font-weight: bold; color: #c2410c; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid #ea580c; padding-left: 10px;"));
-      clone.querySelectorAll("h3, h4").forEach(el => el.setAttribute("style", "font-size: 16.5px; font-weight: bold; color: #1f2937; margin-top: 22px; margin-bottom: 10px;"));
-      clone.querySelectorAll("p").forEach(el => el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin-bottom: 16px; word-break: keep-all;"));
-      clone.querySelectorAll("blockquote").forEach(el => el.setAttribute("style", "background-color: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid #ea580c; padding: 16px 20px; margin: 20px 0; border-radius: 6px; color: #7c2d12; font-style: normal; font-size: 15px;"));
-      clone.querySelectorAll("table").forEach(el => el.setAttribute("style", "width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px;"));
-      clone.querySelectorAll("th").forEach(el => el.setAttribute("style", "background-color: #fff7ed; color: #9a3412; font-weight: bold; border: 1px solid #fed7aa; padding: 10px 12px; text-align: left;"));
-      clone.querySelectorAll("td").forEach(el => el.setAttribute("style", "border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151;"));
-      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 14px 0 20px 22px;"));
-      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.75; margin-bottom: 8px; color: #374151;"));
+      clone.querySelectorAll(".table-helper-bar").forEach(el => el.remove());
+
+      // 티스토리 제목란에 이미 제목을 넣으므로 본문 최상단 중복 H1 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 티스토리에서 '...'(점 3개)로 표시되는 <hr> 구분선은 깔끔한 빈 줄 여백으로 대체
+      clone.querySelectorAll("hr").forEach(el => {
+        const spacer = document.createElement("p");
+        spacer.setAttribute("data-ke-size", "size16");
+        spacer.setAttribute("style", "margin: 0; line-height: 1.2;");
+        spacer.innerHTML = "&nbsp;";
+        el.replaceWith(spacer);
+      });
+
+      // 기존 본문 내 일반 표(Table) 먼저 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        const normalized = normalizeTableForTistory(el);
+        el.replaceWith(normalized);
+      });
+
+      // <blockquote>(핵심 요약 등)를 티스토리 큰따옴표(“)가 뜨지 않는 1x1 좌측 정렬 요약 박스로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("data-ke-align", "alignLeft");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 12px 0 24px; border: 1px solid #fed7aa; background-color: #fff7ed;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #fed7aa; border-left: 5px solid #ea580c; background-color: #fff7ed; padding: 16px 20px; color: #7c2d12; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;"><span style="color: #7c2d12;">${innerHtml}</span></td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // H2 소제목: 원문 페이지처럼 좌측 주황색 바(▍) + 진한 텍스트(#111827) 적용
+      clone.querySelectorAll("h2").forEach(el => {
+        el.setAttribute("data-ke-size", "size23");
+        el.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 28px 0 14px; line-height: 1.45; text-align: left; word-break: keep-all;");
+        el.innerHTML = `<span style="color: #ea580c; font-weight: 900; margin-right: 6px;">▍</span><span style="color: #111827; font-weight: bold;">${el.innerHTML}</span>`;
+      });
+
+      // H3 소제목: 단계별 소제목 가독성 강화
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        el.setAttribute("data-ke-size", "size18");
+        el.setAttribute("style", "font-size: 17px; font-weight: bold; color: #1f2937; margin: 22px 0 10px; line-height: 1.45; text-align: left; word-break: keep-all;");
+        el.innerHTML = `<span style="color: #1f2937; font-weight: bold;">${el.innerHTML}</span>`;
+      });
+
+      // 문단(p): 티스토리 스킨에서 연속된 <p>와 <p> 사이 여백이 사라져 다닥다닥 붙는 현상 방지
+      const allParas = Array.from(clone.querySelectorAll("p"));
+      allParas.forEach(el => {
+        if (el.innerHTML === "&nbsp;") return;
+        el.setAttribute("data-ke-size", "size16");
+        el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin: 0 0 16px 0; text-align: left; word-break: keep-all;");
+        if (el.nextElementSibling && el.nextElementSibling.tagName === "P" && el.nextElementSibling.innerHTML !== "&nbsp;") {
+          const gap = document.createElement("p");
+          gap.setAttribute("data-ke-size", "size16");
+          gap.setAttribute("style", "margin: 0; line-height: 0.8;");
+          gap.innerHTML = "&nbsp;";
+          el.parentNode.insertBefore(gap, el.nextElementSibling);
+        }
+      });
+
+      clone.querySelectorAll("ul, ol").forEach(el => {
+        el.setAttribute("style", "margin: 12px 0 22px 24px; padding: 0; color: #374151;");
+      });
+
+      clone.querySelectorAll("li").forEach(el => {
+        el.setAttribute("style", "font-size: 15.5px; line-height: 1.8; margin-bottom: 8px; color: #374151; text-align: left; word-break: keep-all;");
+      });
+
+      clone.querySelectorAll("strong").forEach(el => {
+        if (!el.closest("td") || !el.closest("td").getAttribute("style")?.includes("#fff7ed")) {
+          el.setAttribute("style", "font-weight: bold; color: #111827;");
+        }
+      });
+
+      clone.querySelectorAll("a").forEach(el => {
+        el.setAttribute("style", "color: #c2410c; font-weight: bold; text-decoration: underline;");
+      });
+
       return clone.innerHTML;
     }
 
-    document.getElementById("copyTistoryHtmlBtn").addEventListener("click", async () => {
-      const htmlContent = getTistoryOptimizedHtml();
-      const plainText = getCleanPlainText();
-      let success = false;
+    // 로컬 file:// 환경이나 모든 브라우저에서 리치 HTML(표·서식)이 100% 클립보드에 들어가도록 이중 보장
+    async function copyRichHtmlToClipboard(htmlContent, plainText) {
+      let copiedRich = false;
+
+      // 1차: contentEditable DOM 선택 + execCommand('copy') (로컬 file:// 및 티스토리 에디터 호환성 최고)
+      try {
+        const tempDiv = document.createElement("div");
+        tempDiv.contentEditable = "true";
+        tempDiv.style.position = "fixed";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.top = "0";
+        tempDiv.style.opacity = "0";
+        tempDiv.style.backgroundColor = "#ffffff";
+        tempDiv.style.color = "#1f2937";
+        tempDiv.innerHTML = htmlContent;
+        document.body.appendChild(tempDiv);
+
+        const range = document.createRange();
+        range.selectNodeContents(tempDiv);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copiedRich = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      } catch (e) {}
+
+      // 2차: ClipboardItem API 지원 시 병행 기록
       if (navigator.clipboard && window.ClipboardItem) {
         try {
           const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
           const textBlob = new Blob([plainText], { type: 'text/plain' });
           await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
-          success = true;
-        } catch(e) {}
+          copiedRich = true;
+        } catch (e) {}
       }
-      if (!success) {
+
+      if (!copiedRich && navigator.clipboard) {
         await navigator.clipboard.writeText(plainText);
       }
-      showToast("🟠 티스토리 기본모드 서식(표·소제목 포함)이 복사되었습니다! 에디터에 바로 붙여넣으세요.");
+      return copiedRich;
+    }
+
+    // 본문 내 모든 표(Table) 상단에 티스토리 표 깨짐 방지 전용 복사 바 자동 삽입
+    articleEl.querySelectorAll("table").forEach((tbl) => {
+      const bar = document.createElement("div");
+      bar.className = "table-helper-bar";
+      bar.innerHTML = `
+        <span>💡 <strong>티스토리 표 깨짐 방지 도구</strong>: 에디터에 표만 다시 붙여넣거나 줄글 리스트로 대체할 수 있습니다.</span>
+        <div class="table-helper-btns">
+          <button type="button" class="table-helper-btn primary" data-act="rich">📊 이 표만 서식 복사 (기본모드용)</button>
+          <button type="button" class="table-helper-btn" data-act="list">📋 표를 줄글 리스트로 복사 (깨짐 0%)</button>
+          <button type="button" class="table-helper-btn" data-act="html">💻 표 HTML 코드 복사 (HTML모드용)</button>
+        </div>
+      `;
+      bar.querySelector('[data-act="rich"]').addEventListener("click", async () => {
+        const normTbl = normalizeTableForTistory(tbl);
+        const htmlStr = normTbl.outerHTML + "<p><br></p>";
+        const listStr = convertTableElementToReadableText(tbl);
+        await copyRichHtmlToClipboard(htmlStr, listStr);
+        showToast("📊 티스토리 기본모드 호환 표(Table)가 복사되었습니다! 에디터 원하는 위치에 Ctrl+V(Cmd+V) 하세요.");
+      });
+      bar.querySelector('[data-act="list"]').addEventListener("click", async () => {
+        const listStr = convertTableElementToReadableText(tbl);
+        await navigator.clipboard.writeText(listStr);
+        showToast("📋 표 내용이 모바일에서도 절대 깨지지 않는 깔끔한 줄글 리스트로 복사되었습니다!");
+      });
+      bar.querySelector('[data-act="html"]').addEventListener("click", async () => {
+        const normTbl = normalizeTableForTistory(tbl);
+        await navigator.clipboard.writeText(normTbl.outerHTML);
+        showToast("💻 티스토리 HTML 모드용 <table> 태그 코드가 복사되었습니다!");
+      });
+      tbl.parentNode.insertBefore(bar, tbl);
+    });
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 티스토리 제목 입력란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyTistoryHtmlBtn").addEventListener("click", async () => {
+      const htmlContent = getTistoryOptimizedHtml();
+      const plainText = getCleanPlainText();
+      await copyRichHtmlToClipboard(htmlContent, plainText);
+      showToast("🟠 티스토리 기본모드 서식(요약박스·표·소제목 완전 보정)이 복사되었습니다! 본문에 바로 붙여넣으세요.");
+    });
+
+    document.getElementById("copyTableOnlyBtn").addEventListener("click", async () => {
+      const firstTbl = articleEl.querySelector("table");
+      if (!firstTbl) {
+        showToast("이 글에는 표(Table)가 없습니다.");
+        return;
+      }
+      const normTbl = normalizeTableForTistory(firstTbl);
+      const htmlStr = normTbl.outerHTML + "<p><br></p>";
+      const listStr = convertTableElementToReadableText(firstTbl);
+      await copyRichHtmlToClipboard(htmlStr, listStr);
+      showToast("📊 표(Table)가 티스토리 깨짐 방지 서식으로 복사되었습니다! 에디터에 바로 Ctrl+V(Cmd+V) 하세요.");
     });
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", async () => {
       const plainText = getCleanPlainText();
       await navigator.clipboard.writeText(plainText);
-      showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!");
+      showToast("📄 ** 기호 제거 및 표가 줄글 리스트로 정돈된 순수 텍스트가 복사되었습니다!");
     });
 
     document.getElementById("copyMarkdownBtn").addEventListener("click", async () => {

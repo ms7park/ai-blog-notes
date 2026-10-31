@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[2026-10-24] 네이버 블로그 포스팅 | 5060을 위한 스마트 라이프! 'ai' 최신 트렌드와 일상을 편리하게 바꾸는 핵심 기능</title>
+  <title>[2026-10-24] 네이버 블로그 포스팅 | 5060을 위한 스마트 라이프! 생성형 AI(챗GPT·제미나이)로 일상을 편리하게 바꾸는 활용법 3가지</title>
   
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
@@ -190,13 +190,53 @@
     }
 
     .smarteditor-preview blockquote {
-      border: 1px solid #d9f3e4;
+      border: 1px solid #ccebd9;
+      border-left: 5px solid var(--naver-green);
       background: var(--naver-light);
       padding: 16px 20px;
-      margin: 22px 0;
-      border-radius: 8px;
-      color: #2b593f;
+      margin: 20px 0 24px;
+      border-radius: 6px;
+      color: #1e4d32;
       font-weight: 500;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .smarteditor-preview blockquote p {
+      margin-bottom: 0;
+      color: #1e4d32;
+      font-size: 15.5px;
+      line-height: 1.8;
+    }
+
+    .smarteditor-preview hr {
+      border: 0;
+      border-top: 1px solid #f1f5f9;
+      margin: 26px 0;
+    }
+
+    .smarteditor-preview table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 24px;
+      font-size: 14px;
+    }
+
+    .smarteditor-preview th {
+      background: #f4fbf7;
+      color: #1e4d32;
+      font-weight: 700;
+      border: 1px solid #ccebd9;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .smarteditor-preview td {
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      color: #333;
+      vertical-align: top;
     }
 
     .toast {
@@ -227,12 +267,15 @@
   <header class="top-nav">
     <div class="nav-left">
       <span class="brand-tag">NAVER BLOG · 품미인생</span>
-      <span class="nav-title">일별 포스팅: 2026-10-24 (토) · 인생 2막 & 은퇴 일자리 (연관 키워드: ai)</span>
+      <span class="nav-title">일별 포스팅: 2026-10-24 (토) · 인생 2막 & 은퇴 일자리</span>
     </div>
     <div class="nav-actions">
       <a href="../../index.html" class="btn">📂 네이버 블로그 홈</a>
       <a href="2026-10-24-2.md" target="_blank" class="btn">📄 원본 MD 열기</a>
-      <button class="btn btn-naver" id="copyNaverBtn" title="네이버 스마트에디터에 붙여넣을 때 ** 없이 볼드 및 서식이 유지됩니다">
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="네이버 스마트에디터 제목 입력란에 붙여넣을 제목만 복사합니다">
+        📋 제목만 복사
+      </button>
+      <button class="btn btn-naver" id="copyNaverBtn" title="네이버 스마트에디터 ONE에 원문 디자인(초록 요약박스·소제목·볼드·줄간격) 그대로 붙여넣기 됩니다">
         🟢 네이버 스마트에디터 서식 복사
       </button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">
@@ -245,22 +288,22 @@
     <div class="meta-card">
       <div class="meta-badges">
         <span class="badge">커리어 / 인생 2막 / 사회공헌</span>
-        <span class="badge badge-trend">🔥 실시간 트렌드: [ai] · 인생 2막 & 은퇴 일자리 (연관 키워드: ai)</span>
+        <span class="badge badge-trend">🔥 실시간 트렌드: [시니어 AI 활용] · 인생 2막 & 은퇴 일자리</span>
       </div>
-      <h1 class="post-title">5060을 위한 스마트 라이프! 'ai' 최신 트렌드와 일상을 편리하게 바꾸는 핵심 기능</h1>
+      <h1 class="post-title">5060을 위한 스마트 라이프! 생성형 AI(챗GPT·제미나이)로 일상을 편리하게 바꾸는 활용법 3가지</h1>
       
       <div class="meta-info-grid">
         <div class="meta-info-item">
           <span>작성일자:</span><strong>2026-10-24 (토)</strong>
         </div>
         <div class="meta-info-item">
-          <span>글자수:</span><strong>약 1,800자 (공백 포함)</strong>
+          <span>글자수:</span><strong>약 2,274자 (공백 포함)</strong>
         </div>
         <div class="meta-info-item">
-          <span>예상 소요시간:</span><strong>3분 30초</strong>
+          <span>예상 소요시간:</span><strong>약 5분</strong>
         </div>
         <div class="meta-info-item">
-          <span>스마트블록 타겟:</span><strong>ai, 인생 2막 & 은퇴 일자리 (연관 키워드: ai)</strong>
+          <span>스마트블록 타겟:</span><strong>시니어 AI 활용, 인생 2막 & 은퇴 일자리</strong>
         </div>
       </div>
     </div>
@@ -271,66 +314,77 @@
   <div class="toast" id="toast">복사되었습니다!</div>
 
   <script id="rawMarkdown" type="text/plain">
-# 5060을 위한 스마트 라이프! 'ai' 최신 트렌드와 일상을 편리하게 바꾸는 핵심 기능
+# 5060을 위한 스마트 라이프! 생성형 AI(챗GPT·제미나이)로 일상을 편리하게 바꾸는 활용법 3가지
 
 안녕하세요, 든든한 노후 자산과 맛있는 일상을 가꾸는 블로그 지기 **'품미인생(品味人生)'**입니다.
 
-평생의 직장을 떠났다고 해서 나의 사회적 가치까지 사라지는 것은 아닙니다. 30~40년간 축적된 경륜과 지혜는 인생 2막에서 새로운 꽃을 피울 준비가 되어 있습니다.
+요즘 TV 뉴스나 신문을 펼쳐보면 하루가 멀다 하고 **'인공지능(AI)'** 이야기가 등장합니다. 챗GPT(ChatGPT), 제미나이(Gemini), 클로드(Claude) 같은 이름들이 처음에는 젊은 사람들의 전유물처럼 낯설게 느껴지기 쉬운데요.
 
-> **"이 소식이 내 일상과 노후 준비에 어떤 영향을 미칠까?"**  
-> **"우리가 미리 알고 준비해야 할 핵심 포인트는 무엇일까?"**
+> **"복잡한 컴퓨터 기술은 잘 모르는데, 우리 같은 5060 세대도 AI를 쉽게 쓸 수 있을까요?"**  
+> **"일상생활에서 당장 써먹을 수 있는 실용적인 AI 기능에는 무엇이 있을까요?"**
 
-오늘은 5060 세대와 은퇴자의 관점에서 **'ai' 관련 핵심 쟁점과 실생활에 바로 적용할 수 있는 3가지 실천 팁**을 알기 쉽게 정리해 드립니다.
-
----
-
-## 1. 수입보다 보람과 활력을 찾는 신중년의 사회 참여
-
-최근 관련 트렌드와 뉴스를 살펴보면 많은 분들이 궁금해하시는 핵심 요인이 드러납니다.
-
-* **변화하는 사회적 흐름**: 젊은 시절처럼 치열한 경쟁에 뛰어들기보다는, 나의 경험을 나누고 사회에 기여할 수 있는 공공 일자리나 멘토링, 사회공헌 활동이 정서적 만족감을 극대화합니다.
-* **시니어 세대의 현명한 대응 필요성**: 뉴스를 그저 스쳐 지나치지 않고, 나의 건강이나 가계부에 긍정적인 방향으로 접목하는 지혜가 필요한 시점입니다.
+막상 스마트폰 앱으로 한두 번 사용해 보면, 작은 글씨로 검색창에 단어를 일일이 치던 것보다 훨씬 친절하고 편리한 **'나만의 똑똑한 개인 비서'**라는 사실을 금방 알게 됩니다. 오늘은 시니어 세대가 **일상에서 바로 활용할 수 있는 AI 핵심 기능 3가지와 안전한 사용 수칙**을 정리해 드립니다.
 
 ---
 
-## 2. 우리가 꼭 기억해야 할 실천 포인트 3가지
+## 1. 왜 5060 세대에게 AI 도구가 더 유용할까요?
 
-### ① 팩트 기반으로 냉정하게 상황 파악하기
-자극적인 제목이나 주변의 소문에 휩쓸리기보다는, 공신력 있는 기관의 발표와 정확한 수치를 기준으로 판단하는 것이 중요합니다.
+과거에는 궁금한 정보를 찾으려면 포털 사이트에서 여러 블로그와 뉴스를 일일이 클릭해 읽어야 했습니다. 게다가 영어로 된 약품 라벨이나 복잡한 관공서 안내문은 이해하기가 쉽지 않았는데요.
 
-### ② 정부 지원제도와 시니어 취업 포털 적극 활용하기
-신중년 경력형 일자리, 노인일자리 지원사업, 지자체 시니어클럽 등 은퇴자를 위해 마련된 공공 복지 인프라를 잘 활용하면 안정적인 활동 기회를 얻을 수 있습니다.
-
-### ③ 디지털 역량 강화와 평생 학습으로 시대에 발맞추기
-스마트폰과 AI 도구를 조금만 익혀두면 일상생활은 물론 새로운 재취업이나 1인 미디어 창작 활동에서도 남들보다 한발 앞서나갈 수 있습니다.
+생성형 AI는 **사람과 대화하듯 평소 말투(음성 또는 문자)로 물어보면 핵심만 요약해서 알려준다**는 큰 장점이 있습니다.
+* 스마트폰 자판 입력이 불편할 때도 **음성 대화(마이크 버튼)** 기능을 누르고 말로 물어보면 또렷한 목소리로 답변을 들려줍니다.
+* 스마트폰 카메라로 사진을 찍어 올리면 긴 문서 요약부터 번역까지 몇 초 만에 해결해 줍니다.
 
 ---
 
-## 3. 실패를 줄이는 은퇴자의 지혜 한마디
+## 2. 일상을 편리하게 바꾸는 AI 실전 활용법 3가지
 
-제가 인생의 여러 굴곡을 겪으며 배운 가장 큰 교훈은 **"남들이 우르르 몰려갈 때 한 박자 쉬어가는 여유"**였습니다.  
-오늘의 핫이슈 'ai' 역시 조급해하지 마시고, 차분히 본질을 들여다보신다면 분명 좋은 기회와 인생의 깊은 인사이트를 발견하실 수 있을 것입니다.
+### ① 카메라로 찍어서 물어보기: 약봉투·영수증·외국어 안내문 해석
+해외여행지에서 메뉴판을 볼 때나 해외 직구 영양제 성분표, 복잡한 건강검진 결과표를 읽을 때 가장 유용한 기능입니다.
+* 스마트폰의 챗GPT나 제미나이 앱에서 **[카메라(사진 첨부)]** 아이콘을 누르고 문서를 촬영합니다.
+* *"이 영양제 라벨에 적힌 하루 복용량과 주의사항을 큰 글씨로 쉽게 설명해 줘"* 또는 *"이 안내문의 핵심 내용만 3줄로 요약해 줘"*라고 입력하면 전문 용어를 알기 쉬운 우리말로 풀어줍니다.
+
+### ② 음성 대화로 맞춤형 여행 코스 및 식단표 짜기
+부부 동반 국내 기차여행이나 제철 식단을 고민할 때도 훌륭한 도우미가 됩니다.
+* *"60대 부부가 무릎에 무리 없이 대중교통으로 다녀올 수 있는 1박 2일 경주 가을 여행 코스를 짜줘"*라고 물어보세요.
+* 냉장고에 남은 식재료를 말하며 *"배추와 두부, 표고버섯이 있는데 나트륨을 줄인 따뜻한 저녁 국물 요리 레시피 알려줘"*라고 요청하면 재료 손질부터 조리 순서까지 친절하게 정리해 줍니다.
+
+### ③ 경조사 인사말·모임 공지글·블로그 초안 다듬기
+동창회 총무나 산악회·파크골프 모임 임원을 맡아 안내 문자를 보내야 할 때, 혹은 블로그에 내 경험담을 글로 남기고 싶을 때 문장 정리를 도와줍니다.
+* *"다음 주 토요일 오전 10시 파크골프 정기 모임 안내 문자를 정중하고 따뜻한 인사말을 넣어 작성해 줘"*처럼 상황과 핵심 내용만 알려주면 자연스러운 문장 초안을 바로 만들어 줍니다.
+
+---
+
+## 3. AI 사용 시 꼭 지켜야 할 안전 수칙 2가지
+
+아무리 편리한 AI라도 아래 두 가지 원칙은 꼭 기억하셔야 합니다.
+1. **개인정보·금융정보는 절대 입력하지 않기**  
+   주민등록번호, 계좌번호, 비밀번호, 신분증 사진이나 가족의 민감한 개인정보는 대화창에 올리지 마세요.
+2. **세금·연금·의료 정보는 공식 기관에서 한 번 더 확인하기**  
+   AI가 가끔 과거 기준이나 틀린 숫자를 사실처럼 말할 때(할루시네이션)가 있습니다. 건강보험료, 국민연금, 병원 처방처럼 중요한 결정은 반드시 공단 홈페이지나 전문의 상담을 통해 최종 확인하세요.
 
 ---
 
 ## 맺음말 & 소통 한마디
 
-> "매일 마주하는 새로운 뉴스 속에서 나만의 가치를 발견하는 것,  
-> 그것이 바로 인생 2막을 풍요롭게 만드는 최고의 습관입니다."
+> "새로운 디지털 도구를 두려워하지 않고 호기심으로 한 걸음 다가가는 순간,  
+> 우리의 인생 2막은 훨씬 더 넓고 편리해집니다."
 
-여러분은 오늘 'ai' 소식을 보며 어떤 생각이 드셨나요? 여러분만의 생각이나 궁금하신 점이 있다면 편하게 댓글로 남겨주세요.
+여러분은 스마트폰에서 AI 앱을 어떤 용도로 가장 먼저 써보고 싶으신가요? 사용하시면서 궁금한 점이 있다면 댓글로 편하게 남겨주세요.
 
-글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 꾹 부탁드립니다. 내일도 유익한 자산 정보와 맛있는 이야기로 찾아뵙겠습니다!
+오늘 글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 부탁드립니다!
 
-
-#ai #ai #인생2막 #품미인생 #노후자산관리 #생활꿀팁 #스마트블록 #디지털연금
+#AI활용법 #챗GPT사용법 #제미나이 #시니어디지털 #스마트폰활용 #인생2막 #품미인생
 
   </script>
 
   <script>
     const mdSource = document.getElementById("rawMarkdown").textContent.trim();
     const articleEl = document.getElementById("postArticle");
-    articleEl.innerHTML = marked.parse(mdSource);
+    articleEl.innerHTML = marked.parse(mdSource)
+      .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+      .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
 
     function showToast(message) {
       const toast = document.getElementById("toast");
@@ -341,61 +395,255 @@
 
     function getCleanPlainText() {
       return mdSource
-        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
         .replace(/#{1,6}\s+/g, '')
         .replace(/^>\s+/gm, '')
-        .replace(/^---\s*$/gm, '──────────')
-        .replace(/^\s*\*\s+/gm, '• ')
+        .replace(/^---\s*$/gm, '')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
         .trim();
     }
 
+    function normalizeTableForNaver(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 18px 0 24px; border: 1px solid #d1d5db; font-size: 14px; line-height: 1.6;");
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "25%", "25%", "28%"];
+        else if (colCount > 0) widths = Array(colCount).fill(Math.floor(100 / colCount) + "%");
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeader = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          if (isHeader) {
+            td.setAttribute("style", `${wStyle}background-color: #f4fbf7; color: #1e4d32; font-weight: bold; border: 1px solid #ccebd9; padding: 10px 10px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = `<b><span style="color: #1e4d32; font-weight: bold;">${cell.innerHTML}</span></b>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = (cIdx === 0) ? "font-weight: bold; color: #111111; " : "color: #333333; ";
+            td.setAttribute("style", `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #e5e7eb; padding: 10px 10px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = cell.innerHTML;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    // 네이버 스마트에디터 ONE 붙여넣기 시 원문 페이지(smarteditor-preview)와 100% 동일하게 렌더링되도록 보정:
+    // 1) <h1> 제거 (스마트에디터 제목란과 중복 방지)
+    // 2) <blockquote> -> 스마트에디터 기본 따옴표(“ ”) 및 가운데 정렬 깨짐을 막기 위해 1x1 연초록 박스 테이블로 변환
+    // 3) <h2> -> border-left 때문에 스마트에디터 '버티컬 라인 인용구(초록 글씨 + 좁은 폭 줄바꿈 깨짐)'로 변질되는 현상을 막기 위해
+    //            좌측 초록 포인트 바(▍) + 진한 검정(#111) 19px 볼드 문단으로 변환
+    // 4) <h3> -> 스마트에디터에서 볼드와 글자 크기가 풀리는 현상을 막기 위해 17px <b><span>으로 명시적 변환
+    // 5) 중첩 목록(<ol> 내부 <ul> 등) -> 스마트에디터에서 부모 항목의 볼드(<strong>)가 풀리는 버그를 막기 위해 깔끔한 문단형 목록으로 변환
+    // 6) 문단 간 여백(<p><br></p>) 자동 삽입으로 문단끼리 다닥다닥 붙는 현상 해결
     function getNaverOptimizedHtml() {
       const clone = articleEl.cloneNode(true);
-      clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111; margin-bottom: 24px; line-height: 1.4;"));
-      clone.querySelectorAll("h2").forEach(el => el.setAttribute("style", "font-size: 19px; font-weight: bold; color: #03c75a; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid #03c75a; padding-left: 10px;"));
-      clone.querySelectorAll("h3, h4").forEach(el => el.setAttribute("style", "font-size: 16px; font-weight: bold; color: #222; margin-top: 22px; margin-bottom: 10px;"));
-      clone.querySelectorAll("strong, b").forEach(el => el.setAttribute("style", "font-weight: bold; color: #111;"));
-      clone.querySelectorAll("p").forEach(el => el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #333; margin-bottom: 18px; word-break: keep-all;"));
-      clone.querySelectorAll("blockquote").forEach(el => el.setAttribute("style", "background-color: #f4fbf7; border: 1px solid #d9f3e4; border-left: 4px solid #03c75a; padding: 16px 20px; margin: 22px 0; border-radius: 6px; color: #235438; font-style: normal; font-size: 15px;"));
-      clone.querySelectorAll("hr").forEach(el => el.setAttribute("style", "border: 0; height: 1px; background-color: #e6e6e6; margin: 36px 0;"));
-      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 16px 0 20px 20px; padding: 0;"));
-      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.75; margin-bottom: 8px; color: #333;"));
+
+      // 1. 최상단 중복 제목(H1) 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 2. 구분선(<hr>)은 빈 줄 여백으로 대체
+      clone.querySelectorAll("hr").forEach(el => {
+        const gap = document.createElement("p");
+        gap.setAttribute("style", "margin: 0; line-height: 1.2;");
+        gap.innerHTML = "<br>";
+        el.replaceWith(gap);
+      });
+
+      // 3. 일반 표(Table) 먼저 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        el.replaceWith(normalizeTableForNaver(el));
+      });
+
+      // 4. <blockquote>를 큰따옴표(“ ”)·가운데 정렬 없는 1x1 연초록(#f4fbf7) 좌측 정렬 박스로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 14px 0 22px; border: 1px solid #ccebd9; background-color: #f4fbf7;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #ccebd9; border-left: 5px solid #03c75a; background-color: #f4fbf7; padding: 16px 20px; color: #1e4d32; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;"><span style="color: #1e4d32; font-size: 15.5px; line-height: 1.8;">${innerHtml}</span></td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // 5. 목록(<ol>, <ul>)을 스마트에디터에서 볼드·들여쓰기가 절대 깨지지 않는 구조화된 문단 그룹으로 변환
+      Array.from(clone.querySelectorAll("ol, ul")).forEach(listEl => {
+        if (listEl.parentElement && listEl.parentElement.tagName === "LI") return; // 하위 목록은 상위에서 함께 처리
+        const frag = document.createDocumentFragment();
+        const isOrdered = (listEl.tagName === "OL");
+        const topItems = Array.from(listEl.children).filter(ch => ch.tagName === "LI");
+
+        topItems.forEach((li, idx) => {
+          const liClone = li.cloneNode(true);
+          const nestedLists = Array.from(liClone.querySelectorAll("ul, ol"));
+          nestedLists.forEach(nl => nl.remove());
+
+          let mainHtml = liClone.innerHTML.trim()
+            .replace(/^<p[^>]*>/i, "")
+            .replace(/<\/p>$/i, "");
+          const prefix = isOrdered
+            ? `<b><span style="color: #03c75a; font-weight: bold;">${idx + 1}. </span></b>`
+            : `<span style="color: #03c75a; font-weight: bold;">• </span>`;
+
+          const pMain = document.createElement("p");
+          pMain.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #333333; margin: 0 0 8px 0; text-align: left; word-break: keep-all;");
+          pMain.innerHTML = prefix + mainHtml;
+          frag.appendChild(pMain);
+
+          // 하위 중첩 목록(예: 1. 노인공익활동사업 아래의 - 학교 급식...) 처리
+          Array.from(li.querySelectorAll(":scope > ul > li, :scope > ol > li")).forEach(subLi => {
+            const subHtml = subLi.innerHTML.trim()
+              .replace(/^<p[^>]*>/i, "")
+              .replace(/<\/p>$/i, "");
+            const pSub = document.createElement("p");
+            pSub.setAttribute("style", "font-size: 15.5px; line-height: 1.8; color: #444444; margin: 0 0 8px 0; padding-left: 14px; text-align: left; word-break: keep-all;");
+            pSub.innerHTML = `&nbsp;&nbsp;• ` + subHtml;
+            frag.appendChild(pSub);
+          });
+        });
+
+        const afterListGap = document.createElement("p");
+        afterListGap.setAttribute("style", "margin: 0; line-height: 0.9;");
+        afterListGap.innerHTML = "<br>";
+        frag.appendChild(afterListGap);
+
+        listEl.replaceWith(frag);
+      });
+
+      // 6. H2 대소제목: 인용구로 잘못 변환되지 않도록 전체 폭 문단 + 초록 포인트 바(▍) + 19px 진한 검정 볼드로 변환
+      clone.querySelectorAll("h2").forEach(el => {
+        const pH2 = document.createElement("p");
+        pH2.setAttribute("style", "font-size: 19px; font-weight: bold; color: #111111; margin: 0; line-height: 1.5; text-align: left; word-break: keep-all;");
+        pH2.innerHTML = `<span style="font-size: 19px; color: #03c75a; font-weight: 900; margin-right: 6px;">▍</span><b><span style="font-size: 19px; font-weight: bold; color: #111111;">${el.innerHTML}</span></b>`;
+        const afterH2Gap = document.createElement("p");
+        afterH2Gap.setAttribute("style", "margin: 0; line-height: 0.7;");
+        afterH2Gap.innerHTML = "<br>";
+        const frag = document.createDocumentFragment();
+        frag.appendChild(pH2);
+        frag.appendChild(afterH2Gap);
+        el.replaceWith(frag);
+      });
+
+      // 7. H3, H4 중소제목(①, ②, ③ 등): 스마트에디터에서 볼드와 글자 크기가 풀리지 않도록 17px <b><span> 적용
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        const beforeH3Gap = document.createElement("p");
+        beforeH3Gap.setAttribute("style", "margin: 0; line-height: 0.7;");
+        beforeH3Gap.innerHTML = "<br>";
+        const pH3 = document.createElement("p");
+        pH3.setAttribute("style", "font-size: 17px; font-weight: bold; color: #111111; margin: 0; line-height: 1.55; text-align: left; word-break: keep-all;");
+        pH3.innerHTML = `<b><span style="font-size: 17px; font-weight: bold; color: #1e3a2f; background-color: #f0fdf4;">${el.innerHTML}</span></b>`;
+        const frag = document.createDocumentFragment();
+        frag.appendChild(beforeH3Gap);
+        frag.appendChild(pH3);
+        el.replaceWith(frag);
+      });
+
+      // 8. 일반 문단(<p>) 스타일 및 연속 문단 간 빈 줄(<p><br></p>) 보장
+      const allParas = Array.from(clone.querySelectorAll("p"));
+      allParas.forEach(el => {
+        if (el.innerHTML.trim() === "<br>" || el.innerHTML.trim() === "&nbsp;") return;
+        if (!el.getAttribute("style")) {
+          el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #333333; margin: 0; text-align: left; word-break: keep-all;");
+        }
+        // 일반 문단 다음에 또 일반 문단이 오면(목록 항목 제외) 사이에 빈 줄 1개 삽입
+        const isListItemPara = el.innerHTML.includes("• ") || /^<b><span[^>]*>\d+\.\s*<\/span><\/b>/.test(el.innerHTML);
+        const nextEl = el.nextElementSibling;
+        if (nextEl && nextEl.tagName === "P" && nextEl.innerHTML.trim() !== "<br>") {
+          const nextIsList = nextEl.innerHTML.includes("• ") || /^<b><span[^>]*>\d+\.\s*<\/span><\/b>/.test(nextEl.innerHTML);
+          if (!isListItemPara || !nextIsList) {
+            const gap = document.createElement("p");
+            gap.setAttribute("style", "margin: 0; line-height: 0.85;");
+            gap.innerHTML = "<br>";
+            el.parentNode.insertBefore(gap, nextEl);
+          }
+        }
+      });
+
+      // 9. 모든 <strong> 태그를 스마트에디터 친화적인 <b> + 진한 색상으로 강화
+      clone.querySelectorAll("strong, b").forEach(el => {
+        if (!el.closest("td") || !el.closest("td").getAttribute("style")?.includes("#f4fbf7")) {
+          el.setAttribute("style", "font-weight: bold; color: #111111;");
+        }
+      });
+
+      // 10. 링크(<a>) 색상 및 밑줄 명시
+      clone.querySelectorAll("a").forEach(el => {
+        el.setAttribute("style", "color: #009f47; font-weight: bold; text-decoration: underline;");
+      });
+
       return clone.innerHTML;
     }
 
-    document.getElementById("copyNaverBtn").addEventListener("click", async () => {
-      const htmlContent = getNaverOptimizedHtml();
-      const plainText = getCleanPlainText();
-      let success = false;
+    async function copyNaverRichHtml(htmlContent, plainText) {
+      let copied = false;
+      try {
+        const tempEl = document.createElement("div");
+        tempEl.contentEditable = "true";
+        tempEl.innerHTML = htmlContent;
+        tempEl.style.position = "fixed";
+        tempEl.style.left = "-9999px";
+        tempEl.style.top = "0";
+        tempEl.style.opacity = "0";
+        tempEl.style.backgroundColor = "#ffffff";
+        tempEl.style.color = "#333333";
+        document.body.appendChild(tempEl);
+        const range = document.createRange();
+        range.selectNodeContents(tempEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copied = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempEl);
+      } catch(e) {}
+
       if (navigator.clipboard && window.ClipboardItem) {
         try {
           const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
           const textBlob = new Blob([plainText], { type: 'text/plain' });
           await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
-          success = true;
+          copied = true;
         } catch(e) {}
       }
-      if (!success) {
-        try {
-          const tempEl = document.createElement("div");
-          tempEl.contentEditable = "true";
-          tempEl.innerHTML = htmlContent;
-          tempEl.style.position = "fixed";
-          tempEl.style.left = "-9999px";
-          document.body.appendChild(tempEl);
-          const range = document.createRange();
-          range.selectNodeContents(tempEl);
-          const sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
-          document.execCommand("copy");
-          document.body.removeChild(tempEl);
-          success = true;
-        } catch(e) {
-          await navigator.clipboard.writeText(plainText);
-        }
+
+      if (!copied && navigator.clipboard) {
+        await navigator.clipboard.writeText(plainText);
       }
-      showToast("🟢 네이버 에디터 맞춤 서식이 복사되었습니다! (에디터에 바로 붙여넣기 하세요 - ** 기호 없음)");
+      return copied;
+    }
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 스마트에디터 제목란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyNaverBtn").addEventListener("click", async () => {
+      const htmlContent = getNaverOptimizedHtml();
+      const plainText = getCleanPlainText();
+      await copyNaverRichHtml(htmlContent, plainText);
+      showToast("🟢 네이버 스마트에디터 서식(초록 요약박스·소제목·볼드·줄간격 완전 보정)이 복사되었습니다!");
     });
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", async () => {

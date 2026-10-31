@@ -116,17 +116,22 @@
     .editor-preview li { margin-bottom: 8px; font-size: 15px; line-height: 1.75; color: #374151; }
     .editor-preview blockquote {
       border: 1px solid var(--wp-border);
-      border-left: 4px solid var(--wp);
+      border-left: 5px solid var(--wp);
       background: var(--wp-light);
       padding: 16px 20px;
-      margin: 20px 0;
-      border-radius: 8px;
+      margin: 20px 0 24px;
+      border-radius: 6px;
       color: #0c4a6e;
-      font-size: 14.5px;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
     }
+    .editor-preview blockquote p { margin-bottom: 0; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; }
+    .editor-preview hr { border: 0; border-top: 1px solid #f1f5f9; margin: 26px 0; }
     .editor-preview table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px; }
     .editor-preview th { background: var(--wp-light); color: #0c4a6e; font-weight: 700; border: 1px solid var(--wp-border); padding: 10px 12px; text-align: left; }
     .editor-preview td { border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151; vertical-align: top; }
+    .editor-preview tr:nth-child(even) td { background: #f9fafb; }
     .editor-preview pre { background: #1e293b; color: #f8fafc; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 16px 0; }
     .toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
@@ -145,7 +150,9 @@
     <div class="nav-actions">
       <a href="../../index.html" class="btn">📂 워드프레스 작업실 홈</a>
       <a href="2026-10-25-4.md" target="_blank" class="btn">📄 원본 MD 열기</a>
-      <button class="btn btn-wp" id="copyWpBtn">🔵 워드프레스 구텐베르크 블록 복사</button>
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="워드프레스 제목 입력란에 붙여넣을 제목만 복사합니다">📋 제목만 복사</button>
+      <button class="btn btn-wp" id="copyWpBtn" title="워드프레스 구텐베르크 에디터에 적정 소제목 크기(20px)·요약박스·표 서식 그대로 붙여넣기 됩니다">🔵 워드프레스 구텐베르크 서식 복사</button>
+      <button class="btn" id="copyWpHtmlCodeBtn" style="border-color: #bae6fd; background: #f0f7fb; color: #0073aa;" title="구텐베르크 '사용자 정의 HTML' 블록에 붙여넣으면 원문 색상·배경·크기가 100% 그대로 유지됩니다">💻 사용자 정의 HTML 블록 코드 복사</button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
       <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
     </div>
@@ -182,22 +189,13 @@
 
 ## 1. 내 컴퓨터에 있는 웹페이지를 비용 없이 인터넷에 띄우는 가장 쉬운 방법
 
-AI 코딩 도구나 에디터로 멋진 HTML 대시보드, 포트폴리오, 또는 멀티 블로그 포털(`index.html`)을 만들었다면, 내 컴퓨터뿐만 아니라 스마트폰이나 외부에서도 접속할 수 있도록 **웹 호스팅 배포(Deployment)**를 해야 합니다.
+AI 코딩 도구나 에디터로 HTML 대시보드, 포트폴리오, 또는 멀티 블로그 포털(`index.html`)을 만들었다면, 내 컴퓨터뿐만 아니라 스마트폰이나 외부에서도 접속할 수 있도록 **웹 호스팅 배포(Deployment)**를 해야 합니다.
 
-개인 프로젝트(비상업적 용도)에서는 **GitHub(코드 저장소) + Vercel(클라우드 배포 플랫폼)** 조합을 사용하면 **호스팅 비용 0원, 무료 HTTPS 보안 연결, 그리고 파일 수정 시 10초 내 자동 배포** 환경을 구축할 수 있습니다.
-
----
-
-## 2. 핵심 내용 요약 (Key Takeaways)
-
-- **준비물**: [GitHub 계정](https://github.com/) + 배포할 웹 프로젝트 폴더(루트에 `index.html` 포함)
-- **요금제**: 개인·취미 목적은 **Vercel Hobby(무료) 플랜**으로 충분 (신용카드 등록 불필요)
-- **핵심 작동 원리**:
-  `내 PC에서 파일 수정 및 git push` → `GitHub 저장소 반영` → `Vercel이 변경을 감지해 10~30초 내 웹사이트 자동 업데이트`
+개인 프로젝트(비상업적 용도)에서는 무료 **Vercel Hobby 플랜(신용카드 등록 불필요)**과 **GitHub 코드 저장소**를 연동하면 호스팅 비용 0원, 무료 HTTPS 보안 연결, 그리고 파일 수정 시 10~30초 내 자동 배포 환경을 간편하게 구축할 수 있습니다.
 
 ---
 
-## 3. GitHub와 Vercel로 사이트 배포하는 4단계 순서
+## 2. GitHub와 Vercel로 사이트 배포하는 4단계 순서
 
 ### 1단계: GitHub에 프로젝트 저장소(Repository) 생성 및 업로드
 1. [GitHub 공식 사이트(github.com)](https://github.com/)에 로그인한 뒤 우측 상단 **[+]** → **[New repository]**를 클릭합니다.
@@ -215,7 +213,7 @@ AI 코딩 도구나 에디터로 멋진 HTML 대시보드, 포트폴리오, 또�
 ### 2단계: Vercel 가입 및 GitHub 계정 연동하기
 1. [Vercel 공식 사이트(vercel.com)](https://vercel.com/)에 접속하여 **[Sign Up]**을 누릅니다.
 2. 플랜 선택 화면에서 무료 개인용인 **'Hobby'**를 선택하고 이름을 입력합니다.
-3. **[Continue with GitHub]** 버튼을 눌러 방금 만든 GitHub 계정으로 로그인 및 권한 연동을 승인합니다.
+3. **[Continue with GitHub]** 버튼을 눌러 방금 만든 GitHub 계정으로 로그인 및 저장소 연동 권한을 승인합니다.
 
 ### 3단계: GitHub 저장소 불러오기(Import) 및 배포(Deploy) 실행
 1. Vercel 대시보드 우측 상단의 **[Add New...]** → **[Project]**를 클릭합니다.
@@ -225,14 +223,14 @@ AI 코딩 도구나 에디터로 멋진 HTML 대시보드, 포트폴리오, 또�
 
 ### 4단계: 수정 사항 자동 업데이트(CI/CD) 확인하기
 1. 내 컴퓨터에서 HTML이나 마크다운 파일을 수정합니다.
-2. `git add . && git commit -m "update" && git push`를 실행하면 Vercel이 자동으로 감지하여 10~20초 내에 실제 웹사이트를 업데이트합니다.
+2. 터미널에서 `git add . && git commit -m "update" && git push`를 실행하면 Vercel이 변경을 자동으로 감지하여 10~30초 내에 실제 웹사이트를 최신 상태로 업데이트합니다.
 
 ---
 
-## 4. 정적 웹사이트 무료 배포 플랫폼 3종 비교표
+## 3. 정적 웹사이트 무료 배포 플랫폼 3종 비교표
 
 | 비교 항목 | ▲ Vercel (Hobby 무료) | 🐙 GitHub Pages | 🌐 Cloudflare Pages |
-| :--- | :--- | :--- | :--- |
+| --- | --- | --- | --- |
 | **기본 도메인 형태** | `이름.vercel.app` | `아이디.github.io/저장소` | `이름.pages.dev` |
 | **비공개(Private) 저장소 배포** | **무료 지원** | 무료 계정은 Public만 가능 | **무료 지원** |
 | **배포 반영 속도** | 매우 빠름 (약 10~30초) | 보통 (약 1~2분 소요) | 빠름 (약 20~40초) |
@@ -242,7 +240,7 @@ AI 코딩 도구나 에디터로 멋진 HTML 대시보드, 포트폴리오, 또�
 
 ---
 
-## 5. 자주 묻는 질문
+## 4. 자주 묻는 질문
 
 ### Q1. 배포 후 사이트에 접속했는데 `404: NOT_FOUND` 오류가 뜹니다.
 **A.** Vercel은 기본적으로 저장소 최상위 폴더(Root Directory)에서 `index.html` 파일을 찾습니다. 만약 `index.html`이 하위 폴더 안에 있다면 Vercel 프로젝트 **[Settings] → [General] → [Root Directory]**에서 해당 폴더를 지정해 주세요.
@@ -251,11 +249,11 @@ AI 코딩 도구나 에디터로 멋진 HTML 대시보드, 포트폴리오, 또�
 **A.** 네, GitHub 코드 저장소를 Private으로 설정해 소스 코드를 보호하면서도, Vercel을 통해 배포된 웹페이지 URL은 누구나 접속할 수 있도록 운영할 수 있습니다.
 
 ### Q3. 내가 구매한 개인 도메인(예: `.com`, `.kr`)을 무료로 연결할 수 있나요?
-**A.** 가능합니다. Vercel 프로젝트의 **[Settings] → [Domains]** 메뉴에서 보유한 도메인을 입력하고 안내되는 DNS 레코드(A 레코드 또는 CNAME)를 도메인 등록업체에 입력하면 무료 SSL 인증서까지 자동 발급됩니다.
+**A.** 가능합니다. Vercel 프로젝트의 **[Settings] → [Domains]** 메뉴에서 보유한 도메인을 입력하고 안내되는 DNS 레코드(A 레코드 또는 CNAME)를 도메인 등록업체에 입력하면 무료 SSL 인증서까지 자동으로 발급됩니다.
 
 ---
 
-## 7. 참고 자료 및 공식 확인 사이트
+## 5. 참고 자료 및 공식 확인 사이트
 
 - [Vercel 공식 문서 (Git 저장소 배포 가이드)](https://vercel.com/docs/deployments/git)
 - [GitHub 공식 문서 (저장소 생성 및 관리)](https://docs.github.com/ko)
@@ -266,51 +264,238 @@ AI 코딩 도구나 에디터로 멋진 HTML 대시보드, 포트폴리오, 또�
   <script>
     const mdSource = document.getElementById("rawMarkdown").textContent.trim();
     const articleEl = document.getElementById("postArticle");
-    articleEl.innerHTML = marked.parse(mdSource);
+
+    // 1) marked.js가 한글 문장 내 범위 물결표(예: 60~70% ... 3.3~5.5%)를 취소선(<del>)으로 오인하는 버그 완벽 차단
+    // 2) CommonMark에서 **괄호)**조사, **[대괄호]**조사, *"따옴표"*조사 형태일 때 별표가 남는 버그 완벽 보정
+    function parseMarkdownSafe(md) {
+      let html = marked.parse(md);
+      html = html
+        .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+        .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+      return html;
+    }
+
+    articleEl.innerHTML = parseMarkdownSafe(mdSource);
 
     function showToast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg;
       t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 2500);
+      setTimeout(() => t.classList.remove("show"), 2800);
     }
 
     function copyText(text) {
       navigator.clipboard.writeText(text).then(() => showToast("🏷️ 워드프레스 SEO 슬러그 및 메타 설명이 복사되었습니다!"));
     }
 
+    function convertMarkdownTablesToReadableList(mdText) {
+      const lines = mdText.split("\n");
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.startsWith("|") && line.endsWith("|") && i + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[i + 1].trim())) {
+          const headers = line.slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+          i += 2;
+          while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+            const cells = lines[i].trim().slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+            const rowTitle = cells[0] || "항목";
+            out.push(`■ [${rowTitle}]`);
+            for (let c = 1; c < headers.length; c++) {
+              out.push(`  • ${headers[c] || "항목"}: ${cells[c] || "-"}`);
+            }
+            out.push("");
+            i++;
+          }
+        } else {
+          out.push(lines[i]);
+          i++;
+        }
+      }
+      return out.join("\n");
+    }
+
     function getCleanPlainText() {
-      return mdSource
-        .replace(/\*\*(.*?)\*\*/g, '$1')
+      return convertMarkdownTablesToReadableList(mdSource)
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
         .replace(/#{1,6}\s+/g, '')
         .replace(/^>\s+/gm, '')
-        .replace(/^---\s*$/gm, '──────────')
+        .replace(/^---\s*$/gm, '')
         .replace(/^\s*[-*]\s+/gm, '• ')
         .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
         .trim();
     }
 
-    document.getElementById("copyWpBtn").addEventListener("click", () => {
-      const clone = articleEl.cloneNode(true);
-      clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111827; margin-bottom: 22px;"));
-      clone.querySelectorAll("h2").forEach(el => el.setAttribute("style", "font-size: 19.5px; font-weight: bold; color: #005177; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid #0073aa; padding-left: 10px;"));
-      clone.querySelectorAll("h3, h4").forEach(el => el.setAttribute("style", "font-size: 16.5px; font-weight: bold; color: #1f2937; margin-top: 22px; margin-bottom: 10px;"));
-      clone.querySelectorAll("p").forEach(el => el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin-bottom: 16px;"));
-      clone.querySelectorAll("blockquote").forEach(el => el.setAttribute("style", "background-color: #f0f7fb; border: 1px solid #bae6fd; border-left: 4px solid #0073aa; padding: 16px 20px; margin: 20px 0; border-radius: 6px; color: #0c4a6e; font-size: 15px;"));
-      clone.querySelectorAll("table").forEach(el => el.setAttribute("style", "width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px;"));
-      clone.querySelectorAll("th").forEach(el => el.setAttribute("style", "background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left;"));
-      clone.querySelectorAll("td").forEach(el => el.setAttribute("style", "border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151;"));
-      const htmlContent = clone.innerHTML;
-      const plainText = getCleanPlainText();
-      if (navigator.clipboard && window.ClipboardItem) {
-        const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-        const textBlob = new Blob([plainText], { type: 'text/plain' });
-        navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]).then(() => {
-          showToast("🔵 워드프레스 구텐베르크 블록 서식이 복사되었습니다! 에디터에 바로 붙여넣으세요.");
+    function normalizeTableForWordPress(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 20px 0 24px; border: 1px solid #d1d5db; font-size: 14.5px; line-height: 1.6;");
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "26%", "26%", "26%"];
+        else if (colCount > 0) widths = Array(colCount).fill(Math.floor(100 / colCount) + "%");
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeader = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          const cleanHtml = cell.innerHTML.replace(/[]\s*/g, "").trim();
+          if (isHeader) {
+            td.setAttribute("style", `${wStyle}background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = `<strong>${cleanHtml}</strong>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = (cIdx === 0) ? "font-weight: bold; color: #111827; " : "color: #374151; ";
+            td.setAttribute("style", `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #d1d5db; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = (cIdx === 0 && !cleanHtml.includes("<strong")) ? `<strong>${cleanHtml}</strong>` : cleanHtml;
+          }
+          tr.appendChild(td);
         });
-      } else {
-        navigator.clipboard.writeText(plainText).then(() => showToast("📄 순수 텍스트가 복사되었습니다!"));
+        tbody.appendChild(tr);
+      });
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    // 워드프레스 구텐베르크 에디터 붙여넣기 최적화:
+    // 1) 최상단 중복 제목(H1) 제거 (제목 입력란에 별도 입력)
+    // 2) H2가 워드프레스 기본 테마에서 40px 초대형 글씨로 나오는 문제를 해결하기 위해
+    //    네이버·티스토리와 동일한 크기(약 20px, H3 레벨 + <strong> + 파란색 포인트 바 ▍)로 변환
+    // 3) 기존 H3(1단계, 2단계 등)는 17px 굵은 문단(▪ 1단계: ...)으로 변환하여 위계 질서 확립
+    // 4) <blockquote>(Key Takeaways)가 테두리 없는 일반 글씨로 풀리는 문제를 해결하기 위해 1x1 요약 박스 테이블로 변환
+    // 5) 검은색 실선(<hr>)을 깔끔한 문단 여백으로 대체
+    function getWordPressOptimizedHtml(forCustomHtmlBlock = false) {
+      const clone = articleEl.cloneNode(true);
+
+      // 1. 본문 최상단 중복 H1 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 2. 검은색 가로줄(<hr>) 제거
+      clone.querySelectorAll("hr").forEach(el => el.remove());
+
+      // 3. 본문 내 일반 표(Table) 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        el.replaceWith(normalizeTableForWordPress(el));
+      });
+
+      // 4. <blockquote>(핵심 요약)를 테두리가 유지되는 1x1 요약 박스 테이블로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 14px 0 26px; border: 1px solid #bae6fd; background-color: #f0f7fb;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #bae6fd; border-left: 5px solid #0073aa; background-color: #f0f7fb; padding: 16px 20px; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;">${innerHtml}</td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // 5. 기존 H3, H4(1단계, 2단계, Q1 등)를 먼저 17px 굵은 서브헤딩 문단으로 변환 (H2 -> H3 변환과 충돌 방지)
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        const pSub = document.createElement("p");
+        pSub.setAttribute("style", "font-size: 17px; font-weight: bold; color: #1e293b; margin: 22px 0 10px 0; line-height: 1.5; word-break: keep-all;");
+        const cleanTxt = el.innerHTML.trim();
+        const prefix = (cleanTxt.startsWith("▪") || cleanTxt.startsWith("①") || cleanTxt.startsWith("②") || cleanTxt.startsWith("③")) ? "" : "▪ ";
+        pSub.innerHTML = `<strong><span style="color: #0073aa;">${prefix}</span>${cleanTxt}</strong>`;
+        el.replaceWith(pSub);
+      });
+
+      // 6. H2 중간제목(1. ..., 2. ..., 3. ...)을 워드프레스에서 과도하게 커지지 않는 적정 크기(20px, H3 + <strong>)로 변환
+      clone.querySelectorAll("h2").forEach(el => {
+        if (forCustomHtmlBlock) {
+          el.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 32px 0 14px 0; padding-left: 12px; border-left: 4px solid #0073aa; line-height: 1.45; word-break: keep-all;");
+        } else {
+          const h3 = document.createElement("h3");
+          h3.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 30px 0 14px 0; line-height: 1.45; word-break: keep-all;");
+          h3.innerHTML = `<strong><span style="color: #0073aa; font-weight: 900; margin-right: 6px;">▍</span>${el.innerHTML}</strong>`;
+          el.replaceWith(h3);
+        }
+      });
+
+      // 7. 문단 및 목록 스타일 정리
+      clone.querySelectorAll("p").forEach(el => {
+        if (!el.getAttribute("style")) {
+          el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin: 0 0 16px 0; word-break: keep-all;");
+        }
+      });
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 12px 0 20px 22px; color: #374151;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.8; margin-bottom: 8px; color: #374151; word-break: keep-all;"));
+      clone.querySelectorAll("a").forEach(el => el.setAttribute("style", "color: #0073aa; font-weight: bold; text-decoration: underline;"));
+
+      return clone.innerHTML;
+    }
+
+    async function copyWpRichHtml(htmlContent, plainText) {
+      let copied = false;
+      try {
+        const tempDiv = document.createElement("div");
+        tempDiv.contentEditable = "true";
+        tempDiv.style.position = "fixed";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.top = "0";
+        tempDiv.style.opacity = "0";
+        tempDiv.style.backgroundColor = "#ffffff";
+        tempDiv.style.color = "#1f2937";
+        tempDiv.innerHTML = htmlContent;
+        document.body.appendChild(tempDiv);
+
+        const range = document.createRange();
+        range.selectNodeContents(tempDiv);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copied = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      } catch (e) {}
+
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          copied = true;
+        } catch (e) {}
       }
+
+      if (!copied && navigator.clipboard) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      return copied;
+    }
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 워드프레스 제목 입력란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyWpBtn").addEventListener("click", async () => {
+      const htmlContent = getWordPressOptimizedHtml(false);
+      const plainText = getCleanPlainText();
+      await copyWpRichHtml(htmlContent, plainText);
+      showToast("🔵 워드프레스 구텐베르크 서식(중간제목 크기 축소·요약박스·취소선 오류 제거)이 복사되었습니다!");
+    });
+
+    document.getElementById("copyWpHtmlCodeBtn").addEventListener("click", async () => {
+      const htmlContent = `<div class="wp-custom-article" style="font-family: Pretendard, -apple-system, sans-serif; color: #1f2937; line-height: 1.8;">\n` + getWordPressOptimizedHtml(true) + `\n</div>`;
+      await navigator.clipboard.writeText(htmlContent);
+      showToast("💻 구텐베르크 '사용자 정의 HTML' 블록용 코드가 복사되었습니다! (/html 입력 후 붙여넣기)");
     });
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", () => {

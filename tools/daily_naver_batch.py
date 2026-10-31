@@ -310,7 +310,7 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
             if any(w in kw for w in ["치아", "임플란트", "틀니", "치과"]):
                 return f"만 65세 이상 '{kw}' 건강보험 30% 혜택과 치과 치료 전 필수 확인사항 3가지"
             elif any(w in kw for w in ["혈당", "당뇨", "혈압", "고혈압", "고지혈증"]):
-                return f"식후 30분 혈당 스파이크 잡는 '{kw}' 실천법! 5060 건강 지키는 실전 식단과 걷기 루틴"
+                return f"식후 30분 혈당 스파이크 잡는 실천법! 5060 '{kw}' 지키는 거꾸로 식사법과 걷기 루틴 3가지"
             elif any(w in kw for w in ["관절", "무릎", "오십견", "디스크", "척추", "관절염"]):
                 return f"지긋지긋한 통증 줄이는 '{kw}' 실천 노하우! 매일 10분 스트레칭과 생활 습관 3가지"
             elif any(w in kw for w in ["눈", "안과", "백내장", "녹내장", "노안", "황반변성"]):
@@ -330,7 +330,7 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
             if "당구" in kw:
                 return f"은퇴 후 최고의 힐링 스포츠 '당구'! 5060 세대가 다시 당구장에 모이는 이유와 건강 효과 3가지"
             elif any(w in kw for w in ["골프", "파크골프"]):
-                return f"요즘 대세 '{kw}' 완벽 입문 가이드! 관절에 무리 없이 즐기는 실전 꿀팁 베스트 5"
+                return f"요즘 대세 '{kw}' 완벽 입문 가이드! 관절 무리 없이 즐기는 실전 꿀팁 5가지"
             elif any(w in kw for w in ["등산", "트레킹", "걷기", "만보"]):
                 return f"무릎 부담 없는 '{kw}' 명코스 추천! 은퇴 후 몸과 마음을 채우는 힐링 로드"
             else:
@@ -383,21 +383,24 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
         p2_desc = theme_info["p2_desc"]
         p3_title = theme_info["p3_title"]
         p3_desc = theme_info["p3_desc"]
-        theme_badge_line = f"> **테마 분류**: {theme_name} (연관 키워드: {matched_kw})  \n"
-        tags_line = f"#{kw.replace(' ', '')} #{matched_kw.replace(' ', '')} #인생2막 #품미인생 #노후자산관리 #생활꿀팁 #스마트블록 #디지털연금"
+        raw_tags = [kw.replace(" ", ""), matched_kw.replace(" ", ""), "인생2막", "품미인생", "노후자산관리", "생활꿀팁", "스마트블록", "디지털연금"]
+        dedup_tags = []
+        for tg in raw_tags:
+            if tg and tg not in dedup_tags:
+                dedup_tags.append(tg)
+        tags_line = " ".join(f"#{tg}" for tg in dedup_tags)
     else:
         theme_name = "실시간 트렌드"
         category = "경제 / 시사 / 노후 자산관리 & 라이프"
         matched_kw = kw
-        lead_text = f"오늘 아침 실시간 검색어와 주요 뉴스에서 가장 뜨겁게 화제가 되고 있는 주제는 바로 '{kw}'입니다. 관련 소식({news})을 접하시고 많은 분들이 큰 관심을 갖고 계실 텐데요."
-        p1_title = "오늘 이슈가 대중의 주목을 받는 배경"
-        p1_desc = "단순한 단기 이슈가 아니라, 우리 생활과 소비, 자산 관리에 직간접적인 영향을 주는 중요한 계기가 되고 있습니다."
+        lead_text = f"최근 주요 뉴스에서 자주 언급되는 '{kw}' 관련 소식({news})을 접하시고 내 생활과 노후 설계에 어떻게 적용할지 궁금해하는 분들이 많습니다."
+        p1_title = "핵심 기준과 배경 먼저 확인하기"
+        p1_desc = "단기적인 화제에 그치지 않고 우리 생활과 소비, 자산 관리에 직간접적인 영향을 주는 요소들을 차분히 살펴봐야 합니다."
         p2_title = "내 상황에 맞는 분산과 안전성 최우선하기"
-        p2_desc = "무리한 선택이나 급작스러운 변화보다는, 현재 내가 가지고 있는 자원(건강, 시간, 자산)을 안정적으로 지키는 수비적 관점을 유지해야 합니다."
-        p3_title = "작은 것부터 오늘 바로 실천해보기"
-        p3_desc = "아무리 좋은 정보라도 행동하지 않으면 내 것이 되지 않습니다. 오늘 소개해 드린 체크리스트 중 하나라도 즉시 내 삶에 적용해 보세요."
-        theme_badge_line = ""
-        tags_line = f"#{kw.replace(' ', '')} #{kw.replace(' ', '')}전망 #인생2막 #품미인생 #노후자산관리 #생활꿀팁 #실시간트렌드 #디지털연금"
+        p2_desc = "무리한 선택이나 급작스러운 변화보다는 현재 내가 가지고 있는 자원(건강, 시간, 자산)을 안정적으로 지키는 원칙을 유지해야 합니다."
+        p3_title = "공식 기준 확인 후 작은 것부터 실천하기"
+        p3_desc = "주변의 소문에 휩쓸리기보다 공신력 있는 공식 기관의 안내를 먼저 확인하고 내 일상에 맞는 체크리스트를 하나씩 적용해 보세요."
+        tags_line = f"#{kw.replace(' ', '')} #인생2막 #품미인생 #노후자산관리 #생활꿀팁 #디지털연금"
 
     # 네이버 스마트블록 친화적 마크다운 본문 템플릿 (최종 발행용 내용만 구성)
     md_content = f"""# {title}
@@ -406,26 +409,24 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
 
 {lead_text}
 
-> **"이 소식이 내 일상과 노후 준비에 어떤 영향을 미칠까?"**  
-> **"우리가 미리 알고 준비해야 할 핵심 포인트는 무엇일까?"**
+> **"'{kw}' 관련 기준을 확인할 때 무엇부터 챙겨야 할까요?"**  
+> **"5060 세대가 실생활에서 바로 적용할 수 있는 핵심 포인트는 무엇일까요?"**
 
-오늘은 5060 세대와 은퇴자의 관점에서 **'{kw}' 관련 핵심 쟁점과 실생활에 바로 적용할 수 있는 3가지 실천 팁**을 알기 쉽게 정리해 드립니다.
+오늘은 시니어와 은퇴자의 관점에서 **'{kw}' 관련 핵심 배경과 실생활에 바로 적용할 수 있는 3가지 실천 팁**을 알기 쉽게 정리해 드립니다.
 
 ---
 
 ## 1. {p1_title}
 
-최근 관련 트렌드와 뉴스를 살펴보면 많은 분들이 궁금해하시는 핵심 요인이 드러납니다.
-
-* **변화하는 사회적 흐름**: {p1_desc}
-* **시니어 세대의 현명한 대응 필요성**: 뉴스를 그저 스쳐 지나치지 않고, 나의 건강이나 가계부에 긍정적인 방향으로 접목하는 지혜가 필요한 시점입니다.
+* **핵심 배경**: {p1_desc}
+* **대응 원칙**: 단편적인 정보만 보고 성급히 결정하기보다, 나의 건강 상태나 가계부 기준선에 맞추어 적용 가능 여부를 먼저 점검하는 것이 중요합니다.
 
 ---
 
-## 2. 우리가 꼭 기억해야 할 실천 포인트 3가지
+## 2. 실생활에서 꼭 챙겨야 할 실천 포인트 3가지
 
-### ① 팩트 기반으로 냉정하게 상황 파악하기
-자극적인 제목이나 주변의 소문에 휩쓸리기보다는, 공신력 있는 기관의 발표와 정확한 수치를 기준으로 판단하는 것이 중요합니다.
+### ① 공식 기관 기준과 본인 조건 먼저 대조하기
+자극적인 요약 정보나 주변의 소문에 의존하기보다, 관련 공공기관이나 금융·의료기관의 최신 공식 안내를 통해 본인에게 해당되는 조건과 예외 기준을 먼저 확인합니다.
 
 ### ② {p2_title}
 {p2_desc}
@@ -435,21 +436,22 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
 
 ---
 
-## 3. 실패를 줄이는 은퇴자의 지혜 한마디
+## 3. 적용 전 최종 점검 체크리스트
 
-제가 인생의 여러 굴곡을 겪으며 배운 가장 큰 교훈은 **"남들이 우르르 몰려갈 때 한 박자 쉬어가는 여유"**였습니다.  
-오늘의 핫이슈 '{kw}' 역시 조급해하지 마시고, 차분히 본질을 들여다보신다면 분명 좋은 기회와 인생의 깊은 인사이트를 발견하실 수 있을 것입니다.
+1. 올해 최신 기준(연령·소득·세율·한도)과 내 조건이 일치하는지 확인하기
+2. 수수료, 세금, 건강보험료 또는 건강상 주의사항 등 부수적인 영향 점검하기
+3. 무리한 일시적 선택 대신 장기적으로 지속 가능한 계획 세우기
 
 ---
 
 ## 맺음말 & 소통 한마디
 
-> "매일 마주하는 새로운 뉴스 속에서 나만의 가치를 발견하는 것,  
-> 그것이 바로 인생 2막을 풍요롭게 만드는 최고의 습관입니다."
+> "정확한 기준을 알고 차분히 준비하는 습관이  
+> 인생 2막의 소중한 자산과 일상을 가장 든든하게 지켜줍니다."
 
-여러분은 오늘 '{kw}' 소식을 보며 어떤 생각이 드셨나요? 여러분만의 생각이나 궁금하신 점이 있다면 편하게 댓글로 남겨주세요.
+여러분은 '{kw}'에 대해 평소 어떻게 준비하고 계신가요? 궁금한 점이나 함께 나누고 싶은 경험이 있다면 편하게 댓글로 남겨주세요.
 
-글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 꾹 부탁드립니다. 내일도 유익한 자산 정보와 맛있는 이야기로 찾아뵙겠습니다!
+글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 부탁드립니다!
 
 {tags_line}
 """
@@ -472,6 +474,8 @@ def create_daily_post(date_str, weekday_str, main_trend):
 def build_post_html(post_id, date_str, weekday_str, title, keyword, md_content, theme_name=None, category=None):
     """HTML 뷰어 템플릿 생성"""
     escaped_md = md_content.replace("\\", "\\\\").replace("`", "\\`").replace("$", "\\$")
+    char_len = len(md_content.strip())
+    read_min = max(2, round(char_len / 500))
     return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -664,13 +668,53 @@ def build_post_html(post_id, date_str, weekday_str, title, keyword, md_content, 
     }}
 
     .smarteditor-preview blockquote {{
-      border: 1px solid #d9f3e4;
+      border: 1px solid #ccebd9;
+      border-left: 5px solid var(--naver-green);
       background: var(--naver-light);
       padding: 16px 20px;
-      margin: 22px 0;
-      border-radius: 8px;
-      color: #2b593f;
+      margin: 20px 0 24px;
+      border-radius: 6px;
+      color: #1e4d32;
       font-weight: 500;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
+    }}
+
+    .smarteditor-preview blockquote p {{
+      margin-bottom: 0;
+      color: #1e4d32;
+      font-size: 15.5px;
+      line-height: 1.8;
+    }}
+
+    .smarteditor-preview hr {{
+      border: 0;
+      border-top: 1px solid #f1f5f9;
+      margin: 26px 0;
+    }}
+
+    .smarteditor-preview table {{
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 24px;
+      font-size: 14px;
+    }}
+
+    .smarteditor-preview th {{
+      background: #f4fbf7;
+      color: #1e4d32;
+      font-weight: 700;
+      border: 1px solid #ccebd9;
+      padding: 10px 12px;
+      text-align: left;
+    }}
+
+    .smarteditor-preview td {{
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      color: #333;
+      vertical-align: top;
     }}
 
     .toast {{
@@ -706,7 +750,10 @@ def build_post_html(post_id, date_str, weekday_str, title, keyword, md_content, 
     <div class="nav-actions">
       <a href="../../index.html" class="btn">📂 네이버 블로그 홈</a>
       <a href="{post_id}.md" target="_blank" class="btn">📄 원본 MD 열기</a>
-      <button class="btn btn-naver" id="copyNaverBtn" title="네이버 스마트에디터에 붙여넣을 때 ** 없이 볼드 및 서식이 유지됩니다">
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="네이버 스마트에디터 제목 입력란에 붙여넣을 제목만 복사합니다">
+        📋 제목만 복사
+      </button>
+      <button class="btn btn-naver" id="copyNaverBtn" title="네이버 스마트에디터 ONE에 원문 디자인(초록 요약박스·소제목·볼드·줄간격) 그대로 붙여넣기 됩니다">
         🟢 네이버 스마트에디터 서식 복사
       </button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">
@@ -728,10 +775,10 @@ def build_post_html(post_id, date_str, weekday_str, title, keyword, md_content, 
           <span>작성일자:</span><strong>{date_str} ({weekday_str})</strong>
         </div>
         <div class="meta-info-item">
-          <span>글자수:</span><strong>약 1,800자 (공백 포함)</strong>
+          <span>글자수:</span><strong>약 {char_len:,}자 (공백 포함)</strong>
         </div>
         <div class="meta-info-item">
-          <span>예상 소요시간:</span><strong>3분 30초</strong>
+          <span>예상 소요시간:</span><strong>약 {read_min}분</strong>
         </div>
         <div class="meta-info-item">
           <span>스마트블록 타겟:</span><strong>{keyword}, {theme_name or "시니어 라이프"}</strong>
@@ -751,7 +798,10 @@ def build_post_html(post_id, date_str, weekday_str, title, keyword, md_content, 
   <script>
     const mdSource = document.getElementById("rawMarkdown").textContent.trim();
     const articleEl = document.getElementById("postArticle");
-    articleEl.innerHTML = marked.parse(mdSource);
+    articleEl.innerHTML = marked.parse(mdSource)
+      .replace(/<del>([\\s\\S]*?)<\\/del>/gi, '~$1~')
+      .replace(/\\*\\*([^*]+?)\\*\\*/g, '<strong>$1</strong>')
+      .replace(/\\*([^*\\n]+?)\\*/g, '<em>$1</em>');
 
     function showToast(message) {{
       const toast = document.getElementById("toast");
@@ -762,61 +812,255 @@ def build_post_html(post_id, date_str, weekday_str, title, keyword, md_content, 
 
     function getCleanPlainText() {{
       return mdSource
-        .replace(/\\*\\*(.*?)\\*\\*/g, '$1')
+        .replace(/\\*\\*([^*]+?)\\*\\*/g, '$1')
+        .replace(/\\*([^*\\n]+?)\\*/g, '$1')
         .replace(/#{{1,6}}\\s+/g, '')
         .replace(/^>\\s+/gm, '')
-        .replace(/^---\\s*$/gm, '──────────')
-        .replace(/^\\s*\\*\\s+/gm, '• ')
+        .replace(/^---\\s*$/gm, '')
+        .replace(/^\\s*[-*]\\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '$1 ($2)')
+        .replace(/\\n{{3,}}/g, '\\n\\n')
         .trim();
     }}
 
+    function normalizeTableForNaver(tableEl) {{
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 18px 0 24px; border: 1px solid #d1d5db; font-size: 14px; line-height: 1.6;");
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+      allRows.forEach((row, rIdx) => {{
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "25%", "25%", "28%"];
+        else if (colCount > 0) widths = Array(colCount).fill(Math.floor(100 / colCount) + "%");
+
+        cells.forEach((cell, cIdx) => {{
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${{widths[cIdx]}}; ` : "";
+          const isHeader = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          if (isHeader) {{
+            td.setAttribute("style", `${{wStyle}}background-color: #f4fbf7; color: #1e4d32; font-weight: bold; border: 1px solid #ccebd9; padding: 10px 10px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = `<b><span style="color: #1e4d32; font-weight: bold;">${{cell.innerHTML}}</span></b>`;
+          }} else {{
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = (cIdx === 0) ? "font-weight: bold; color: #111111; " : "color: #333333; ";
+            td.setAttribute("style", `${{wStyle}}background-color: ${{bg}}; ${{fontW}}border: 1px solid #e5e7eb; padding: 10px 10px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = cell.innerHTML;
+          }}
+          tr.appendChild(td);
+        }});
+        tbody.appendChild(tr);
+      }});
+      newTable.appendChild(tbody);
+      return newTable;
+    }}
+
+    // 네이버 스마트에디터 ONE 붙여넣기 시 원문 페이지(smarteditor-preview)와 100% 동일하게 렌더링되도록 보정:
+    // 1) <h1> 제거 (스마트에디터 제목란과 중복 방지)
+    // 2) <blockquote> -> 스마트에디터 기본 따옴표(“ ”) 및 가운데 정렬 깨짐을 막기 위해 1x1 연초록 박스 테이블로 변환
+    // 3) <h2> -> border-left 때문에 스마트에디터 '버티컬 라인 인용구(초록 글씨 + 좁은 폭 줄바꿈 깨짐)'로 변질되는 현상을 막기 위해
+    //            좌측 초록 포인트 바(▍) + 진한 검정(#111) 19px 볼드 문단으로 변환
+    // 4) <h3> -> 스마트에디터에서 볼드와 글자 크기가 풀리는 현상을 막기 위해 17px <b><span>으로 명시적 변환
+    // 5) 중첩 목록(<ol> 내부 <ul> 등) -> 스마트에디터에서 부모 항목의 볼드(<strong>)가 풀리는 버그를 막기 위해 깔끔한 문단형 목록으로 변환
+    // 6) 문단 간 여백(<p><br></p>) 자동 삽입으로 문단끼리 다닥다닥 붙는 현상 해결
     function getNaverOptimizedHtml() {{
       const clone = articleEl.cloneNode(true);
-      clone.querySelectorAll("h1").forEach(el => el.setAttribute("style", "font-size: 24px; font-weight: bold; color: #111; margin-bottom: 24px; line-height: 1.4;"));
-      clone.querySelectorAll("h2").forEach(el => el.setAttribute("style", "font-size: 19px; font-weight: bold; color: #03c75a; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid #03c75a; padding-left: 10px;"));
-      clone.querySelectorAll("h3, h4").forEach(el => el.setAttribute("style", "font-size: 16px; font-weight: bold; color: #222; margin-top: 22px; margin-bottom: 10px;"));
-      clone.querySelectorAll("strong, b").forEach(el => el.setAttribute("style", "font-weight: bold; color: #111;"));
-      clone.querySelectorAll("p").forEach(el => el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #333; margin-bottom: 18px; word-break: keep-all;"));
-      clone.querySelectorAll("blockquote").forEach(el => el.setAttribute("style", "background-color: #f4fbf7; border: 1px solid #d9f3e4; border-left: 4px solid #03c75a; padding: 16px 20px; margin: 22px 0; border-radius: 6px; color: #235438; font-style: normal; font-size: 15px;"));
-      clone.querySelectorAll("hr").forEach(el => el.setAttribute("style", "border: 0; height: 1px; background-color: #e6e6e6; margin: 36px 0;"));
-      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 16px 0 20px 20px; padding: 0;"));
-      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.75; margin-bottom: 8px; color: #333;"));
+
+      // 1. 최상단 중복 제목(H1) 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 2. 구분선(<hr>)은 빈 줄 여백으로 대체
+      clone.querySelectorAll("hr").forEach(el => {{
+        const gap = document.createElement("p");
+        gap.setAttribute("style", "margin: 0; line-height: 1.2;");
+        gap.innerHTML = "<br>";
+        el.replaceWith(gap);
+      }});
+
+      // 3. 일반 표(Table) 먼저 정규화
+      clone.querySelectorAll("table").forEach(el => {{
+        el.replaceWith(normalizeTableForNaver(el));
+      }});
+
+      // 4. <blockquote>를 큰따옴표(“ ”)·가운데 정렬 없는 1x1 연초록(#f4fbf7) 좌측 정렬 박스로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {{
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 14px 0 22px; border: 1px solid #ccebd9; background-color: #f4fbf7;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\\/p>/gi, "<br>")
+          .replace(/(<br>\\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #ccebd9; border-left: 5px solid #03c75a; background-color: #f4fbf7; padding: 16px 20px; color: #1e4d32; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;"><span style="color: #1e4d32; font-size: 15.5px; line-height: 1.8;">${{innerHtml}}</span></td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      }});
+
+      // 5. 목록(<ol>, <ul>)을 스마트에디터에서 볼드·들여쓰기가 절대 깨지지 않는 구조화된 문단 그룹으로 변환
+      Array.from(clone.querySelectorAll("ol, ul")).forEach(listEl => {{
+        if (listEl.parentElement && listEl.parentElement.tagName === "LI") return; // 하위 목록은 상위에서 함께 처리
+        const frag = document.createDocumentFragment();
+        const isOrdered = (listEl.tagName === "OL");
+        const topItems = Array.from(listEl.children).filter(ch => ch.tagName === "LI");
+
+        topItems.forEach((li, idx) => {{
+          const liClone = li.cloneNode(true);
+          const nestedLists = Array.from(liClone.querySelectorAll("ul, ol"));
+          nestedLists.forEach(nl => nl.remove());
+
+          let mainHtml = liClone.innerHTML.trim()
+            .replace(/^<p[^>]*>/i, "")
+            .replace(/<\\/p>$/i, "");
+          const prefix = isOrdered
+            ? `<b><span style="color: #03c75a; font-weight: bold;">${{idx + 1}}. </span></b>`
+            : `<span style="color: #03c75a; font-weight: bold;">• </span>`;
+
+          const pMain = document.createElement("p");
+          pMain.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #333333; margin: 0 0 8px 0; text-align: left; word-break: keep-all;");
+          pMain.innerHTML = prefix + mainHtml;
+          frag.appendChild(pMain);
+
+          // 하위 중첩 목록(예: 1. 노인공익활동사업 아래의 - 학교 급식...) 처리
+          Array.from(li.querySelectorAll(":scope > ul > li, :scope > ol > li")).forEach(subLi => {{
+            const subHtml = subLi.innerHTML.trim()
+              .replace(/^<p[^>]*>/i, "")
+              .replace(/<\\/p>$/i, "");
+            const pSub = document.createElement("p");
+            pSub.setAttribute("style", "font-size: 15.5px; line-height: 1.8; color: #444444; margin: 0 0 8px 0; padding-left: 14px; text-align: left; word-break: keep-all;");
+            pSub.innerHTML = `&nbsp;&nbsp;• ` + subHtml;
+            frag.appendChild(pSub);
+          }});
+        }});
+
+        const afterListGap = document.createElement("p");
+        afterListGap.setAttribute("style", "margin: 0; line-height: 0.9;");
+        afterListGap.innerHTML = "<br>";
+        frag.appendChild(afterListGap);
+
+        listEl.replaceWith(frag);
+      }});
+
+      // 6. H2 대소제목: 인용구로 잘못 변환되지 않도록 전체 폭 문단 + 초록 포인트 바(▍) + 19px 진한 검정 볼드로 변환
+      clone.querySelectorAll("h2").forEach(el => {{
+        const pH2 = document.createElement("p");
+        pH2.setAttribute("style", "font-size: 19px; font-weight: bold; color: #111111; margin: 0; line-height: 1.5; text-align: left; word-break: keep-all;");
+        pH2.innerHTML = `<span style="font-size: 19px; color: #03c75a; font-weight: 900; margin-right: 6px;">▍</span><b><span style="font-size: 19px; font-weight: bold; color: #111111;">${{el.innerHTML}}</span></b>`;
+        const afterH2Gap = document.createElement("p");
+        afterH2Gap.setAttribute("style", "margin: 0; line-height: 0.7;");
+        afterH2Gap.innerHTML = "<br>";
+        const frag = document.createDocumentFragment();
+        frag.appendChild(pH2);
+        frag.appendChild(afterH2Gap);
+        el.replaceWith(frag);
+      }});
+
+      // 7. H3, H4 중소제목(①, ②, ③ 등): 스마트에디터에서 볼드와 글자 크기가 풀리지 않도록 17px <b><span> 적용
+      clone.querySelectorAll("h3, h4").forEach(el => {{
+        const beforeH3Gap = document.createElement("p");
+        beforeH3Gap.setAttribute("style", "margin: 0; line-height: 0.7;");
+        beforeH3Gap.innerHTML = "<br>";
+        const pH3 = document.createElement("p");
+        pH3.setAttribute("style", "font-size: 17px; font-weight: bold; color: #111111; margin: 0; line-height: 1.55; text-align: left; word-break: keep-all;");
+        pH3.innerHTML = `<b><span style="font-size: 17px; font-weight: bold; color: #1e3a2f; background-color: #f0fdf4;">${{el.innerHTML}}</span></b>`;
+        const frag = document.createDocumentFragment();
+        frag.appendChild(beforeH3Gap);
+        frag.appendChild(pH3);
+        el.replaceWith(frag);
+      }});
+
+      // 8. 일반 문단(<p>) 스타일 및 연속 문단 간 빈 줄(<p><br></p>) 보장
+      const allParas = Array.from(clone.querySelectorAll("p"));
+      allParas.forEach(el => {{
+        if (el.innerHTML.trim() === "<br>" || el.innerHTML.trim() === "&nbsp;") return;
+        if (!el.getAttribute("style")) {{
+          el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #333333; margin: 0; text-align: left; word-break: keep-all;");
+        }}
+        // 일반 문단 다음에 또 일반 문단이 오면(목록 항목 제외) 사이에 빈 줄 1개 삽입
+        const isListItemPara = el.innerHTML.includes("• ") || /^<b><span[^>]*>\\d+\\.\\s*<\\/span><\\/b>/.test(el.innerHTML);
+        const nextEl = el.nextElementSibling;
+        if (nextEl && nextEl.tagName === "P" && nextEl.innerHTML.trim() !== "<br>") {{
+          const nextIsList = nextEl.innerHTML.includes("• ") || /^<b><span[^>]*>\\d+\\.\\s*<\\/span><\\/b>/.test(nextEl.innerHTML);
+          if (!isListItemPara || !nextIsList) {{
+            const gap = document.createElement("p");
+            gap.setAttribute("style", "margin: 0; line-height: 0.85;");
+            gap.innerHTML = "<br>";
+            el.parentNode.insertBefore(gap, nextEl);
+          }}
+        }}
+      }});
+
+      // 9. 모든 <strong> 태그를 스마트에디터 친화적인 <b> + 진한 색상으로 강화
+      clone.querySelectorAll("strong, b").forEach(el => {{
+        if (!el.closest("td") || !el.closest("td").getAttribute("style")?.includes("#f4fbf7")) {{
+          el.setAttribute("style", "font-weight: bold; color: #111111;");
+        }}
+      }});
+
+      // 10. 링크(<a>) 색상 및 밑줄 명시
+      clone.querySelectorAll("a").forEach(el => {{
+        el.setAttribute("style", "color: #009f47; font-weight: bold; text-decoration: underline;");
+      }});
+
       return clone.innerHTML;
     }}
 
-    document.getElementById("copyNaverBtn").addEventListener("click", async () => {{
-      const htmlContent = getNaverOptimizedHtml();
-      const plainText = getCleanPlainText();
-      let success = false;
+    async function copyNaverRichHtml(htmlContent, plainText) {{
+      let copied = false;
+      try {{
+        const tempEl = document.createElement("div");
+        tempEl.contentEditable = "true";
+        tempEl.innerHTML = htmlContent;
+        tempEl.style.position = "fixed";
+        tempEl.style.left = "-9999px";
+        tempEl.style.top = "0";
+        tempEl.style.opacity = "0";
+        tempEl.style.backgroundColor = "#ffffff";
+        tempEl.style.color = "#333333";
+        document.body.appendChild(tempEl);
+        const range = document.createRange();
+        range.selectNodeContents(tempEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copied = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempEl);
+      }} catch(e) {{}}
+
       if (navigator.clipboard && window.ClipboardItem) {{
         try {{
           const htmlBlob = new Blob([htmlContent], {{ type: 'text/html' }});
           const textBlob = new Blob([plainText], {{ type: 'text/plain' }});
           await navigator.clipboard.write([new ClipboardItem({{ 'text/html': htmlBlob, 'text/plain': textBlob }})]);
-          success = true;
+          copied = true;
         }} catch(e) {{}}
       }}
-      if (!success) {{
-        try {{
-          const tempEl = document.createElement("div");
-          tempEl.contentEditable = "true";
-          tempEl.innerHTML = htmlContent;
-          tempEl.style.position = "fixed";
-          tempEl.style.left = "-9999px";
-          document.body.appendChild(tempEl);
-          const range = document.createRange();
-          range.selectNodeContents(tempEl);
-          const sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
-          document.execCommand("copy");
-          document.body.removeChild(tempEl);
-          success = true;
-        }} catch(e) {{
-          await navigator.clipboard.writeText(plainText);
-        }}
+
+      if (!copied && navigator.clipboard) {{
+        await navigator.clipboard.writeText(plainText);
       }}
-      showToast("🟢 네이버 에디터 맞춤 서식이 복사되었습니다! (에디터에 바로 붙여넣기 하세요 - ** 기호 없음)");
+      return copied;
+    }}
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {{
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 스마트에디터 제목란에 붙여넣으세요.");
+    }});
+
+    document.getElementById("copyNaverBtn").addEventListener("click", async () => {{
+      const htmlContent = getNaverOptimizedHtml();
+      const plainText = getCleanPlainText();
+      await copyNaverRichHtml(htmlContent, plainText);
+      showToast("🟢 네이버 스마트에디터 서식(초록 요약박스·소제목·볼드·줄간격 완전 보정)이 복사되었습니다!");
     }});
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", async () => {{
