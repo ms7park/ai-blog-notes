@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[2026-11-04] 워드프레스 포스팅 #1 | 노인장기요양보험 등급 판정 기준(1~5등급·인지지원등급) 신청 절차 및 재가급여·시설급여 본인부담금 비교표</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+  <style>
+    :root {
+      --wp: #0073aa;
+      --wp-dark: #005177;
+      --wp-light: #f0f7fb;
+      --wp-border: #bae6fd;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .brand-tag {
+      background: var(--wp);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .nav-title { font-size: 15px; font-weight: 700; }
+    .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-main);
+    }
+    .btn:hover { background: #f3f4f6; }
+    .btn-wp { background: var(--wp); color: #fff; border-color: var(--wp); }
+    .btn-wp:hover { background: var(--wp-dark); color: #fff; }
+    .container { max-width: 880px; margin: 32px auto 0; padding: 0 16px; }
+    .meta-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--wp);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .meta-badges { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--wp-light);
+      color: var(--wp-dark);
+      border: 1px solid var(--wp-border);
+    }
+    .post-title { font-size: 23px; font-weight: 800; line-height: 1.4; margin-bottom: 14px; color: #111827; }
+    .meta-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      background: var(--bg);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .meta-info-item span { color: var(--text-muted); margin-right: 6px; }
+    .editor-preview {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .editor-preview h1 { font-size: 24px; font-weight: 800; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--wp); }
+    .editor-preview h2 { font-size: 19.5px; font-weight: 750; margin: 34px 0 14px; color: #111827; border-left: 4px solid var(--wp); padding-left: 12px; }
+    .editor-preview h3 { font-size: 16.5px; font-weight: 700; margin: 24px 0 10px; color: #1f2937; }
+    .editor-preview p { margin-bottom: 16px; font-size: 15.5px; line-height: 1.85; color: #374151; word-break: keep-all; }
+    .editor-preview ul, .editor-preview ol { margin: 12px 0 20px 22px; }
+    .editor-preview li { margin-bottom: 8px; font-size: 15px; line-height: 1.75; color: #374151; }
+    .editor-preview blockquote {
+      border: 1px solid var(--wp-border);
+      border-left: 5px solid var(--wp);
+      background: var(--wp-light);
+      padding: 16px 20px;
+      margin: 20px 0 24px;
+      border-radius: 6px;
+      color: #0c4a6e;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
+    }
+    .editor-preview blockquote p { margin-bottom: 0; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; }
+    .editor-preview hr { border: 0; border-top: 1px solid #f1f5f9; margin: 26px 0; }
+    .editor-preview table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px; }
+    .editor-preview th { background: var(--wp-light); color: #0c4a6e; font-weight: 700; border: 1px solid var(--wp-border); padding: 10px 12px; text-align: left; }
+    .editor-preview td { border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151; vertical-align: top; }
+    .editor-preview tr:nth-child(even) td { background: #f9fafb; }
+    .editor-preview pre { background: #1e293b; color: #f8fafc; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 16px 0; }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #111827; color: #fff; padding: 12px 24px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="brand-tag">WORDPRESS · #1편</span>
+      <span class="nav-title">2026-11-04 (수) · Senior Health & Benefits (건강검진·시니어 혜택)</span>
+    </div>
+    <div class="nav-actions">
+      <a href="../../index.html" class="btn">📂 워드프레스 작업실 홈</a>
+      <a href="2026-11-04.md" target="_blank" class="btn">📄 원본 MD 열기</a>
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="워드프레스 제목 입력란에 붙여넣을 제목만 복사합니다">📋 제목만 복사</button>
+      <button class="btn btn-wp" id="copyWpBtn" title="워드프레스 구텐베르크 에디터에 적정 소제목 크기(20px)·요약박스·표 서식 그대로 붙여넣기 됩니다">🔵 워드프레스 구텐베르크 서식 복사</button>
+      <button class="btn" id="copyWpHtmlCodeBtn" style="border-color: #bae6fd; background: #f0f7fb; color: #0073aa;" title="구텐베르크 '사용자 정의 HTML' 블록에 붙여넣으면 원문 색상·배경·크기가 100% 그대로 유지됩니다">💻 사용자 정의 HTML 블록 코드 복사</button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
+      <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="meta-card">
+      <div class="meta-badges">
+        <span class="badge">🔵 WordPress Cornerstone SEO</span>
+        <span class="badge">📂 Senior Health & Benefits (건강검진·시니어 혜택)</span>
+        <span class="badge">🔗 Slug: /long-term-care-insurance-grade-copay-guide</span>
+        <span class="badge">🎯 평가 점수: 95/100점</span>
+      </div>
+      <h1 class="post-title">노인장기요양보험 등급 판정 기준(1~5등급·인지지원등급) 신청 절차 및 재가급여·시설급여 본인부담금 비교표</h1>
+      <div class="meta-info-grid">
+        <div class="meta-info-item"><span>Focus Keyphrase:</span><strong>노인장기요양보험 등급 판정 기준 본인부담금</strong></div>
+        <div class="meta-info-item"><span>URL Slug:</span><strong>/long-term-care-insurance-grade-copay-guide</strong></div>
+        <div class="meta-info-item"><span>구조:</span><strong>Key Takeaways + 비교표 + FAQ 3문 3답</strong></div>
+        <div class="meta-info-item"><span>타겟:</span><strong>Google 글로벌/국내 SEO & AdSense</strong></div>
+      </div>
+    </div>
+
+    <article class="editor-preview" id="postArticle"></article>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script id="rawMarkdown" type="text/plain">
+# 노인장기요양보험 등급 판정 기준(1~5등급·인지지원등급) 신청 절차 및 재가급여·시설급여 본인부담금 비교표
+
+> **💡 Key Takeaways (핵심 요약)**: **노인장기요양보험**은 만 65세 이상 거동 불편 어르신(또는 만 65세 미만 치매·뇌혈관질환 등 노인성 질병자)에게 국가가 **가정 방문요양·주야간보호(데이케어센터) 등 재가급여 비용의 85%(일반 수급자 본인부담 15%)**, **노인요양시설(요양원) 등 시설급여 비용의 80%(본인부담 20%)**를 지원하는 사회보험 제도입니다. 국민건강보험공단 누리집이나 **'The건강보험' 앱**에서 의사소견서 없이 먼저 인정 신청을 접수할 수 있으며, 공단 직원의 가정 방문조사(52개 항목)를 거쳐 통상 30일 이내에 등급이 결정됩니다.
+
+---
+
+## 1. 부모님 돌봄 비용 부담을 80~85% 줄여주는 '노인장기요양보험' 핵심 구조
+
+부모님의 거동이 불편해지시거나 인지 기능(기억력·판단력)이 저하되었을 때 가족이 개인 비용으로 간병인을 고용하면 월 수백만 원의 큰 지출이 발생합니다.
+
+이때 국민건강보험공단이 운영하는 **노인장기요양보험**에서 장기요양등급(**1등급~5등급 또는 인지지원등급**) 판정을 받으면, 집으로 찾아오는 **방문요양보호사, 방문목욕, 방문간호, 주·야간보호센터(데이케어센터)** 서비스를 **본인부담금 15%(감경 대상자는 6~9%, 기초생활수급자는 무료)**만으로 이용할 수 있습니다.
+
+---
+
+## 2. 장기요양 인정 신청부터 서비스 이용까지 4단계 표준 절차
+
+### 1단계: 'The건강보험' 앱 또는 노인장기요양보험 누리집에서 인정 신청
+1. **신청 대상**: **만 65세 이상**으로 6개월 이상 혼자서 일상생활을 수행하기 어렵다고 인정되는 어르신, 또는 **만 65세 미만**이더라도 치매·뇌혈관질환(뇌경색·뇌출혈)·파킨슨병 등 대통령령이 정한 **노인성 질병**을 가진 분입니다.
+2. [노인장기요양보험 공식 누리집(longtermcare.or.kr)](https://www.longtermcare.or.kr/)이나 모바일 앱 **'The건강보험'**에서 자녀·배우자가 대리 신청을 접수합니다(최초 신청 접수 시에는 의사소견서 없이 신분증만으로 즉시 신청 가능).
+
+### 2단계: 공단 소속 전문 직원의 가정 방문조사 (52개 항목 평가)
+1. 신청 접수 후 공단 직원이 보호자와 일정을 조율해 어르신 댁을 직접 방문합니다.
+2. **신체기능(12개 항목: 옷 벗고 입기, 세수, 양치질, 식사, 체위 변경, 일어나 앉기, 옮겨 앉기, 방 밖으로 나오기, 화장실 사용하기, 대변·소변 조절하기, 머리 감기, 목욕하기), 인지기능(7개 항목), 행동변화(14개 항목), 간호처치(9개 항목), 재활(10개 항목)** 등 총 52개 항목을 조사합니다.
+
+### 3단계: 병·의원 방문 및 '장기요양 의사소견서' 제출
+1. 방문조사 직후 공단에서 의사소견서 제출 대상 여부와 제출 기한을 문자로 안내합니다.
+2. 가까운 병·의원(치매 증상이 있는 5등급·인지지원등급 희망자는 신경과·정신건강의학과 또는 보건소 치매안심센터)에 방문해 **의사소견서 발급의뢰서**를 제시하면 병원에서 공단 전산으로 소견서를 직접 전송합니다.
+
+### 4단계: 등급판정위원회 심의 및 장기요양인정서 수령 (신청 후 약 30일 이내)
+1. 방문조사 점수와 의사소견서를 종합해 시·군·구 등급판정위원회에서 **신청일로부터 30일 이내**에 등급을 판정합니다.
+2. 우편 또는 전자문서로 **장기요양인정서**와 **개인별장기요양이용계획서**를 수령한 뒤, 원하는 방문요양센터·주야간보호센터 또는 요양시설과 계약해 급여 서비스를 시작합니다.
+
+---
+
+## 3. 노인장기요양보험 등급별 인정점수·이용 가능 급여 및 본인부담률 비교표
+
+| 등급 구분 | 장기요양인정점수 기준 | 신체·인지 상태 요약 | 이용 가능 주요 급여 | 본인부담률 (일반 / 감경 / 기초수급) |
+| --- | --- | --- | --- | --- |
+| **1등급** | **95점 이상** | 일상생활에서 **전적으로** 다른 사람의 도움이 필요한 최중증 상태 | **시설급여(요양원)** 또는 **재가급여** 선택 | • 재가: **15%** (감경 6·9% / 기초 0%)<br>• 시설: **20%** (감경 8·12% / 기초 0%) |
+| **2등급** | **75점 이상 ~ 95점 미만** | 일상생활에서 **상당 부분** 다른 사람의 도움이 필요한 중증 상태 | **시설급여(요양원)** 또는 **재가급여** 선택 | 재가 **15%** / 시설 **20%** |
+| **3등급** | **60점 이상 ~ 75점 미만** | 일상생활에서 **부분적으로** 다른 사람의 도움이 필요한 상태 | **재가급여 원칙** *(단, 치매·주거환경 등 요건 충족 시 시설급여 변경 승인 가능)* | 재가 **15%** (시설 승인 시 **20%**) |
+| **4등급** | **51점 이상 ~ 60점 미만** | 심신의 기능 상태 장애로 일상생활에서 **일정 부분** 다른 사람의 도움이 필요한 상태 | **재가급여 원칙** (방문요양·방문목욕·주야간보호·단기보호 등) | 재가 **15%** (시설 승인 시 **20%**) |
+| **5등급 (치매 특별등급)** | **45점 이상 ~ 51점 미만** | **치매 환자**(노인장기요양보험법 시행령 제2조에 따른 치매 상병 필수) | 인지활동형 방문요양, 주야간보호(데이케어센터), 복지용구 | 재가 **15%** |
+| **인지지원등급** | **45점 미만** | **치매 환자**로서 신체 기능은 비교적 양호하나 인지 기능 저하로 돌봄이 필요한 분 | 주야간보호(데이케어센터) 및 복지용구 지원 | 재가 **15%** |
+
+---
+
+## 4. 자주 묻는 질문
+
+### Q1. 방문조사 때 부모님이 "나는 혼자서도 다 잘한다"고 하셔서 등급에서 탈락할까 걱정됩니다. 어떻게 해야 하나요?
+**A.** 가장 흔히 발생하는 등급 누락 원인입니다. 어르신들은 낯선 조사원 앞에서 자존심을 지키기 위해 평소 못 하시던 동작도 무리해서 하시거나 기억력이 좋은 척 답변하시는 경우가 많습니다. 따라서 **방문조사 당일에는 평소 어르신을 모시는 보호자가 반드시 동석**하시고, 어르신이 듣지 않는 현관 밖이나 별도 공간에서 조사원에게 **최근 낙상 이력, 약 복용 잊어버림, 밤낮 바뀜, 옷 갈아입기나 목욕 시 실제 도움 필요 정도**를 구체적으로 말씀드려야 합니다.
+
+### Q2. 전동침대나 보행차 같은 '복지용구'도 건강보험 지원이 되나요?
+**A.** 네, 1~5등급 및 인지지원등급 판정을 받으면 재가급여 월 한도액과는 별도로 **연간 160만 원 한도 내에서 본인부담금 15%(감경 대상자 6~9%, 기초수급자 무료)**만 내고 전동침대, 수동휠체어, 성인용보행기(실버카), 욕창예방매트리스, 안전손잡이, 미끄럼방지매트 등을 대여하거나 구입할 수 있습니다.
+
+### Q3. 요양병원과 요양원(노인요양시설)은 적용되는 보험이 다른가요?
+**A.** 완전히 다릅니다. **요양병원**은 의료법상 의료기관이므로 장기요양등급이 없어도 입원할 수 있으며 **국민건강보험(진료비 지원, 간병비는 비급여 본인 부담 원칙)**이 적용됩니다. 반면 **요양원(노인요양시설)**은 노인복지법상 요양시설이므로 반드시 **노인장기요양보험 시설급여 등급(1~2등급, 또는 시설급여 승인을 받은 3~5등급)**이 있어야 입소할 수 있으며, 요양보호사 돌봄 비용까지 포함된 급여 비용의 20%(식재료비·상급침실료 등 비급여 별도)만 본인이 부담합니다.
+
+---
+
+## 5. 참고 자료 및 공식 확인 사이트
+
+- [국민건강보험공단 노인장기요양보험 공식 누리집](https://www.longtermcare.or.kr/)
+- [보건복지부 노인장기요양보험 제도 및 급여 기준 안내](https://www.mohw.go.kr/)
+- [중앙치매센터 치매안심센터 및 돌봄 안내](https://www.nid.or.kr/)
+
+  </script>
+
+  <script>
+    const mdSource = document.getElementById("rawMarkdown").textContent.trim();
+    const articleEl = document.getElementById("postArticle");
+
+    // 1) marked.js가 한글 문장 내 범위 물결표(예: 60~70% ... 3.3~5.5%)를 취소선(<del>)으로 오인하는 버그 완벽 차단
+    // 2) CommonMark에서 **괄호)**조사, **[대괄호]**조사, *"따옴표"*조사 형태일 때 별표가 남는 버그 완벽 보정
+    function parseMarkdownSafe(md) {
+      let html = marked.parse(md);
+      html = html
+        .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+        .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+      return html;
+    }
+
+    articleEl.innerHTML = parseMarkdownSafe(mdSource);
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => showToast("🏷️ 워드프레스 SEO 슬러그 및 메타 설명이 복사되었습니다!"));
+    }
+
+    function convertMarkdownTablesToReadableList(mdText) {
+      const lines = mdText.split("\n");
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.startsWith("|") && line.endsWith("|") && i + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[i + 1].trim())) {
+          const headers = line.slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+          i += 2;
+          while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+            const cells = lines[i].trim().slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+            const rowTitle = cells[0] || "항목";
+            out.push(`■ [${rowTitle}]`);
+            for (let c = 1; c < headers.length; c++) {
+              out.push(`  • ${headers[c] || "항목"}: ${cells[c] || "-"}`);
+            }
+            out.push("");
+            i++;
+          }
+        } else {
+          out.push(lines[i]);
+          i++;
+        }
+      }
+      return out.join("\n");
+    }
+
+    function getCleanPlainText() {
+      return convertMarkdownTablesToReadableList(mdSource)
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/^>\s+/gm, '')
+        .replace(/^---\s*$/gm, '')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    }
+
+    function normalizeTableForWordPress(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 20px 0 24px; border: 1px solid #d1d5db; font-size: 14.5px; line-height: 1.6;");
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "26%", "26%", "26%"];
+        else if (colCount > 0) widths = Array(colCount).fill(Math.floor(100 / colCount) + "%");
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeader = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          const cleanHtml = cell.innerHTML.replace(/[]\s*/g, "").trim();
+          if (isHeader) {
+            td.setAttribute("style", `${wStyle}background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = `<strong>${cleanHtml}</strong>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = (cIdx === 0) ? "font-weight: bold; color: #111827; " : "color: #374151; ";
+            td.setAttribute("style", `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #d1d5db; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = (cIdx === 0 && !cleanHtml.includes("<strong")) ? `<strong>${cleanHtml}</strong>` : cleanHtml;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    // 워드프레스 구텐베르크 에디터 붙여넣기 최적화:
+    // 1) 최상단 중복 제목(H1) 제거 (제목 입력란에 별도 입력)
+    // 2) H2가 워드프레스 기본 테마에서 40px 초대형 글씨로 나오는 문제를 해결하기 위해
+    //    네이버·티스토리와 동일한 크기(약 20px, H3 레벨 + <strong> + 파란색 포인트 바 ▍)로 변환
+    // 3) 기존 H3(1단계, 2단계 등)는 17px 굵은 문단(▪ 1단계: ...)으로 변환하여 위계 질서 확립
+    // 4) <blockquote>(Key Takeaways)가 테두리 없는 일반 글씨로 풀리는 문제를 해결하기 위해 1x1 요약 박스 테이블로 변환
+    // 5) 검은색 실선(<hr>)을 깔끔한 문단 여백으로 대체
+    function getWordPressOptimizedHtml(forCustomHtmlBlock = false) {
+      const clone = articleEl.cloneNode(true);
+
+      // 1. 본문 최상단 중복 H1 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 2. 검은색 가로줄(<hr>) 제거
+      clone.querySelectorAll("hr").forEach(el => el.remove());
+
+      // 3. 본문 내 일반 표(Table) 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        el.replaceWith(normalizeTableForWordPress(el));
+      });
+
+      // 4. <blockquote>(핵심 요약)를 테두리가 유지되는 1x1 요약 박스 테이블로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 14px 0 26px; border: 1px solid #bae6fd; background-color: #f0f7fb;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #bae6fd; border-left: 5px solid #0073aa; background-color: #f0f7fb; padding: 16px 20px; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;">${innerHtml}</td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // 5. 기존 H3, H4(1단계, 2단계, Q1 등)를 먼저 17px 굵은 서브헤딩 문단으로 변환 (H2 -> H3 변환과 충돌 방지)
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        const pSub = document.createElement("p");
+        pSub.setAttribute("style", "font-size: 17px; font-weight: bold; color: #1e293b; margin: 22px 0 10px 0; line-height: 1.5; word-break: keep-all;");
+        const cleanTxt = el.innerHTML.trim();
+        const prefix = (cleanTxt.startsWith("▪") || cleanTxt.startsWith("①") || cleanTxt.startsWith("②") || cleanTxt.startsWith("③")) ? "" : "▪ ";
+        pSub.innerHTML = `<strong><span style="color: #0073aa;">${prefix}</span>${cleanTxt}</strong>`;
+        el.replaceWith(pSub);
+      });
+
+      // 6. H2 중간제목(1. ..., 2. ..., 3. ...)을 워드프레스에서 과도하게 커지지 않는 적정 크기(20px, H3 + <strong>)로 변환
+      clone.querySelectorAll("h2").forEach(el => {
+        if (forCustomHtmlBlock) {
+          el.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 32px 0 14px 0; padding-left: 12px; border-left: 4px solid #0073aa; line-height: 1.45; word-break: keep-all;");
+        } else {
+          const h3 = document.createElement("h3");
+          h3.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 30px 0 14px 0; line-height: 1.45; word-break: keep-all;");
+          h3.innerHTML = `<strong><span style="color: #0073aa; font-weight: 900; margin-right: 6px;">▍</span>${el.innerHTML}</strong>`;
+          el.replaceWith(h3);
+        }
+      });
+
+      // 7. 문단 및 목록 스타일 정리
+      clone.querySelectorAll("p").forEach(el => {
+        if (!el.getAttribute("style")) {
+          el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin: 0 0 16px 0; word-break: keep-all;");
+        }
+      });
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 12px 0 20px 22px; color: #374151;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.8; margin-bottom: 8px; color: #374151; word-break: keep-all;"));
+      clone.querySelectorAll("a").forEach(el => el.setAttribute("style", "color: #0073aa; font-weight: bold; text-decoration: underline;"));
+
+      return clone.innerHTML;
+    }
+
+    async function copyWpRichHtml(htmlContent, plainText) {
+      let copied = false;
+      try {
+        const tempDiv = document.createElement("div");
+        tempDiv.contentEditable = "true";
+        tempDiv.style.position = "fixed";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.top = "0";
+        tempDiv.style.opacity = "0";
+        tempDiv.style.backgroundColor = "#ffffff";
+        tempDiv.style.color = "#1f2937";
+        tempDiv.innerHTML = htmlContent;
+        document.body.appendChild(tempDiv);
+
+        const range = document.createRange();
+        range.selectNodeContents(tempDiv);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copied = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      } catch (e) {}
+
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          copied = true;
+        } catch (e) {}
+      }
+
+      if (!copied && navigator.clipboard) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      return copied;
+    }
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 워드프레스 제목 입력란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyWpBtn").addEventListener("click", async () => {
+      const htmlContent = getWordPressOptimizedHtml(false);
+      const plainText = getCleanPlainText();
+      await copyWpRichHtml(htmlContent, plainText);
+      showToast("🔵 워드프레스 구텐베르크 서식(중간제목 크기 축소·요약박스·취소선 오류 제거)이 복사되었습니다!");
+    });
+
+    document.getElementById("copyWpHtmlCodeBtn").addEventListener("click", async () => {
+      const htmlContent = `<div class="wp-custom-article" style="font-family: Pretendard, -apple-system, sans-serif; color: #1f2937; line-height: 1.8;">\n` + getWordPressOptimizedHtml(true) + `\n</div>`;
+      await navigator.clipboard.writeText(htmlContent);
+      showToast("💻 구텐베르크 '사용자 정의 HTML' 블록용 코드가 복사되었습니다! (/html 입력 후 붙여넣기)");
+    });
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(getCleanPlainText()).then(() => showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!"));
+    });
+
+    document.getElementById("copyMdBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(mdSource).then(() => showToast("📝 마크다운 원문이 복사되었습니다!"));
+    });
+  </script>
+</body>
+</html>
