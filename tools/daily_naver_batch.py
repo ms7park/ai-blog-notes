@@ -107,6 +107,7 @@ BLOG_THEMES = {
         "keywords": [
             "은퇴", "퇴직", "정년", "명퇴", "인생2막", "5060", "신중년", "시니어", "노후",
             "일자리", "재취업", "알바", "공공근로", "사회공헌", "노인일자리", "시니어클럽",
+            "부업", "블로그", "온라인", "지식창업", "수익화", "자소서", "보고서", "생산성",
             "택시", "개인택시", "운전", "모빌리티", "화물", "배달",
             "자격증", "국가자격증", "조경", "손해평가사", "사회복지사", "경비지도사", "주택관리사",
             "창업", "소자본", "무인매장", "귀농", "귀촌", "전원생활",
@@ -119,6 +120,22 @@ BLOG_THEMES = {
         "p2_desc": "신중년 경력형 일자리, 노인일자리 지원사업, 지자체 시니어클럽 등 은퇴자를 위해 마련된 공공 복지 인프라를 잘 활용하면 안정적인 활동 기회를 얻을 수 있습니다.",
         "p3_title": "디지털 역량 강화와 평생 학습으로 시대에 발맞추기",
         "p3_desc": "스마트폰과 AI 도구를 조금만 익혀두면 일상생활은 물론 새로운 재취업이나 1인 미디어 창작 활동에서도 남들보다 한발 앞서나갈 수 있습니다."
+    },
+    "smart_tech_product": {
+        "name": "스마트 라이프 & 제품·자동차",
+        "category": "IT / 테크 / 자동차 & 스마트 소비",
+        "keywords": [
+            "노트북", "태블릿", "아이패드", "갤럭시탭", "가전", "로봇청소기", "스마트워치", "워치", "이어폰",
+            "자동차", "전기차", "하이브리드", "연비", "유지비", "보조금", "중고차", "신차",
+            "절약", "생활비", "가성비", "소비", "알뜰폰", "요금제", "관리비", "캐시백", "할인", "쿠폰"
+        ],
+        "lead": "스마트한 정보력 하나가 한 달 생활비를 수십만 원 아껴주고 일상의 편의성을 10배 높여줍니다. 가성비 제품 비교와 유지비 절약은 현명한 자산 관리의 첫걸음입니다.",
+        "p1_title": "스펙과 가격 거품을 걷어내는 가성비 비교의 원칙",
+        "p1_desc": "화려한 마케팅이나 브랜드 이름값 대신 실제 나에게 꼭 필요한 핵심 기능과 실사용 만족도, 사후 관리(A/S)를 꼼꼼히 따져보고 합리적인 선택을 해야 합니다.",
+        "p2_title": "연간 고정 지출을 획기적으로 줄이는 스마트 소비 팁",
+        "p2_desc": "알뜰폰 요금제, 자동차 유지비 절약, 정부 에너지 캐시백 등 매달 자동으로 빠져나가는 고정 비용을 재점검하여 숨은 새는 돈을 완벽하게 틀어막아야 합니다.",
+        "p3_title": "신기술을 두려워하지 않고 생활에 똑똑하게 접목하기",
+        "p3_desc": "새로운 디지털 기기나 전기차, 스마트 가전의 편리한 기능들을 적극적으로 배우고 일상에 적용하면 삶의 질이 눈에 띄게 풍요로워집니다."
     }
 }
 
@@ -1154,6 +1171,13 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
                 return f"은퇴 후 평생 쓸 수 있는 '{kw}' 유망 자격증 3선! 취득 전략과 실전 활용처"
             else:
                 return f"경륜과 지혜로 꽃피우는 인생 2막! '{kw}' 핵심 준비 전략과 체크포인트 3가지"
+        elif theme_key == "smart_tech_product":
+            if any(w in kw for w in ["전기차", "하이브리드", "자동차", "연비", "유지비"]):
+                return f"유지비 확 줄이는 '{kw}' 실구매 비교! 20대부터 60대까지 꼭 알아야 할 3대 선택 기준"
+            elif any(w in kw for w in ["노트북", "태블릿", "스마트폰", "가전"]):
+                return f"가성비와 실용성 다 잡는 '{kw}' 구매 가이드! 가격 거품 빼고 고르는 3가지 비결"
+            else:
+                return f"한 달 생활비 30만원 아끼는 '{kw}' 실천법! 전 세대 필수 스마트 소비 꿀팁 3가지"
 
     return f"[보류] '{kw}' — 단기 이슈성 검색어 (시니어·은퇴 테마 외 키워드)"
 
@@ -2843,12 +2867,12 @@ def run_batch(target_date=None, force=False, naver_only=False):
 
     log(f"🚀 [배치 시작] 네이버 블로그 일별 자동화 배치 실행 (기준일: {today_str} {weekday_str}요일, force={force})")
 
-    # force 모드일 경우 당일자 기존 추가 포스팅 파일 정리 (새로운 트렌드 결과에 맞춰 정확히 재작성)
+    # force 모드일 경우 당일자 기존 포스팅 파일 정리 (새로운 트렌드 결과에 맞춰 정확히 재작성)
     ym = today_str[:7].replace("-", "")
     target_ym_dir = os.path.join(POSTS_DIR, ym)
     if force and os.path.exists(target_ym_dir):
         for f in os.listdir(target_ym_dir):
-            if (f.startswith(f"{today_str}-") or f.startswith(f"{today_str}.")) and (f.endswith(".md") or f.endswith(".html")):
+            if f.startswith(today_str) and (f.endswith(".md") or f.endswith(".html")):
                 try:
                     os.remove(os.path.join(target_ym_dir, f))
                 except OSError:
@@ -2860,26 +2884,23 @@ def run_batch(target_date=None, force=False, naver_only=False):
     trends = fetch_trending_keywords()
     log(f"📊 실시간 트렌드 {len(trends)}개 수집 완료")
 
-    # 2. 품미인생 5대 테마와 정확히 일치하고 사전 검증 원고(NAVER_TOPIC_ARTICLES)가 있으며 기작성 중복이 아닌 키워드 선별 (최대 2편)
+    # 2. 블로그 테마와 정확히 일치하고 기작성 중복이 아닌 키워드 전수 선별 (실시간 키워드 기준 주제 해당 글 모두 작성)
     selected_items = []
     for t in trends:
         theme_info = t.get("theme") or match_blog_theme(t["keyword"], t.get("news", ""))
         if not theme_info:
             continue
-        if not find_naver_topic_article(t["keyword"]):
-            continue
         kw_low = t["keyword"].strip().lower()
-        title_cand = t["recommended_title"]
+        title_cand = t.get("recommended_title") or generate_blog_title_for_trend(t["keyword"], t.get("news", ""), theme_info)
+        t["recommended_title"] = title_cand
         if title_cand in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
             continue
         selected_items.append((t, theme_info))
         existing_sigs["titles"].add(title_cand)
         existing_sigs["keywords"].add(kw_low)
-        if len(selected_items) >= 2:
-            break
 
-    # 3. 만약 실시간 트렌드 중 적합한 신규 테마 키워드가 없다면 검증된 상록수 풀(NAVER_CURATED_TOPICS)에서 1편 선택
-    if not selected_items:
+    # 3. 만약 실시간 트렌드에서 매칭된 글이 부족한 경우 상록수/10대 킬러 주제 풀에서 추가 선별
+    if len(selected_items) < 3:
         for cur in NAVER_CURATED_TOPICS:
             kw_low = cur["keyword"].strip().lower()
             theme_info = match_blog_theme(cur["keyword"], cur["news_title"])
@@ -2889,7 +2910,7 @@ def run_batch(target_date=None, force=False, naver_only=False):
             if rec_title in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
                 continue
             t_obj = {
-                "rank": 1,
+                "rank": len(selected_items) + 1,
                 "keyword": cur["keyword"],
                 "badge": cur["traffic"],
                 "news": cur["news_title"],
@@ -2899,7 +2920,8 @@ def run_batch(target_date=None, force=False, naver_only=False):
             selected_items.append((t_obj, theme_info))
             existing_sigs["titles"].add(rec_title)
             existing_sigs["keywords"].add(kw_low)
-            break
+            if len(selected_items) >= 5:
+                break
 
     created_count = 0
     for idx, (t_item, th_info) in enumerate(selected_items, 1):

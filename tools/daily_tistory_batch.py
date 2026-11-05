@@ -2538,7 +2538,7 @@ def create_tistory_post(post_id, date_str, weekday_str, trend_item, post_num=1, 
     m_sum = re.search(r">\s*\*\*📌 핵심 요약\*\*:\s*(.+)$", md_content, re.M)
     actual_sum = m_sum.group(1).strip() if m_sum else ""
 
-    if existing_sigs and is_duplicate_tistory_candidate(actual_title, actual_sum, trend_item["keyword"], existing_sigs):
+    if not force and existing_sigs and is_duplicate_tistory_candidate(actual_title, actual_sum, trend_item["keyword"], existing_sigs):
         log(f"⏭️ [중복 작성 제외] 이미 동일한 제목 또는 내용의 글이 존재하여 건너뜁니다: {actual_title}")
         return False
 
@@ -3512,6 +3512,16 @@ def run_tistory_batch(target_date=None, force=False):
 
     log(f"🚀 [티스토리 배치 시작] Google Trends 상승 검색어 기반 티스토리 글 생성 (기준일: {today_str} {weekday_str}요일, force={force})")
 
+    ym = today_str[:7].replace("-", "")
+    target_ym_dir = os.path.join(POSTS_DIR, ym)
+    if force and os.path.exists(target_ym_dir):
+        for f in os.listdir(target_ym_dir):
+            if f.startswith(today_str) and (f.endswith(".md") or f.endswith(".html")):
+                try:
+                    os.remove(os.path.join(target_ym_dir, f))
+                except OSError:
+                    pass
+
     # 기존 작성된 모든 티스토리 글의 제목·본문요약·키워드 서명 수집 (중복 작성 원천 차단)
     existing_sigs = get_existing_tistory_signatures(exclude_date=today_str if force else None)
 
@@ -3527,12 +3537,12 @@ def run_tistory_batch(target_date=None, force=False):
         )
     ]
 
-    # 만약 실시간 트렌드 10개 중 중복을 제외한 유효 주제가 없을 경우 상록수 미작성 주제 풀(TISTORY_EVERGREEN_POOL)에서 순차 선택
-    if not selected:
+    # 실시간 트렌드에서 매칭된 글이 부족할 경우 상록수 미작성 주제 풀(TISTORY_EVERGREEN_POOL)에서 추가 선택
+    if len(selected) < 2:
         for pool_item in TISTORY_EVERGREEN_POOL:
             if not is_duplicate_tistory_candidate(pool_item["final_title"], pool_item["core_summary"], pool_item["keyword"], existing_sigs):
                 fallback_item = {
-                    "rank": 1,
+                    "rank": len(selected) + 1,
                     "keyword": pool_item["keyword"],
                     "traffic": "상록수 추천",
                     "news_title": pool_item["search_question"],
@@ -3554,8 +3564,11 @@ def run_tistory_batch(target_date=None, force=False):
                         "custom_body_sections": pool_item["body_sections"]
                     }
                 }
-                selected = [fallback_item]
-                break
+                selected.append(fallback_item)
+                existing_sigs["titles"].add(pool_item["final_title"])
+                existing_sigs["keywords"].add(pool_item["keyword"].strip().lower())
+                if len(selected) >= 2:
+                    break
 
     # 점수순 정렬 (가장 높은 평가 점수를 받은 주제를 #1편 메인으로 발행)
     selected_sorted = sorted(selected, key=lambda x: x["eval"]["total_score"], reverse=True)
