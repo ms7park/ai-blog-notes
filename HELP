@@ -247,3 +247,18 @@
      * 20대~60대 5개 세대별 핵심 관심사 & 타깃 키워드 매트릭스
      * 10대 킬러 주제 TOP 10 표 및 3대 실전 원칙 카드
      * 지침서 라이브러리(`docs-grid`) 카드 추가
+
+== 2026.11.06 : 연령 초월 10대 킬러 주제 TOP 10 엔진 탑재 및 3대 플랫폼 배치 실행
+1. 3대 블로그 자동화 배치 엔진에 10대 킬러 주제 풀 추가:
+   - 네이버 블로그 (`tools/daily_naver_batch.py`):
+     * `NAVER_CURATED_TOPICS`에 10대 킬러 주제 TOP 10 전원 추가 (ChatGPT, 배당 ETF, 정부지원금, 병원비 환급, 블로그 부업, 청약 대출, 힐링 여행, 가성비 노트북, 생활비 절약, 전기차)
+     * `NAVER_TOPIC_ARTICLES`에 ChatGPT AI 활용법 및 배당 ETF 투자 전문 검증 원고 추가
+   - 티스토리 블로그 (`tools/daily_tistory_batch.py`):
+     * `TISTORY_EVERGREEN_POOL`에 `chatgpt_prompt_productivity_guide` 아이템 추가 (공식 출처 포함)
+   - 워드프레스 블로그 (`tools/daily_wordpress_batch.py`):
+     * `WP_ARTICLES`에 `seq: 17` (`chatgpt-prompt-productivity-guide`) 코너스톤 심층 원고 추가
+2. 2026-11-06 오늘자 3대 플랫폼 배치 전면 재실행 완료:
+   - 네이버 블로그 (#1편: `ChatGPT AI 활용법` · `blog/naver/posts/202611/2026-11-06.html`)
+   - 티스토리 블로그 (#1편: `ChatGPT AI 활용법` · `blog/tistory/posts/202611/2026-11-06.html`)
+   - 워드프레스 블로그 (#1편: `ChatGPT AI 활용법` · `blog/wordpress/posts/202611/2026-11-06.html`)
+   - 각 작업실 인덱스 및 루트 메인 포털(`index.html`) 최신화, Git 자동 커밋 및 원격 저장소 푸시 완료
