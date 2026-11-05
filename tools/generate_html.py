@@ -43,6 +43,15 @@ DOC_METADATA = [
         "desc": "연금/절세, 건강/액티브시니어, 재취업, 라이프스타일 고단가 키워드"
     },
     {
+        "id": "topic-expansion-roadmap",
+        "category": "01. 수익화 전략",
+        "category_icon": "🎯",
+        "title": "주제 확장 및 월별 로드맵 (20~60대)",
+        "file_path": "docs/01-strategy/03-topic-expansion-roadmap.md",
+        "url_path": "01-strategy/03-topic-expansion-roadmap.md",
+        "desc": "Smart Wealth Life 20~60대 전세대 10대 킬러 주제 및 월단위 4단계 확장 전략"
+    },
+    {
         "id": "platform-comparison",
         "category": "02. 플랫폼 비교",
         "category_icon": "🌐",

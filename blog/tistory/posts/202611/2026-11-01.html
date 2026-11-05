@@ -347,9 +347,6 @@
       <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·요약박스 서식 그대로 붙여넣기 됩니다">
         🟠 티스토리 에디터(기본모드) 서식 복사
       </button>
-      <button class="btn" id="copyTableOnlyBtn" style="border-color: #fdba74; background: #fff7ed; color: #c2410c;" title="본문 내 표(Table)만 티스토리 깨짐 방지 서식으로 따로 복사합니다">
-        📊 표(Table)만 깨짐 방지 복사
-      </button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 및 표 기호를 모두 정돈한 깨끗한 텍스트로 복사합니다">
         📄 순수 텍스트 복사 (**·표 기호 제거)
       </button>
@@ -785,19 +782,6 @@
       const plainText = getCleanPlainText();
       await copyRichHtmlToClipboard(htmlContent, plainText);
       showToast("🟠 티스토리 기본모드 서식(요약박스·표·소제목 완전 보정)이 복사되었습니다! 본문에 바로 붙여넣으세요.");
-    });
-
-    document.getElementById("copyTableOnlyBtn").addEventListener("click", async () => {
-      const firstTbl = articleEl.querySelector("table");
-      if (!firstTbl) {
-        showToast("이 글에는 표(Table)가 없습니다.");
-        return;
-      }
-      const normTbl = normalizeTableForTistory(firstTbl);
-      const htmlStr = normTbl.outerHTML + "<p><br></p>";
-      const listStr = convertTableElementToReadableText(firstTbl);
-      await copyRichHtmlToClipboard(htmlStr, listStr);
-      showToast("📊 표(Table)가 티스토리 깨짐 방지 서식으로 복사되었습니다! 에디터에 바로 Ctrl+V(Cmd+V) 하세요.");
     });
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", async () => {

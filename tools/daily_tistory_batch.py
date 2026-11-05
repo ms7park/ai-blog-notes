@@ -119,6 +119,74 @@ TISTORY_CATEGORIES = {
 # 중복 방지를 위한 티스토리 상록수(Evergreen) 미작성 주제 풀 (순차 선택용)
 TISTORY_EVERGREEN_POOL = [
     {
+        "topic_id": "chatgpt_prompt_productivity_guide",
+        "keyword": "ChatGPT AI 활용법",
+        "cat_key": "ai_it",
+        "final_title": "20대부터 60대까지 누구나 쉽게 쓰는 ChatGPT 실무 및 일상 활용법: 자소서·보고서·문서 요약 4단계 가이드",
+        "search_question": "ChatGPT 프롬프트 작성 공식(역할·맥락·조건)과 자소서·보고서 작성 및 할루시네이션(오류) 검증 방법은?",
+        "title_candidates": [
+            "20대부터 60대까지 누구나 쉽게 쓰는 ChatGPT 실무 및 일상 활용법: 자소서·보고서·문서 요약 4단계 가이드",
+            "ChatGPT 질문 잘하는 법: 역할·상황·조건 3대 공식과 무료 AI 도구 활용 노하우",
+            "초보자를 위한 ChatGPT 100% 활용법: 취업 자소서부터 직장인 보고서 요약까지"
+        ],
+        "scores": {"trend": 5, "intent": 5, "gap": 4, "capability": 5, "evergreen": 5},
+        "total_score": 96,
+        "core_summary": (
+            "ChatGPT를 제대로 활용하려면 단순 질문 대신 **'역할(Role) · 배경 상황(Context) · 출력 조건(Constraint)' 3대 공식**을 프롬프트에 명시해야 합니다. "
+            "20대 취업 자기소개서 초안 작성, 3040 직장인의 수십 장 PDF 핵심 요약 및 데이터 표 변환, 5060 세대의 여행 계획 수립까지 전 세대 생산성을 극대화할 수 있으며, 최신 통계나 법률 정보는 [공식 사이트] 교차 검증을 병행하는 것이 필수적입니다."
+        ),
+        "body_sections": """## 1. 누구나 쓰지만 결과는 천차만별, ChatGPT 질문법의 차이는 어디서 올까요?
+
+인공지능(AI)이 일상화되면서 ChatGPT는 대학생의 과제·자소서 작성부터 직장인의 기획서 검토, 시니어의 일상 문서 정리까지 전 세대의 필수 생산성 파트너로 자리 잡았습니다. 하지만 같은 도구를 쓰면서도 누군가는 *"원하는 답이 정확하게 나온다"*고 감탄하는 반면, 누군가는 *"두루뭉술하고 뻔한 말만 늘어놓는다"*며 실망하곤 합니다.
+
+그 차이는 질문의 기술, 즉 **'프롬프트(명령어) 설계'**에 있습니다. 사람에게 일을 맡길 때도 단순히 "보고서 써줘"라고 하는 것보다 "김 대리, 지난달 매출 데이터를 바탕으로 임원 보고용 1장 요약표를 만들어줘"라고 요청해야 원하는 결과물이 나오듯, AI에게도 명확한 가이드라인을 주어야 합니다. OpenAI 공식 가이드라인을 바탕으로 **프롬프트 3대 작성 원칙, 세대별 실전 활용법, 주의사항**을 체계적으로 정리해 드립니다.
+
+---
+
+## 2. ChatGPT에게 100점짜리 답변을 이끌어내는 4단계 실전 활용 순서
+
+### 1단계: 명확한 페르소나(역할)와 전문성 부여하기
+1. AI에게 단순 챗봇이 아닌 특정한 전문가 역할을 부여합니다.
+2. 예시: *"당신은 10년 차 IT 전문 헤드헌터이자 대기업 채용 전문 컨설턴트입니다."* 또는 *"당신은 20년 경력의 시니어 자산관리사이자 세무 전문가입니다."*
+
+### 2단계: 배경 정보(맥락)와 구체적인 원시 데이터 입력하기
+1. 작업에 필요한 기초 정보나 본인의 경험을 불렛포인트로 가감 없이 제공합니다.
+2. 예시: *"지원자는 경영학 전공자이며, 교내 창업 동아리에서 6개월간 스마트스토어를 운영해 매출 300%를 달성한 경험이 있습니다."*
+
+### 3단계: 출력 형식과 세부 제약 조건(길이·어조·서식) 지정하기
+1. 원하는 서식(표, 불렛포인트, 번호 매기기)과 분량, 어조를 못 박아 둡니다.
+2. 예시: *"결과물은 두괄식 요약 3줄 + 세부 행동 전략 3단계 + 면접관 예상 질문 2가지 순서로 작성하고, 비유적 표현은 빼고 객관적 사실 위주로 800자 이내로 구성해 주세요."*
+
+### 4단계: 교차 검증 및 사실관계(팩트체크) 확인하기
+1. 최신 법령, 연금 수령액, 공공 지원금 등 숫자나 사실관계는 반드시 공공기관 공식 누리집을 통해 재확인합니다.
+
+---
+
+## 3. 세대별 ChatGPT 실전 프롬프트 비교표
+
+아래 표는 20대부터 60대까지 각 세대의 핵심 관심사에 맞춘 실전 프롬프트 구성 비교표입니다.
+
+| 세대 구분 | 주요 목적 | 추천 프롬프트 핵심 구성 | 기대 산출물 |
+| --- | --- | --- | --- |
+| **20대 (취준생·사회초년생)** | 취업 자기소개서 & 면접 대비 | 경험 데이터 + 지원 직무 + STAR 기법 적용 요청 | 직무 맞춤형 자소서 초안 및 면접 압박 질문 3선 |
+| **30대 (영패밀리·직장인)** | 긴 보고서 요약 & 정부 혜택 | 원문 텍스트 + 임원 보고용 개조식 + 비교표 요청 | 3줄 핵심 요약 및 의사결정 비교표 |
+| **40대 (관리자·자산관리)** | 데이터 분석 & 투자 포트폴리오 | 재무 지표 + 분산 투자 원칙 + 리스크 점검 | 자산 배분 시뮬레이션 및 리밸런싱 체크리스트 |
+| **50·60대 (신중년·시니어)** | 일상 계획 & 스마트폰 비서 | 여행 희망지 + 건강 상태 + 여유로운 동선 요청 | 1일 2~3코스 힐링 일정표 및 예상 경비 예산서 |
+
+---
+
+## 4. ChatGPT 활용 시 절대 놓쳐서는 안 될 3가지 주의점
+
+### ① 최신 정보 및 수치 오류(할루시네이션) 주의
+AI는 언어를 그럴듯하게 조합하는 모델이므로, 존재하지 않는 법 조항이나 판례를 진짜처럼 만들어낼 수 있습니다. 법률, 세금, 의학 관련 정보는 반드시 공인된 기관의 공식 자료와 대조해야 합니다.
+
+### ② 개인정보 및 기업 기밀 입력 금지
+주민등록번호, 계좌번호, 비밀번호, 사내 대외비 문서는 AI 학습에 사용될 수 있으므로 절대 입력하지 말고 마스킹(블라인드) 처리 후 활용해야 합니다.
+
+### ③ AI 답변을 그대로 복사하지 말고 나의 경험 20% 덧붙이기
+검색엔진(네이버, 구글)은 100% 기계가 생성한 글을 저품질 콘텐츠로 분류할 수 있습니다. AI가 뽑아준 초안 위에 나의 실제 생각, 생생한 후기, 진솔한 경험담을 20% 이상 보완하여 나만의 차별화된 가치를 담아내시기 바랍니다."""
+    },
+    {
         "topic_id": "basic_pension_eligibility",
         "keyword": "기초연금 수급자격",
         "cat_key": "pension_finance",
@@ -2065,9 +2133,6 @@ def build_tistory_post_html(post_id, date_str, weekday_str, trend_item, md_conte
       <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·요약박스 서식 그대로 붙여넣기 됩니다">
         🟠 티스토리 에디터(기본모드) 서식 복사
       </button>
-      <button class="btn" id="copyTableOnlyBtn" style="border-color: #fdba74; background: #fff7ed; color: #c2410c;" title="본문 내 표(Table)만 티스토리 깨짐 방지 서식으로 따로 복사합니다">
-        📊 표(Table)만 깨짐 방지 복사
-      </button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 및 표 기호를 모두 정돈한 깨끗한 텍스트로 복사합니다">
         📄 순수 텍스트 복사 (**·표 기호 제거)
       </button>
@@ -2434,19 +2499,6 @@ def build_tistory_post_html(post_id, date_str, weekday_str, trend_item, md_conte
       const plainText = getCleanPlainText();
       await copyRichHtmlToClipboard(htmlContent, plainText);
       showToast("🟠 티스토리 기본모드 서식(요약박스·표·소제목 완전 보정)이 복사되었습니다! 본문에 바로 붙여넣으세요.");
-    }});
-
-    document.getElementById("copyTableOnlyBtn").addEventListener("click", async () => {{
-      const firstTbl = articleEl.querySelector("table");
-      if (!firstTbl) {{
-        showToast("이 글에는 표(Table)가 없습니다.");
-        return;
-      }}
-      const normTbl = normalizeTableForTistory(firstTbl);
-      const htmlStr = normTbl.outerHTML + "<p><br></p>";
-      const listStr = convertTableElementToReadableText(firstTbl);
-      await copyRichHtmlToClipboard(htmlStr, listStr);
-      showToast("📊 표(Table)가 티스토리 깨짐 방지 서식으로 복사되었습니다! 에디터에 바로 Ctrl+V(Cmd+V) 하세요.");
     }});
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", async () => {{
@@ -3195,8 +3247,12 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
           <p style="font-size: 13px; color: var(--text-sub); line-height: 1.55; margin-bottom: 14px;">
             작업실에서 완성된 티스토리 에디터 서식을 복사한 뒤, 실제 운영 중인 내 티스토리 블로그에 바로 새 글로 발행하세요.
           </p>
-          <a href="https://www.tistory.com/" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 10px; font-weight: 700; font-size: 13px;">
-            <span>🌐 내 티스토리 바로가기 (tistory.com)</span>
+          <a href="https://essay30497.tistory.com/" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 10px; font-weight: 700; font-size: 13px;">
+            <span>🌐 내 티스토리 바로가기 (essay30497)</span>
+            <span style="font-size: 12px;">↗</span>
+          </a>
+          <a href="https://essay30497.tistory.com/manage/statistics/blog" target="_blank" rel="noopener noreferrer" class="action-btn" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 9px; font-weight: 700; font-size: 13px; margin-top: 8px; border: 1px solid var(--tistory); background: #fff7ed; color: var(--tistory);">
+            <span>📊 티스토리 방문 통계 바로가기</span>
             <span style="font-size: 12px;">↗</span>
           </a>
         </section>

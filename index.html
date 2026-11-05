@@ -361,7 +361,7 @@
 
     .docs-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
       margin-top: 20px;
     }
@@ -504,6 +504,201 @@
       border-color: var(--primary);
       color: var(--primary);
     }
+
+    /* Roadmap & Topic Expansion Section */
+    .roadmap-section {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 30px;
+      margin-bottom: 36px;
+    }
+
+    .roadmap-banner {
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 26px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .roadmap-banner-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #1e3a8a;
+      margin-bottom: 6px;
+    }
+
+    .roadmap-banner-desc {
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    /* Monthly Timeline Grid */
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 992px) {
+      .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 580px) {
+      .timeline-grid { grid-template-columns: 1fr; }
+    }
+
+    .timeline-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .timeline-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+    .timeline-card.current {
+      border: 2px solid var(--primary);
+      background: #f8faff;
+    }
+
+    .timeline-step-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+
+    .timeline-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .timeline-desc {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: auto;
+    }
+    .timeline-tag {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    /* Age Grid */
+    .age-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 1050px) {
+      .age-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 700px) {
+      .age-grid { grid-template-columns: 1fr; }
+    }
+
+    .age-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.15s;
+    }
+    .age-card:hover {
+      border-color: var(--primary);
+      background: #fafcff;
+    }
+
+    .age-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 8px;
+    }
+    .age-badge {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .age-target {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .age-keywords {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin: 0;
+      padding-left: 14px;
+    }
+    .age-keywords li {
+      margin-bottom: 4px;
+    }
+
+    /* TOP 10 Table */
+    .top10-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .top10-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    .top10-table th {
+      background: #f8fafc;
+      padding: 12px 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .top10-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-sub);
+    }
+    .top10-table tr:last-child td {
+      border-bottom: none;
+    }
+    .top10-table tr:hover {
+      background: #fdfefe;
+    }
   </style>
 </head>
 <body>
@@ -516,6 +711,7 @@
         <div class="brand-title">AI Blog Notes</div>
       </div>
       <div class="header-links">
+        <a href="#topic-roadmap" class="header-link" style="background: #eef2ff; color: #4338ca; border-color: #c7d2fe; font-weight: 700;">🎯 주제 확장 로드맵</a>
         <a href="docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
         <a href="blog/naver/index.html" class="header-link header-link-naver">🟢 네이버 블로그 포털</a>
         <a href="blog/tistory/index.html" class="header-link" style="background: var(--tistory-light); color: var(--tistory); border-color: #fed7aa;">🟠 티스토리 포털</a>
@@ -662,7 +858,323 @@
 
     </div>
 
-    <!-- Section 2: Recent Posts Hub -->
+    <!-- Section 2: Smart Wealth Life Topic Roadmap -->
+    <section class="roadmap-section" id="topic-roadmap">
+      <div class="section-header" style="margin-bottom: 16px;">
+        <div class="section-title">
+          🎯 Smart Wealth Life : 블로그 주제 체계 & 월별 단계적 확장 로드맵
+        </div>
+        <a href="docs/index.html#topic-expansion-roadmap" style="font-size: 13px; color: var(--primary); text-decoration: none; font-weight: 700;">
+          전략 지침서 전문 보기 →
+        </a>
+      </div>
+      <p style="font-size: 13.5px; color: var(--text-sub); line-height: 1.6; margin-bottom: 22px;">
+        현재 50~60대 중심의 '은퇴·노후 준비' 코어에서 출발하여, 20대부터 60대까지 전 세대가 매일 검색하는 <strong>"돈을 벌고, 아끼고, 투자하고, 더 나은 삶을 만드는 정보"</strong>로 블로그 주제를 단계별로 확장합니다.
+      </p>
+
+      <!-- Current vs Future Banner -->
+      <div class="roadmap-banner">
+        <div style="flex: 1; min-width: 280px;">
+          <span style="background: #2563eb; color: #fff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">CORE STRATEGY</span>
+          <div class="roadmap-banner-title" style="margin-top: 8px;">현재 기준 (코어) ➔ 월단위 전 연령대 확장 전략</div>
+          <div class="roadmap-banner-desc">
+            단일 주제에 갇히지 않고 연령별 검색 트렌드를 흡수하되, <strong>'돈과 생활에 도움이 되는 지혜'</strong>라는 단일 브랜드 철학으로 묶어 충성 독자층과 고단가 광고 수익을 동시에 확보합니다.
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <div style="background: #fff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 16px; min-width: 190px;">
+            <div style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">현재 글 작성 기준</div>
+            <div style="font-size: 14px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">50~60대 노후·은퇴·연금</div>
+            <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">C-Rank 및 E-E-A-T 신뢰 구축</div>
+          </div>
+          <div style="background: #fff; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; min-width: 190px;">
+            <div style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">향후 확장 로드맵</div>
+            <div style="font-size: 14px; font-weight: 800; color: #15803d; margin-top: 4px;">20~60대 Smart Wealth Life</div>
+            <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">AI, 재테크, 지원금, 부업, 건강</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 1: Monthly Timeline (4 Steps) -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div style="font-size: 15px; font-weight: 800; color: var(--text-main);">
+          🗓️ 월단위(단계별) 주제 확장 타임라인
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted);">월별로 카테고리를 확장하여 C-Rank 전문성을 유지합니다</span>
+      </div>
+
+      <div class="timeline-grid">
+        <!-- Step 0: Current -->
+        <div class="timeline-card current">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="timeline-step-badge" style="background: #dbeafe; color: #1e40af;">현재 단계 (운영 중)</span>
+            <span style="font-size: 11px; font-weight: 800; color: #2563eb;">CORE</span>
+          </div>
+          <div class="timeline-title">5060 은퇴 노후 연금 & 디지털 기초</div>
+          <div class="timeline-desc">
+            국민연금 수령액, 퇴직금 IRP 절세, 건강보험료 피부양자 자격 유지, 파크골프/골프 취미 및 시니어 생활정보를 집중 구축하여 블로그의 권위성(Authority)을 확립합니다.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">국민연금</span>
+            <span class="timeline-tag">퇴직소득세</span>
+            <span class="timeline-tag">건보료 절세</span>
+            <span class="timeline-tag">파크골프</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Month 1 -->
+        <div class="timeline-card">
+          <span class="timeline-step-badge" style="background: #e0e7ff; color: #4338ca;">1개월차 (확장 시작)</span>
+          <div class="timeline-title">AI 실용도구 & 전세대 정부지원금</div>
+          <div class="timeline-desc">
+            2030 세대의 검색 유입을 견인하는 ChatGPT/AI 실용 활용법(자소서, 업무 자동화)과 전 연령이 필수 검색하는 청년/육아/노인 정부지원금을 접목하여 트래픽을 2~3배 폭증시킵니다.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">ChatGPT 자소서</span>
+            <span class="timeline-tag">청년도약계좌</span>
+            <span class="timeline-tag">부모급여</span>
+            <span class="timeline-tag">근로장려금</span>
+          </div>
+        </div>
+
+        <!-- Step 2: Month 2 -->
+        <div class="timeline-card">
+          <span class="timeline-step-badge" style="background: #fef3c7; color: #92400e;">2개월차 (수익 단가 고도화)</span>
+          <div class="timeline-title">3040 맞춤형 재테크 & 스마트 소비</div>
+          <div class="timeline-desc">
+            광고 단가가 가장 높은 배당 ETF, ISA 절세 계좌, 청약 가점 및 주택 대출을 다루고, 가성비 IT 기기·전기차/하이브리드 유지비 비교로 구매 전환(제휴마케팅)을 유도합니다.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">미국배당주 ETF</span>
+            <span class="timeline-tag">청약·주담대</span>
+            <span class="timeline-tag">가성비 노트북</span>
+            <span class="timeline-tag">전기차 유지비</span>
+          </div>
+        </div>
+
+        <!-- Step 3: Month 3~4 -->
+        <div class="timeline-card">
+          <span class="timeline-step-badge" style="background: #dcfce7; color: #166534;">3~4개월차 (종합 완성)</span>
+          <div class="timeline-title">온라인 부업 & 헬스케어 라이프 포털</div>
+          <div class="timeline-desc">
+            AI 기반 블로그 수익화, 무자본 지식창업과 함께 건강검진·실손보험 리모델링, 병원비 환급(본인부담상한제) 및 국내 힐링 여행까지 전 세대 대표 포털로 완성합니다.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">AI 부업</span>
+            <span class="timeline-tag">보험 리모델링</span>
+            <span class="timeline-tag">병원비 환급</span>
+            <span class="timeline-tag">힐링 여행</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 2: Age Demographics Matrix (20s ~ 60s) -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div style="font-size: 15px; font-weight: 800; color: var(--text-main);">
+          👥 20대~60대 세대별 핵심 관심사 & 타깃 키워드 매트릭스
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted);">세대별 절박한 질문을 해결하는 실전 포스팅 소재</span>
+      </div>
+
+      <div class="age-grid">
+        <!-- 20s -->
+        <div class="age-card">
+          <div class="age-header">
+            <span class="age-badge">20대 (사회초년생)</span>
+            <span class="age-target">검색 유입형</span>
+          </div>
+          <div style="font-size: 12.5px; font-weight: 750; color: var(--text-main); margin-bottom: 6px;">취업 · AI · 종잣돈 모으기</div>
+          <ul class="age-keywords">
+            <li>ChatGPT 취업 자소서 작성법</li>
+            <li>월급 300만원 통장 쪼개기</li>
+            <li>청년 월세 및 주거 지원금</li>
+            <li>AI로 돈 버는 부업 아이디어</li>
+            <li>가성비 노트북·요금제 비교</li>
+          </ul>
+        </div>
+
+        <!-- 30s -->
+        <div class="age-card">
+          <div class="age-header">
+            <span class="age-badge" style="color: #0284c7;">30대 (영패밀리)</span>
+            <span class="age-target">광고 수익형</span>
+          </div>
+          <div style="font-size: 12.5px; font-weight: 750; color: var(--text-main); margin-bottom: 6px;">내 집 마련 · 육아 · 재테크</div>
+          <ul class="age-keywords">
+            <li>신혼부부 주택대출 & 청약 가점</li>
+            <li>맞벌이 부부 절세 및 돈 관리</li>
+            <li>부모급여·아동수당 정부 혜택</li>
+            <li>미국 배당 ETF & ISA 투자</li>
+            <li>패밀리카 구매·유지비 비교</li>
+          </ul>
+        </div>
+
+        <!-- 40s -->
+        <div class="age-card">
+          <div class="age-header">
+            <span class="age-badge" style="color: #4f46e5;">40대 (핵심 가장)</span>
+            <span class="age-target">핵심 타깃형</span>
+          </div>
+          <div style="font-size: 12.5px; font-weight: 750; color: var(--text-main); margin-bottom: 6px;">자산 증식 · 교육비 · 건강</div>
+          <ul class="age-keywords">
+            <li>40대 순자산 평균과 자산 배분</li>
+            <li>자녀 대학 등록금 복리 마련</li>
+            <li>대출 상환 vs 투자 손익 비교</li>
+            <li>건강검진 & 실손보험 리모델링</li>
+            <li>직장인 AI 업무 생산성 향상</li>
+          </ul>
+        </div>
+
+        <!-- 50s -->
+        <div class="age-card" style="border-color: #cbd5e1; background: #fafafa;">
+          <div class="age-header">
+            <span class="age-badge" style="color: #059669;">50대 (신중년)</span>
+            <span class="age-target">현재 코어 (수익)</span>
+          </div>
+          <div style="font-size: 12.5px; font-weight: 750; color: var(--text-main); margin-bottom: 6px;">퇴직 준비 · 연금 · 제2직업</div>
+          <ul class="age-keywords">
+            <li>퇴직금 IRP 운용 및 세액공제</li>
+            <li>국민연금 조기 vs 연기 수령액</li>
+            <li>주택연금 월지급금 & 건보료</li>
+            <li>은퇴 후 유망 자격증 & 재취업</li>
+            <li>무자본 블로그 지식창업 파이프라인</li>
+          </ul>
+        </div>
+
+        <!-- 60s+ -->
+        <div class="age-card" style="border-color: #cbd5e1; background: #fafafa;">
+          <div class="age-header">
+            <span class="age-badge" style="color: #d97706;">60대+ (시니어)</span>
+            <span class="age-target">현재 코어 (충성)</span>
+          </div>
+          <div style="font-size: 12.5px; font-weight: 750; color: var(--text-main); margin-bottom: 6px;">건강 수명 · 여행 · 복지 절약</div>
+          <ul class="age-keywords">
+            <li>기초연금 수급자격 모의계산</li>
+            <li>노인 일자리 신청 및 정부 지원</li>
+            <li>병원비 환급금 (본인부담상한제)</li>
+            <li>국내 기차여행 & 제주 한달살기</li>
+            <li>파크골프 가이드 & 스마트폰 사용법</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Part 3: TOP 10 Killer Topics Table -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div style="font-size: 15px; font-weight: 800; color: var(--text-main);">
+          🏆 연령대를 초월하는 10대 킬러 주제 TOP 10
+        </div>
+        <span style="font-size: 12px; color: var(--text-muted);">전 연령층 검색 수요와 높은 광고 단가를 겸비한 황금 분야</span>
+      </div>
+
+      <div class="top10-table-wrap">
+        <table class="top10-table">
+          <thead>
+            <tr>
+              <th style="width: 50px; text-align: center;">순위</th>
+              <th style="width: 170px;">주제 분야</th>
+              <th style="width: 110px;">주요 독자</th>
+              <th style="width: 100px;">수익화 잠재력</th>
+              <th>대표 추천 포스팅 및 검색 키워드 예시</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: 800; color: #2563eb;">1</td>
+              <td><strong>🤖 AI 활용법 & ChatGPT</strong></td>
+              <td>20~60대</td>
+              <td><span style="color: #15803d; font-weight: 800;">최상 (높음)</span></td>
+              <td>ChatGPT로 자소서·이메일 작성하기, 일상 무료 AI 도구 5선, AI 검색 스마트블록 공략</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800; color: #2563eb;">2</td>
+              <td><strong>📈 재테크 · ETF · 주식</strong></td>
+              <td>20~60대</td>
+              <td><span style="color: #15803d; font-weight: 800;">최상 (고단가)</span></td>
+              <td>미국 배당 다우존스(SCHD) 월배당 계산, ISA 계좌 비과세 혜택, 연금저축펀드 안전 운용</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800; color: #2563eb;">3</td>
+              <td><strong>🏛️ 정부지원금 · 정책 혜택</strong></td>
+              <td>20~60대</td>
+              <td><span style="color: #15803d; font-weight: 800;">최상 (대량유입)</span></td>
+              <td>청년도약계좌 vs 적금, 근로장려금 지급일 및 신청 조건, 기초연금 감액 피하는 법</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800; color: #2563eb;">4</td>
+              <td><strong>🩺 건강관리 · 병원비 · 보험</strong></td>
+              <td>30~60대</td>
+              <td><span style="color: #15803d; font-weight: 800;">최상 (체류시간)</span></td>
+              <td>국가건강검진 대상자 조회, 실손보험 4세대 전환 장단점, 본인부담상한제 환급 신청</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800; color: #2563eb;">5</td>
+              <td><strong>💼 부업 · 온라인 소득 창출</strong></td>
+              <td>20~50대</td>
+              <td><span style="color: #15803d; font-weight: 800;">높음 (지식창업)</span></td>
+              <td>직장인 무자본 블로그 부업, AI로 글쓰기 1시간 완성법, 제휴마케팅 첫 수익 내기</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800;">6</td>
+              <td><strong>🏠 부동산 · 청약 · 대출</strong></td>
+              <td>30~50대</td>
+              <td><span style="color: #15803d; font-weight: 800;">높음 (금융단가)</span></td>
+              <td>신생아 특례대출 조건, 아파트 청약 통장 점수 계산, 주택담보대출 갈아타기 팁</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800;">7</td>
+              <td><strong>🧳 여행 · 숙박 · 가성비 투어</strong></td>
+              <td>20~60대</td>
+              <td><span>중간~높음</span></td>
+              <td>국내 힐링 기차여행 코스, 시니어 제주 한 달 살기 숙소, 해외여행 환전·카드 수수료 비교</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800;">8</td>
+              <td><strong>🛒 가성비 제품 · 구매 비교</strong></td>
+              <td>20~60대</td>
+              <td><span style="color: #15803d; font-weight: 800;">높음 (제휴전환)</span></td>
+              <td>노트북 가성비 모델 비교, 로봇청소기/스마트워치 스펙 비교표, 부모님 효도 선물 베스트</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800;">9</td>
+              <td><strong>💡 생활비 절약 · 소비 꿀팁</strong></td>
+              <td>20~60대</td>
+              <td><span>중간 (공감대)</span></td>
+              <td>알뜰폰 요금제 번호이동 가이드, 아파트 관리비 할인 카드, 에너지 캐시백 신청</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 800;">10</td>
+              <td><strong>🚗 자동차 · 전기차 유지비</strong></td>
+              <td>20~60대</td>
+              <td><span style="color: #15803d; font-weight: 800;">높음 (다이렉트)</span></td>
+              <td>하이브리드 vs 가솔린 실연비 비교, 전기차 보조금 잔여 현황, 다이렉트 자동차보험 비교</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Part 4: 3 Golden Rules -->
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px;">
+        <div style="font-size: 14.5px; font-weight: 800; color: var(--text-main); margin-bottom: 10px;">
+          📌 글 작성 시 반드시 기억해야 할 3대 실전 원칙
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; font-size: 12.5px; color: var(--text-sub); line-height: 1.55;">
+          <div style="background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+            <strong style="color: #1e3a8a; display: block; margin-bottom: 4px;">1. '돈과 생활' 공통 분모 유지</strong>
+            단순 잡탕 블로그가 되지 않도록 모든 글은 "독자의 돈을 벌어주거나, 아껴주거나, 시간을 절약해 주는가?"라는 핵심 질문을 통과해야 합니다.
+          </div>
+          <div style="background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+            <strong style="color: #1e3a8a; display: block; margin-bottom: 4px;">2. 구체적 질문형 키워드 공략</strong>
+            '재테크', '부동산' 등 거대 키워드 대신 검색자의 절박한 질문(예: <em>2026 청년 주거지원금 소득조건 및 신청방법</em>)을 제목 앞단에 배치합니다.
+          </div>
+          <div style="background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+            <strong style="color: #1e3a8a; display: block; margin-bottom: 4px;">3. 네이버 데이터랩 트렌드 검증</strong>
+            글 작성 전 <a href="https://datalab.naver.com/" target="_blank" rel="noopener" style="color: #03c75a; font-weight: 700; text-decoration: none;">네이버 데이터랩 ↗</a>과 구글 트렌드로 검색량 상승 추이를 확인하고 황금 키워드를 선점합니다.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Recent Posts Hub -->
     <section class="recent-posts" style="margin-bottom: 36px;">
       <div class="section-header" style="margin-bottom: 12px;">
         <div class="section-title">
@@ -674,6 +1186,18 @@
       </div>
 
       <!-- RECENT_POSTS_LIST_START -->
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-wp">워드프레스</span>
+          <a href="blog/wordpress/posts/202611/2026-11-06.html" class="post-item-title">
+            20대부터 60대까지 누구나 쉽게 쓰는 ChatGPT 실무 및 일상 활용법: 자소서·보고서·문서 요약 4단계 가이드
+          </a>
+        </div>
+        <span class="post-item-date">2026-11-06 (금 · /chatgpt-prompt-productivity-guide · 평가 96/100점)</span>
+        <a href="blog/wordpress/posts/202611/2026-11-06.html" class="post-item-btn">
+          👁️ 포스트 열기 & 블록 복사
+        </a>
+      </div>
       <div class="post-item-row">
         <div class="post-item-left">
           <span class="post-platform-tag tag-wp">워드프레스</span>
@@ -700,60 +1224,12 @@
       </div>
       <div class="post-item-row">
         <div class="post-item-left">
-          <span class="post-platform-tag tag-wp">워드프레스</span>
-          <a href="blog/wordpress/posts/202611/2026-11-03.html" class="post-item-title">
-            증여세 면제 한도(배우자 6억·성년자녀 5,000만 원·혼인·출산 공제 1억) 10년 합산 기준 및 홈택스 신고 가이드
-          </a>
-        </div>
-        <span class="post-item-date">2026-11-03 (화 · /gift-tax-exemption-limit-marriage-childbirth-guide · 평가 94/100점)</span>
-        <a href="blog/wordpress/posts/202611/2026-11-03.html" class="post-item-btn">
-          👁️ 포스트 열기 & 블록 복사
-        </a>
-      </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
-          <span class="post-platform-tag tag-tistory">티스토리</span>
-          <a href="blog/tistory/posts/202611/2026-11-06.html" class="post-item-title">
-            국민내일배움카드 시니어(5060) 신청 자격·지원 한도(300~500만 원) 및 훈련장려금 신청 방법
-          </a>
-        </div>
-        <span class="post-item-date">2026-11-06 (금 · 은퇴·연금·생활비 · 평가 92/100점)</span>
-        <a href="blog/tistory/posts/202611/2026-11-06.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
-          <span class="post-platform-tag tag-tistory">티스토리</span>
-          <a href="blog/tistory/posts/202611/2026-11-05.html" class="post-item-title">
-            실손의료보험(1~4세대) 세대별 자기부담금 비율 및 비급여 청구 서류·모바일 청구 절차
-          </a>
-        </div>
-        <span class="post-item-date">2026-11-05 (목 · 은퇴·연금·생활비 · 평가 92/100점)</span>
-        <a href="blog/tistory/posts/202611/2026-11-05.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
-          <span class="post-platform-tag tag-tistory">티스토리</span>
-          <a href="blog/tistory/posts/202611/2026-11-04.html" class="post-item-title">
-            국가건강검진 일반검진·6대 암검진 대상자 조회 및 검진 전 금식·약물 복용 주의사항
-          </a>
-        </div>
-        <span class="post-item-date">2026-11-04 (수 · 반려동물·생활정보 · 평가 92/100점)</span>
-        <a href="blog/tistory/posts/202611/2026-11-04.html" class="post-item-btn">
-          👁️ 포스트 열기 & 서식 복사
-        </a>
-      </div>
-      <div class="post-item-row">
-        <div class="post-item-left">
           <span class="post-platform-tag tag-naver">네이버</span>
           <a href="blog/naver/posts/202611/2026-11-06.html" class="post-item-title">
-            매달 따박따박 월급처럼 받는 '월배당 ETF'! 은퇴자를 위한 ISA·연금저축 절세 활용법 3가지
+            20대~60대 누구나 쉽게 쓰는 ChatGPT 실무 및 일상 활용법: 자소서·보고서·문서 요약 4단계 가이드
           </a>
         </div>
-        <span class="post-item-date">2026-11-06 (금 · 노후 자산관리 & 연금·절세 (연관 키워드: 연금))</span>
+        <span class="post-item-date">2026-11-06 (금 · 인생 2막 & 은퇴 일자리 (연관 키워드: chatgpt))</span>
         <a href="blog/naver/posts/202611/2026-11-06.html" class="post-item-btn">
           👁️ 포스트 열기 & 서식 복사
         </a>
@@ -779,6 +1255,42 @@
         </div>
         <span class="post-item-date">2026-11-04 (수 · 시니어 건강 & 웰빙 (연관 키워드: 건강))</span>
         <a href="blog/naver/posts/202611/2026-11-04.html" class="post-item-btn">
+          👁️ 포스트 열기 & 서식 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-naver">네이버</span>
+          <a href="blog/naver/posts/202611/2026-11-03.html" class="post-item-title">
+            가계부 부담 줄이는 알뜰 김장 준비! 좋은 절임배추 고르는 법과 장기 보관 노하우 3가지
+          </a>
+        </div>
+        <span class="post-item-date">2026-11-03 (화 · 품미인생 & 맛있는 일상 (연관 키워드: 김장))</span>
+        <a href="blog/naver/posts/202611/2026-11-03.html" class="post-item-btn">
+          👁️ 포스트 열기 & 서식 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-naver">네이버</span>
+          <a href="blog/naver/posts/202611/2026-11-02.html" class="post-item-title">
+            퇴직 후 건강보험 피부양자 자격 조건(연 소득 2,000만 원) 및 임의계속가입 절세 전략
+          </a>
+        </div>
+        <span class="post-item-date">2026-11-02 (월 · 노후 자산관리 & 연금·절세 (연관 키워드: 절세))</span>
+        <a href="blog/naver/posts/202611/2026-11-02.html" class="post-item-btn">
+          👁️ 포스트 열기 & 서식 복사
+        </a>
+      </div>
+      <div class="post-item-row">
+        <div class="post-item-left">
+          <span class="post-platform-tag tag-naver">네이버</span>
+          <a href="blog/naver/posts/202611/2026-11-01.html" class="post-item-title">
+            주택연금 가입 조건(공시가격 12억 이하) 및 월 수령액 계산·신청 전 필수 점검 3가지
+          </a>
+        </div>
+        <span class="post-item-date">2026-11-01 (일 · 노후 자산관리 & 연금·절세 (연관 키워드: 주택연금))</span>
+        <a href="blog/naver/posts/202611/2026-11-01.html" class="post-item-btn">
           👁️ 포스트 열기 & 서식 복사
         </a>
       </div>
@@ -810,6 +1322,12 @@
           <div class="doc-icon">🎯</div>
           <div class="doc-card-title">고단가 니치 30선</div>
           <div class="doc-card-desc">연금, 절세, 건강 등 시니어 특화 키워드</div>
+        </a>
+
+        <a href="docs/index.html#topic-expansion-roadmap" class="doc-link-card" style="border-color: #c7d2fe; background: #f5f7ff;">
+          <div class="doc-icon">🚀</div>
+          <div class="doc-card-title">주제 확장 로드맵 (20~60대)</div>
+          <div class="doc-card-desc">전세대 10대 킬러 주제 및 월단위 4단계 확장 플랜</div>
         </a>
 
         <a href="docs/index.html#daily-workflow" class="doc-link-card" style="border-color: #bae6fd; background: #f0f7fb;">

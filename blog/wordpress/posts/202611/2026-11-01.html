@@ -152,7 +152,6 @@
       <a href="2026-11-01.md" target="_blank" class="btn">📄 원본 MD 열기</a>
       <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="워드프레스 제목 입력란에 붙여넣을 제목만 복사합니다">📋 제목만 복사</button>
       <button class="btn btn-wp" id="copyWpBtn" title="워드프레스 구텐베르크 에디터에 적정 소제목 크기(20px)·요약박스·표 서식 그대로 붙여넣기 됩니다">🔵 워드프레스 구텐베르크 서식 복사</button>
-      <button class="btn" id="copyWpHtmlCodeBtn" style="border-color: #bae6fd; background: #f0f7fb; color: #0073aa;" title="구텐베르크 '사용자 정의 HTML' 블록에 붙여넣으면 원문 색상·배경·크기가 100% 그대로 유지됩니다">💻 사용자 정의 HTML 블록 코드 복사</button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
       <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
     </div>
@@ -477,12 +476,6 @@
       const plainText = getCleanPlainText();
       await copyWpRichHtml(htmlContent, plainText);
       showToast("🔵 워드프레스 구텐베르크 서식(중간제목 크기 축소·요약박스·취소선 오류 제거)이 복사되었습니다!");
-    });
-
-    document.getElementById("copyWpHtmlCodeBtn").addEventListener("click", async () => {
-      const htmlContent = `<div class="wp-custom-article" style="font-family: Pretendard, -apple-system, sans-serif; color: #1f2937; line-height: 1.8;">\n` + getWordPressOptimizedHtml(true) + `\n</div>`;
-      await navigator.clipboard.writeText(htmlContent);
-      showToast("💻 구텐베르크 '사용자 정의 HTML' 블록용 코드가 복사되었습니다! (/html 입력 후 붙여넣기)");
     });
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", () => {

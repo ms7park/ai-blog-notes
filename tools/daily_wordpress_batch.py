@@ -1363,6 +1363,95 @@ AI 코딩 도구나 에디터로 HTML 대시보드, 포트폴리오, 또는 멀�
             "4세대 실손 비급여 보험료 차등제 1~5단계 구간(0원 / 100만 미만 / 100~150만 / 150~300만 / 300만 이상) 및 산정특례 예외 규정 검증 완료",
             "보험금 청구 소멸시효(3년) 및 실손24 전산 청구 절차 확인 완료"
         ]
+    },
+    {
+        "seq": 17,
+        "category": "AI & Tech Guide (인공지능·업무 생산성)",
+        "topic": "ChatGPT 프롬프트 작성 공식(역할·맥락·조건) 및 자소서·보고서 실무 활용법",
+        "focus_keyphrase": "ChatGPT 프롬프트 활용법 보고서 자소서",
+        "slug": "chatgpt-prompt-productivity-guide",
+        "meta_desc": "20대부터 60대까지 누구나 쉽게 쓰는 ChatGPT 실무 및 일상 활용법. 프롬프트 3대 공식(역할·맥락·조건), 세대별 프롬프트 비교표, 할루시네이션(오류) 검증 4단계 및 FAQ 3문 3답을 확인하세요.",
+        "score": 96,
+        "scores": {"trend": 5, "intent": 5, "gap": 5, "capability": 5, "evergreen": 5},
+        "final_title": "20대부터 60대까지 누구나 쉽게 쓰는 ChatGPT 실무 및 일상 활용법: 자소서·보고서·문서 요약 4단계 가이드",
+        "core_summary": (
+            "ChatGPT를 100% 활용하려면 단순 질문 대신 **'역할(Role) · 배경 상황(Context) · 출력 조건(Constraint)' 3대 공식**을 프롬프트에 명시해야 합니다. "
+            "20대 취업 자기소개서 초안 작성, 3040 직장인의 긴 PDF 보고서 핵심 요약 및 표 변환, 5060 시니어의 여행 일정표 설계까지 전 세대의 생산성을 극대화할 수 있으며, 중요한 수치나 통계는 반드시 [공식 사이트] 교차 검증을 거쳐야 합니다."
+        ),
+        "sections_md": """## 1. 누구나 쓰지만 결과는 천차만별, ChatGPT 질문법의 차이는 어디서 올까요?
+
+인공지능(AI) 기술이 비약적으로 발전하면서 ChatGPT는 대학생의 과제·자소서 작성부터 직장인의 기획서 작성, 시니어의 일상 문서 정리까지 전 세대의 필수 디지털 파트너로 자리 잡았습니다. 하지만 같은 AI를 쓰면서도 누군가는 *"원하는 답이 정확하게 나온다"*고 감탄하는 반면, 누군가는 *"뻔하고 상투적인 답변만 늘어놓는다"*며 실망하곤 합니다.
+
+그 차이는 질문의 기술, 즉 **'프롬프트(명령어) 설계'**에 있습니다. 사람에게 업무를 맡길 때도 단순히 "보고서 써줘"라고 하는 것보다 "김 대리, 지난달 매출 데이터를 바탕으로 임원 보고용 1장 요약표를 만들어줘"라고 요청해야 원하는 결과물이 나오듯, AI에게도 명확한 가이드라인을 주어야 합니다. OpenAI 공식 가이드라인을 바탕으로 **프롬프트 3대 작성 공식, 세대별 실전 활용법, 주의사항**을 정리합니다.
+
+---
+
+## 2. ChatGPT에게 100점짜리 답변을 이끌어내는 4단계 실전 활용 절차
+
+### 1단계: 명확한 전문가 페르소나(역할) 부여하기
+1. AI에게 단순 챗봇이 아닌 특정한 전문가 역할을 부여합니다.
+2. 예시: *"당신은 10년 차 IT 대기업 채용 전문 컨설턴트입니다."* 또는 *"당신은 20년 경력의 금융감독원 출신 자산관리 세무 전문가입니다."*
+
+### 2단계: 배경 맥락(상황)과 구체적인 원시 데이터 입력하기
+1. 작업에 필요한 기초 정보나 본인의 경험을 불렛포인트로 가감 없이 제공합니다.
+2. 예시: *"지원자는 경영학 전공자이며, 교내 창업 동아리에서 6개월간 스마트스토어를 운영해 매출 300%를 달성한 경험이 있습니다."*
+
+### 3단계: 출력 형식과 세부 제약 조건(길이·어조·서식) 명시하기
+1. 원하는 서식(표, 불렛포인트, 번호 매기기)과 분량, 어조를 구체적으로 지정합니다.
+2. 예시: *"결과물은 두괄식 요약 3줄 + 세부 행동 전략 3단계 + 면접 예상 질문 2가지 순서로 작성하고, 비유적 표현은 빼고 객관적 사실 위주로 800자 이내로 구성해 주세요."*
+
+### 4단계: 교차 검증(팩트체크) 및 나의 경험 20% 덧붙이기
+1. 최신 법령, 연금 수령액, 공공 지원금 등 숫자나 사실관계는 반드시 공공기관 공식 누리집을 통해 재확인합니다.
+2. AI가 도출한 초안 위에 나의 실제 생각, 생생한 후기, 진솔한 경험담을 20% 이상 보완하여 나만의 차별화된 글로 완성합니다.
+
+---
+
+## 3. 세대별 ChatGPT 실전 프롬프트 비교표
+
+아래 표는 20대부터 60대까지 각 세대의 핵심 관심사에 맞춘 실전 프롬프트 구성 비교표입니다.
+
+| 세대 구분 | 주요 목적 | 추천 프롬프트 핵심 구성 | 기대 산출물 |
+| --- | --- | --- | --- |
+| **20대 (취준생·사회초년생)** | 취업 자기소개서 & 면접 대비 | 경험 데이터 + 지원 직무 + STAR 기법 적용 요청 | 직무 맞춤형 자소서 초안 및 면접 압박 질문 3선 |
+| **30대 (영패밀리·직장인)** | 긴 보고서 요약 & 정부 혜택 | 원문 텍스트 + 임원 보고용 개조식 + 비교표 요청 | 3줄 핵심 요약 및 의사결정 비교표 |
+| **40대 (관리자·자산관리)** | 데이터 분석 & 투자 포트폴리오 | 재무 지표 + 분산 투자 원칙 + 리스크 점검 | 자산 배분 시뮬레이션 및 리밸런싱 체크리스트 |
+| **50·60대 (신중년·시니어)** | 일상 계획 & 스마트폰 비서 | 여행 희망지 + 건강 상태 + 여유로운 동선 요청 | 1일 2~3코스 힐링 일정표 및 예상 경비 예산서 |
+
+---
+
+## 4. ChatGPT 활용 시 절대 놓쳐서는 안 될 3가지 주의점
+
+### ① 최신 정보 및 수치 오류(할루시네이션) 주의
+AI는 언어를 그럴듯하게 조합하는 모델이므로, 존재하지 않는 법 조항이나 판례를 진짜처럼 만들어낼 수 있습니다. 법률, 세금, 의학 관련 정보는 반드시 공인된 기관의 공식 자료와 대조해야 합니다.
+
+### ② 개인정보 및 기업 기밀 입력 금지
+주민등록번호, 계좌번호, 비밀번호, 사내 대외비 문서는 AI 학습에 사용될 수 있으므로 절대 입력하지 말고 마스킹(블라인드) 처리 후 활용해야 합니다.
+
+### ③ 검색엔진 E-E-A-T 저품질 분류 방지
+검색엔진(구글, 네이버)은 100% 기계가 복사해 붙여넣은 글을 저품질 스팸으로 분류할 수 있습니다. AI 초안을 토대로 본인만의 고유한 관점과 경험을 반드시 녹여내야 상위 노출을 유지할 수 있습니다.
+
+---
+
+## 5. 자주 묻는 질문
+
+### Q1. 무료 버전(ChatGPT 3.5 / 4o 미니)으로도 실무에 충분히 쓸 수 있나요?
+**A.** 네, 충분합니다. 일반적인 자기소개서 초안 작성, 긴 글 요약, 번역, 문장 교정 등은 무료 버전으로도 매우 훌륭하게 수행할 수 있습니다. 복잡한 데이터 심층 분석이나 이미지 생성, 고급 추론이 필요할 때 유료(Plus) 버전을 고려하시면 됩니다.
+
+### Q2. AI가 써준 글을 블로그나 회사 보고서에 그대로 올려도 저작권 문제가 없나요?
+**A.** OpenAI의 이용약관상 사용자가 입력한 프롬프트로 생성된 결과물의 권리는 원칙적으로 사용자에게 귀속됩니다. 다만 다른 사람의 저작권을 침해하는 문구가 포함될 수 있으므로 표절 검사기를 활용하고, 본인의 윤문 과정을 거치는 것이 안전합니다.
+
+### Q3. 스마트폰에서도 PC와 똑같이 사용할 수 있나요?
+**A.** 네, 가능합니다. 애플 앱스토어(iOS) 또는 구글 플레이스토어에서 OpenAI 공식 **'ChatGPT'** 앱을 다운로드하면 PC와 완벽히 연동되며, 음성 대화 기능까지 무료로 활용할 수 있습니다.""",
+        "official_refs": [
+            ("OpenAI 공식 도움말 센터 (ChatGPT 프롬프트 가이드)", "https://help.openai.com/"),
+            ("Google 검색 센터 (AI 생성 콘텐츠에 대한 Google 검색 가이드라인)", "https://developers.google.com/search/docs/fundamentals/creating-helpful-content?hl=ko"),
+            ("한국지능정보사회진흥원(NIA) 인공지능 윤리 가이드라인", "https://www.nia.or.kr/")
+        ],
+        "fact_checks": [
+            "OpenAI 공식 가이드라인 기반 프롬프트 3대 요소(역할·맥락·제약조건) 확인 완료",
+            "구글 검색 센터 AI 생성 콘텐츠 E-E-A-T 품질 평가 가이드라인 준수 확인 완료",
+            "개인정보 보호 및 할루시네이션(환각) 대응 수칙 검증 완료"
+        ]
     }
 ]
 
@@ -1571,7 +1660,6 @@ def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
       <a href="{post_id}.md" target="_blank" class="btn">📄 원본 MD 열기</a>
       <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="워드프레스 제목 입력란에 붙여넣을 제목만 복사합니다">📋 제목만 복사</button>
       <button class="btn btn-wp" id="copyWpBtn" title="워드프레스 구텐베르크 에디터에 적정 소제목 크기(20px)·요약박스·표 서식 그대로 붙여넣기 됩니다">🔵 워드프레스 구텐베르크 서식 복사</button>
-      <button class="btn" id="copyWpHtmlCodeBtn" style="border-color: #bae6fd; background: #f0f7fb; color: #0073aa;" title="구텐베르크 '사용자 정의 HTML' 블록에 붙여넣으면 원문 색상·배경·크기가 100% 그대로 유지됩니다">💻 사용자 정의 HTML 블록 코드 복사</button>
       <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
       <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
     </div>
@@ -1832,12 +1920,6 @@ def build_wp_post_html(post_id, date_str, weekday_str, item, md_content):
       const plainText = getCleanPlainText();
       await copyWpRichHtml(htmlContent, plainText);
       showToast("🔵 워드프레스 구텐베르크 서식(중간제목 크기 축소·요약박스·취소선 오류 제거)이 복사되었습니다!");
-    }});
-
-    document.getElementById("copyWpHtmlCodeBtn").addEventListener("click", async () => {{
-      const htmlContent = `<div class="wp-custom-article" style="font-family: Pretendard, -apple-system, sans-serif; color: #1f2937; line-height: 1.8;">\\n` + getWordPressOptimizedHtml(true) + `\\n</div>`;
-      await navigator.clipboard.writeText(htmlContent);
-      showToast("💻 구텐베르크 '사용자 정의 HTML' 블록용 코드가 복사되었습니다! (/html 입력 후 붙여넣기)");
     }});
 
     document.getElementById("copyCleanTextBtn").addEventListener("click", () => {{
@@ -2249,6 +2331,10 @@ def build_wp_index_html(today_str, weekday_str, posts):
           </p>
           <a href="https://smartlife70.wordpress.com/wp-admin/index.php" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 10px; font-weight: 700; font-size: 13px; width: 100%;">
             <span>🌐 내 워드프레스 바로가기 (wp-admin)</span>
+            <span style="font-size: 12px;">↗</span>
+          </a>
+          <a href="https://smartlife70.wordpress.com/wp-admin/admin.php?page=stats" target="_blank" rel="noopener noreferrer" class="action-btn" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 9px; font-weight: 700; font-size: 13px; width: 100%; margin-top: 8px; border: 1px solid var(--wp); background: #f0f7fb; color: var(--wp);">
+            <span>📊 워드프레스 방문 분석·통계 보기</span>
             <span style="font-size: 12px;">↗</span>
           </a>
         </section>
