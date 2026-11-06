@@ -2258,6 +2258,170 @@ def build_wp_index_html(today_str, weekday_str, posts):
       opacity: 0.4;
       cursor: not-allowed;
     }}
+
+    /* 최근 30일 일별 등록건수 위젯 스타일 */
+    .stat-30days-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }}
+    .stat-30days-title {{
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }}
+    .stat-30days-badge {{
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }}
+    .stat-metrics-grid {{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }}
+    .stat-metric-box {{
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 4px;
+      text-align: center;
+    }}
+    .stat-metric-num {{
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+    }}
+    .stat-metric-lbl {{
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }}
+    .stat-heatmap-container {{
+      margin-bottom: 14px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+    }}
+    .stat-heatmap-legend {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }}
+    .stat-heatmap-grid {{
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+    }}
+    .stat-tile {{
+      aspect-ratio: 1;
+      border-radius: 4px;
+      background: #f1f5f9;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }}
+    .stat-tile:hover {{
+      transform: scale(1.15);
+      z-index: 5;
+    }}
+    .stat-tile[data-tooltip]::after {{
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: #fff;
+      font-size: 11px;
+      padding: 4px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 20;
+    }}
+    .stat-tile:hover::after {{
+      opacity: 1;
+    }}
+    .stat-list-toggle-bar {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }}
+    .stat-filter-btn {{
+      background: none;
+      border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-sub);
+    }}
+    .stat-filter-btn.active {{
+      background: var(--wp);
+      color: #fff;
+      border-color: var(--wp);
+    }}
+    .stat-daily-scroll {{
+      max-height: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }}
+    .stat-daily-row {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 12px;
+    }}
+    .stat-daily-row:last-child {{
+      border-bottom: none;
+    }}
+    .stat-daily-date {{
+      color: var(--text-main);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }}
+    .stat-daily-bar-wrap {{
+      flex: 1;
+      margin: 0 10px;
+      height: 6px;
+      background: #f1f5f9;
+      border-radius: 3px;
+      overflow: hidden;
+    }}
+    .stat-daily-bar-fill {{
+      height: 100%;
+      border-radius: 3px;
+    }}
+    .stat-count-badge {{
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 10px;
+      min-width: 32px;
+      text-align: center;
+      white-space: nowrap;
+    }}
   </style>
 </head>
 <body>
@@ -2370,6 +2534,10 @@ def build_wp_index_html(today_str, weekday_str, posts):
             📋 워드프레스 SEO 프롬프트 복사
           </button>
         </section>
+
+        <section class="card" id="wpRecent30DaysCard" style="border: 2px solid var(--wp);">
+          <!-- 최근 30일 일별 글 등록건수 위젯 자동 렌더링 -->
+        </section>
       </div>
     </div>
   </div>
@@ -2434,13 +2602,200 @@ def build_wp_index_html(today_str, weekday_str, posts):
       }}
       render(1);
     }}
+    function renderRecent30DaysStats(config) {{
+      const {{ listId, targetId, brandColor, brandDark, brandLight, levels }} = config;
+      const target = document.getElementById(targetId);
+      const listEl = document.getElementById(listId);
+      if (!target || !listEl) return;
+
+      const cards = Array.from(listEl.querySelectorAll(".post-card"));
+      const dateCounts = {{}};
+      let maxFoundDate = "2026-11-07";
+
+      cards.forEach(card => {{
+        const text = card.textContent;
+        const link = card.querySelector("a[href*='posts/']")?.getAttribute("href") || "";
+        const m = link.match(/(\d{{4}}-\d{{2}}-\d{{2}})/) || text.match(/📍\s*(\d{{4}}-\d{{2}}-\d{{2}})/) || text.match(/(\d{{4}}-\d{{2}}-\d{{2}})/);
+        if (m) {{
+          const d = m[1];
+          dateCounts[d] = (dateCounts[d] || 0) + 1;
+          if (d > maxFoundDate) maxFoundDate = d;
+        }}
+      }});
+
+      const now = new Date();
+      const todayStr = `${{now.getFullYear()}}-${{String(now.getMonth() + 1).padStart(2, '0')}}-${{String(now.getDate()).padStart(2, '0')}}`;
+      const endBaseStr = (maxFoundDate > todayStr) ? maxFoundDate : todayStr;
+      
+      const days = [];
+      const [ey, em, ed] = endBaseStr.split('-').map(Number);
+      const endDt = new Date(ey, em - 1, ed);
+      const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+
+      for (let i = 29; i >= 0; i--) {{
+        const d = new Date(endDt);
+        d.setDate(endDt.getDate() - i);
+        const yr = d.getFullYear();
+        const mo = String(d.getMonth() + 1).padStart(2, '0');
+        const da = String(d.getDate()).padStart(2, '0');
+        const dateStr = `${{yr}}-${{mo}}-${{da}}`;
+        const dayKr = weekdays[d.getDay()];
+        days.push({{
+          date: dateStr,
+          short: `${{mo}}/${{da}}`,
+          dayKr,
+          count: dateCounts[dateStr] || 0
+        }});
+      }}
+
+      const totalCount = days.reduce((sum, item) => sum + item.count, 0);
+      const activeDays = days.filter(item => item.count > 0).length;
+      const avgPerDay = (totalCount / 30).toFixed(1);
+      const maxDayCount = Math.max(...days.map(d => d.count), 1);
+
+      function getTileColor(cnt) {{
+        if (cnt === 0) return levels[0];
+        if (cnt === 1) return levels[1];
+        if (cnt <= 3) return levels[2];
+        if (cnt <= 6) return levels[3];
+        return levels[4];
+      }}
+
+      let html = `
+        <div class="stat-30days-header">
+          <div class="stat-30days-title" style="color: ${{brandDark}};">
+            <span>📈 최근 30일 글 등록 통계</span>
+          </div>
+          <span class="stat-30days-badge" style="background: ${{brandLight}}; color: ${{brandDark}}; border: 1px solid ${{brandColor}};">
+            ${{days[0].date.slice(5)}} ~ ${{days[29].date.slice(5)}}
+          </span>
+        </div>
+
+        <div class="stat-metrics-grid">
+          <div class="stat-metric-box">
+            <div class="stat-metric-num" style="color: ${{brandDark}};">${{totalCount}}건</div>
+            <div class="stat-metric-lbl">30일 총 등록</div>
+          </div>
+          <div class="stat-metric-box">
+            <div class="stat-metric-num" style="color: ${{brandDark}};">${{activeDays}}일</div>
+            <div class="stat-metric-lbl">등록 일수</div>
+          </div>
+          <div class="stat-metric-box">
+            <div class="stat-metric-num" style="color: ${{brandDark}};">${{avgPerDay}}건</div>
+            <div class="stat-metric-lbl">일평균 등록</div>
+          </div>
+        </div>
+
+        <div class="stat-heatmap-container">
+          <div class="stat-heatmap-legend">
+            <span><strong>일별 등록 잔디</strong> (최근 30일)</span>
+            <div style="display:flex; align-items:center; gap:3px;">
+              <span style="font-size:10px; color:#8b95a1;">0</span>
+              <span style="width:9px; height:9px; border-radius:2px; background:${{levels[0]}}; display:inline-block;"></span>
+              <span style="width:9px; height:9px; border-radius:2px; background:${{levels[1]}}; display:inline-block;"></span>
+              <span style="width:9px; height:9px; border-radius:2px; background:${{levels[2]}}; display:inline-block;"></span>
+              <span style="width:9px; height:9px; border-radius:2px; background:${{levels[3]}}; display:inline-block;"></span>
+              <span style="width:9px; height:9px; border-radius:2px; background:${{levels[4]}}; display:inline-block;"></span>
+              <span style="font-size:10px; color:#8b95a1;">다수</span>
+            </div>
+          </div>
+          <div class="stat-heatmap-grid">
+      `;
+
+      days.forEach(d => {{
+        const color = getTileColor(d.count);
+        const borderStyle = d.count > 0 ? `border: 1px solid ${{brandDark}}33;` : 'border: 1px solid #e2e8f0;';
+        const tooltip = `${{d.date}} (${{d.dayKr}}): ${{d.count}}건 등록`;
+        html += `<div class="stat-tile" style="background: ${{color}}; ${{borderStyle}}" data-tooltip="${{tooltip}}"></div>`;
+      }});
+
+      html += `
+          </div>
+        </div>
+
+        <div class="stat-list-toggle-bar">
+          <span style="font-weight: 700; color: #334155; font-size: 12px;">📅 일별 상세 건수</span>
+          <div style="display: flex; gap: 4px;">
+            <button type="button" class="stat-filter-btn active" id="${{targetId}}_btnActive">등록일만 (${{activeDays}})</button>
+            <button type="button" class="stat-filter-btn" id="${{targetId}}_btnAll">30일 전체</button>
+          </div>
+        </div>
+
+        <div class="stat-daily-scroll" id="${{targetId}}_list"></div>
+      `;
+
+      target.innerHTML = html;
+
+      const reversedDays = [...days].reverse();
+
+      function renderListRows(showAll) {{
+        const scrollListEl = document.getElementById(`${{targetId}}_list`);
+        if (!scrollListEl) return;
+        let rowsHtml = "";
+        reversedDays.forEach(d => {{
+          if (!showAll && d.count === 0) return;
+          const barPct = Math.round((d.count / maxDayCount) * 100);
+          const isToday = (d.date === endBaseStr);
+          const todayBadge = isToday ? `<span style="font-size:10px; background:${{brandLight}}; color:${{brandDark}}; padding:1px 4px; border-radius:3px; font-weight:700;">오늘</span>` : "";
+          const badgeStyle = d.count > 0
+            ? `background: ${{brandLight}}; color: ${{brandDark}}; border: 1px solid ${{brandColor}};`
+            : `background: #f1f5f9; color: #94a3b8; border: 1px solid #e2e8f0;`;
+
+          rowsHtml += `
+            <div class="stat-daily-row">
+              <div class="stat-daily-date">
+                <span>${{d.date}} (${{d.dayKr}})</span>
+                ${{todayBadge}}
+              </div>
+              <div class="stat-daily-bar-wrap">
+                <div class="stat-daily-bar-fill" style="width: ${{barPct}}%; background: ${{brandColor}};"></div>
+              </div>
+              <span class="stat-count-badge" style="${{badgeStyle}}">
+                ${{d.count}}건
+              </span>
+            </div>
+          `;
+        }});
+
+        if (!rowsHtml) {{
+          rowsHtml = `<div style="text-align:center; padding:16px; color:#8b95a1; font-size:12px;">해당 기간에 등록된 글이 없습니다.</div>`;
+        }}
+        scrollListEl.innerHTML = rowsHtml;
+      }}
+
+      renderListRows(false);
+
+      const btnActive = document.getElementById(`${{targetId}}_btnActive`);
+      const btnAll = document.getElementById(`${{targetId}}_btnAll`);
+      if (btnActive && btnAll) {{
+        btnActive.onclick = () => {{
+          btnActive.classList.add("active");
+          btnAll.classList.remove("active");
+          renderListRows(false);
+        }};
+        btnAll.onclick = () => {{
+          btnAll.classList.add("active");
+          btnActive.classList.remove("active");
+          renderListRows(true);
+        }};
+      }}
+    }}
+
     window.addEventListener("DOMContentLoaded", () => {{
       const chks = document.querySelectorAll(".wp-chk");
       chks.forEach((c, i) => {{
         if (localStorage.getItem("wp_seo_chk_" + i) === "1") c.checked = true;
       }});
       updateWpCount();
-      initPagination("wpPostList", "wpPagination", 5);
+      initPagination("wpPostList", "wpPagination", 10);
+      renderRecent30DaysStats({{
+        listId: "wpPostList",
+        targetId: "wpRecent30DaysCard",
+        brandColor: "var(--wp)",
+        brandDark: "var(--wp-dark)",
+        brandLight: "var(--wp-light)",
+        levels: ["#f1f5f9", "#e0f2fe", "#7dd3fc", "#0284c7", "#0369a1"]
+      }});
     }});
   </script>
 </body>
