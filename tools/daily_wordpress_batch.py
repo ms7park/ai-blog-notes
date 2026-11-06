@@ -2012,15 +2012,6 @@ def build_wp_index_html(today_str, weekday_str, posts):
                 <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#{p['post_num']}편</span>
               </div>
               <a href="{p['rel_html']}" class="post-card-title">{p['title']}</a>
-              <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:14px; line-height:1.55;">{p['desc']}</p>
-              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border); padding-top:12px; font-size:12px; color:var(--text-muted); flex-wrap:wrap; gap:10px;">
-                <div>구텐베르크 블록 · FAQ 스키마 포함 · 분량: 약 {p['char_count']:,}자 (공백 제외)</div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                  <a href="{p['rel_md']}" target="_blank" class="action-btn">📄 MD 원문</a>
-                  <a href="https://smartlife70.wordpress.com/wp-admin/post-new.php" target="_blank" rel="noopener noreferrer" class="action-btn" style="color:var(--wp-dark); border-color:var(--wp-border); background:var(--wp-light);">✍️ WP 글쓰기</a>
-                  <a href="{p['rel_html']}" class="action-btn action-btn-primary">👁️ 포스트 열기 & 블록 복사</a>
-                </div>
-              </div>
             </article>
         """
 
@@ -2146,7 +2137,7 @@ def build_wp_index_html(today_str, weekday_str, posts):
     .post-card {{
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 14px 18px;
       background: #fff;
       margin-bottom: 16px;
     }}
@@ -2180,12 +2171,13 @@ def build_wp_index_html(today_str, weekday_str, posts):
       font-weight: 700;
     }}
     .post-card-title {{
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 750;
       color: var(--text-main);
       text-decoration: none;
       display: inline-block;
-      margin-bottom: 8px;
+      margin-bottom: 2px;
+      line-height: 1.45;
     }}
     .post-card-title:hover {{ color: var(--wp-dark); text-decoration: underline; }}
     .action-btn {{
@@ -2503,6 +2495,10 @@ def build_wp_index_html(today_str, weekday_str, posts):
           </a>
         </section>
 
+        <section class="card" id="wpRecent30DaysCard" style="border: 2px solid var(--wp);">
+          <!-- 최근 30일 일별 글 등록건수 위젯 자동 렌더링 -->
+        </section>
+
         <section class="card" style="border: 2px solid var(--wp);">
           <div class="card-title" style="margin-bottom: 12px;">📂 워드프레스 5대 필러(Pillar) 카테고리</div>
           <div style="font-size: 13px; color: var(--text-sub); display: flex; flex-direction: column; gap: 10px;">
@@ -2533,10 +2529,6 @@ def build_wp_index_html(today_str, weekday_str, posts):
           <button class="action-btn action-btn-primary" style="width: 100%; justify-content: center; padding: 10px;" onclick="copyText('{wp_prompt}')">
             📋 워드프레스 SEO 프롬프트 복사
           </button>
-        </section>
-
-        <section class="card" id="wpRecent30DaysCard" style="border: 2px solid var(--wp);">
-          <!-- 최근 30일 일별 글 등록건수 위젯 자동 렌더링 -->
         </section>
       </div>
     </div>

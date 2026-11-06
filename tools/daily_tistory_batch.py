@@ -2668,16 +2668,6 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
               <a href="{p['rel_html']}" class="post-card-title">
                 {p['title']}
               </a>
-              <p class="post-card-desc">
-                {p['desc']}
-              </p>
-              <div class="post-card-footer">
-                <div>상승 검색어: <strong>{p['trend_kw']}</strong> · 분량: 약 {p['char_count']:,}자 (공백 제외)</div>
-                <div class="post-btn-group">
-                  <a href="{p['rel_md']}" target="_blank" class="action-btn">📄 MD 원문</a>
-                  <a href="{p['rel_html']}" class="action-btn action-btn-primary">👁️ 포스트 열기 & 에디터 복사</a>
-                </div>
-              </div>
             </article>
         """
 
@@ -2928,7 +2918,7 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
     .post-card {{
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 14px 18px;
       background: #fff;
       position: relative;
     }}
@@ -2966,12 +2956,13 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
     }}
 
     .post-card-title {{
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 750;
-      margin-bottom: 10px;
+      margin-bottom: 2px;
       color: var(--text-main);
       text-decoration: none;
       display: inline-block;
+      line-height: 1.45;
     }}
 
     .post-card-title:hover {{
@@ -3426,6 +3417,10 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
           </a>
         </section>
 
+        <section class="card" id="tistoryRecent30DaysCard" style="border: 2px solid var(--tistory);">
+          <!-- 최근 30일 일별 글 등록건수 위젯 자동 렌더링 -->
+        </section>
+
         <section class="card" style="border: 2px solid var(--tistory);">
           <div class="card-title" style="margin-bottom: 12px;">📂 티스토리 5대 추천 카테고리 비중</div>
           <div style="font-size: 13px; color: var(--text-sub); display: flex; flex-direction: column; gap: 10px;">
@@ -3456,10 +3451,6 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
           <button class="action-btn action-btn-primary" style="width: 100%; text-align: center; padding: 10px;" onclick="copyText('{prompt_text}')">
             📋 티스토리 AI 작성 프롬프트 복사
           </button>
-        </section>
-
-        <section class="card" id="tistoryRecent30DaysCard" style="border: 2px solid var(--tistory);">
-          <!-- 최근 30일 일별 글 등록건수 위젯 자동 렌더링 -->
         </section>
       </div>
     </div>

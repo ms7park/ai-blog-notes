@@ -2024,8 +2024,6 @@ def update_naver_index_html(today_str, trends, posts):
         
         cat_badge = f'<span style="font-size: 11px; background: #e8f9f0; color: #02b14f; font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-left: 8px;">{p["category"].split("/")[0].strip()}</span>' if p.get("category") else ""
         
-        tags_html = "".join([f'<span class="post-tag">{t}</span>' for t in p["tags"]])
-        
         post_cards_html += f"""
             <article class="post-card{today_class}">
               <div class="post-card-date" style="display: flex; align-items: center; justify-content: space-between;">
@@ -2038,19 +2036,6 @@ def update_naver_index_html(today_str, trends, posts):
               <a href="{p['rel_html']}" class="post-card-title">
                 {p['title']}
               </a>
-              <p class="post-card-desc">
-                {p['desc']}
-              </p>
-              <div class="post-card-tags">
-                {tags_html}
-              </div>
-              <div class="post-card-footer">
-                <div>작성 분량: 약 {p['char_count']:,}자 (공백 제외)</div>
-                <div class="post-btn-group">
-                  <a href="{p['rel_md']}" target="_blank" class="action-btn">📄 MD 원문</a>
-                  <a href="{p['rel_html']}" class="action-btn action-btn-primary">👁️ 포스트 열기 & 복사</a>
-                </div>
-              </div>
             </article>
         """
 
@@ -2355,7 +2340,7 @@ def update_naver_index_html(today_str, trends, posts):
     .post-card {{
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 14px 18px;
       background: #fff;
       position: relative;
     }}
@@ -2386,12 +2371,13 @@ def update_naver_index_html(today_str, trends, posts):
     }}
 
     .post-card-title {{
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 750;
-      margin-bottom: 10px;
+      margin-bottom: 2px;
       color: var(--text-main);
       text-decoration: none;
       display: inline-block;
+      line-height: 1.45;
     }}
 
     .post-card-title:hover {{
@@ -2798,6 +2784,10 @@ def update_naver_index_html(today_str, trends, posts):
           </a>
         </section>
 
+        <section class="card" id="naverRecent30DaysCard" style="border: 2px solid var(--naver-green);">
+          <!-- 최근 30일 일별 글 등록건수 위젯 자동 렌더링 -->
+        </section>
+
         <section class="card">
           <div class="card-title" style="margin-bottom: 14px;">
             ✅ 네이버 C-Rank & D.I.A 체크리스트
@@ -2829,10 +2819,6 @@ def update_naver_index_html(today_str, trends, posts):
           <button class="action-btn" style="width: 100%; text-align: center;" onclick="copyText('선택한 제목과 키워드로 50대 은퇴자의 진솔한 경험이 담긴 친절하고 가독성 높은 네이버 블로그 포스팅 초안 1,800자를 작성해줘. 소제목 3개와 결론, 스마트블록 태그 10개를 포함해줘.')">
             프롬프트 복사하기
           </button>
-        </section>
-
-        <section class="card" id="naverRecent30DaysCard" style="border: 2px solid var(--naver-green);">
-          <!-- 최근 30일 일별 글 등록건수 위젯 자동 렌더링 -->
         </section>
       </div>
     </div>
