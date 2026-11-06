@@ -2642,6 +2642,13 @@ def scan_tistory_posts():
         except Exception as e:
             log(f"⚠️ 티스토리 포스트 파싱 오류 {fname}: {e}")
 
+    # 생성일 기준 오름차순(과거 -> 최신) 정렬하여 예전 글 번호가 영구 고정되도록 post_no 부여
+    posts_asc = sorted(posts, key=lambda p: (p["date_only"], p["post_num"]))
+    for i, p in enumerate(posts_asc, 1):
+        p["post_no"] = i
+
+    # 화면 표시는 최신순(내림차순) 정렬
+    posts.sort(key=lambda p: (p["date_only"], p["post_num"]), reverse=True)
     return posts
 
 def update_tistory_index_html(today_str, evaluated_trends, posts):
@@ -2659,6 +2666,7 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
             <article class="post-card{today_class}">
               <div class="post-card-date">
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span class="post-no">No. {p['post_no']}</span>
                   <span>{date_badge}</span>
                   <span class="cat-pill">📂 {p['category']}</span>
                   <span class="score-pill">🎯 평가 {p['score_str']}</span>
@@ -2926,6 +2934,17 @@ def update_tistory_index_html(today_str, evaluated_trends, posts):
     .post-card.today {{
       border-color: var(--tistory);
       box-shadow: 0 4px 16px rgba(234, 88, 12, 0.1);
+    }}
+
+    .post-no {{
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      background: #334155;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-right: 6px;
     }}
 
     .post-card-date {{

@@ -1989,6 +1989,14 @@ def scan_wp_posts():
             "rel_md": rel_md,
             "rel_html": rel_html
         })
+
+    # 생성일 기준 오름차순(과거 -> 최신) 정렬하여 예전 글 번호가 영구 고정되도록 post_no 부여
+    posts_asc = sorted(posts, key=lambda p: (p["date_only"], p["post_num"]))
+    for i, p in enumerate(posts_asc, 1):
+        p["post_no"] = i
+
+    # 화면 표시는 최신순(내림차순) 정렬
+    posts.sort(key=lambda p: (p["date_only"], p["post_num"]), reverse=True)
     return posts
 
 def build_wp_index_html(today_str, weekday_str, posts):
@@ -2004,9 +2012,9 @@ def build_wp_index_html(today_str, weekday_str, posts):
             <article class="post-card{today_class}">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span class="post-no">No. {p['post_no']}</span>
                   <span style="font-size:12.5px; font-weight:700; color:var(--wp-dark);">📍 {p['date_only']} ({p_weekday})</span>
                   <span class="cat-pill">📂 {p['category']}</span>
-                  <span class="slug-pill">🔗 {p['slug']}</span>
                   <span class="score-pill">🎯 {p['score_str']}</span>
                 </div>
                 <span style="font-size:11.5px; color:var(--text-muted); font-weight:600;">#{p['post_num']}편</span>
@@ -2144,6 +2152,16 @@ def build_wp_index_html(today_str, weekday_str, posts):
     .post-card.today {{
       border-color: var(--wp);
       box-shadow: 0 4px 14px rgba(0, 115, 170, 0.08);
+    }}
+    .post-no {{
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      background: #334155;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-right: 6px;
     }}
     .cat-pill {{
       background: var(--wp-light);
