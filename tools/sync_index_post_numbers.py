@@ -24,7 +24,7 @@ def update_naver():
         html = f.read()
 
     posts = scan_all_posts()
-    today_str = "2026-11-07"
+    today_str = posts[0]["date_only"] if posts else datetime.now().strftime("%Y-%m-%d")
     cards = []
     for p in posts:
         is_today = (p["date_only"] == today_str)
@@ -70,7 +70,7 @@ def update_tistory():
         html = f.read()
 
     posts = scan_tistory_posts()
-    today_str = "2026-11-06"
+    today_str = posts[0]["date_only"] if posts else datetime.now().strftime("%Y-%m-%d")
     cards = []
     for p in posts:
         is_today = (p["date_only"] == today_str)
@@ -108,7 +108,7 @@ def update_wordpress():
         html = f.read()
 
     posts = scan_wp_posts()
-    today_str = "2026-11-06"
+    today_str = posts[0]["date_only"] if posts else datetime.now().strftime("%Y-%m-%d")
     cards = []
     for p in posts:
         is_today = (p["date_only"] == today_str)
