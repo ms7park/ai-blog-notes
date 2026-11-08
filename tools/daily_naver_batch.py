@@ -136,6 +136,23 @@ BLOG_THEMES = {
         "p2_desc": "알뜰폰 요금제, 자동차 유지비 절약, 정부 에너지 캐시백 등 매달 자동으로 빠져나가는 고정 비용을 재점검하여 숨은 새는 돈을 완벽하게 틀어막아야 합니다.",
         "p3_title": "신기술을 두려워하지 않고 생활에 똑똑하게 접목하기",
         "p3_desc": "새로운 디지털 기기나 전기차, 스마트 가전의 편리한 기능들을 적극적으로 배우고 일상에 적용하면 삶의 질이 눈에 띄게 풍요로워집니다."
+    },
+    "tattoo_art": {
+        "name": "타투 & 바디아트 (타투이스트 이야기)",
+        "category": "타투 / 바디아트 / 1:1 커스텀 디자인",
+        "keywords": [
+            "타투", "문신", "타투이스트", "도안", "미니타투", "레터링", "감성타투", "라인워크",
+            "블랙워크", "블랙앤그레이", "이레즈미", "커버업", "타투가격", "타투통증", "타투관리",
+            "비판텐", "리터치", "손목타투", "발목타투", "쇄골타투", "팔타투", "손가락타투", "커플타투",
+            "우정타투", "반려동물타투", "탄생화타투", "타투도안", "바디아트", "타투샵", "타투스튜디오"
+        ],
+        "lead": "평생 몸에 새겨지는 소중한 기억과 나만의 예술, 섬세한 감각과 철저한 1회용 멸균 위생으로 완성하는 타투이스트 아들의 감성 커스텀 바디아트 이야기입니다.",
+        "p1_title": "세상에 하나뿐인 나만의 이야기를 담는 커스텀 도안",
+        "p1_desc": "단순한 유행을 따라가는 흔한 디자인이 아니라, 고객의 삶과 가치관, 특별한 추억을 1:1 심층 상담을 통해 고유한 감성 도안으로 섬세하게 구현합니다.",
+        "p2_title": "타투 부위별 통증과 체계적인 사전 관리 및 견적 안내",
+        "p2_desc": "첫 타투를 고민하는 분들을 위해 부위별 통증 정도, 세밀한 시간당 견적 및 크기별 가격 기준, 시술 전 컨디션 관리 요령을 투명하고 상세하게 안내합니다.",
+        "p3_title": "첫날부터 2주까지, 색 빠짐 없는 철저한 시술 후 애프터케어",
+        "p3_desc": "방수필름 부착 요령, 비판텐 연고 올바른 도포 주기, 음주·사우나 금지 등 시술 후 발색을 평생 선명하게 지켜주는 전문 사후 관리 노하우를 전달합니다."
     }
 }
 
@@ -196,6 +213,25 @@ NAVER_CURATED_TOPICS = [
     {"keyword": "정년 연장 고용지원금", "traffic": "1800+", "news_title": "만 60세 이상 정년 연장·재고용 중소기업 시니어 일자리 계속고용장려금 지원"},
     {"keyword": "스마트폰 사진 클라우드 정리", "traffic": "1600+", "news_title": "용량 부족 해결하는 갤럭시 스마트폰 사진·동영상 구글포토 백업 및 중복 파일 삭제"},
     {"keyword": "시니어 실속형 하이브리드 중고차", "traffic": "1700+", "news_title": "은퇴 후 연비 20km/L 유지비 적은 국산 하이브리드 자동차 중고차 추천 및 시세 조회"}
+]
+
+# 큰아들 타투이스트 전용 검증된 상록수 및 실시간 상위 검색 주제 풀
+NAVER_TATTOO_TOPICS = [
+    {"keyword": "미니 타투 도안 추천", "traffic": "3200+", "news_title": "첫 타투로 인기 높은 손목·발목·쇄골 감성 미니타투 도안 및 부위별 통증 비교"},
+    {"keyword": "타투 관리법과 비판텐 연고", "traffic": "2800+", "news_title": "타투 시술 후 2주 관리법! 바세린 대신 비판텐 바르는 시기와 딱지 관리 주의사항"},
+    {"keyword": "레터링 타투 문구 추천", "traffic": "3500+", "news_title": "평생 남는 감동적인 라틴어 명언 및 영어 필기체 레터링 타투 문구와 폰트 추천"},
+    {"keyword": "타투 부위별 통증 순위", "traffic": "4100+", "news_title": "타투 부위별 통증 순위표 총정리! 갈비뼈·손가락 vs 팔·어깨 덜 아픈 부위 비교"},
+    {"keyword": "블랙워크 파인라인 타투", "traffic": "2400+", "news_title": "섬세한 감성을 담는 파인라인 & 감각적인 블랙워크 타투 도안과 1:1 커스텀 상담"},
+    {"keyword": "타투 가격 책정 기준", "traffic": "2900+", "news_title": "타투 가격과 크기별 견적 기준 총정리! 손바닥 크기 비용 및 시간당 견적 확인법"},
+    {"keyword": "타투 커버업 도안 요령", "traffic": "2200+", "news_title": "바늘자국 및 오래된 옛날 문신 흉터 덮는 타투 커버업 성공 요령과 도안 선택"},
+    {"keyword": "손가락 타투 물 빠짐 리터치", "traffic": "2600+", "news_title": "손가락·손등 타투 물 빠짐과 번짐 이유! 시술 후 리터치 주기와 선명도 유지 꿀팁"},
+    {"keyword": "반려동물 타투 도안 제작", "traffic": "3100+", "news_title": "소중한 반려견·반려묘 사진을 영원히 새기는 반려동물 커스텀 라인 드로잉 타투"},
+    {"keyword": "탄생화 별자리 타투", "traffic": "2700+", "news_title": "나만의 스토리를 새기는 탄생화 & 별자리 타투 도안 추천과 감성적인 부위 배치"},
+    {"keyword": "타투 위생 멸균 소독 기준", "traffic": "2000+", "news_title": "안심하고 시술받는 타투 위생 기준! 1회용 멸균 바늘 폐기 및 정품 잉크 확인법"},
+    {"keyword": "커플 타투 우정 타투 도안", "traffic": "3300+", "news_title": "부담스럽지 않게 세련된 커플 & 우정 타투 도안 추천! 심플한 미니멀 디자인"},
+    {"keyword": "쇄골 어깨 타투 도안", "traffic": "2500+", "news_title": "여름철 매력적인 쇄골 라인 및 어깨 감성 타투 도안과 시술 후 옷 마찰 관리법"},
+    {"keyword": "발목 손목 타투 추천", "traffic": "2700+", "news_title": "사계절 은은하게 포인트 주는 발목·손목 밴드 타투 및 미니멀 심볼 도안"},
+    {"keyword": "타투 시술 전 주의사항", "traffic": "2300+", "news_title": "타투 시술 전날 금주해야 하는 이유와 수면·식사 컨디션 관리 필수 체크리스트"}
 ]
 
 # 최종 문맥 및 품질 교정 지침(guidelines/final-proofreading.md)이 100% 반영된 주제별 전문 원고 사전
@@ -999,6 +1035,23 @@ def match_blog_theme(keyword, news_title=""):
     if any(b in kw_clean for b in BLOCKED_NAVER_KEYWORDS):
         return None
 
+    # 타투 & 바디아트 테마 (큰아들 타투이스트 스튜디오 연계) 키워드 우선 매칭
+    if any(tk in kw_clean for tk in ["타투", "문신", "바디아트", "도안", "블랙워크", "라인워크", "레터링", "비판텐"]):
+        theme_info = BLOG_THEMES["tattoo_art"]
+        return {
+            "theme_key": "tattoo_art",
+            "theme_name": theme_info["name"],
+            "category": theme_info["category"],
+            "matched_keyword": "타투",
+            "lead": theme_info["lead"],
+            "p1_title": theme_info["p1_title"],
+            "p1_desc": theme_info["p1_desc"],
+            "p2_title": theme_info["p2_title"],
+            "p2_desc": theme_info["p2_desc"],
+            "p3_title": theme_info["p3_title"],
+            "p3_desc": theme_info["p3_desc"]
+        }
+
     for theme_key, theme_info in BLOG_THEMES.items():
         for ck in theme_info["keywords"]:
             ck_low = ck.lower().strip()
@@ -1199,6 +1252,29 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
                 return f"가성비와 실용성 다 잡는 '{kw}' 구매 가이드! 가격 거품 빼고 고르는 3가지 비결"
             else:
                 return f"한 달 생활비 30만원 아끼는 '{kw}' 실천법! 전 세대 필수 스마트 소비 꿀팁 3가지"
+        elif theme_key == "tattoo_art":
+            if any(w in kw for w in ["관리", "비판텐", "연고", "샤워", "물", "딱지"]):
+                return f"타투 시술 후 2주 관리법 총정리! '{kw}' 바르는 시기와 색 빠짐 예방 수칙 3가지"
+            elif any(w in kw for w in ["도안", "미니", "디자인", "추천", "감성"]):
+                return f"첫 타투로 부담 없는 감성 '{kw}' 5선! 부위별 추천과 1:1 맞춤 커스텀 팁"
+            elif any(w in kw for w in ["통증", "아픈", "부위"]):
+                return f"타투 부위별 통증 순위표 총정리! '{kw}' 덜 아프게 받는 꿀팁 3가지"
+            elif any(w in kw for w in ["가격", "비용", "견적"]):
+                return f"타투 가격 책정 기준과 견적 산정법 총정리! '{kw}' 예약 전 알아둘 3가지"
+            elif any(w in kw for w in ["커버업", "흉터", "커버"]):
+                return f"오래된 문신·흉터 가리는 '{kw}' 가이드! 자연스러운 커버업 도안 선택 요령"
+            elif any(w in kw for w in ["레터링", "문구", "명언", "폰트"]):
+                return f"평생 새겨도 후회 없는 '{kw}' 추천! 라틴어 명언과 감성 폰트 고르는 법"
+            elif any(w in kw for w in ["위생", "소독", "바늘", "잉크"]):
+                return f"안심하고 시술받는 '{kw}' 필수 기준! 1회용 멸균 바늘과 작업실 위생 체크리스트"
+            elif any(w in kw for w in ["손가락", "손등", "리터치"]):
+                return f"지워지기 쉬운 '{kw}' 이유와 리터치 주기! 오래 유지하는 관리 노하우"
+            elif any(w in kw for w in ["반려동물", "강아지", "고양이"]):
+                return f"소중한 반려 가족을 평생 새기는 '{kw}'! 라인 드로잉 도안 제작 팁"
+            elif any(w in kw for w in ["탄생화", "별자리", "꽃"]):
+                return f"나만의 스토리를 담는 감성 '{kw}' 추천! 부위별 배치와 의미 총정리"
+            else:
+                return f"타투이스트 아들이 전하는 '{kw}' 실전 가이드! 실패 없는 도안 선택과 위생 체크포인트"
 
     return f"[보류] '{kw}' — 단기 이슈성 검색어 (시니어·은퇴 테마 외 키워드)"
 
@@ -1262,6 +1338,88 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
         md_content = f"""# {title}
 
 {verified_art["body"].strip()}
+
+{tags_line}
+"""
+    elif theme_info and theme_info.get("theme_key") == "tattoo_art":
+        raw_tags = [kw.replace(" ", ""), "타투도안", "미니타투", "감성타투", "레터링타투", "블랙워크", "타투이스트", "타투스튜디오", "바디아트", "타투관리법", "품미인생"]
+        dedup_tags = []
+        for tg in raw_tags:
+            if tg and tg not in dedup_tags:
+                dedup_tags.append(tg)
+        tags_line = " ".join(f"#{tg}" for tg in dedup_tags)
+
+        md_content = f"""# {title}
+
+안녕하세요, 든든한 노후 자산과 소중한 가족의 일상을 가꾸는 블로그 지기 **'품미인생(品味人生)'**입니다.
+
+오늘은 조금 특별하고 소중한 가족의 이야기를 나눠보고자 합니다. 저희 **큰아들이 오랜 시간 디자인을 전공하고, 현재 1:1 맞춤 커스텀 타투이스트**로 정성을 다해 활동하고 있습니다.
+
+{lead_text}
+
+많은 분들이 첫 타투를 고민하시거나 기존 문신의 관리·커버업을 알아볼 때, **포털 사이트 검색광고(네이버 클릭 광고)에 타투 관련 업종의 광고 집행이 제한**되어 있어 믿을 수 있고 위생적인 실력파 작업실 정보를 찾는 데 많은 어려움을 겪으십니다.
+
+> **"'{kw}' 시술을 결정할 때 어떤 기준을 먼저 꼼꼼히 따져봐야 할까요?"**  
+> **"평생 몸에 남는 예술인 만큼, 위생과 도안 완성도를 높이려면 무엇이 중요할까요?"**
+
+현직 타투이스트인 큰아들의 실전 경험과 위생 철학을 바탕으로, **'{kw}'에 대해 꼭 알아두셔야 할 핵심 정보와 실전 팁 3가지**를 부모의 진솔한 마음을 담아 정리해 드립니다.
+
+---
+
+## 1. {p1_title}
+
+{p1_desc}
+
+타투는 한 번 새기면 쉽게 지울 수 없기 때문에, 단순히 인터넷에 떠도는 흔한 도안을 그대로 복사하기보다 **시술 부위의 근육 움직임과 피부 톤, 그리고 본인만의 고유한 의미**를 1:1 상담을 통해 도안에 녹여내는 것이 가장 중요합니다.
+
+---
+
+## 2. 실전에서 꼭 챙겨야 할 핵심 포인트 3가지
+
+### ① 100% 1회용 멸균 니들과 철저한 소독 위생 확인하기
+타투 시술의 최우선 가치는 '안전과 위생'입니다. 모든 바늘(니들), 잉크 캡, 그립 커버, 위생 장갑 등은 **반드시 시술 직전 고객의 눈앞에서 미개봉 멸균 포장을 뜯어 사용하고, 시술 종료 즉시 의료용 폐기물통에 분리 폐기**해야 합니다.
+
+### ② {p2_title}
+{p2_desc}
+
+### ③ {p3_title}
+{p3_desc}
+
+---
+
+## 3. 시술 전후 최종 점검 체크리스트
+
+1. **시술 전날 필수 수칙**: 충분한 수면을 취하고, 혈액 순환 과다 및 붓기를 방지하기 위해 **전날 금주** 필수
+2. **도안 및 부위 확정**: 1:1 심층 상담을 통해 피부 굴곡과 체형에 맞는 최적의 크기와 위치 결정
+3. **애프터케어(시술 후 관리)**: 시술 직후 방수필름 부착 요령 숙지 및 건조 방지를 위한 비판텐 연고 적정 도포
+
+---
+
+## 🎨 [INK/NOIR] 큰아들 타투이스트 1:1 커스텀 작업실 소개
+
+평생 몸에 새겨지는 소중한 작품이기에, 저희 큰아들은 타협 없는 위생 원칙과 1:1 감성 커스텀 디자인을 고집하고 있습니다.
+
+- **100% 1회용 멸균 바늘 사용 및 정품 잉크 인증**
+- **파인라인, 감성 미니타투, 레터링, 감각적인 블랙워크 전문**
+- **사전 1:1 심층 상담을 통한 세상에 단 하나뿐인 맞춤 도안 제작**
+
+작업 포트폴리오 감상 및 친절한 도안·견적 상담은 아래 **큰아들의 공식 스튜디오 누리집**에서 편하게 확인해 보세요.
+
+👉 **큰아들 타투이스트 공식 포트폴리오 & 예약 상담 누리집**:  
+🔗 **[https://tattoostudio-flax.vercel.app/](https://tattoostudio-flax.vercel.app/)**
+
+*(※ 프라이빗한 1:1 예약제로만 운영되므로, 방문 전 공식 누리집을 통해 사전 문의해 주시기 바랍니다.)*
+
+---
+
+## 맺음말 & 소통 한마디
+
+> "몸에 새기는 것은 단순한 그림이 아니라,  
+> 내가 살아온 시간과 소중한 가치관을 기억하는 예술입니다."
+
+오늘 소개해 드린 '{kw}' 정보가 타투를 준비하시는 분들께 든든한 길잡이가 되었기를 바랍니다. 궁금한 점이나 도안 상담 관련 질문이 있으시다면 언제든 편하게 댓글 남겨주세요!
+
+글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 부탁드립니다!
 
 {tags_line}
 """
@@ -2014,6 +2172,8 @@ def scan_all_posts():
                 score_str = "96/100점" if post_num == 1 else "95/100점"
             elif any(k in title for k in ["ChatGPT", "AI", "블로그", "고향사랑기부제", "정부지원금"]):
                 score_str = "96/100점" if post_num == 1 else "94/100점"
+            elif any(k in title for k in ["타투", "문신", "도안", "레터링", "바디아트", "블랙워크"]):
+                score_str = "97/100점" if post_num in (1, 6) else "96/100점"
             elif any(k in title for k in ["여행", "온천", "골프", "취미", "기차"]):
                 score_str = "94/100점" if post_num == 1 else "92/100점"
             else:
@@ -3294,8 +3454,10 @@ def run_batch(target_date=None, force=False, naver_only=False):
     trends = fetch_trending_keywords()
     log(f"📊 실시간 트렌드 {len(trends)}개 수집 완료")
 
-    # 2. 블로그 테마와 정확히 일치하고 기작성 중복이 아닌 키워드 전수 선별 (실시간 키워드 기준 주제 해당 글 모두 작성)
-    selected_items = []
+    # 2. 블로그 테마와 정확히 일치하고 기작성 중복이 아닌 키워드 선별 (일반 테마 vs 타투 테마 분리 선별)
+    selected_general = []
+    selected_tattoo = []
+
     for t in trends:
         theme_info = t.get("theme") or match_blog_theme(t["keyword"], t.get("news", ""))
         if not theme_info:
@@ -3305,38 +3467,83 @@ def run_batch(target_date=None, force=False, naver_only=False):
         t["recommended_title"] = title_cand
         if title_cand in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
             continue
-        selected_items.append((t, theme_info))
-        existing_sigs["titles"].add(title_cand)
+
+        if theme_info.get("theme_key") == "tattoo_art":
+            if len(selected_tattoo) < 2:
+                selected_tattoo.append((t, theme_info))
+                existing_sigs["titles"].add(title_cand)
+                existing_sigs["keywords"].add(kw_low)
+        else:
+            if len(selected_general) < 3:
+                selected_general.append((t, theme_info))
+                existing_sigs["titles"].add(title_cand)
+                existing_sigs["keywords"].add(kw_low)
+
+    # 3-1. 타투 & 바디아트 테마 (큰아들 타투이스트 스튜디오 연계) 매일 1~2편 우선 보장
+    for t_cur in NAVER_TATTOO_TOPICS:
+        if len(selected_tattoo) >= 2:
+            break
+        kw_low = t_cur["keyword"].strip().lower()
+        theme_info = match_blog_theme(t_cur["keyword"], t_cur["news_title"])
+        if not theme_info:
+            continue
+        rec_title = generate_blog_title_for_trend(t_cur["keyword"], t_cur["news_title"], theme_info)
+        if rec_title in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
+            continue
+        t_obj = {
+            "rank": len(selected_tattoo) + 1,
+            "keyword": t_cur["keyword"],
+            "badge": t_cur["traffic"],
+            "news": t_cur["news_title"],
+            "recommended_title": rec_title,
+            "theme": theme_info
+        }
+        selected_tattoo.append((t_obj, theme_info))
+        existing_sigs["titles"].add(rec_title)
         existing_sigs["keywords"].add(kw_low)
 
-    # 3. 만약 실시간 트렌드에서 매칭된 글이 부족한 경우 상록수/10대 킬러 주제 풀에서 추가 선별
-    if len(selected_items) < 3:
-        for cur in NAVER_CURATED_TOPICS:
-            kw_low = cur["keyword"].strip().lower()
-            theme_info = match_blog_theme(cur["keyword"], cur["news_title"])
-            if not theme_info:
-                continue
-            rec_title = generate_blog_title_for_trend(cur["keyword"], cur["news_title"], theme_info)
-            if rec_title in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
-                continue
-            t_obj = {
-                "rank": len(selected_items) + 1,
-                "keyword": cur["keyword"],
-                "badge": cur["traffic"],
-                "news": cur["news_title"],
-                "recommended_title": rec_title,
-                "theme": theme_info
-            }
-            selected_items.append((t_obj, theme_info))
-            existing_sigs["titles"].add(rec_title)
-            existing_sigs["keywords"].add(kw_low)
-            if len(selected_items) >= 5:
-                break
+    # 3-2. 일반 은퇴·자산·건강 테마 보충 (일일 총 5편 구성)
+    target_general = max(3, 5 - len(selected_tattoo))
+    for cur in NAVER_CURATED_TOPICS:
+        if len(selected_general) >= target_general:
+            break
+        kw_low = cur["keyword"].strip().lower()
+        theme_info = match_blog_theme(cur["keyword"], cur["news_title"])
+        if not theme_info:
+            continue
+        rec_title = generate_blog_title_for_trend(cur["keyword"], cur["news_title"], theme_info)
+        if rec_title in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
+            continue
+        t_obj = {
+            "rank": len(selected_general) + 1,
+            "keyword": cur["keyword"],
+            "badge": cur["traffic"],
+            "news": cur["news_title"],
+            "recommended_title": rec_title,
+            "theme": theme_info
+        }
+        selected_general.append((t_obj, theme_info))
+        existing_sigs["titles"].add(rec_title)
+        existing_sigs["keywords"].add(kw_low)
+
+    selected_items = selected_general + selected_tattoo
+
+    # 기존 당일 작성된 글 번호 확인 (기존 글 보존 상태에서 추가 발행 지원)
+    existing_nums = []
+    if os.path.exists(target_ym_dir):
+        for f in os.listdir(target_ym_dir):
+            if f.startswith(today_str) and f.endswith(".md"):
+                base = f.replace(".md", "")
+                parts = base.split("-")
+                num = int(parts[3]) if len(parts) > 3 else 1
+                existing_nums.append(num)
+    start_num = max(existing_nums) if existing_nums and not force else 0
 
     created_count = 0
     for idx, (t_item, th_info) in enumerate(selected_items, 1):
-        post_id = today_str if idx == 1 else f"{today_str}-{idx}"
-        create_post(post_id, today_str, weekday_str, t_item, theme_info=th_info, post_num=idx, force=force)
+        actual_post_num = start_num + idx if start_num > 0 else idx
+        post_id = today_str if actual_post_num == 1 else f"{today_str}-{actual_post_num}"
+        create_post(post_id, today_str, weekday_str, t_item, theme_info=th_info, post_num=actual_post_num, force=force)
         created_count += 1
 
     log(f"📝 오늘 작성된 네이버 블로그 포스팅: 총 {created_count}편 (오매칭·중복 원천 차단 완료)")
