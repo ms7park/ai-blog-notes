@@ -4,7 +4,7 @@
 """
 daily_naver_tattoo_batch.py
 
-큰아들 타투이스트 전용 네이버 블로그 작업실(blog/naver-tatto/) 일일 포스팅 자동 생성 및 대시보드 갱신 배치 스크립트.
+타투이스트 전용 네이버 블로그 작업실(blog/naver-tatto/) 일일 포스팅 자동 생성 및 대시보드 갱신 배치 스크립트.
 
 특징 및 원칙:
 1. 스토리텔링 페르소나:
@@ -909,7 +909,7 @@ def rebuild_index(posts, today_str):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>큰아들 타투이스트 네이버 블로그 작업실 | {STUDIO_NAME}</title>
+  <title>타투이스트 네이버 블로그 작업실 | {STUDIO_NAME}</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <style>
     :root {{
@@ -1210,7 +1210,7 @@ def rebuild_index(posts, today_str):
     <div class="header-inner">
       <div class="brand-wrap">
         <span class="brand-badge">INK/NOIR</span>
-        <div class="brand-title">큰아들 타투이스트 네이버 블로그 작업실</div>
+        <div class="brand-title">타투이스트 네이버 블로그 작업실</div>
       </div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <a href="{KAKAO_CHAT_URL}" target="_blank" rel="noopener noreferrer" class="header-link" style="background: #fee500; color: #191919; font-weight: 700; border-color: #fada0a;">💬 카톡 상담</a>
@@ -1228,7 +1228,7 @@ def rebuild_index(posts, today_str):
         <p>
           국내 법적 규제로 포털 검색광고 집행이 어려운 타투 스튜디오를 위해, 
           실시간 상위 검색 주제 및 1:1 커스텀 감성 도안, 철저한 멸균 위생 수칙 중심의 고품질 블로그 콘텐츠를 매일 1~2건씩 자동 발행합니다.<br>
-          제작된 글은 큰아들의 공식 네이버 블로그(<strong>applepark03</strong>)에 즉시 복사하여 포스팅할 수 있으며, 카카오톡 오픈채팅과 공식 사이트를 통해 실시간 견적 상담 및 예약으로 연결됩니다.
+          제작된 글은 공식 네이버 블로그(<strong>applepark03</strong>)에 즉시 복사하여 포스팅할 수 있으며, 카카오톡 오픈채팅과 공식 사이트를 통해 실시간 견적 상담 및 예약으로 연결됩니다.
         </p>
       </div>
       <div class="hero-actions">
@@ -1236,7 +1236,7 @@ def rebuild_index(posts, today_str):
           💬 카카오톡 오픈채팅 상담 ↗
         </a>
         <a href="{NAVER_BLOG_URL}" target="_blank" rel="noopener noreferrer" class="btn-naver">
-          🟢 큰아들 네이버 블로그 ↗
+          🟢 공식 네이버 블로그 ↗
         </a>
         <a href="{STUDIO_URL}" target="_blank" rel="noopener noreferrer" class="btn-site">
           🌐 포트폴리오 웹사이트 ↗
@@ -1406,7 +1406,7 @@ def run_batch(target_date_str=None, count=2, force=False):
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description="큰아들 타투이스트 네이버 블로그 일일 배치")
+    parser = argparse.ArgumentParser(description="타투이스트 네이버 블로그 일일 배치")
     parser.add_argument("date", nargs="?", default=None, help="대상 날짜 (YYYY-MM-DD)")
     parser.add_argument("--count", type=int, default=2, help="생성할 포스트 수 (기본: 2)")
     parser.add_argument("--force", action="store_true", help="기존 포스트 덮어쓰기")
