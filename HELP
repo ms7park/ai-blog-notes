@@ -283,3 +283,14 @@
 4. 메인 포털(`index.html`) 및 지침서 뷰어(`docs/index.html`) 연동:
    - 상단 네비게이션에 `🖤 큰아들 타투 작업실` 링크 추가
    - 멀티 플랫폼 채널 그리드에 4번째 작업실 카드(큰아들 타투 · INK/NOIR) 신규 탑재
+
+== 2026.11.09 : 큰아들 네이버 블로그(applepark03) & 카카오톡 오픈채팅 연동 반영
+1. 큰아들 공식 소통 채널 연결 정보 등록:
+   - 네이버 블로그: `https://blog.naver.com/applepark03`
+   - 카카오톡 오픈채팅: `https://open.kakao.com/o/spg2Vnvh`
+   - 공식 포트폴리오 웹사이트: `https://tattoostudio-flax.vercel.app/`
+2. 큰아들 타투 작업실 대시보드(`blog/naver-tatto/index.html`) 및 배치 엔진(`tools/daily_naver_tattoo_batch.py`) 반영:
+   - 상단 헤더 및 히어로 배너에 카카오톡 1:1 상담, 네이버 블로그 바로가기 버튼 추가
+   - 매일 발행되는 타투 포스팅 원고(HTML/MD) 하단 CTA에 카카오톡 실시간 상담, 공식 네이버 블로그 이웃추가 링크 카드 삽입
+   - 2026-11-09자 포스팅 2편 최신 채널 링크 동기화 재발행 완료
+3. 루트 통합 포털(`index.html`) 카드 메타박스에 카카오톡 오픈채팅 및 네이버 블로그 바로가기 링크 반영

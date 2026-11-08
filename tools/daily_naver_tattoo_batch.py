@@ -32,6 +32,8 @@ TATTOO_BLOG_DIR = os.path.join(BASE_DIR, "blog", "naver-tatto")
 TATTOO_POSTS_DIR = os.path.join(TATTOO_BLOG_DIR, "posts")
 STUDIO_URL = "https://tattoostudio-flax.vercel.app/"
 STUDIO_NAME = "INK/NOIR Tattoo Studio"
+NAVER_BLOG_URL = "https://blog.naver.com/applepark03"
+KAKAO_CHAT_URL = "https://open.kakao.com/o/spg2Vnvh"
 
 # 엄선된 타투 인기 검색 주제 풀 (15선)
 TATTOO_TOPIC_POOL = [
@@ -345,8 +347,9 @@ A. 원하시는 느낌의 참고 사진이나 생각하고 계신 문구, 상징
 
 평생 간직할 나만의 소중한 예술, 타투이스트와 함께 가장 안전하고 아름답게 완성해 보세요.
 
-- **공식 웹사이트**: [{STUDIO_NAME}]({STUDIO_URL})
-- **포트폴리오 및 1:1 상담 예약**: [https://tattoostudio-flax.vercel.app/](https://tattoostudio-flax.vercel.app/)
+- **💬 카카오톡 1:1 상담**: [{KAKAO_CHAT_URL}]({KAKAO_CHAT_URL}) (견적 및 도안 실시간 문의)
+- **🟢 네이버 공식 블로그**: [{NAVER_BLOG_URL}]({NAVER_BLOG_URL}) (스튜디오 일상 및 포스팅)
+- **🌐 공식 포트폴리오 웹사이트**: [{STUDIO_NAME}]({STUDIO_URL})
 - **작업 원칙**: 100% 예약제 프라이빗 세션 / 철저한 1회용 멸균 위생 준수 / 1:1 커스텀 디자인
 """
     return md_content
@@ -608,23 +611,44 @@ def generate_post_html(topic_data, post_no, date_str, md_path_relative):
       max-width: 580px;
       line-height: 1.6;
     }}
+    .studio-cta-btn-group {{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }}
     .studio-cta-btn {{
       display: inline-flex;
       align-items: center;
       gap: 8px;
       background: #fff;
       color: #09090b;
-      font-size: 14px;
-      font-weight: 800;
-      padding: 12px 28px;
-      border-radius: 30px;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 24px;
       text-decoration: none;
       transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(255,255,255,0.2);
     }}
     .studio-cta-btn:hover {{
       transform: translateY(-2px);
       background: #f4f4f5;
+    }}
+    .studio-cta-btn-kakao {{
+      background: #fee500;
+      color: #191919;
+      font-weight: 800;
+    }}
+    .studio-cta-btn-kakao:hover {{
+      background: #fada0a;
+    }}
+    .studio-cta-btn-naver {{
+      background: #03c75a;
+      color: #fff;
+      font-weight: 700;
+    }}
+    .studio-cta-btn-naver:hover {{
+      background: #02b14f;
     }}
     .nav-bottom {{
       display: flex;
@@ -743,11 +767,20 @@ def generate_post_html(topic_data, post_no, date_str, md_path_relative):
         <span class="studio-cta-badge">{STUDIO_NAME} OFFICIAL</span>
         <h3 class="studio-cta-title">세상에 단 하나뿐인 나만의 바디아트를 완성하세요</h3>
         <p class="studio-cta-desc">
-          공장형 도안이 아닌 1:1 맞춤 커스텀 디자인과 철저한 1회용 멸균 위생으로 안전하고 품격 있는 타투를 약속드립니다.
+          공장형 도안이 아닌 1:1 맞춤 커스텀 디자인과 철저한 1회용 멸균 위생으로 안전하고 품격 있는 타투를 약속드립니다.<br>
+          도안 상담 및 견적 문의는 카카오톡 오픈채팅으로 편하게 남겨주시면 친절히 안내해 드립니다.
         </p>
-        <a href="{STUDIO_URL}" target="_blank" rel="noopener noreferrer" class="studio-cta-btn">
-          공식 포트폴리오 & 1:1 상담 예약 바로가기 ↗
-        </a>
+        <div class="studio-cta-btn-group">
+          <a href="{KAKAO_CHAT_URL}" target="_blank" rel="noopener noreferrer" class="studio-cta-btn studio-cta-btn-kakao">
+            💬 카카오톡 1:1 오픈채팅 문의 ↗
+          </a>
+          <a href="{STUDIO_URL}" target="_blank" rel="noopener noreferrer" class="studio-cta-btn">
+            🌐 포트폴리오 웹사이트 ↗
+          </a>
+          <a href="{NAVER_BLOG_URL}" target="_blank" rel="noopener noreferrer" class="studio-cta-btn studio-cta-btn-naver">
+            🟢 공식 네이버 블로그 ↗
+          </a>
+        </div>
       </div>
     </div>
 
@@ -996,6 +1029,40 @@ def rebuild_index(posts, today_str):
       background: #f1f5f9;
       transform: translateY(-1px);
     }}
+    .btn-kakao {{
+      background: #fee500;
+      color: #191919;
+      font-size: 13.5px;
+      font-weight: 800;
+      padding: 10px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }}
+    .btn-kakao:hover {{
+      background: #fada0a;
+      transform: translateY(-1px);
+    }}
+    .btn-naver {{
+      background: #03c75a;
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }}
+    .btn-naver:hover {{
+      background: #02b14f;
+      transform: translateY(-1px);
+    }}
     .btn-sub {{
       background: rgba(255,255,255,0.1);
       color: #fff;
@@ -1145,8 +1212,11 @@ def rebuild_index(posts, today_str):
         <span class="brand-badge">INK/NOIR</span>
         <div class="brand-title">큰아들 타투이스트 네이버 블로그 작업실</div>
       </div>
-      <div>
-        <a href="../../index.html" class="header-link">← 블로그 포털 홈</a>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <a href="{KAKAO_CHAT_URL}" target="_blank" rel="noopener noreferrer" class="header-link" style="background: #fee500; color: #191919; font-weight: 700; border-color: #fada0a;">💬 카톡 상담</a>
+        <a href="{NAVER_BLOG_URL}" target="_blank" rel="noopener noreferrer" class="header-link" style="background: #03c75a; color: #fff; font-weight: 700; border-color: #02b14f;">🟢 네이버 블로그</a>
+        <a href="{STUDIO_URL}" target="_blank" rel="noopener noreferrer" class="header-link">🌐 공식 사이트</a>
+        <a href="../../index.html" class="header-link">← 포털 홈</a>
       </div>
     </div>
   </header>
@@ -1157,12 +1227,19 @@ def rebuild_index(posts, today_str):
         <h1>{STUDIO_NAME} 공식 블로그 작업실</h1>
         <p>
           국내 법적 규제로 포털 검색광고 집행이 어려운 타투 스튜디오를 위해, 
-          실시간 상위 검색 주제 및 1:1 커스텀 감성 도안, 철저한 멸균 위생 수칙 중심의 고품질 블로그 콘텐츠를 매일 1~2건씩 자동 발행합니다.
+          실시간 상위 검색 주제 및 1:1 커스텀 감성 도안, 철저한 멸균 위생 수칙 중심의 고품질 블로그 콘텐츠를 매일 1~2건씩 자동 발행합니다.<br>
+          제작된 글은 큰아들의 공식 네이버 블로그(<strong>applepark03</strong>)에 즉시 복사하여 포스팅할 수 있으며, 카카오톡 오픈채팅과 공식 사이트를 통해 실시간 견적 상담 및 예약으로 연결됩니다.
         </p>
       </div>
       <div class="hero-actions">
+        <a href="{KAKAO_CHAT_URL}" target="_blank" rel="noopener noreferrer" class="btn-kakao">
+          💬 카카오톡 오픈채팅 상담 ↗
+        </a>
+        <a href="{NAVER_BLOG_URL}" target="_blank" rel="noopener noreferrer" class="btn-naver">
+          🟢 큰아들 네이버 블로그 ↗
+        </a>
         <a href="{STUDIO_URL}" target="_blank" rel="noopener noreferrer" class="btn-site">
-          공식 웹사이트 방문 ↗
+          🌐 포트폴리오 웹사이트 ↗
         </a>
         <a href="../../index.html" class="btn-sub">
           전체 작업실 목록
@@ -1285,7 +1362,9 @@ def run_batch(target_date_str=None, count=2, force=False):
     pool_len = len(TATTOO_TOPIC_POOL)
     
     created_items = []
-    current_post_count = len(existing_posts)
+    # 이전 날짜 포스트 개수 기준으로 글 번호 산정
+    prior_posts = [p for p in existing_posts if p["date"] < target_date_str]
+    current_post_count = len(prior_posts)
     
     for i in range(count):
         sub_idx = i + 1

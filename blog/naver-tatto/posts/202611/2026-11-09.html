@@ -249,23 +249,44 @@
       max-width: 580px;
       line-height: 1.6;
     }
+    .studio-cta-btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
     .studio-cta-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       background: #fff;
       color: #09090b;
-      font-size: 14px;
-      font-weight: 800;
-      padding: 12px 28px;
-      border-radius: 30px;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 24px;
       text-decoration: none;
       transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(255,255,255,0.2);
     }
     .studio-cta-btn:hover {
       transform: translateY(-2px);
       background: #f4f4f5;
+    }
+    .studio-cta-btn-kakao {
+      background: #fee500;
+      color: #191919;
+      font-weight: 800;
+    }
+    .studio-cta-btn-kakao:hover {
+      background: #fada0a;
+    }
+    .studio-cta-btn-naver {
+      background: #03c75a;
+      color: #fff;
+      font-weight: 700;
+    }
+    .studio-cta-btn-naver:hover {
+      background: #02b14f;
     }
     .nav-bottom {
       display: flex;
@@ -384,11 +405,20 @@
         <span class="studio-cta-badge">INK/NOIR Tattoo Studio OFFICIAL</span>
         <h3 class="studio-cta-title">세상에 단 하나뿐인 나만의 바디아트를 완성하세요</h3>
         <p class="studio-cta-desc">
-          공장형 도안이 아닌 1:1 맞춤 커스텀 디자인과 철저한 1회용 멸균 위생으로 안전하고 품격 있는 타투를 약속드립니다.
+          공장형 도안이 아닌 1:1 맞춤 커스텀 디자인과 철저한 1회용 멸균 위생으로 안전하고 품격 있는 타투를 약속드립니다.<br>
+          도안 상담 및 견적 문의는 카카오톡 오픈채팅으로 편하게 남겨주시면 친절히 안내해 드립니다.
         </p>
-        <a href="https://tattoostudio-flax.vercel.app/" target="_blank" rel="noopener noreferrer" class="studio-cta-btn">
-          공식 포트폴리오 & 1:1 상담 예약 바로가기 ↗
-        </a>
+        <div class="studio-cta-btn-group">
+          <a href="https://open.kakao.com/o/spg2Vnvh" target="_blank" rel="noopener noreferrer" class="studio-cta-btn studio-cta-btn-kakao">
+            💬 카카오톡 1:1 오픈채팅 문의 ↗
+          </a>
+          <a href="https://tattoostudio-flax.vercel.app/" target="_blank" rel="noopener noreferrer" class="studio-cta-btn">
+            🌐 포트폴리오 웹사이트 ↗
+          </a>
+          <a href="https://blog.naver.com/applepark03" target="_blank" rel="noopener noreferrer" class="studio-cta-btn studio-cta-btn-naver">
+            🟢 공식 네이버 블로그 ↗
+          </a>
+        </div>
       </div>
     </div>
 
