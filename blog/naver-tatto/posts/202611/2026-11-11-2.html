@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>손가락·손등 타투 번짐과 색 빠짐 왜 생길까? 시술 전 반드시 알아야 할 현실적인 유지력 | INK/NOIR Tattoo Studio</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    :root {
+      --primary: #18181b;
+      --primary-accent: #6366f1;
+      --primary-light: #f4f4f5;
+      --tattoo-gold: #d97706;
+      --text-main: #18181b;
+      --text-sub: #52525b;
+      --text-muted: #a1a1aa;
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+      --border: #e4e4e7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+    .header {
+      background: #09090b;
+      color: #fafafa;
+      border-bottom: 1px solid #27272a;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-badge {
+      background: #fafafa;
+      color: #09090b;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fafafa;
+      text-decoration: none;
+    }
+    .header-link {
+      font-size: 13px;
+      color: #a1a1aa;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #3f3f46;
+      transition: all 0.15s;
+    }
+    .header-link:hover {
+      color: #fff;
+      border-color: #71717a;
+      background: #27272a;
+    }
+    .container {
+      max-width: 860px;
+      margin: 32px auto 0;
+      padding: 0 20px;
+    }
+    .post-header {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 36px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .post-no-badge {
+      background: #09090b;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+    .category-badge {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+    .date-text {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .post-title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      color: #09090b;
+      letter-spacing: -0.5px;
+    }
+    .post-subtitle {
+      font-size: 15px;
+      color: var(--text-sub);
+      margin-bottom: 18px;
+    }
+    .tags-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 12px;
+      color: var(--primary-accent);
+      background: #eef2ff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .post-body {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .lead-box {
+      background: #f8fafc;
+      border-left: 4px solid #09090b;
+      padding: 20px 24px;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 36px;
+      font-size: 15.5px;
+      color: #334155;
+      line-height: 1.8;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #09090b;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f4f4f5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-desc {
+      font-size: 15px;
+      color: var(--text-sub);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 28px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: #f4f4f5;
+      color: #18181b;
+      font-weight: 700;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-sub);
+    }
+    .qa-card {
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+    }
+    .qa-q {
+      font-size: 15px;
+      font-weight: 700;
+      color: #09090b;
+      margin-bottom: 8px;
+    }
+    .qa-a {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+    .studio-cta-card {
+      background: linear-gradient(135deg, #09090b 0%, #18181b 100%);
+      color: #fff;
+      border-radius: 14px;
+      padding: 28px 24px;
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      text-align: center;
+    }
+    .studio-cta-badge {
+      background: rgba(255,255,255,0.15);
+      color: #fafafa;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .studio-cta-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .studio-cta-desc {
+      font-size: 14px;
+      color: #d4d4d8;
+      max-width: 580px;
+      line-height: 1.6;
+    }
+    .studio-cta-btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .studio-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: #09090b;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 24px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .studio-cta-btn:hover {
+      transform: translateY(-2px);
+      background: #f4f4f5;
+    }
+    .studio-cta-btn-kakao {
+      background: #fee500;
+      color: #191919;
+      font-weight: 800;
+    }
+    .studio-cta-btn-kakao:hover {
+      background: #fada0a;
+    }
+    .studio-cta-btn-naver {
+      background: #03c75a;
+      color: #fff;
+      font-weight: 700;
+    }
+    .studio-cta-btn-naver:hover {
+      background: #02b14f;
+    }
+    .nav-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .btn-outline:hover {
+      background: var(--bg);
+      border-color: #a1a1aa;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <span class="brand-badge">INK/NOIR</span>
+        <a href="../../index.html" class="brand-title">타투 아티스트 블로그 작업실</a>
+      </div>
+      <div>
+        <a href="../../index.html" class="header-link">목록으로</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post-header">
+      <div class="post-meta">
+        <span class="post-no-badge">No. 6</span>
+        <span class="category-badge">부위별 가이드</span>
+        <span class="date-text">📍 2026년 11월 11일</span>
+      </div>
+      <h1 class="post-title">손가락·손등 타투 번짐과 색 빠짐 왜 생길까? 시술 전 반드시 알아야 할 현실적인 유지력</h1>
+      <p class="post-subtitle">마찰과 물 접촉이 잦은 손 부위의 리터치 주기와 관리 노하우</p>
+      <div class="tags-wrap">
+        <span class="tag">#손가락타투</span><span class="tag">#손등타투</span><span class="tag">#타투번짐</span><span class="tag">#타투색빠짐</span><span class="tag">#타투리터치</span>
+      </div>
+    </article>
+
+    <div class="post-body">
+      <div class="lead-box">
+        <strong>🎨 아티스트의 여는 글</strong><br><br>
+        유명 연예인들의 손가락 마디나 손등 타투를 보고 매료되어 문의하시는 분들이 많습니다. 손은 매우 매력적인 위치이지만, 피부 특성상 착색 난이도가 가장 높은 부위이기도 합니다. 시술 전 반드시 짚고 넘어가야 할 손가락 타투의 현실을 가감 없이 밝혀드립니다.
+      </div>
+
+      <h2 class="section-title">1. 손 부위 피부의 해부학적 특성과 잦은 각질 탈락</h2>
+      <p class="section-desc">손바닥과 손가락 안쪽은 피부 턴오버(각질 탈락 주기)가 몸의 다른 부위보다 몇 배나 빠릅니다. 또한 피하지방이 얇아 잉크가 진피층에 안착하지 못하고 쉽게 날아갈 수 있습니다.</p>
+
+      <h2 class="section-title">2. 손가락 타투에서 흔히 발생하는 &#x27;번짐(Blowout)&#x27; 현상</h2>
+      <p class="section-desc">손가락 피부는 얇기 때문에 바늘이 0.1mm만 깊게 들어가도 피하지방층으로 잉크가 번져 뿌옇게 퍼질 수 있습니다. 고도의 섬세한 압력 조절이 가능한 숙련된 아티스트에게 받아야 합니다.</p>
+
+      <h2 class="section-title">3. 1~2회 이상의 주기적인 리터치는 선택이 아닌 필수</h2>
+      <p class="section-desc">손가락 타투는 첫 시술 후 일부 선이 끊기거나 연해질 확률이 80% 이상입니다. 발색이 완전히 자리 잡은 4~6주 뒤 리터치를 통해 선을 보강해 주어야 오래 선명함을 유지할 수 있습니다.</p>
+
+      <h2 class="section-title">📋 프로 타투이스트의 1:1 체크리스트</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>점검 항목</th>
+              <th>상세 체크 포인트</th>
+              <th>권장 수칙</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>위생 환경</strong></td>
+              <td>1회용 멸균 니들 & 랩핑 소독</td>
+              <td>눈앞 개봉 및 시술 후 즉시 폐기</td>
+            </tr>
+            <tr>
+              <td><strong>도안 맞춤</strong></td>
+              <td>1:1 프라이빗 커스텀 상담</td>
+              <td>전사 스텐실 부착 후 자세별 다각도 확인</td>
+            </tr>
+            <tr>
+              <td><strong>사후 케어</strong></td>
+              <td>방수필름 & 비판텐 도포 주기</td>
+              <td>시술 2주간 음주·사우나 금지 및 얇게 도포</td>
+            </tr>
+            <tr>
+              <td><strong>리터치</strong></td>
+              <td>착색 안정화 후 디테일 보강</td>
+              <td>첫 시술 후 4~8주 차에 최적 진행</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">💬 자주 묻는 질문 (Q&A)</h2>
+      <div class="qa-card">
+        <div class="qa-q">Q. 첫 타투인데 혼자 방문하기 망설여져요. 친구와 함께 와도 되나요?</div>
+        <div class="qa-a">A. 편안한 마음으로 1:1 상담을 받으실 수 있도록 동반 1인까지 편안한 대기 공간을 제공합니다. 다만 집중도 높은 멸균 작업을 위해 실제 시술 구역에는 작업자와 고객님만 입장합니다.</div>
+      </div>
+      <div class="qa-card">
+        <div class="qa-q">Q. 도안 제작 상담은 어떻게 진행되나요?</div>
+        <div class="qa-a">A. 원하시는 느낌의 참고 사진이나 생각하고 계신 문구, 상징하고 싶은 키워드를 전달해 주시면 1차 드로잉 시안을 제작하여 피드백을 주고받으며 완성해 나갑니다.</div>
+      </div>
+
+      <div class="studio-cta-card">
+        <span class="studio-cta-badge">INK/NOIR Tattoo Studio OFFICIAL</span>
+        <h3 class="studio-cta-title">세상에 단 하나뿐인 나만의 바디아트를 완성하세요</h3>
+        <p class="studio-cta-desc">
+          공장형 도안이 아닌 1:1 맞춤 커스텀 디자인과 철저한 1회용 멸균 위생으로 안전하고 품격 있는 타투를 약속드립니다.<br>
+          도안 상담 및 견적 문의는 카카오톡 오픈채팅으로 편하게 남겨주시면 친절히 안내해 드립니다.
+        </p>
+        <div class="studio-cta-btn-group">
+          <a href="https://open.kakao.com/o/spg2Vnvh" target="_blank" rel="noopener noreferrer" class="studio-cta-btn studio-cta-btn-kakao">
+            💬 카카오톡 1:1 오픈채팅 문의 ↗
+          </a>
+          <a href="https://tattoostudio-flax.vercel.app/" target="_blank" rel="noopener noreferrer" class="studio-cta-btn">
+            🌐 포트폴리오 웹사이트 ↗
+          </a>
+          <a href="https://blog.naver.com/applepark03" target="_blank" rel="noopener noreferrer" class="studio-cta-btn studio-cta-btn-naver">
+            🟢 공식 네이버 블로그 ↗
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-bottom">
+      <a href="../../index.html" class="btn-outline">← 전체 포스팅 목록</a>
+      <a href="2026-11-11-2.md" class="btn-outline" download>📥 마크다운(.md) 다운로드</a>
+    </div>
+  </main>
+
+</body>
+</html>

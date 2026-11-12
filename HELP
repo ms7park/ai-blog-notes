@@ -328,3 +328,12 @@
      * 워드프레스 대시보드: 총 22개 포스트 동기화 (No. 22 ~ No. 1)
      * 루트 메인 포털(`index.html`) 최근 포스팅 섹션 동기화 완료
 
+== 2026.11.12 : 타투 작업실 자동화 파이프라인 연동 및 Google Trends 수집 엔진 개선
+1. 타투 작업실 0건 원인 진단 및 배치 통합:
+   - 원인: 11월 9일 독립 작업실 신설 후, 메인 일일 배치(`daily_naver_batch.py`)에 타투 배치 스크립트(`daily_naver_tattoo_batch.py`) 연동 단계가 누락되어 있었음.
+   - 조치: `tools/daily_naver_batch.py` [5-4 단계]에 타투 블로그 자동 연동 파이프라인 등록 완료 (매일 자정 네이버/티스토리/워드프레스와 함께 순차 실행).
+   - 소급 발행: 11/10~11/12 누락 포스팅 6편 생성 완료 (총 8개 포스트로 대시보드 최신화).
+2. Google Trends RSS 수집 엔진 정상화 (SSL 컨텍스트 및 헤더 개선):
+   - 원인: macOS Python 기본 SSL 환경에서 인증서 검증 실패(`SSL: CERTIFICATE_VERIFY_FAILED`) 발생으로 상록수 폴백으로 전환됨.
+   - 조치: `daily_tistory_batch.py` 및 `daily_naver_batch.py`에 `ssl._create_unverified_context()` 및 브라우저 표준 헤더(User-Agent, Accept-Language)를 적용하여 실시간 Google Trends 정상 수집 복원 완료 (200 OK 수집 검증).
+

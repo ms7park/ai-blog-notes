@@ -14,6 +14,7 @@ import re
 import subprocess
 import fcntl
 import urllib.request
+import ssl
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
@@ -1782,11 +1783,17 @@ def evaluate_trend_for_tistory(keyword, news_title="", existing_sigs=None):
 def fetch_google_trends_for_tistory(existing_sigs=None):
     """Google Trends 상승 검색어 Top 10을 수집하고 티스토리 100점 평가표 결과와 함께 반환 (중복 검사 포함)"""
     url = "https://trends.google.co.kr/trending/rss?geo=KR"
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/rss+xml, application/xml, text/xml, */*",
+        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+    }
+    req = urllib.request.Request(url, headers=headers)
     raw_trends = []
 
     try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
+        ctx = ssl._create_unverified_context()
+        with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
             xml_data = resp.read()
         root = ET.fromstring(xml_data)
         items = root.findall(".//item")

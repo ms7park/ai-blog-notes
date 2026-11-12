@@ -13,6 +13,7 @@ import re
 import subprocess
 import fcntl
 import urllib.request
+import ssl
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
@@ -1072,11 +1073,17 @@ def log(msg):
 def fetch_trending_keywords():
     """Google Trends RSS 및 Curated Fallback을 통한 검색어 Top 10 수집 (블로그 테마 자동 매칭)"""
     url = "https://trends.google.co.kr/trending/rss?geo=KR"
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/rss+xml, application/xml, text/xml, */*",
+        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+    }
+    req = urllib.request.Request(url, headers=headers)
     trends = []
 
     try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
+        ctx = ssl._create_unverified_context()
+        with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
             xml_data = resp.read()
         root = ET.fromstring(xml_data)
         items = root.findall(".//item")
@@ -3366,6 +3373,14 @@ def run_batch(target_date=None, force=False, naver_only=False):
         if force:
             wp_cmd.append("--force")
         subprocess.run(wp_cmd, cwd=BASE_DIR)
+
+    # 5-4. 타투 작업실(Tattoo) 네이버 블로그 일일 배치 연동 실행
+    tattoo_script = os.path.join(BASE_DIR, "tools", "daily_naver_tattoo_batch.py")
+    if os.path.exists(tattoo_script):
+        tat_cmd = [sys.executable, tattoo_script, today_str]
+        if force:
+            tat_cmd.append("--force")
+        subprocess.run(tat_cmd, cwd=BASE_DIR)
 
     # 6. docs/index.html 전체 가이드 뷰어 동기화
     gen_script = os.path.join(BASE_DIR, "tools", "generate_html.py")
