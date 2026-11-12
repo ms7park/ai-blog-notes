@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[2026-11-13] 워드프레스 포스팅 #1 | 모바일 주민등록증·운전면허증 IC 발급 방법과 정부24 등록 및 분실 시 도용 차단 가이드</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+  <style>
+    :root {
+      --wp: #0073aa;
+      --wp-dark: #005177;
+      --wp-light: #f0f7fb;
+      --wp-border: #bae6fd;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .brand-tag {
+      background: var(--wp);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .nav-title { font-size: 15px; font-weight: 700; }
+    .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-main);
+    }
+    .btn:hover { background: #f3f4f6; }
+    .btn-wp { background: var(--wp); color: #fff; border-color: var(--wp); }
+    .btn-wp:hover { background: var(--wp-dark); color: #fff; }
+    .container { max-width: 880px; margin: 32px auto 0; padding: 0 16px; }
+    .meta-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--wp);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .meta-badges { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--wp-light);
+      color: var(--wp-dark);
+      border: 1px solid var(--wp-border);
+    }
+    .post-title { font-size: 23px; font-weight: 800; line-height: 1.4; margin-bottom: 14px; color: #111827; }
+    .meta-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      background: var(--bg);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .meta-info-item span { color: var(--text-muted); margin-right: 6px; }
+    .editor-preview {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .editor-preview h1 { font-size: 24px; font-weight: 800; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--wp); }
+    .editor-preview h2 { font-size: 19.5px; font-weight: 750; margin: 34px 0 14px; color: #111827; border-left: 4px solid var(--wp); padding-left: 12px; }
+    .editor-preview h3 { font-size: 16.5px; font-weight: 700; margin: 24px 0 10px; color: #1f2937; }
+    .editor-preview p { margin-bottom: 16px; font-size: 15.5px; line-height: 1.85; color: #374151; word-break: keep-all; }
+    .editor-preview ul, .editor-preview ol { margin: 12px 0 20px 22px; }
+    .editor-preview li { margin-bottom: 8px; font-size: 15px; line-height: 1.75; color: #374151; }
+    .editor-preview blockquote {
+      border: 1px solid var(--wp-border);
+      border-left: 5px solid var(--wp);
+      background: var(--wp-light);
+      padding: 16px 20px;
+      margin: 20px 0 24px;
+      border-radius: 6px;
+      color: #0c4a6e;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
+    }
+    .editor-preview blockquote p { margin-bottom: 0; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; }
+    .editor-preview hr { border: 0; border-top: 1px solid #f1f5f9; margin: 26px 0; }
+    .editor-preview table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px; }
+    .editor-preview th { background: var(--wp-light); color: #0c4a6e; font-weight: 700; border: 1px solid var(--wp-border); padding: 10px 12px; text-align: left; }
+    .editor-preview td { border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151; vertical-align: top; }
+    .editor-preview tr:nth-child(even) td { background: #f9fafb; }
+    .editor-preview pre { background: #1e293b; color: #f8fafc; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 16px 0; }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #111827; color: #fff; padding: 12px 24px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="brand-tag">WORDPRESS · #1편</span>
+      <span class="nav-title">2026-11-13 (금) · Digital & AI Life (디지털·스마트폰 생활)</span>
+    </div>
+    <div class="nav-actions">
+      <a href="../../index.html" class="btn">📂 워드프레스 작업실 홈</a>
+      <a href="2026-11-13.md" target="_blank" class="btn">📄 원본 MD 열기</a>
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="워드프레스 제목 입력란에 붙여넣을 제목만 복사합니다">📋 제목만 복사</button>
+      <button class="btn btn-wp" id="copyWpBtn" title="워드프레스 구텐베르크 에디터에 적정 소제목 크기(20px)·요약박스·표 서식 그대로 붙여넣기 됩니다">🔵 워드프레스 구텐베르크 서식 복사</button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
+      <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="meta-card">
+      <div class="meta-badges">
+        <span class="badge">🔵 WordPress Cornerstone SEO</span>
+        <span class="badge">📂 Digital & AI Life (디지털·스마트폰 생활)</span>
+        <span class="badge">🔗 Slug: /mobile-id-card-issuance-gov24-guide</span>
+        <span class="badge">🎯 평가 점수: 95/100점</span>
+      </div>
+      <h1 class="post-title">모바일 주민등록증·운전면허증 IC 발급 방법과 정부24 등록 및 분실 시 도용 차단 가이드</h1>
+      <div class="meta-info-grid">
+        <div class="meta-info-item"><span>Focus Keyphrase:</span><strong>모바일 주민등록증 운전면허증 발급 방법</strong></div>
+        <div class="meta-info-item"><span>URL Slug:</span><strong>/mobile-id-card-issuance-gov24-guide</strong></div>
+        <div class="meta-info-item"><span>구조:</span><strong>Key Takeaways + 비교표 + FAQ 3문 3답</strong></div>
+        <div class="meta-info-item"><span>타겟:</span><strong>Google 글로벌/국내 SEO & AdSense</strong></div>
+      </div>
+    </div>
+
+    <article class="editor-preview" id="postArticle"></article>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script id="rawMarkdown" type="text/plain">
+# 모바일 주민등록증·운전면허증 IC 발급 방법과 정부24 등록 및 분실 시 도용 차단 가이드
+
+> **💡 Key Takeaways (핵심 요약)**: 모바일 신분증은 실물 플라스틱 신분증과 동일한 법적 효력을 갖는 국가 공인 디지털 신분증입니다. 읍면동 주민센터나 운전면허시험장에서 **IC칩이 내장된 신분증**을 발급받은 뒤, 스마트폰 뒷면에 NFC로 태그하면 언제 어디서든 스마트폰 하나로 관공서, 은행, 병원 본인 확인을 안전하게 진행할 수 있습니다.
+
+---
+
+## 1. 모바일 신분증의 법적 효력과 주요 활용처
+
+모바일 주민등록증과 운전면허증은 관련 법령에 따라 실물 플라스틱 신분증과 **완전히 100% 동일한 법적 효력**을 가집니다.
+- **금융기관**: 시중은행 창구 방문 업무, 모바일 뱅킹 계좌 개설
+- **관공서**: 행정복지센터 민원서류 발급, 투표소 본인 확인
+- **의료기관**: 병의원 진료 시 필수 신분증 확인 제도(2024년 의무화) 대체
+- **공항 및 여객선**: 국내선 항공기 탑승 수속 및 여객선 승선
+
+---
+
+## 2. 모바일 신분증 2가지 발급 방식 비교
+
+| 발급 방식 | IC 신분증 발급 방식 (강력 추천) | QR 현장 발급 방식 |
+| --- | --- | --- |
+| **발급 장소** | 주민센터(주민증) / 면허시험장(면허증) | 주민센터 / 면허시험장 창구 |
+| **수수료** | IC 운전면허증 약 1.5만 원 / IC 주민등록증 5천 원 | 무료 (면허증은 약 1천 원) |
+| **스마트폰 교체 시** | **창구 방문 없이 집에서 재등록 가능** | 스마트폰 바꿀 때마다 창구 재방문 필수 |
+| **등록 방식** | 스마트폰 뒷면에 IC 신분증 NFC 접촉 | 창구 전용 QR코드 스캔 |
+
+---
+
+## 3. 스마트폰 등록 4단계 순서
+
+1. **IC 신분증 수령**: 행정복지센터 또는 면허시험장에서 IC 칩 내장 신분증 수령
+2. **앱 설치**: 앱스토어 또는 구글 플레이스토어에서 **'모바일 신분증(행정안전부)'** 또는 **'정부24'** 앱 다운로드
+3. **NFC 태그**: 스마트폰 설정에서 NFC를 [기본 모드]로 켜고 신분증을 스마트폰 뒷면에 밀착
+4. **생체 인증 등록**: 얼굴 인식 또는 핀(PIN) 번호를 설정하면 발급 완료
+
+---
+
+## 4. 참고 자료 및 공식 확인 사이트
+
+- [모바일 신분증 공식 누리집 (행정안전부)](https://www.mobileid.go.kr/)
+- [정부24 공식 포털](https://www.gov.kr/)
+
+  </script>
+
+  <script>
+    const mdSource = document.getElementById("rawMarkdown").textContent.trim();
+    const articleEl = document.getElementById("postArticle");
+
+    // 1) marked.js가 한글 문장 내 범위 물결표(예: 60~70% ... 3.3~5.5%)를 취소선(<del>)으로 오인하는 버그 완벽 차단
+    // 2) CommonMark에서 **괄호)**조사, **[대괄호]**조사, *"따옴표"*조사 형태일 때 별표가 남는 버그 완벽 보정
+    function parseMarkdownSafe(md) {
+      let html = marked.parse(md);
+      html = html
+        .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+        .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+      return html;
+    }
+
+    articleEl.innerHTML = parseMarkdownSafe(mdSource);
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => showToast("🏷️ 워드프레스 SEO 슬러그 및 메타 설명이 복사되었습니다!"));
+    }
+
+    function convertMarkdownTablesToReadableList(mdText) {
+      const lines = mdText.split("\n");
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.startsWith("|") && line.endsWith("|") && i + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[i + 1].trim())) {
+          const headers = line.slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+          i += 2;
+          while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+            const cells = lines[i].trim().slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+            const rowTitle = cells[0] || "항목";
+            out.push(`■ [${rowTitle}]`);
+            for (let c = 1; c < headers.length; c++) {
+              out.push(`  • ${headers[c] || "항목"}: ${cells[c] || "-"}`);
+            }
+            out.push("");
+            i++;
+          }
+        } else {
+          out.push(lines[i]);
+          i++;
+        }
+      }
+      return out.join("\n");
+    }
+
+    function getCleanPlainText() {
+      return convertMarkdownTablesToReadableList(mdSource)
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/^>\s+/gm, '')
+        .replace(/^---\s*$/gm, '')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    }
+
+    function normalizeTableForWordPress(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 20px 0 24px; border: 1px solid #d1d5db; font-size: 14.5px; line-height: 1.6;");
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "26%", "26%", "26%"];
+        else if (colCount > 0) widths = Array(colCount).fill(Math.floor(100 / colCount) + "%");
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeader = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          const cleanHtml = cell.innerHTML.replace(/[]\s*/g, "").trim();
+          if (isHeader) {
+            td.setAttribute("style", `${wStyle}background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = `<strong>${cleanHtml}</strong>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = (cIdx === 0) ? "font-weight: bold; color: #111827; " : "color: #374151; ";
+            td.setAttribute("style", `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #d1d5db; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = (cIdx === 0 && !cleanHtml.includes("<strong")) ? `<strong>${cleanHtml}</strong>` : cleanHtml;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    // 워드프레스 구텐베르크 에디터 붙여넣기 최적화:
+    // 1) 최상단 중복 제목(H1) 제거 (제목 입력란에 별도 입력)
+    // 2) H2가 워드프레스 기본 테마에서 40px 초대형 글씨로 나오는 문제를 해결하기 위해
+    //    네이버·티스토리와 동일한 크기(약 20px, H3 레벨 + <strong> + 파란색 포인트 바 ▍)로 변환
+    // 3) 기존 H3(1단계, 2단계 등)는 17px 굵은 문단(▪ 1단계: ...)으로 변환하여 위계 질서 확립
+    // 4) <blockquote>(Key Takeaways)가 테두리 없는 일반 글씨로 풀리는 문제를 해결하기 위해 1x1 요약 박스 테이블로 변환
+    // 5) 검은색 실선(<hr>)을 깔끔한 문단 여백으로 대체
+    function getWordPressOptimizedHtml(forCustomHtmlBlock = false) {
+      const clone = articleEl.cloneNode(true);
+
+      // 1. 본문 최상단 중복 H1 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 2. 검은색 가로줄(<hr>) 제거
+      clone.querySelectorAll("hr").forEach(el => el.remove());
+
+      // 3. 본문 내 일반 표(Table) 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        el.replaceWith(normalizeTableForWordPress(el));
+      });
+
+      // 4. <blockquote>(핵심 요약)를 테두리가 유지되는 1x1 요약 박스 테이블로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 14px 0 26px; border: 1px solid #bae6fd; background-color: #f0f7fb;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #bae6fd; border-left: 5px solid #0073aa; background-color: #f0f7fb; padding: 16px 20px; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;">${innerHtml}</td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // 5. 기존 H3, H4(1단계, 2단계, Q1 등)를 먼저 17px 굵은 서브헤딩 문단으로 변환 (H2 -> H3 변환과 충돌 방지)
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        const pSub = document.createElement("p");
+        pSub.setAttribute("style", "font-size: 17px; font-weight: bold; color: #1e293b; margin: 22px 0 10px 0; line-height: 1.5; word-break: keep-all;");
+        const cleanTxt = el.innerHTML.trim();
+        const prefix = (cleanTxt.startsWith("▪") || cleanTxt.startsWith("①") || cleanTxt.startsWith("②") || cleanTxt.startsWith("③")) ? "" : "▪ ";
+        pSub.innerHTML = `<strong><span style="color: #0073aa;">${prefix}</span>${cleanTxt}</strong>`;
+        el.replaceWith(pSub);
+      });
+
+      // 6. H2 중간제목(1. ..., 2. ..., 3. ...)을 워드프레스에서 과도하게 커지지 않는 적정 크기(20px, H3 + <strong>)로 변환
+      clone.querySelectorAll("h2").forEach(el => {
+        if (forCustomHtmlBlock) {
+          el.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 32px 0 14px 0; padding-left: 12px; border-left: 4px solid #0073aa; line-height: 1.45; word-break: keep-all;");
+        } else {
+          const h3 = document.createElement("h3");
+          h3.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 30px 0 14px 0; line-height: 1.45; word-break: keep-all;");
+          h3.innerHTML = `<strong><span style="color: #0073aa; font-weight: 900; margin-right: 6px;">▍</span>${el.innerHTML}</strong>`;
+          el.replaceWith(h3);
+        }
+      });
+
+      // 7. 문단 및 목록 스타일 정리
+      clone.querySelectorAll("p").forEach(el => {
+        if (!el.getAttribute("style")) {
+          el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin: 0 0 16px 0; word-break: keep-all;");
+        }
+      });
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 12px 0 20px 22px; color: #374151;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.8; margin-bottom: 8px; color: #374151; word-break: keep-all;"));
+      clone.querySelectorAll("a").forEach(el => el.setAttribute("style", "color: #0073aa; font-weight: bold; text-decoration: underline;"));
+
+      return clone.innerHTML;
+    }
+
+    async function copyWpRichHtml(htmlContent, plainText) {
+      let copied = false;
+      try {
+        const tempDiv = document.createElement("div");
+        tempDiv.contentEditable = "true";
+        tempDiv.style.position = "fixed";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.top = "0";
+        tempDiv.style.opacity = "0";
+        tempDiv.style.backgroundColor = "#ffffff";
+        tempDiv.style.color = "#1f2937";
+        tempDiv.innerHTML = htmlContent;
+        document.body.appendChild(tempDiv);
+
+        const range = document.createRange();
+        range.selectNodeContents(tempDiv);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copied = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      } catch (e) {}
+
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          copied = true;
+        } catch (e) {}
+      }
+
+      if (!copied && navigator.clipboard) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      return copied;
+    }
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 워드프레스 제목 입력란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyWpBtn").addEventListener("click", async () => {
+      const htmlContent = getWordPressOptimizedHtml(false);
+      const plainText = getCleanPlainText();
+      await copyWpRichHtml(htmlContent, plainText);
+      showToast("🔵 워드프레스 구텐베르크 서식(중간제목 크기 축소·요약박스·취소선 오류 제거)이 복사되었습니다!");
+    });
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(getCleanPlainText()).then(() => showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!"));
+    });
+
+    document.getElementById("copyMdBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(mdSource).then(() => showToast("📝 마크다운 원문이 복사되었습니다!"));
+    });
+  </script>
+</body>
+</html>
