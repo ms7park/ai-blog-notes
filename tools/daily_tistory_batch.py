@@ -114,6 +114,18 @@ TISTORY_CATEGORIES = {
             ("농림축산검역본부 국가동물보호정보시스템", "https://www.animal.go.kr/"),
             ("식품의약품안전처 식품안전나라", "https://www.foodsafetykorea.go.kr/")
         ]
+    },
+    "general_trend": {
+        "name": "실시간 이슈·트렌드 정보",
+        "ratio": "20%",
+        "desc": "실시간 검색어, 주요 시사 이슈, 생활 속 제도 및 핵심 팩트 분석",
+        "keywords": [],
+        "scores": {"trend": 5, "intent": 4, "gap": 4, "capability": 4, "evergreen": 3},
+        "official_refs": [
+            ("대한민국 정책브리핑 공식 포털", "https://www.korea.kr/"),
+            ("정부24 민원 서비스 포털", "https://www.gov.kr/"),
+            ("국가법령정보센터", "https://www.law.go.kr/")
+        ]
     }
 }
 
@@ -2470,34 +2482,16 @@ def match_keyword_safely(ck, target_text):
         return bool(re.search(r'(?<![a-z0-9])' + re.escape(ck_low) + r'(?![a-z0-9])', target_text))
     return ck_low in target_text
 
-def evaluate_trend_for_tistory(keyword, news_title="", existing_sigs=None):
+def evaluate_trend_for_tistory(keyword, news_title="", existing_sigs=None, rank=None):
     """
-    Google Trends 상승 검색어를 분석하여:
-    - 오직 사전 검증된 상록수 원고 풀(TISTORY_EVERGREEN_POOL)과 정확히 일치하는 키워드만 티스토리 발행 대상으로 선정합니다.
-    - 검증되지 않은 실시간 인물·연예·사건·기업 검색어가 엉뚱한 공공기관 템플릿에 기계적으로 대입되는 것을 원천 차단합니다.
+    실시간 검색어를 분석하여:
+    - [규칙 1] 상위 3개(1위, 2위, 3위)는 무조건 티스토리 발행 대상(is_selected=True)으로 선정합니다.
+    - [규칙 2] 4~10위는 티스토리 카테고리/상록수 풀과 연관이 있는 키워드만 선별 발행합니다.
     """
     kw = keyword.strip()
     kw_lower = kw.lower()
 
-    # 해외 스포츠 경기 스코어/대진표(vs) 등은 즉시 제외
-    if re.search(r'(?<![a-z])vs(?![a-z])', kw_lower) or " 대 " in kw:
-        sc = {"trend": 4, "intent": 1, "gap": 1, "capability": 1, "evergreen": 1}
-        return {
-            "is_selected": False,
-            "cat_key": "none",
-            "cat_name": "단기 스포츠·이슈 (보류)",
-            "cat_ratio": "-",
-            "matched_keyword": "-",
-            "scores": sc,
-            "total_score": sum(sc.values()) * 4,
-            "rec_level": "낮음 (티스토리 제외)",
-            "search_question": f"단기 경기 결과 검색어('{kw}')로 장기 정보성 가치가 낮아 티스토리 작성 대상에서 제외",
-            "title_candidates": [f"[보류] '{kw}' 단기 스포츠 이슈"],
-            "final_title": f"[보류] '{kw}' — 단기 이슈성 검색어 (티스토리 제외)",
-            "official_refs": []
-        }
-
-    # 상록수 풀(TISTORY_EVERGREEN_POOL)에 전용 원고가 있는 키워드인지 확인
+    # 상록수 풀(TISTORY_EVERGREEN_POOL)에 전용 원고가 있는 키워드인지 우선 확인
     for pool_item in TISTORY_EVERGREEN_POOL:
         if pool_item["keyword"] in kw or (len(kw) >= 2 and kw in pool_item["keyword"]):
             if existing_sigs and is_duplicate_tistory_candidate(pool_item["final_title"], pool_item["core_summary"], pool_item["keyword"], existing_sigs):
@@ -2533,9 +2527,74 @@ def evaluate_trend_for_tistory(keyword, news_title="", existing_sigs=None):
                 "custom_body_sections": pool_item["body_sections"]
             }
 
-    # 그 외 단기 실시간 검색어는 모두 보류 처리하고, 실제 글 작성은 TISTORY_EVERGREEN_POOL에서 선택하도록 안내
+    # 카테고리 매칭 검사
+    matched_cat_key = None
+    matched_cat_kw = None
+    for c_key, c_info in TISTORY_CATEGORIES.items():
+        if c_key == "general_trend":
+            continue
+        for ck in c_info.get("keywords", []):
+            if match_keyword_safely(ck, kw_lower):
+                matched_cat_key = c_key
+                matched_cat_kw = ck
+                break
+        if matched_cat_key:
+            break
+
+    # [규칙 1] 상위 3개는 무조건 글 작성!
+    if rank and rank <= 3:
+        cat_key = matched_cat_key if matched_cat_key else "general_trend"
+        cat_info = TISTORY_CATEGORIES[cat_key]
+        sc = {"trend": 5, "intent": 4, "gap": 4, "capability": 4, "evergreen": 3}
+        total_score = sum(sc.values()) * 4  # 80/100
+        
+        if news_title and len(news_title.strip()) > 5:
+            clean_news = news_title.strip().replace('"', '').replace("'", "")
+            if len(clean_news) > 28:
+                clean_news = clean_news[:28] + "..."
+            final_title = f"실시간 화제 '{kw}' 핵심 이슈 총정리: {clean_news} 주요 쟁점과 실생활 체크포인트"
+        else:
+            final_title = f"실시간 검색어 {rank}위 '{kw}' 주목받는 핵심 이유: 지금 알아야 할 이슈 배경과 체크포인트 3가지"
+
+        return {
+            "is_selected": True,
+            "cat_key": cat_key,
+            "cat_name": cat_info["name"],
+            "cat_ratio": cat_info["ratio"],
+            "matched_keyword": matched_cat_kw or kw,
+            "scores": sc,
+            "total_score": total_score,
+            "rec_level": "최우선 (Top 3 무조건 작성)",
+            "search_question": f"실시간 검색어 {rank}위 '{kw}' 관련 주요 사실관계와 우리가 알아야 할 시사점은?",
+            "title_candidates": [final_title],
+            "final_title": final_title,
+            "official_refs": cat_info.get("official_refs", [])
+        }
+
+    # [규칙 2] 4~10위 중 카테고리 연관 글이 있는 경우 작성
+    if matched_cat_key:
+        cat_info = TISTORY_CATEGORIES[matched_cat_key]
+        sc = cat_info["scores"].copy()
+        total_score = sum(sc.values()) * 4
+        final_title = f"'{kw}' 핵심 정리: 꼭 알아야 할 주요 사실관계와 실생활 체크포인트"
+        return {
+            "is_selected": True,
+            "cat_key": matched_cat_key,
+            "cat_name": cat_info["name"],
+            "cat_ratio": cat_info["ratio"],
+            "matched_keyword": matched_cat_kw,
+            "scores": sc,
+            "total_score": total_score,
+            "rec_level": "높음 (주제 연관 추천)",
+            "search_question": f"'{kw}'({cat_info['name']}) 관련 최신 공식 기준과 확인 방법은?",
+            "title_candidates": [final_title],
+            "final_title": final_title,
+            "official_refs": cat_info.get("official_refs", [])
+        }
+
+    # 그 외 단기 실시간 검색어는 보류 처리
     sc = {"trend": 4, "intent": 2, "gap": 2, "capability": 2, "evergreen": 1}
-    total_score = sum(sc.values()) * 4  # 44/100
+    total_score = sum(sc.values()) * 4
     return {
         "is_selected": False,
         "cat_key": "none",
@@ -2546,48 +2605,94 @@ def evaluate_trend_for_tistory(keyword, news_title="", existing_sigs=None):
         "total_score": total_score,
         "rec_level": "낮음 (티스토리 보류)",
         "search_question": f"단기 실시간 이슈('{kw}')로 장기 검색 지속성이 낮음 → 공식 제도·방법·비교 질문으로 전환 필요",
-        "title_candidates": [
-            f"[전환 예시] '{kw}' 관련 공식 발표 사실 확인 및 관련 제도·규정 정리"
-        ],
-        "final_title": f"[보류] '{kw}' — 단기 이슈성 검색어 (네이버 블로그 발행 권장)",
+        "title_candidates": [f"[전환 예시] '{kw}' 관련 공식 발표 사실 확인 및 관련 제도·규정 정리"],
+        "final_title": f"[보류] '{kw}' — 단기 이슈성 검색어",
         "official_refs": []
     }
 
 def fetch_google_trends_for_tistory(existing_sigs=None):
-    """Google Trends 상승 검색어 Top 10을 수집하고 티스토리 100점 평가표 결과와 함께 반환 (중복 검사 포함)"""
-    url = "https://trends.google.co.kr/trending/rss?geo=KR"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "application/rss+xml, application/xml, text/xml, */*",
-        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-    }
-    req = urllib.request.Request(url, headers=headers)
+    """
+    실시간 검색어 Top 10 수집 (Signal.bz 실시간 검색어 API 1차, Google Trends RSS 2차, Fallback 3차)
+    - 상위 3개는 무조건 작성, 4~10위는 주제 연관 글 선별 작성
+    """
     raw_trends = []
 
+    # 1차: Signal.bz 실시간 검색어 API 호출
     try:
+        signal_url = "https://api.signal.bz/news/realtime"
+        s_headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/json, text/plain, */*",
+        }
+        req = urllib.request.Request(signal_url, headers=s_headers)
         ctx = ssl._create_unverified_context()
-        with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
-            xml_data = resp.read()
-        root = ET.fromstring(xml_data)
-        items = root.findall(".//item")
+        with urllib.request.urlopen(req, context=ctx, timeout=7) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        
+        top10_list = data.get("top10", [])
+        articles = data.get("articles", []) + data.get("naver", [])
 
-        for item in items[:10]:
-            title = item.find("title").text if item.find("title") is not None else ""
-            approx = item.find("{https://trends.google.com/trending/rss}approx_traffic")
-            traffic = approx.text if approx is not None else "상승"
-            news_items = item.findall("{https://trends.google.com/trending/rss}news_item")
-            news_title = news_items[0].find("{https://trends.google.com/trending/rss}news_item_title").text if news_items else ""
-            news_url = news_items[0].find("{https://trends.google.com/trending/rss}news_item_url").text if news_items else ""
+        for item in top10_list[:10]:
+            kw = item.get("keyword", "").strip()
+            rank_num = item.get("rank", len(raw_trends) + 1)
+            news_title = ""
+            news_url = item.get("summary", "")
+            for art in articles:
+                art_title = art.get("title") or art.get("name") or ""
+                if kw in art_title or any(w in art_title for w in kw.split() if len(w) >= 2):
+                    news_title = art_title
+                    if art.get("link"):
+                        news_url = art.get("link")
+                    break
 
             raw_trends.append({
-                "keyword": title,
-                "traffic": traffic,
+                "keyword": kw,
+                "traffic": f"실시간 {rank_num}위" if rank_num > 3 else f"🔥 실시간 {rank_num}위",
                 "news_title": news_title,
                 "news_url": news_url
             })
+        if raw_trends:
+            log(f"⚡ Signal.bz 실시간 검색어 Top {len(raw_trends)} 수집 완료 (티스토리)")
     except Exception as e:
-        log(f"⚠️ Google Trends RSS 수집 실패 (기본 상승 검색어 사용): {e}")
+        log(f"⚠️ Signal.bz 실시간 검색어 수집 실패 (Google Trends RSS 시도): {e}")
 
+    # 2차: Google Trends RSS 수집
+    if len(raw_trends) < 10:
+        url = "https://trends.google.co.kr/trending/rss?geo=KR"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/rss+xml, application/xml, text/xml, */*",
+            "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+        }
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            ctx = ssl._create_unverified_context()
+            with urllib.request.urlopen(req, context=ctx, timeout=8) as resp:
+                xml_data = resp.read()
+            root = ET.fromstring(xml_data)
+            items = root.findall(".//item")
+
+            for item in items:
+                title = item.find("title").text if item.find("title") is not None else ""
+                approx = item.find("{https://trends.google.com/trending/rss}approx_traffic")
+                traffic = approx.text if approx is not None else "상승"
+                news_items = item.findall("{https://trends.google.com/trending/rss}news_item")
+                news_title = news_items[0].find("{https://trends.google.com/trending/rss}news_item_title").text if news_items else ""
+                news_url = news_items[0].find("{https://trends.google.com/trending/rss}news_item_url").text if news_items else ""
+
+                if not any(t["keyword"].lower() == title.strip().lower() for t in raw_trends):
+                    raw_trends.append({
+                        "keyword": title.strip(),
+                        "traffic": traffic,
+                        "news_title": news_title,
+                        "news_url": news_url
+                    })
+                if len(raw_trends) >= 10:
+                    break
+        except Exception as e:
+            log(f"⚠️ Google Trends RSS 수집 실패: {e}")
+
+    # 3차: Fallback 시니어 키워드로 부족분 보충
     if len(raw_trends) < 10:
         fallbacks = [
             {"keyword": "기초연금 수급자격", "traffic": "1000+", "news_title": "만 65세 이상 기초연금 소득인정액 계산 및 부부 감액 기준", "news_url": "https://www.bokjiro.go.kr/"},
@@ -2596,17 +2701,21 @@ def fetch_google_trends_for_tistory(existing_sigs=None):
             {"keyword": "임플란트 건강보험", "traffic": "800+", "news_title": "만 65세 이상 임플란트·틀니 건강보험 본인부담률 30% 적용 기준", "news_url": "https://www.nhis.or.kr/"},
             {"keyword": "국민연금", "traffic": "1000+", "news_title": "국민연금 예상 수령액 조회 및 물가상승률 반영 기준", "news_url": "https://www.nps.or.kr/"}
         ]
-        raw_trends.extend(fallbacks[:10 - len(raw_trends)])
+        for fb in fallbacks:
+            if not any(t["keyword"].lower() == fb["keyword"].strip().lower() for t in raw_trends):
+                raw_trends.append(fb)
+                if len(raw_trends) >= 10:
+                    break
 
     evaluated = []
-    for idx, item in enumerate(raw_trends, 1):
-        ev = evaluate_trend_for_tistory(item["keyword"], item["news_title"], existing_sigs=existing_sigs)
+    for idx, item in enumerate(raw_trends[:10], 1):
+        ev = evaluate_trend_for_tistory(item["keyword"], item.get("news_title", ""), existing_sigs=existing_sigs, rank=idx)
         evaluated.append({
             "rank": idx,
             "keyword": item["keyword"],
-            "traffic": item["traffic"],
-            "news_title": item["news_title"],
-            "news_url": item["news_url"],
+            "traffic": item.get("traffic", f"실시간 {idx}위"),
+            "news_title": item.get("news_title", ""),
+            "news_url": item.get("news_url", ""),
             "eval": ev
         })
 
@@ -5048,21 +5157,50 @@ def run_tistory_batch(target_date=None, force=False):
     existing_sigs = get_existing_tistory_signatures(exclude_date=today_str if force else None)
 
     evaluated_trends = fetch_google_trends_for_tistory(existing_sigs=existing_sigs)
-    selected = [
-        t for t in evaluated_trends
-        if t["eval"]["is_selected"]
-        and not is_duplicate_tistory_candidate(
-            t["eval"]["final_title"],
-            t["eval"].get("custom_core_summary", ""),
-            t["keyword"],
-            existing_sigs
-        )
-    ]
 
-    # 실시간 트렌드에서 매칭된 글이 부족할 경우 상록수 미작성 주제 풀(TISTORY_EVERGREEN_POOL)에서 추가 선택
-    if len(selected) < 2:
-        selected_titles = set(t["eval"]["final_title"] for t in selected)
-        selected_kws = set(t["keyword"].strip().lower() for t in selected)
+    selected_items = []
+    selected_titles = set()
+    selected_kws = set()
+
+    # 1. [규칙 1] 실시간 검색어 Top 10 중 상위 3개(1위, 2위, 3위)는 무조건 글 작성!
+    top3_trends = evaluated_trends[:3]
+    for t in top3_trends:
+        p_title = t["eval"]["final_title"]
+        p_kw = t["keyword"].strip().lower()
+        if p_title in existing_sigs["titles"]:
+            p_title = f"{p_title} (최신 핵심 요약)"
+            t["eval"]["final_title"] = p_title
+
+        selected_items.append(t)
+        selected_titles.add(p_title)
+        selected_kws.add(p_kw)
+        existing_sigs["titles"].add(p_title)
+        existing_sigs["keywords"].add(p_kw)
+        log(f"🔥 [티스토리 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{t['keyword']}] -> '{p_title}'")
+
+    # 2. [규칙 2] 나머지 글(Top 4~10) 중 설정 주제와 연관이 있는 글 작성!
+    rest_trends = evaluated_trends[3:10]
+    for t in rest_trends:
+        if not t["eval"]["is_selected"]:
+            continue
+        p_title = t["eval"]["final_title"]
+        p_kw = t["keyword"].strip().lower()
+        if is_duplicate_tistory_candidate(p_title, t["eval"].get("custom_core_summary", ""), t["keyword"], existing_sigs):
+            continue
+        if p_title in selected_titles or p_kw in selected_kws:
+            continue
+
+        selected_items.append(t)
+        selected_titles.add(p_title)
+        selected_kws.add(p_kw)
+        existing_sigs["titles"].add(p_title)
+        existing_sigs["keywords"].add(p_kw)
+        log(f"⭐ [티스토리 Top 4~10 주제 연관 글] #{t.get('rank')}위 [{t['keyword']}] ({t['eval']['cat_name']}) -> '{p_title}'")
+
+    # 3. [규칙 3 - 작성 글 수 확대]
+    # 하루 최소 5편 이상 풍성하게 작성되도록 상록수 미작성 주제 풀(TISTORY_EVERGREEN_POOL)에서 추가 보충
+    TARGET_MIN_POSTS = 5
+    if len(selected_items) < TARGET_MIN_POSTS:
         for pool_item in TISTORY_EVERGREEN_POOL:
             p_title = pool_item["final_title"]
             p_kw = pool_item["keyword"].strip().lower()
@@ -5070,7 +5208,7 @@ def run_tistory_batch(target_date=None, force=False):
                 continue
             if not is_duplicate_tistory_candidate(p_title, pool_item["core_summary"], pool_item["keyword"], existing_sigs):
                 fallback_item = {
-                    "rank": len(selected) + 1,
+                    "rank": len(selected_items) + 1,
                     "keyword": pool_item["keyword"],
                     "traffic": "상록수 추천",
                     "news_title": pool_item["search_question"],
@@ -5083,7 +5221,7 @@ def run_tistory_batch(target_date=None, force=False):
                         "matched_keyword": pool_item["keyword"],
                         "scores": pool_item["scores"].copy(),
                         "total_score": pool_item["total_score"],
-                        "rec_level": "높음 (추천)",
+                        "rec_level": "높음 (상록수 보강)",
                         "search_question": pool_item["search_question"],
                         "title_candidates": pool_item["title_candidates"],
                         "final_title": pool_item["final_title"],
@@ -5092,23 +5230,22 @@ def run_tistory_batch(target_date=None, force=False):
                         "custom_body_sections": pool_item["body_sections"]
                     }
                 }
-                selected.append(fallback_item)
+                selected_items.append(fallback_item)
                 selected_titles.add(p_title)
                 selected_kws.add(p_kw)
-                if len(selected) >= 2:
+                existing_sigs["titles"].add(p_title)
+                existing_sigs["keywords"].add(p_kw)
+                log(f"📚 [티스토리 글 수 확대 보강] 상록수 테마 [{pool_item['keyword']}] -> '{p_title}'")
+                if len(selected_items) >= TARGET_MIN_POSTS:
                     break
 
-    # 점수순 정렬 (가장 높은 평가 점수를 받은 주제를 #1편 메인으로 발행)
-    selected_sorted = sorted(selected, key=lambda x: x["eval"]["total_score"], reverse=True)
-
     created_count = 0
-    for t_item in selected_sorted[:2]:
-        next_idx = created_count + 1
-        post_id = today_str if next_idx == 1 else f"{today_str}-{next_idx}"
-        if create_tistory_post(post_id, today_str, weekday_str, t_item, post_num=next_idx, force=force, existing_sigs=existing_sigs):
+    for idx, t_item in enumerate(selected_items, 1):
+        post_id = today_str if idx == 1 else f"{today_str}-{idx}"
+        if create_tistory_post(post_id, today_str, weekday_str, t_item, post_num=idx, force=force, existing_sigs=existing_sigs):
             created_count += 1
 
-    log(f"📝 오늘 작성된 티스토리 검색형 포스팅: 총 {created_count}편 (중복 제목·내용 제외 완료)")
+    log(f"📝 오늘 작성된 티스토리 검색형 포스팅: 총 {created_count}편 (Top 3 무조건 3편 + 주제 연관 및 보강 {created_count - 3}편)")
 
     posts = scan_tistory_posts()
     update_tistory_index_html(today_str, evaluated_trends, posts)
