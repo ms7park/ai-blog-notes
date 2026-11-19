@@ -1086,53 +1086,107 @@ def log(msg):
         f.write(formatted + "\n")
 
 def fetch_trending_keywords():
-    """Google Trends RSS 및 Curated Fallback을 통한 검색어 Top 10 수집 (블로그 테마 자동 매칭)"""
-    url = "https://trends.google.co.kr/trending/rss?geo=KR"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "application/rss+xml, application/xml, text/xml, */*",
-        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-    }
-    req = urllib.request.Request(url, headers=headers)
+    """
+    실시간 검색어 Top 10 수집 (Signal.bz 실시간 검색어 API 1차, Google Trends RSS 2차, Curated 3차)
+    - 상위 3개는 무조건 작성 대상이 되며, 4~10위는 블로그 테마와 연관된 글을 선별 작성합니다.
+    """
     trends = []
 
+    # 1차: Signal.bz 실시간 검색어 Top 10 API 호출
     try:
+        signal_url = "https://api.signal.bz/news/realtime"
+        s_headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/json, text/plain, */*",
+        }
+        req = urllib.request.Request(signal_url, headers=s_headers)
         ctx = ssl._create_unverified_context()
-        with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
-            xml_data = resp.read()
-        root = ET.fromstring(xml_data)
-        items = root.findall(".//item")
+        with urllib.request.urlopen(req, context=ctx, timeout=7) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
         
-        for item in items[:10]:
-            title = item.find("title").text if item.find("title") is not None else ""
-            approx = item.find("{https://trends.google.com/trending/rss}approx_traffic")
-            traffic = approx.text if approx is not None else ""
-            news_items = item.findall("{https://trends.google.com/trending/rss}news_item")
-            news_title = news_items[0].find("{https://trends.google.com/trending/rss}news_item_title").text if news_items else ""
+        top10_list = data.get("top10", [])
+        articles = data.get("articles", []) + data.get("naver", [])
+
+        for item in top10_list[:10]:
+            kw = item.get("keyword", "").strip()
+            rank_num = item.get("rank", len(trends) + 1)
+            # 관련 뉴스 헤드라인 검색
+            news_title = ""
+            for art in articles:
+                art_title = art.get("title") or art.get("name") or ""
+                if kw in art_title or any(w in art_title for w in kw.split() if len(w) >= 2):
+                    news_title = art_title
+                    break
             
+            badge_text = f"실시간 {rank_num}위"
+            if rank_num <= 3:
+                badge_text = f"🔥 실시간 {rank_num}위"
+
             trends.append({
-                "keyword": title,
-                "traffic": traffic,
+                "keyword": kw,
+                "traffic": badge_text,
                 "news_title": news_title
             })
+        if trends:
+            log(f"⚡ Signal.bz 실시간 검색어 Top {len(trends)} 수집 완료")
     except Exception as e:
-        log(f"⚠️ 트렌드 RSS 수집 실패 (Curated 시니어 키워드 사용): {e}")
+        log(f"⚠️ Signal.bz 실시간 검색어 수집 실패 (Google Trends RSS로 대체 시도): {e}")
 
+    # 2차: Google Trends RSS 수집 (Signal.bz 미수집분 보완)
+    if len(trends) < 10:
+        url = "https://trends.google.co.kr/trending/rss?geo=KR"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/rss+xml, application/xml, text/xml, */*",
+            "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+        }
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            ctx = ssl._create_unverified_context()
+            with urllib.request.urlopen(req, context=ctx, timeout=8) as resp:
+                xml_data = resp.read()
+            root = ET.fromstring(xml_data)
+            items = root.findall(".//item")
+            
+            for item in items:
+                title = item.find("title").text if item.find("title") is not None else ""
+                approx = item.find("{https://trends.google.com/trending/rss}approx_traffic")
+                traffic = approx.text if approx is not None else "상승"
+                news_items = item.findall("{https://trends.google.com/trending/rss}news_item")
+                news_title = news_items[0].find("{https://trends.google.com/trending/rss}news_item_title").text if news_items else ""
+                
+                # 중복 제외
+                if not any(t["keyword"].lower() == title.strip().lower() for t in trends):
+                    trends.append({
+                        "keyword": title.strip(),
+                        "traffic": traffic,
+                        "news_title": news_title
+                    })
+                if len(trends) >= 10:
+                    break
+        except Exception as e:
+            log(f"⚠️ Google Trends RSS 수집 실패: {e}")
+
+    # 3차: Curated 시니어/라이프 키워드로 부족분 보충
     if len(trends) < 10:
         needed = 10 - len(trends)
-        trends.extend(NAVER_CURATED_TOPICS[:needed])
+        for cur in NAVER_CURATED_TOPICS:
+            if not any(t["keyword"].lower() == cur["keyword"].strip().lower() for t in trends):
+                trends.append(cur)
+                if len(trends) >= 10:
+                    break
 
-    # 키워드별 테마 분석 및 블로그 추천 제목 생성
+    # 키워드별 테마 분석 및 블로그 추천 제목 생성 (상위 3개는 무조건 작성 제목 보장)
     results = []
-    for i, t in enumerate(trends, 1):
+    for i, t in enumerate(trends[:10], 1):
         kw = t["keyword"]
-        news = t["news_title"]
+        news = t.get("news_title", "")
         theme_info = match_blog_theme(kw, news)
-        rec_title = generate_blog_title_for_trend(kw, news, theme_info)
+        rec_title = generate_blog_title_for_trend(kw, news, theme_info, rank=i)
         results.append({
             "rank": i,
             "keyword": kw,
-            "badge": t.get("traffic", "실시간"),
+            "badge": t.get("traffic", f"실시간 {i}위"),
             "news": news,
             "recommended_title": rec_title,
             "theme": theme_info
@@ -1150,7 +1204,7 @@ def find_naver_topic_article(keyword):
             return v
     return None
 
-def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
+def generate_blog_title_for_trend(keyword, news_title="", theme_info=None, rank=None):
     """트렌드 키워드를 네이버 블로그 스마트블록 상위노출용 매력적인 제목으로 변환 (단어 중복 방지)"""
     kw = keyword.strip()
     verified_art = find_naver_topic_article(kw)
@@ -1222,7 +1276,18 @@ def generate_blog_title_for_trend(keyword, news_title, theme_info=None):
             else:
                 return f"한 달 생활비 30만원 아끼는 '{kw}' 실천법! 전 세대 필수 스마트 소비 꿀팁 3가지"
 
-    return f"[보류] '{kw}' — 단기 이슈성 검색어 (시니어·은퇴 테마 외 키워드)"
+    # [수정] 테마 미매칭 키워드 (실시간 검색어 Top 3 무조건 작성 대상 등)
+    # 독자의 클릭을 유도하고 네이버 스마트블록 상위노출에 최적화된 고품질 제목 생성
+    if news_title and len(news_title.strip()) > 5:
+        clean_news = news_title.strip().replace('"', '').replace("'", "")
+        if len(clean_news) > 28:
+            clean_news = clean_news[:28] + "..."
+        return f"실시간 화제 '{kw}' 핵심 이슈 총정리! {clean_news} 주요 쟁점과 체크포인트 3가지"
+    
+    if rank and rank <= 3:
+        return f"실시간 검색어 {rank}위 '{kw}' 주목받는 핵심 이유! 지금 알아야 할 이슈 배경과 체크포인트 3가지"
+    
+    return f"실시간 검색어 화제 '{kw}' 무슨 일일까? 핵심 이슈 총정리와 꼭 알아둘 3가지 포인트"
 
 def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num=1, force=False):
     """
@@ -1252,30 +1317,53 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
         category = theme_info["category"]
         matched_kw = theme_info["matched_keyword"]
         lead_text = theme_info["lead"]
+        q1_text = f"'{kw}' 관련 기준을 확인할 때 무엇부터 챙겨야 할까요?"
+        q2_text = "5060 세대가 실생활에서 바로 적용할 수 있는 핵심 포인트는 무엇일까요?"
+        intro_summary = f"시니어와 은퇴자의 관점에서 **'{kw}' 관련 핵심 배경과 실생활에 바로 적용할 수 있는 3가지 실천 팁**을 알기 쉽게 정리해 드립니다."
         p1_title = theme_info["p1_title"]
         p1_desc = theme_info["p1_desc"]
+        p1_extra = "단편적인 정보만 보고 성급히 결정하기보다, 나의 건강 상태나 가계부 기준선에 맞추어 적용 가능 여부를 먼저 점검하는 것이 중요합니다."
         p2_title = theme_info["p2_title"]
         p2_desc = theme_info["p2_desc"]
         p3_title = theme_info["p3_title"]
         p3_desc = theme_info["p3_desc"]
-        raw_tags = [kw.replace(" ", ""), matched_kw.replace(" ", ""), "인생2막", "품미인생", "노후자산관리", "생활꿀팁", "스마트블록", "디지털연금"]
-        dedup_tags = []
-        for tg in raw_tags:
-            if tg and tg not in dedup_tags:
-                dedup_tags.append(tg)
-        tags_line = " ".join(f"#{tg}" for tg in dedup_tags)
+        chk1 = "올해 최신 기준(연령·소득·세율·한도)과 내 조건이 일치하는지 확인하기"
+        chk2 = "수수료, 세금, 건강보험료 또는 건강상 주의사항 등 부수적인 영향 점검하기"
+        chk3 = "무리한 일시적 선택 대신 장기적으로 지속 가능한 계획 세우기"
+        closing_q = f"여러분은 '{kw}'에 대해 평소 어떻게 준비하고 계신가요? 궁금한 점이나 함께 나누고 싶은 경험이 있다면 편하게 댓글로 남겨주세요."
+        raw_tags = [kw, matched_kw, "인생2막", "품미인생", "노후자산관리", "생활꿀팁", "스마트블록", "디지털연금"]
     else:
-        theme_name = "실시간 트렌드"
-        category = "경제 / 시사 / 노후 자산관리 & 라이프"
+        rank_val = trend.get("rank")
+        rank_label = f"실시간 {rank_val}위" if rank_val else "실시간 이슈"
+        theme_name = f"🔥 {rank_label} 트렌드 분석"
+        category = "시사 / 경제 / 트렌드 라이프"
         matched_kw = kw
-        lead_text = f"최근 주요 뉴스에서 자주 언급되는 '{kw}' 관련 소식({news})을 접하시고 내 생활과 노후 설계에 어떻게 적용할지 궁금해하는 분들이 많습니다."
-        p1_title = "핵심 기준과 배경 먼저 확인하기"
-        p1_desc = "단기적인 화제에 그치지 않고 우리 생활과 소비, 자산 관리에 직간접적인 영향을 주는 요소들을 차분히 살펴봐야 합니다."
-        p2_title = "내 상황에 맞는 분산과 안전성 최우선하기"
-        p2_desc = "무리한 선택이나 급작스러운 변화보다는 현재 내가 가지고 있는 자원(건강, 시간, 자산)을 안정적으로 지키는 원칙을 유지해야 합니다."
-        p3_title = "공식 기준 확인 후 작은 것부터 실천하기"
-        p3_desc = "주변의 소문에 휩쓸리기보다 공신력 있는 공식 기관의 안내를 먼저 확인하고 내 일상에 맞는 체크리스트를 하나씩 적용해 보세요."
-        tags_line = f"#{kw.replace(' ', '')} #인생2막 #품미인생 #노후자산관리 #생활꿀팁 #디지털연금"
+        if news:
+            lead_text = f"실시간 검색어와 주요 뉴스에서 큰 화제가 되고 있는 '{kw}' 소식({news})이 주목을 받고 있습니다. 빠른 정보 흐름 속에서 꼭 알아야 할 핵심 내용과 시사점을 알기 쉽게 정리해 드립니다."
+        else:
+            lead_text = f"현재 포털 실시간 검색어 순위에 오르며 많은 이들의 이목을 집중시키고 있는 '{kw}' 이슈에 대해 배경과 실생활 속 체크포인트를 궁금해하시는 분들이 많습니다."
+        q1_text = f"'{kw}' 관련 실시간 화제의 핵심 팩트와 배경은 무엇일까요?"
+        q2_text = "우리가 눈여겨봐야 할 관전 포인트와 실생활 영향은 무엇일까요?"
+        intro_summary = f"빠른 트렌드 흐름 속에서 **'{kw}' 관련 핵심 쟁점과 우리가 꼭 알아두면 유익한 3대 포인트**를 명쾌하게 정리해 드립니다."
+        p1_title = f"실시간 검색어 핫이슈 '{kw}', 구체적인 발생 배경과 핵심 팩트"
+        p1_desc = f"자극적인 제목이나 단편적인 소문만 보고 섣불리 판단하기보다는, '{kw}' 이슈가 대두된 직접적인 계기와 공신력 있는 사실관계를 먼저 차분하게 확인하는 것이 중요합니다."
+        p1_extra = "화제성 정보일수록 공신력 있는 언론 보도와 공식 발표를 교차 확인하여 균형 잡힌 맥락을 파악하는 것이 필요합니다."
+        p2_title = "대중의 높은 관심 속에서 꼭 짚어봐야 할 3가지 관전 포인트"
+        p2_desc = f"이번 '{kw}' 화제에서 가장 핵심이 되는 쟁점 사항과 향후 진행 과정에서 어떤 변화와 파급 효과가 나타날 수 있는지 꼼꼼하게 점검해야 합니다."
+        p3_title = "우리 일상과 실생활 관점에서의 시사점 및 현명한 대응 팁"
+        p3_desc = "주변의 불확실한 소문에 휘둘리지 않고, 공식 발표와 신뢰할 수 있는 정보를 바탕으로 내 일상과 소비, 라이프스타일에 미치는 영향을 지혜롭게 파악하고 대처해 보세요."
+        chk1 = "단편적인 소문이나 자극적인 헤드라인 대신 공신력 있는 공식 팩트 확인하기"
+        chk2 = "주변 사람들과의 대화나 일상 속에서 꼭 알아두어야 할 핵심 쟁점 체크하기"
+        chk3 = "무리한 동조나 편향된 시각 대신 균형 잡힌 관점으로 이슈 바라보기"
+        closing_q = f"여러분은 이번 '{kw}' 이슈를 보시며 어떤 생각이 드셨나요? 함께 나누고 싶은 의견이 있다면 자유롭게 댓글로 남겨주세요."
+        raw_tags = [kw, "실시간검색어", "트렌드이슈", "핫이슈분석", "품미인생", "시사상식", "생활정보", "스마트블록"]
+
+    dedup_tags = []
+    for tg in raw_tags:
+        clean_tag = re.sub(r'[^0-9a-zA-Z가-힣]', '', tg)
+        if clean_tag and clean_tag not in dedup_tags:
+            dedup_tags.append(clean_tag)
+    tags_line = " ".join(f"#{tg}" for tg in dedup_tags)
 
     # 사전 교정·검증된 전문 원고(NAVER_TOPIC_ARTICLES)가 존재할 경우 우선 사용 (기계적인 상투구 원천 차단)
     verified_art = find_naver_topic_article(kw)
@@ -1295,23 +1383,23 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
 
 {lead_text}
 
-> **"'{kw}' 관련 기준을 확인할 때 무엇부터 챙겨야 할까요?"**  
-> **"5060 세대가 실생활에서 바로 적용할 수 있는 핵심 포인트는 무엇일까요?"**
+> **"{q1_text}"**  
+> **"{q2_text}"**
 
-시니어와 은퇴자의 관점에서 **'{kw}' 관련 핵심 배경과 실생활에 바로 적용할 수 있는 3가지 실천 팁**을 알기 쉽게 정리해 드립니다.
+{intro_summary}
 
 ---
 
 ## 1. {p1_title}
 
-{p1_desc} 단편적인 정보만 보고 성급히 결정하기보다, 나의 건강 상태나 가계부 기준선에 맞추어 적용 가능 여부를 먼저 점검하는 것이 중요합니다.
+{p1_desc} {p1_extra}
 
 ---
 
 ## 2. 실생활에서 꼭 챙겨야 할 실천 포인트 3가지
 
-### ① 공식 기관 기준과 본인 조건 먼저 대조하기
-자극적인 요약 정보나 주변의 소문에 의존하기보다, 관련 공공기관이나 금융·의료기관의 최신 공식 안내를 통해 본인에게 해당되는 조건과 예외 기준을 먼저 확인합니다.
+### ① 공식 기관 기준과 공신력 있는 정보 먼저 대조하기
+자극적인 요약 정보나 주변의 소문에 의존하기보다, 관련 공공기관이나 공신력 있는 언론·기관의 최신 공식 안내를 통해 사실관계와 예외 기준을 먼저 확인합니다.
 
 ### ② {p2_title}
 {p2_desc}
@@ -1323,18 +1411,18 @@ def create_post(post_id, date_str, weekday_str, trend, theme_info=None, post_num
 
 ## 3. 적용 전 최종 점검 체크리스트
 
-1. 올해 최신 기준(연령·소득·세율·한도)과 내 조건이 일치하는지 확인하기
-2. 수수료, 세금, 건강보험료 또는 건강상 주의사항 등 부수적인 영향 점검하기
-3. 무리한 일시적 선택 대신 장기적으로 지속 가능한 계획 세우기
+1. {chk1}
+2. {chk2}
+3. {chk3}
 
 ---
 
 ## 맺음말 & 소통 한마디
 
-> "정확한 기준을 알고 차분히 준비하는 습관이  
+> "정확한 기준과 최신 트렌드를 알고 차분히 대처하는 습관이  
 > 인생 2막의 소중한 자산과 일상을 가장 든든하게 지켜줍니다."
 
-여러분은 '{kw}'에 대해 평소 어떻게 준비하고 계신가요? 궁금한 점이나 함께 나누고 싶은 경험이 있다면 편하게 댓글로 남겨주세요.
+{closing_q}
 
 글이 도움 되셨다면 **이웃 추가**와 **공감(❤️)** 부탁드립니다!
 
@@ -2080,10 +2168,11 @@ def update_naver_index_html(today_str, trends, posts):
         today_class = " today" if is_today else ""
         
         # 뱃지 텍스트
-        if p["post_num"] == 1:
-            badge_suffix = " (오늘 · 실시간 1위)" if is_today else " (실시간 1위)"
+        if p["post_num"] <= 3:
+            theme_label = p['theme_name'] if p.get('theme_name') else f"실시간 {p['post_num']}위"
+            badge_suffix = f" (오늘 · #{p['post_num']}편 {theme_label})" if is_today else f" (#{p['post_num']}편 {theme_label})"
         else:
-            theme_label = f"테마: {p['theme_name']}" if p['theme_name'] else f"테마 #{p['post_num']}"
+            theme_label = f"테마: {p['theme_name']}" if p.get('theme_name') else f"테마 #{p['post_num']}"
             badge_suffix = f" (오늘 · {theme_label})" if is_today else f" ({theme_label})"
             
         date_badge = f"📍 {p['date_only']}{badge_suffix}"
@@ -2115,6 +2204,8 @@ def update_naver_index_html(today_str, trends, posts):
         theme_badge_html = ""
         if t.get("theme"):
             theme_badge_html = f'<span class="trend-badge" style="background:#e8f9f0; color:#02b14f; font-weight:700; border:1px solid #c3eed6;">★ {t["theme"]["theme_name"]}</span>'
+        elif t.get("rank") and t["rank"] <= 3:
+            theme_badge_html = '<span class="trend-badge" style="background:#fff1f0; color:#e03131; font-weight:700; border:1px solid #ffc9c9;">🔥 Top 3 무조건 작성</span>'
 
         trends_html += f"""
             <div class="trend-item">
@@ -3316,52 +3407,100 @@ def run_batch(target_date=None, force=False, naver_only=False):
     trends = fetch_trending_keywords()
     log(f"📊 실시간 트렌드 {len(trends)}개 수집 완료")
 
-    # 2. 블로그 테마와 정확히 일치하고 기작성 중복이 아닌 키워드 전수 선별 (실시간 키워드 기준 주제 해당 글 모두 작성)
     selected_items = []
-    for t in trends:
-        theme_info = t.get("theme") or match_blog_theme(t["keyword"], t.get("news", ""))
+    selected_kws = set()
+    selected_titles = set()
+
+    # 2. [사용자 지침 1] 실시간 검색어 Top 10 중 상위 3개(1위, 2위, 3위)는 무조건 글 작성!
+    top3_trends = trends[:3]
+    for t in top3_trends:
+        kw = t["keyword"].strip()
+        kw_low = kw.lower()
+        theme_info = t.get("theme") or match_blog_theme(kw, t.get("news", ""))
+        rec_title = t.get("recommended_title") or generate_blog_title_for_trend(kw, t.get("news", ""), theme_info, rank=t.get("rank"))
+        t["recommended_title"] = rec_title
+        t["theme"] = theme_info
+
+        # 상위 3개 무조건 작성 원칙: 만약 과거 동일 제목이 있더라도 업데이트 표기로 글 작성 보장
+        if rec_title in existing_sigs["titles"]:
+            rec_title = f"{rec_title} (최신 핵심 요약)"
+            t["recommended_title"] = rec_title
+
+        selected_items.append((t, theme_info, "TOP3_MANDATORY"))
+        selected_kws.add(kw_low)
+        selected_titles.add(rec_title)
+        existing_sigs["titles"].add(rec_title)
+        existing_sigs["keywords"].add(kw_low)
+        log(f"🔥 [실시간 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{kw}] -> '{rec_title}'")
+
+    # 3. [사용자 지침 2] 나머지 글(Top 4~10) 중에서 내가 설정한 주제(품미인생 테마)와 연관이 있는 글 작성!
+    rest_trends = trends[3:10]
+    for t in rest_trends:
+        kw = t["keyword"].strip()
+        kw_low = kw.lower()
+        theme_info = t.get("theme") or match_blog_theme(kw, t.get("news", ""))
+        
+        # 내가 설정한 주제와 연관이 없으면 건너뜀
         if not theme_info:
             continue
-        kw_low = t["keyword"].strip().lower()
-        title_cand = t.get("recommended_title") or generate_blog_title_for_trend(t["keyword"], t.get("news", ""), theme_info)
-        t["recommended_title"] = title_cand
-        if title_cand in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
+            
+        rec_title = t.get("recommended_title") or generate_blog_title_for_trend(kw, t.get("news", ""), theme_info, rank=t.get("rank"))
+        t["recommended_title"] = rec_title
+        t["theme"] = theme_info
+        
+        # 중복 방지
+        if rec_title in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
             continue
-        selected_items.append((t, theme_info))
-        existing_sigs["titles"].add(title_cand)
-        existing_sigs["keywords"].add(kw_low)
+        if kw_low in selected_kws or rec_title in selected_titles:
+            continue
 
-    # 3. 만약 실시간 트렌드에서 매칭된 글이 부족한 경우 상록수/10대 킬러 주제 풀에서 추가 선별
-    if len(selected_items) < 3:
+        selected_items.append((t, theme_info, "THEME_MATCH"))
+        selected_kws.add(kw_low)
+        selected_titles.add(rec_title)
+        existing_sigs["titles"].add(rec_title)
+        existing_sigs["keywords"].add(kw_low)
+        log(f"⭐ [Top 4~10 주제 연관 글] #{t.get('rank')}위 [{kw}] ({theme_info['theme_name']}) -> '{rec_title}'")
+
+    # 4. [사용자 지침 3 - 작성 글 수 확대]
+    # "현재 작성된 글 수가 너무 적어서 작성 글수를 늘릴려고 합니다."
+    # 하루 최소 5편 이상 풍성하게 작성될 수 있도록 보장 (4~10위에서 연관 글이 적을 때 큐레이티드 주제 풀에서 추가 선별)
+    TARGET_MIN_POSTS = 5
+    if len(selected_items) < TARGET_MIN_POSTS:
         for cur in NAVER_CURATED_TOPICS:
-            kw_low = cur["keyword"].strip().lower()
-            theme_info = match_blog_theme(cur["keyword"], cur["news_title"])
+            kw = cur["keyword"].strip()
+            kw_low = kw.lower()
+            theme_info = match_blog_theme(kw, cur["news_title"])
             if not theme_info:
                 continue
-            rec_title = generate_blog_title_for_trend(cur["keyword"], cur["news_title"], theme_info)
+            rec_title = generate_blog_title_for_trend(kw, cur["news_title"], theme_info)
             if rec_title in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
+                continue
+            if kw_low in selected_kws or rec_title in selected_titles:
                 continue
             t_obj = {
                 "rank": len(selected_items) + 1,
-                "keyword": cur["keyword"],
+                "keyword": kw,
                 "badge": cur["traffic"],
                 "news": cur["news_title"],
                 "recommended_title": rec_title,
                 "theme": theme_info
             }
-            selected_items.append((t_obj, theme_info))
+            selected_items.append((t_obj, theme_info, "CURATED_EXPANSION"))
+            selected_kws.add(kw_low)
+            selected_titles.add(rec_title)
             existing_sigs["titles"].add(rec_title)
             existing_sigs["keywords"].add(kw_low)
-            if len(selected_items) >= 5:
+            log(f"📚 [글 수 확대 보강] 큐레이티드 테마 [{kw}] ({theme_info['theme_name']}) -> '{rec_title}'")
+            if len(selected_items) >= TARGET_MIN_POSTS:
                 break
 
     created_count = 0
-    for idx, (t_item, th_info) in enumerate(selected_items, 1):
+    for idx, (t_item, th_info, _src_type) in enumerate(selected_items, 1):
         post_id = today_str if idx == 1 else f"{today_str}-{idx}"
         create_post(post_id, today_str, weekday_str, t_item, theme_info=th_info, post_num=idx, force=force)
         created_count += 1
 
-    log(f"📝 오늘 작성된 네이버 블로그 포스팅: 총 {created_count}편 (오매칭·중복 원천 차단 완료)")
+    log(f"📝 오늘 작성된 네이버 블로그 포스팅: 총 {created_count}편 (Top 3 무조건 3편 + 주제 연관 및 보강 {created_count - 3}편)")
 
     # 4. 전체 포스트 스캔 및 블로그 대시보드 갱신
     posts = scan_all_posts()
