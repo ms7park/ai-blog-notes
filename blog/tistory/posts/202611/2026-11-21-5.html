@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[2026-11-21] 티스토리 포스팅 | 만 65세 이상 기초연금 수급 자격(소득인정액 계산 기준) 및 단독·부부 감액 기준 확인 방법 (2026 최신 개정판)</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+  <style>
+    :root {
+      --tistory: #ea580c;
+      --tistory-dark: #c2410c;
+      --tistory-light: #fff7ed;
+      --tistory-border: #fed7aa;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-tag {
+      background: var(--tistory);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-main);
+    }
+
+    .btn:hover { background: #f3f4f6; }
+
+    .btn-tistory {
+      background: var(--tistory);
+      color: var(--white);
+      border-color: var(--tistory);
+    }
+    .btn-tistory:hover { background: var(--tistory-dark); color: var(--white); }
+
+    .container {
+      max-width: 860px;
+      margin: 32px auto 0;
+      padding: 0 16px;
+    }
+
+    .meta-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--tistory);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .meta-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--tistory-light);
+      color: var(--tistory-dark);
+      border: 1px solid var(--tistory-border);
+    }
+
+    .badge-score {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .post-title {
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      color: #111827;
+    }
+
+    .meta-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      background: var(--bg);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .meta-info-item span { color: var(--text-muted); margin-right: 6px; }
+    .meta-info-item strong { color: var(--text-main); }
+
+    .editor-preview {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .editor-preview h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--tistory);
+      color: #111;
+    }
+
+    .editor-preview h2 {
+      font-size: 19.5px;
+      font-weight: 750;
+      margin: 34px 0 14px;
+      color: #111827;
+      border-left: 4px solid var(--tistory);
+      padding-left: 12px;
+    }
+
+    .editor-preview h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      margin: 24px 0 10px;
+      color: #1f2937;
+    }
+
+    .editor-preview p {
+      margin-bottom: 16px;
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: #374151;
+      word-break: keep-all;
+    }
+
+    .editor-preview ul, .editor-preview ol {
+      margin: 12px 0 20px 22px;
+    }
+
+    .editor-preview li {
+      margin-bottom: 8px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #374151;
+    }
+
+    .editor-preview blockquote {
+      border: 1px solid var(--tistory-border);
+      border-left: 5px solid var(--tistory);
+      background: var(--tistory-light);
+      padding: 16px 20px;
+      margin: 20px 0 24px;
+      border-radius: 6px;
+      color: #7c2d12;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .editor-preview blockquote p {
+      margin-bottom: 0;
+      color: #7c2d12;
+      font-size: 15.5px;
+      line-height: 1.8;
+    }
+
+    .editor-preview hr {
+      border: 0;
+      border-top: 1px solid #f1f5f9;
+      margin: 26px 0;
+    }
+
+    .editor-preview table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 24px;
+      font-size: 14px;
+    }
+
+    .editor-preview th {
+      background: #fff7ed;
+      color: #9a3412;
+      font-weight: 700;
+      border: 1px solid #fed7aa;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .editor-preview td {
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      color: #374151;
+      vertical-align: top;
+    }
+
+    .editor-preview tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+
+    .editor-preview a {
+      color: var(--tistory-dark);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+
+    .table-helper-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin: 16px 0 8px;
+      font-size: 12.5px;
+      color: #9a3412;
+    }
+    .table-helper-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .table-helper-btn {
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid #fdba74;
+      background: #ffffff;
+      color: #c2410c;
+      transition: all 0.15s;
+    }
+    .table-helper-btn.primary {
+      background: #ea580c;
+      color: #ffffff;
+      border-color: #ea580c;
+    }
+    .table-helper-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="brand-tag">TISTORY · 똑똑한 생활탐구</span>
+      <span class="nav-title">티스토리 정보형 포스팅: 2026-11-21 (토) · 은퇴·연금·생활비</span>
+    </div>
+    <div class="nav-actions">
+      <a href="../../index.html" class="btn">📂 티스토리 작업실 홈</a>
+      <a href="2026-11-21-5.md" target="_blank" class="btn">📄 원본 MD 열기</a>
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="티스토리 제목 입력란에 붙여넣을 제목만 복사합니다">
+        📋 제목만 복사
+      </button>
+      <button class="btn btn-tistory" id="copyTistoryHtmlBtn" title="티스토리 기본모드 에디터에 표·소제목·요약박스 서식 그대로 붙여넣기 됩니다">
+        🟠 티스토리 에디터(기본모드) 서식 복사
+      </button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 및 표 기호를 모두 정돈한 깨끗한 텍스트로 복사합니다">
+        📄 순수 텍스트 복사 (**·표 기호 제거)
+      </button>
+      <button class="btn" id="copyMarkdownBtn" title="티스토리 마크다운 모드용 원문을 복사합니다">
+        📝 마크다운 원문 복사
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="meta-card">
+      <div class="meta-badges">
+        <span class="badge">📂 카테고리: 은퇴·연금·생활비</span>
+        <span class="badge">📈 Google Trends 상승 검색어: [기초연금 수급자격]</span>
+        <span class="badge badge-score">🎯 주제 평가 점수: 92/100점</span>
+      </div>
+      <h1 class="post-title">만 65세 이상 기초연금 수급 자격(소득인정액 계산 기준) 및 단독·부부 감액 기준 확인 방법 (2026 최신 개정판)</h1>
+
+      <div class="meta-info-grid">
+        <div class="meta-info-item">
+          <span>작성일자:</span><strong>2026-11-21 (토)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>타겟 검색엔진:</span><strong>구글(Google) & 다음(Daum)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>글 구성:</span><strong>티스토리 7단계 표준 템플릿 (표 깨짐 방지 적용)</strong>
+        </div>
+        <div class="meta-info-item">
+          <span>수익화 타겟:</span><strong>구글 애드센스 승인·노출 최적화</strong>
+        </div>
+      </div>
+    </div>
+
+    <article class="editor-preview" id="postArticle"></article>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script id="rawMarkdown" type="text/plain">
+# 만 65세 이상 기초연금 수급 자격(소득인정액 계산 기준) 및 단독·부부 감액 기준 확인 방법 (2026 최신 개정판)
+
+> **📌 핵심 요약**: 만 65세 이상 대한민국 국민 중 가구의 **소득인정액(월 소득평가액 + 재산의 월 소득환산액)**이 매년 고시되는 **선정기준액 이하(소득하위 70% 수준)**일 때 기초연금을 받을 수 있습니다. 거주 지역별 기본재산액 공제(대도시·중소도시·농어촌)와 금융재산 2,000만 원 기본공제가 적용되며, 부부가 모두 수급할 경우 산정된 기초연금액의 **20%가 감액**되므로 만 65세 생일 한 달 전에 [복지로(bokjiro.go.kr)](https://www.bokjiro.go.kr/) 모의계산기로 본인 조건을 사전 확인하는 것이 정확합니다.
+
+---
+
+## 1. 만 65세 생일이 다가온다면 왜 '소득인정액' 기준부터 확인해야 할까요?
+
+기초연금은 만 65세 이상 어르신 중 소득·재산 수준이 하위 70%에 해당하는 분들에게 매월 안정적인 노후 기초생활비를 지원하는 제도입니다. 하지만 단순히 *"현재 월급이 없으니 무조건 받을 수 있겠지"*라거나 반대로 *"자가 주택이 있으니 아예 신청도 못 하겠지"*라고 지레짐작해 신청 시기를 놓치는 경우가 많습니다.
+
+기초연금 수급 여부는 단순 현금 소득이 아니라 **근로·연금소득에서 일정 금액을 공제한 '소득평가액'**과 **주택·토지·금융자산에서 기본공제를 뺀 뒤 연 4%로 환산한 '재산의 소득환산액'**을 합친 **소득인정액**으로 판정합니다(단, 공무원·사립학교교직원·군인·별정우체국연금 등 직역연금 수급권자 및 그 배우자는 원칙적으로 대상에서 제외). 보건복지부와 복지로 공식 기준을 바탕으로 **온라인 모의계산 절차, 단독·부부가구 비교표, 재산 산정 시 주의사항**을 단계별로 정리합니다.
+
+---
+
+## 2. 복지로 공식 사이트에서 기초연금 모의계산 및 신청하는 4단계 순서
+
+### 1단계: 복지로(bokjiro.go.kr) 접속 및 기초연금 자가진단 메뉴 이동
+1. PC 또는 스마트폰에서 [복지로 공식 누리집(bokjiro.go.kr)](https://www.bokjiro.go.kr/)에 접속합니다.
+2. 상단 메뉴 **[복지서비스]** → **[모의계산]** → **[기초연금]**을 차례대로 클릭합니다.
+3. 별도 로그인 없이도 본인과 배우자의 예상 소득·재산 수치를 입력해 수급 가능 여부를 즉시 가늠해 볼 수 있습니다.
+
+### 2단계: 가구 유형(단독 vs 부부) 및 거주지 구분 선택
+1. 배우자 유무에 따라 **단독가구** 또는 **부부가구**를 선택합니다(사실혼 관계도 부부가구로 산정).
+2. 거주지 기준(대도시 / 중소도시 / 농어촌)을 선택합니다. 거주지에 따라 일반재산에서 차감해 주는 **기본재산액 공제 한도**가 달라집니다.
+
+### 3단계: 소득(근로·연금·이자) 및 재산(주택·금융·자동차) 입력
+1. **근로소득**: 상시 근로소득에서 기본 공제액을 뺀 금액의 70%만 반영(30% 추가 공제)됩니다.
+2. **기타소득**: 국민연금 등 공적연금 수령액, 사업·임대소득, 이자·배당소득(월 4만 원 기본공제 적용)을 입력합니다.
+3. **재산 항목**: 건축물·토지의 **지방세정 시가표준액**, 전·월세 보증금(95% 반영), 금융자산(가구당 2,000만 원 공제), 부채(대출금·임대보증금 차감)를 입력하고 **[결과보기]**를 누릅니다.
+
+### 4단계: 만 65세 생일이 속한 달의 1개월 전부터 신청하기
+1. 신청 가능 시기는 만 65세 생일이 속한 달의 **1개월 전 초일**부터입니다(예: 11월생은 10월 1일부터 신청 가능).
+2. 신분증, 본인 명의 통장 사본, 배우자의 금융정보제공동의서를 준비해 전국 읍·면·동 행정복지센터(주민센터)나 국민연금공단 지사에 방문하거나, 복지로에서 온라인으로 신청서를 제출합니다.
+
+---
+
+## 3. 기초연금 가구 유형별 선정 기준 및 감액 요건 비교표
+
+아래 표는 보건복지부 기초연금 사업안내 기준 **가구 유형별 적용 차이점과 감액 제도**를 비교한 표입니다(※ 매년 고시되는 선정기준액과 기준연금액 절대 수치는 물가 및 소득 추이에 따라 연초에 갱신되므로 당해 연도 복지로 공시를 함께 확인하세요).
+
+| 비교 항목 | 단독가구 (1인) | 부부가구 (2인 합산) | 산정 시 핵심 체크포인트 |
+| --- | --- | --- | --- |
+| **가구 판정 기준** | 법률상·사실상 배우자가 없는 65세 이상 어르신 | 법률혼 또는 사실혼 배우자가 있는 가구 | 부부 중 1명만 65세 이상이어도 소득·재산은 **부부 합산** |
+| **선정기준액 비율** | 단독가구 기준 **100%** 적용 | 단독가구 기준의 **160%** 적용 | 부부 합산 소득인정액이 부부가구 기준 이하일 때 선정 |
+| **부부 동시 수급 감액** | 감액 없음 (산정액 100% 지급) | 부부 모두 수급 시 각각 **20% 감액** | 부부가 함께 생활할 때의 공통 생활비 절감 효과를 반영 |
+| **국민연금 연계 감액** | 기준연금액의 150% 초과 수령 시 일부 감액 가능 | 각 개인별 국민연금 급여액 기준으로 산정 | 유족연금·장애연금 수급자는 연계 감액 대상에서 제외 |
+| **소득역전방지 감액** | 기초연금 합산 시 선정기준액 초과분만큼 감액 | 부부가구 선정기준액 초과분 기준으로 조정 | 비수급자보다 총소득이 높아지는 현상을 방지하기 위한 장치 |
+
+---
+
+## 4. 신청 전 반드시 확인해야 할 3가지 재산 환산 주의사항
+
+1. **고급자동차 및 회원권 보유 시 '월 100% 소득환산' 주의**
+   - 차량가액 **4,000만 원 이상**인 승용차(차령 10년 이상이거나 생업용·장애인 차량 등 예외 제외)나 골프·콘도·승마 회원권을 보유한 경우, 일반 재산(연 4% 환산)과 달리 **그 가액의 100%가 매월 소득으로 간주**되어 기초연금 수급에서 즉시 탈락할 수 있습니다.
+2. **자녀에게 증여한 재산의 '기타(증여)재산' 산정**
+   - 기초연금 수급을 목적으로 본인이나 배우자의 재산을 자녀 등 타인에게 증여·처분한 경우, 증여일로부터 일정 기간 동안 자연적 소비금액을 차감한 잔액이 여전히 본인의 재산(`기타재산`)으로 합산됩니다.
+3. **거주지 이동이나 대출 상환 시 변동 신고**
+   - 주택담보대출금이나 임대보증금은 재산에서 부채로 차감되므로, 신청 시 부채증명원이나 확정일자부 임대차계약서를 빠짐없이 제출해야 불이익을 피할 수 있습니다.
+
+---
+
+## 5. 마무리 및 실천 체크리스트
+
+1. 만 65세 생일이 속한 달의 **한 달 전 1일**을 달력에 표시해 두고, 신청 지연을 막기 위해 미리 [복지로 기초연금 모의계산](https://www.bokjiro.go.kr/)을 실행해 보세요.
+2. 금융재산은 가구당 2,000만 원이 기본 공제되고 일반재산은 지역별 기본재산액이 공제되므로, 자가 주택이 있더라도 포기하지 말고 반드시 정식 상담(보건복지상담센터 `129` 또는 국민연금공단 `1355`)을 받아보시기 바랍니다.
+
+---
+
+## 6. 참고 자료 및 공식 확인 사이트
+
+- [보건복지부 기초연금 공식 안내 누리집](https://basicpension.mohw.go.kr/)
+- [복지로 (기초연금 온라인 모의계산 및 신청)](https://www.bokjiro.go.kr/)
+- [국민연금공단 기초연금 상담 안내](https://www.nps.or.kr/)
+
+  </script>
+
+  <script>
+    const mdSource = document.getElementById("rawMarkdown").textContent.trim();
+    const articleEl = document.getElementById("postArticle");
+
+    // CommonMark(marked.js)에서 **괄호)**조사, **[대괄호]**조사, *"따옴표"*조사 형태일 때
+    // 별표(** / *)가 풀리지 않고 그대로 노출되는 한국어 마크다운 파싱 버그 완벽 보정
+    function parseMarkdownWithKoreanSupport(md) {
+      let html = marked.parse(md);
+      html = html
+        .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+        .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+      return html;
+    }
+
+    articleEl.innerHTML = parseMarkdownWithKoreanSupport(mdSource);
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    // 마크다운 표(| ... |)를 줄글(불릿 카드)로 변환하여 순수 텍스트 복사 시 표가 깨지지 않게 처리
+    function convertMarkdownTablesToReadableList(mdText) {
+      const lines = mdText.split("\n");
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.startsWith("|") && line.endsWith("|") && i + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[i + 1].trim())) {
+          const headers = line.slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+          i += 2;
+          while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+            const cells = lines[i].trim().slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+            const rowTitle = cells[0] || "항목";
+            out.push(`■ [${rowTitle}]`);
+            for (let c = 1; c < headers.length; c++) {
+              const hName = headers[c] || `항목 ${c}`;
+              const cVal = cells[c] || "-";
+              out.push(`  • ${hName}: ${cVal}`);
+            }
+            out.push("");
+            i++;
+          }
+        } else {
+          out.push(lines[i]);
+          i++;
+        }
+      }
+      return out.join("\n");
+    }
+
+    function getCleanPlainText() {
+      return convertMarkdownTablesToReadableList(mdSource)
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/^>\s+/gm, '')
+        .replace(/^---\s*$/gm, '')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    }
+
+    // 티스토리 KEditor(기본모드)에 붙여넣었을 때 표(Table)가 절대 깨지지 않도록
+    // <thead>/<th>를 단일 <tbody><tr><td> 구조 + 명시적 열 너비(%) + border="1" 속성으로 정규화
+    function normalizeTableForTistory(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("data-ke-align", "alignLeft");
+      newTable.setAttribute("data-ke-style", "style1");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 20px 0 24px; border: 1px solid #d1d5db; font-size: 14px; line-height: 1.6;");
+
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+
+        // 열 개수별 최적 너비 배분 (첫 번째 열 '선정기준액 비율' 등이 두 줄로 어색하게 꺾이지 않도록 22% 배정)
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "25%", "25%", "28%"];
+        else if (colCount === 5) widths = ["17%", "20%", "20%", "21%", "22%"];
+        else if (colCount > 0) {
+          const w = Math.floor(100 / colCount) + "%";
+          widths = Array(colCount).fill(w);
+        }
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeaderRow = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          const isFirstCol = (cIdx === 0);
+
+          if (isHeaderRow) {
+            td.setAttribute(
+              "style",
+              `${wStyle}background-color: #fff7ed; color: #9a3412; font-weight: bold; border: 1px solid #d1d5db; padding: 10px 10px; text-align: left; vertical-align: middle; word-break: keep-all;`
+            );
+            td.innerHTML = `<span style="color: #9a3412; font-weight: bold;">${cell.innerHTML}</span>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = isFirstCol ? "font-weight: bold; color: #111827; " : "color: #374151; ";
+            td.setAttribute(
+              "style",
+              `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #d1d5db; padding: 10px 10px; text-align: left; vertical-align: middle; word-break: keep-all;`
+            );
+            td.innerHTML = cell.innerHTML;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    function convertTableElementToReadableText(tableEl) {
+      const rows = Array.from(tableEl.querySelectorAll("tr"));
+      if (rows.length < 2) return tableEl.innerText;
+      const headers = Array.from(rows[0].querySelectorAll("th, td")).map(c => c.innerText.trim());
+      const out = [];
+      for (let r = 1; r < rows.length; r++) {
+        const cells = Array.from(rows[r].querySelectorAll("th, td")).map(c => c.innerText.trim());
+        if (!cells.length) continue;
+        out.push(`■ [${cells[0]}]`);
+        for (let c = 1; c < headers.length; c++) {
+          out.push(`  • ${headers[c]}: ${cells[c] || "-"}`);
+        }
+        out.push("");
+      }
+      return out.join("\n").trim();
+    }
+
+    // 원문 페이지(editor-preview)의 디자인과 100% 동일하게 티스토리 기본모드에 붙여넣어지도록 변환
+    // 1) <blockquote> -> 티스토리 스킨의 큰따옴표(“) 및 가운데 정렬을 막기 위해 1x1 요약 박스 테이블로 변환
+    // 2) <hr> -> 티스토리 스킨에서 '...'(점 3개)로 바뀌는 현상을 막기 위해 제거 (소제목 여백으로 구분)
+    // 3) <h2> -> 원문과 동일하게 왼쪽 주황색 포인트 바(▍) + 진한 남색(#111827) 제목 스타일 유지
+    // 4) <h1> -> 티스토리 제목 입력란과 중복되지 않도록 본문 복사 시 제거
+    function getTistoryOptimizedHtml() {
+      const clone = articleEl.cloneNode(true);
+      clone.querySelectorAll(".table-helper-bar").forEach(el => el.remove());
+
+      // 티스토리 제목란에 이미 제목을 넣으므로 본문 최상단 중복 H1 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 티스토리에서 '...'(점 3개)로 표시되는 <hr> 구분선은 깔끔한 빈 줄 여백으로 대체
+      clone.querySelectorAll("hr").forEach(el => {
+        const spacer = document.createElement("p");
+        spacer.setAttribute("data-ke-size", "size16");
+        spacer.setAttribute("style", "margin: 0; line-height: 1.2;");
+        spacer.innerHTML = "&nbsp;";
+        el.replaceWith(spacer);
+      });
+
+      // 기존 본문 내 일반 표(Table) 먼저 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        const normalized = normalizeTableForTistory(el);
+        el.replaceWith(normalized);
+      });
+
+      // <blockquote>(핵심 요약 등)를 티스토리 큰따옴표(“)가 뜨지 않는 1x1 좌측 정렬 요약 박스로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("data-ke-align", "alignLeft");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 12px 0 24px; border: 1px solid #fed7aa; background-color: #fff7ed;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #fed7aa; border-left: 5px solid #ea580c; background-color: #fff7ed; padding: 16px 20px; color: #7c2d12; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;"><span style="color: #7c2d12;">${innerHtml}</span></td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // H2 소제목: 원문 페이지처럼 좌측 주황색 바(▍) + 진한 텍스트(#111827) 적용
+      clone.querySelectorAll("h2").forEach(el => {
+        el.setAttribute("data-ke-size", "size23");
+        el.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 28px 0 14px; line-height: 1.45; text-align: left; word-break: keep-all;");
+        el.innerHTML = `<span style="color: #ea580c; font-weight: 900; margin-right: 6px;">▍</span><span style="color: #111827; font-weight: bold;">${el.innerHTML}</span>`;
+      });
+
+      // H3 소제목: 단계별 소제목 가독성 강화
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        el.setAttribute("data-ke-size", "size18");
+        el.setAttribute("style", "font-size: 17px; font-weight: bold; color: #1f2937; margin: 22px 0 10px; line-height: 1.45; text-align: left; word-break: keep-all;");
+        el.innerHTML = `<span style="color: #1f2937; font-weight: bold;">${el.innerHTML}</span>`;
+      });
+
+      // 문단(p): 티스토리 스킨에서 연속된 <p>와 <p> 사이 여백이 사라져 다닥다닥 붙는 현상 방지
+      const allParas = Array.from(clone.querySelectorAll("p"));
+      allParas.forEach(el => {
+        if (el.innerHTML === "&nbsp;") return;
+        el.setAttribute("data-ke-size", "size16");
+        el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin: 0 0 16px 0; text-align: left; word-break: keep-all;");
+        if (el.nextElementSibling && el.nextElementSibling.tagName === "P" && el.nextElementSibling.innerHTML !== "&nbsp;") {
+          const gap = document.createElement("p");
+          gap.setAttribute("data-ke-size", "size16");
+          gap.setAttribute("style", "margin: 0; line-height: 0.8;");
+          gap.innerHTML = "&nbsp;";
+          el.parentNode.insertBefore(gap, el.nextElementSibling);
+        }
+      });
+
+      clone.querySelectorAll("ul, ol").forEach(el => {
+        el.setAttribute("style", "margin: 12px 0 22px 24px; padding: 0; color: #374151;");
+      });
+
+      clone.querySelectorAll("li").forEach(el => {
+        el.setAttribute("style", "font-size: 15.5px; line-height: 1.8; margin-bottom: 8px; color: #374151; text-align: left; word-break: keep-all;");
+      });
+
+      clone.querySelectorAll("strong").forEach(el => {
+        if (!el.closest("td") || !el.closest("td").getAttribute("style")?.includes("#fff7ed")) {
+          el.setAttribute("style", "font-weight: bold; color: #111827;");
+        }
+      });
+
+      clone.querySelectorAll("a").forEach(el => {
+        el.setAttribute("style", "color: #c2410c; font-weight: bold; text-decoration: underline;");
+      });
+
+      return clone.innerHTML;
+    }
+
+    // 로컬 file:// 환경이나 모든 브라우저에서 리치 HTML(표·서식)이 100% 클립보드에 들어가도록 이중 보장
+    async function copyRichHtmlToClipboard(htmlContent, plainText) {
+      let copiedRich = false;
+
+      // 1차: contentEditable DOM 선택 + execCommand('copy') (로컬 file:// 및 티스토리 에디터 호환성 최고)
+      try {
+        const tempDiv = document.createElement("div");
+        tempDiv.contentEditable = "true";
+        tempDiv.style.position = "fixed";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.top = "0";
+        tempDiv.style.opacity = "0";
+        tempDiv.style.backgroundColor = "#ffffff";
+        tempDiv.style.color = "#1f2937";
+        tempDiv.innerHTML = htmlContent;
+        document.body.appendChild(tempDiv);
+
+        const range = document.createRange();
+        range.selectNodeContents(tempDiv);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copiedRich = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      } catch (e) {}
+
+      // 2차: ClipboardItem API 지원 시 병행 기록
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          copiedRich = true;
+        } catch (e) {}
+      }
+
+      if (!copiedRich && navigator.clipboard) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      return copiedRich;
+    }
+
+    // 본문 내 모든 표(Table) 상단에 티스토리 표 깨짐 방지 전용 복사 바 자동 삽입
+    articleEl.querySelectorAll("table").forEach((tbl) => {
+      const bar = document.createElement("div");
+      bar.className = "table-helper-bar";
+      bar.innerHTML = `
+        <span>💡 <strong>티스토리 표 깨짐 방지 도구</strong>: 에디터에 표만 다시 붙여넣거나 줄글 리스트로 대체할 수 있습니다.</span>
+        <div class="table-helper-btns">
+          <button type="button" class="table-helper-btn primary" data-act="rich">📊 이 표만 서식 복사 (기본모드용)</button>
+          <button type="button" class="table-helper-btn" data-act="list">📋 표를 줄글 리스트로 복사 (깨짐 0%)</button>
+          <button type="button" class="table-helper-btn" data-act="html">💻 표 HTML 코드 복사 (HTML모드용)</button>
+        </div>
+      `;
+      bar.querySelector('[data-act="rich"]').addEventListener("click", async () => {
+        const normTbl = normalizeTableForTistory(tbl);
+        const htmlStr = normTbl.outerHTML + "<p><br></p>";
+        const listStr = convertTableElementToReadableText(tbl);
+        await copyRichHtmlToClipboard(htmlStr, listStr);
+        showToast("📊 티스토리 기본모드 호환 표(Table)가 복사되었습니다! 에디터 원하는 위치에 Ctrl+V(Cmd+V) 하세요.");
+      });
+      bar.querySelector('[data-act="list"]').addEventListener("click", async () => {
+        const listStr = convertTableElementToReadableText(tbl);
+        await navigator.clipboard.writeText(listStr);
+        showToast("📋 표 내용이 모바일에서도 절대 깨지지 않는 깔끔한 줄글 리스트로 복사되었습니다!");
+      });
+      bar.querySelector('[data-act="html"]').addEventListener("click", async () => {
+        const normTbl = normalizeTableForTistory(tbl);
+        await navigator.clipboard.writeText(normTbl.outerHTML);
+        showToast("💻 티스토리 HTML 모드용 <table> 태그 코드가 복사되었습니다!");
+      });
+      tbl.parentNode.insertBefore(bar, tbl);
+    });
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 티스토리 제목 입력란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyTistoryHtmlBtn").addEventListener("click", async () => {
+      const htmlContent = getTistoryOptimizedHtml();
+      const plainText = getCleanPlainText();
+      await copyRichHtmlToClipboard(htmlContent, plainText);
+      showToast("🟠 티스토리 기본모드 서식(요약박스·표·소제목 완전 보정)이 복사되었습니다! 본문에 바로 붙여넣으세요.");
+    });
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", async () => {
+      const plainText = getCleanPlainText();
+      await navigator.clipboard.writeText(plainText);
+      showToast("📄 ** 기호 제거 및 표가 줄글 리스트로 정돈된 순수 텍스트가 복사되었습니다!");
+    });
+
+    document.getElementById("copyMarkdownBtn").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(mdSource);
+      showToast("📝 티스토리 마크다운 원문이 복사되었습니다!");
+    });
+  </script>
+</body>
+</html>

@@ -3488,9 +3488,37 @@ def run_batch(target_date=None, force=False, naver_only=False):
             selected_items.append((t_obj, theme_info, "CURATED_EXPANSION"))
             selected_kws.add(kw_low)
             selected_titles.add(rec_title)
-            existing_sigs["titles"].add(rec_title)
-            existing_sigs["keywords"].add(kw_low)
             log(f"📚 [글 수 확대 보강] 큐레이티드 테마 [{kw}] ({theme_info['theme_name']}) -> '{rec_title}'")
+            if len(selected_items) >= TARGET_MIN_POSTS:
+                break
+
+    # 5. [큐레이티드 풀 소진 시 순환 개정판 보강]
+    # 큐레이티드 주제가 모두 소진되었을 때 워드프레스/티스토리와 동일하게 (2026 최신 개정판)으로 하루 5편 엄격 보장
+    if len(selected_items) < TARGET_MIN_POSTS:
+        for cur in NAVER_CURATED_TOPICS:
+            kw = cur["keyword"].strip()
+            kw_low = kw.lower()
+            if kw_low in selected_kws:
+                continue
+            theme_info = match_blog_theme(kw, cur["news_title"])
+            if not theme_info:
+                continue
+            base_title = generate_blog_title_for_trend(kw, cur["news_title"], theme_info)
+            rec_title = f"{base_title} (2026 최신 개정판)"
+            if rec_title in selected_titles:
+                continue
+            t_obj = {
+                "rank": len(selected_items) + 1,
+                "keyword": kw,
+                "badge": cur["traffic"],
+                "news": cur["news_title"],
+                "recommended_title": rec_title,
+                "theme": theme_info
+            }
+            selected_items.append((t_obj, theme_info, "CURATED_EXPANSION_REVISION"))
+            selected_kws.add(kw_low)
+            selected_titles.add(rec_title)
+            log(f"📚 [글 수 확대 보강 (순환 개정판)] 큐레이티드 테마 [{kw}] ({theme_info['theme_name']}) -> '{rec_title}'")
             if len(selected_items) >= TARGET_MIN_POSTS:
                 break
 

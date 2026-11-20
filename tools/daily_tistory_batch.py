@@ -3786,7 +3786,7 @@ def build_tistory_post_html(post_id, date_str, weekday_str, trend_item, md_conte
 </body>
 </html>"""
 
-def create_tistory_post(post_id, date_str, weekday_str, trend_item, post_num=1, force=False, existing_sigs=None):
+def create_tistory_post(post_id, date_str, weekday_str, trend_item, post_num=1, force=False, existing_sigs=None, is_top3=False, is_revision=False):
     """개별 티스토리 포스팅(.md 및 .html) 생성 (중복 제목·내용 자동 차단 포함)"""
     ym = date_str[:7].replace("-", "")
     post_dir = os.path.join(POSTS_DIR, ym)
@@ -3804,9 +3804,11 @@ def create_tistory_post(post_id, date_str, weekday_str, trend_item, post_num=1, 
     m_sum = re.search(r">\s*\*\*📌 핵심 요약\*\*:\s*(.+)$", md_content, re.M)
     actual_sum = m_sum.group(1).strip() if m_sum else ""
 
-    if not force and existing_sigs and is_duplicate_tistory_candidate(actual_title, actual_sum, trend_item["keyword"], existing_sigs):
-        log(f"⏭️ [중복 작성 제외] 이미 동일한 제목 또는 내용의 글이 존재하여 건너뜁니다: {actual_title}")
-        return False
+    # Top 3(실시간 필수 작성) 또는 개정판(is_revision)의 경우 과거 유사 글 차단을 우회하여 5편 발행 보장
+    if not force and existing_sigs and not is_top3 and not is_revision:
+        if is_duplicate_tistory_candidate(actual_title, actual_sum, trend_item["keyword"], existing_sigs):
+            log(f"⏭️ [중복 작성 제외] 이미 동일한 제목 또는 내용의 글이 존재하여 건너뜁니다: {actual_title}")
+            return False
 
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(md_content)
@@ -5171,11 +5173,10 @@ def run_tistory_batch(target_date=None, force=False):
             p_title = f"{p_title} (최신 핵심 요약)"
             t["eval"]["final_title"] = p_title
 
+        t["is_top3"] = True
         selected_items.append(t)
         selected_titles.add(p_title)
         selected_kws.add(p_kw)
-        existing_sigs["titles"].add(p_title)
-        existing_sigs["keywords"].add(p_kw)
         log(f"🔥 [티스토리 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{t['keyword']}] -> '{p_title}'")
 
     # 2. [규칙 2] 나머지 글(Top 4~10) 중 설정 주제와 연관이 있는 글 작성!
@@ -5193,12 +5194,10 @@ def run_tistory_batch(target_date=None, force=False):
         selected_items.append(t)
         selected_titles.add(p_title)
         selected_kws.add(p_kw)
-        existing_sigs["titles"].add(p_title)
-        existing_sigs["keywords"].add(p_kw)
         log(f"⭐ [티스토리 Top 4~10 주제 연관 글] #{t.get('rank')}위 [{t['keyword']}] ({t['eval']['cat_name']}) -> '{p_title}'")
 
     # 3. [규칙 3 - 작성 글 수 확대]
-    # 하루 최소 5편 이상 풍성하게 작성되도록 상록수 미작성 주제 풀(TISTORY_EVERGREEN_POOL)에서 추가 보충
+    # 하루 최소 5편 이상 풍성하게 작성되도록 상록수 미작성 주제 풀(TISTORY_EVERGREEN_POOL)에서 1차 보충
     TARGET_MIN_POSTS = 5
     if len(selected_items) < TARGET_MIN_POSTS:
         for pool_item in TISTORY_EVERGREEN_POOL:
@@ -5213,6 +5212,7 @@ def run_tistory_batch(target_date=None, force=False):
                     "traffic": "상록수 추천",
                     "news_title": pool_item["search_question"],
                     "news_url": pool_item["official_refs"][0][1] if pool_item["official_refs"] else "",
+                    "is_revision": False,
                     "eval": {
                         "is_selected": True,
                         "cat_key": pool_item["cat_key"],
@@ -5233,16 +5233,59 @@ def run_tistory_batch(target_date=None, force=False):
                 selected_items.append(fallback_item)
                 selected_titles.add(p_title)
                 selected_kws.add(p_kw)
-                existing_sigs["titles"].add(p_title)
-                existing_sigs["keywords"].add(p_kw)
                 log(f"📚 [티스토리 글 수 확대 보강] 상록수 테마 [{pool_item['keyword']}] -> '{p_title}'")
                 if len(selected_items) >= TARGET_MIN_POSTS:
                     break
 
+    # 4. [규칙 4 - 상록수 풀 소진 시 순환 개정판 보강]
+    # 워드프레스와 동일하게 상록수 풀이 소진되어 5편 미만일 때 '(2026 최신 개정판)'으로 보강하여 하루 5편 발행을 엄격히 보장!
+    if len(selected_items) < TARGET_MIN_POSTS:
+        for pool_item in TISTORY_EVERGREEN_POOL:
+            p_title = pool_item["final_title"]
+            p_kw = pool_item["keyword"].strip().lower()
+            if p_kw in selected_kws:
+                continue
+            rev_title = f"{p_title} (2026 최신 개정판)"
+            if rev_title in selected_titles:
+                continue
+
+            fallback_item = {
+                "rank": len(selected_items) + 1,
+                "keyword": pool_item["keyword"],
+                "traffic": "상록수 추천 (개정판)",
+                "news_title": pool_item["search_question"],
+                "news_url": pool_item["official_refs"][0][1] if pool_item["official_refs"] else "",
+                "is_revision": True,
+                "eval": {
+                    "is_selected": True,
+                    "cat_key": pool_item["cat_key"],
+                    "cat_name": TISTORY_CATEGORIES[pool_item["cat_key"]]["name"],
+                    "cat_ratio": TISTORY_CATEGORIES[pool_item["cat_key"]]["ratio"],
+                    "matched_keyword": pool_item["keyword"],
+                    "scores": pool_item["scores"].copy(),
+                    "total_score": pool_item["total_score"],
+                    "rec_level": "높음 (상록수 개정 보강)",
+                    "search_question": pool_item["search_question"],
+                    "title_candidates": [rev_title] + pool_item["title_candidates"],
+                    "final_title": rev_title,
+                    "official_refs": pool_item["official_refs"],
+                    "custom_core_summary": pool_item["core_summary"],
+                    "custom_body_sections": pool_item["body_sections"]
+                }
+            }
+            selected_items.append(fallback_item)
+            selected_titles.add(rev_title)
+            selected_kws.add(p_kw)
+            log(f"📚 [티스토리 글 수 확대 보강 (순환 개정판)] 상록수 테마 [{pool_item['keyword']}] -> '{rev_title}'")
+            if len(selected_items) >= TARGET_MIN_POSTS:
+                break
+
     created_count = 0
     for idx, t_item in enumerate(selected_items, 1):
         post_id = today_str if idx == 1 else f"{today_str}-{idx}"
-        if create_tistory_post(post_id, today_str, weekday_str, t_item, post_num=idx, force=force, existing_sigs=existing_sigs):
+        is_top3 = t_item.get("is_top3", False)
+        is_revision = t_item.get("is_revision", False)
+        if create_tistory_post(post_id, today_str, weekday_str, t_item, post_num=idx, force=force, existing_sigs=existing_sigs, is_top3=is_top3, is_revision=is_revision):
             created_count += 1
 
     log(f"📝 오늘 작성된 티스토리 검색형 포스팅: 총 {created_count}편 (Top 3 무조건 3편 + 주제 연관 및 보강 {created_count - 3}편)")
