@@ -67,7 +67,7 @@ def upload_post_to_tistory(page, blog_name, title, mode="publish"):
     # 2. 임시저장 이어쓰기 팝업 취소
     try:
         dialog_cancel = page.locator("button:has-text('취소'), .btn-cancel, .layer_body button:has-text('취소')").first
-        if dialog_cancel.is_visible(timeout=2500):
+        if dialog_cancel.is_visible(timeout=2000):
             dialog_cancel.click()
             print("  ℹ️ 기존 임시저장 이어쓰기 안내창 취소 완료", flush=True)
             time.sleep(0.5)
@@ -86,7 +86,7 @@ def upload_post_to_tistory(page, blog_name, title, mode="publish"):
     # 4. 제목 입력
     print("  ✍️ 제목 입력 중...", flush=True)
     try:
-        title_loc = page.locator("#post-title, textarea.textarea_tit, textarea[placeholder*='제목'], [placeholder*='제목을 입력하세요']").first
+        title_loc = page.locator("#post-title-inp, #post-title, textarea.textarea_tit").first
         title_loc.wait_for(state="visible", timeout=6000)
         title_loc.click()
         time.sleep(0.2)
@@ -99,7 +99,7 @@ def upload_post_to_tistory(page, blog_name, title, mode="publish"):
         print(f"  ⚠️ 제목 입력 실패 (JS 대체 시도): {e}", flush=True)
         try:
             page.evaluate("""(t) => {
-                const el = document.querySelector('#post-title, textarea.textarea_tit, textarea[placeholder*="제목"]');
+                const el = document.querySelector('#post-title-inp, #post-title, textarea.textarea_tit');
                 if (el) {
                     el.value = t;
                     el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -112,10 +112,15 @@ def upload_post_to_tistory(page, blog_name, title, mode="publish"):
     # 5. 본문 포커스 및 클립보드 서식 붙여넣기 (Meta+V)
     print("  📄 에디터 서식 붙여넣기(Cmd+V) 실행 중...", flush=True)
     try:
-        body_loc = page.locator("#editor-root [contenteditable='true'], div[contenteditable='true'], .k-editor, article.editor-preview").first
-        body_loc.wait_for(state="visible", timeout=6000)
-        body_loc.click()
-        time.sleep(0.3)
+        body_frame = page.frame(name="editor-tistory_ifr")
+        if body_frame:
+            body_el = body_frame.locator("body#tinymce").first
+        else:
+            body_el = page.locator("#editor-root [contenteditable='true'], div[contenteditable='true']").first
+            
+        body_el.wait_for(state="visible", timeout=6000)
+        body_el.click()
+        time.sleep(0.4)
         page.keyboard.press("Meta+v")
         time.sleep(2)
         print("  ✅ 본문 서식(표/요약박스/소제목) 붙여넣기 완료", flush=True)
@@ -142,12 +147,12 @@ def upload_post_to_tistory(page, blog_name, title, mode="publish"):
         # 정식 공개 발행 (기본값)
         print(f"  🚀 [정식 {mode.upper()} 발행] 진행 중...", flush=True)
         try:
-            # 1단계: 에디터 우측 하단 [완료] 버튼 클릭
-            complete_btn = page.locator("button.btn-default:has-text('완료'), button:has-text('완료'), button.btn_complete").first
+            # 1단계: 우측 하단 [완료] 버튼 클릭 (#publish-layer-btn)
+            complete_btn = page.locator("#publish-layer-btn, button:has-text('완료')").first
             complete_btn.click()
             time.sleep(1.5)
 
-            # 2단계: 공개/비공개 라디오 버튼
+            # 2단계: 공개/비공개 옵션
             if mode == "private":
                 priv_opt = page.locator("label:has-text('비공개'), input[value='private']").first
                 if priv_opt.is_visible(timeout=2000):
@@ -158,8 +163,8 @@ def upload_post_to_tistory(page, blog_name, title, mode="publish"):
                     pub_opt.click()
             time.sleep(0.5)
 
-            # 3단계: 최종 [공개 발행] 버튼 클릭
-            submit_btn = page.locator("button.btn-publish, button:has-text('공개 발행'), button:has-text('발행'), button:has-text('발행하기')").first
+            # 3단계: 최종 [공개 발행] 버튼 (#publish-btn)
+            submit_btn = page.locator("#publish-btn, button:has-text('공개 발행')").first
             submit_btn.click()
             time.sleep(4)
             print(f"  🎉 [발행 성공] 티스토리 블로그에 실제 정식 글이 등록되었습니다!", flush=True)
