@@ -159,14 +159,16 @@ def upload_post_to_naver(page, title, body_lines, mode="draft"):
     elif mode == "publish":
         print("  🚀 [정식 발행] 버튼 클릭 중...", flush=True)
         try:
-            publish_btn = frame.locator('button:has-text("발행"), button[class*="publish_btn"]').first
+            # 1. 상단 [발행] 버튼 클릭하여 발행 설정 패널 열기
+            publish_btn = frame.locator('button[data-click-area="tpb.publish"]').first
             publish_btn.click()
-            time.sleep(2)
+            time.sleep(1.5)
             
-            final_btn = frame.locator('button.btn_publish, button[data-name="confirm"]').first
+            # 2. 발행 설정 패널 내의 최종 초록색 [발행] 확인 버튼 클릭
+            final_btn = frame.locator('button[data-testid="seOnePublishBtn"]').first
             final_btn.click()
-            time.sleep(4)
-            print("  🎉 [발행 성공] 네이버 블로그에 포스팅이 실제 발행되었습니다!", flush=True)
+            time.sleep(5)
+            print("  🎉 [발행 성공] 네이버 블로그에 포스팅이 실제 정식 발행되었습니다!", flush=True)
             return True
         except Exception as e:
             print(f"  ❌ 발행 버튼 클릭 실패: {e}", flush=True)
@@ -177,7 +179,7 @@ def main():
     parser.add_argument("--single", type=int, default=None, help="등록할 특정 포스트 번호 (예: 1이면 2026-11-21.md)")
     parser.add_argument("--all", action="store_true", help="오늘 작성된 모든 포스트 등록")
     parser.add_argument("--date", type=str, default=None, help="대상 날짜 (기본: 오늘)")
-    parser.add_argument("--mode", choices=["draft", "publish"], default="draft", help="저장 모드 (draft: 임시저장, publish: 정식발행)")
+    parser.add_argument("--mode", choices=["draft", "publish"], default="publish", help="저장 모드 (draft: 임시저장, publish: 정식발행 - 기본: publish)")
     parser.add_argument("--headless", action="store_true", default=True, help="화면 없이 백그라운드 실행")
     parser.add_argument("--show-browser", action="store_true", help="화면 브라우저 표시 모드")
 
@@ -254,7 +256,7 @@ def main():
                 success_count += 1
             
             if i < len(files_to_upload):
-                delay = 2 if args.mode == "draft" else 15
+                delay = 4 if args.mode == "publish" else 2
                 print(f"  ⏳ 다음 글 등록 대기 중 ({delay}초)...", flush=True)
                 time.sleep(delay)
 
