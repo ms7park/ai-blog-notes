@@ -70,17 +70,104 @@ ai-blog-notes/
 │   └── wordpress/              # 🔵 워드프레스(WP) 코너스톤 SEO 작업실 (구텐베르크 & Rank Math)
 │       ├── index.html          # 워드프레스 작업 대시보드 (5대 필러 카테고리, 온페이지 SEO 체크리스트)
 │       └── posts/              # 워드프레스 코너스톤 포스팅 (영문 Slug, 메타설명, 비교표, FAQ 스키마)
-├── scripts/                    # [스케줄러] macOS 네이티브 배치 (initClaude 표준)
-│   ├── daily-naver-blog.sh     # caffeinate 절전 차단 & 실행 래퍼 스크립트
+├── scripts/                    # [스케줄러 & 업로더] 원클릭 실행 및 자동 업로드 도구
+│   ├── daily-naver-blog.sh     # caffeinate 절전 차단 & 00시 통합 배치 실행 래퍼
+│   ├── write-post.sh           # 블로그 수시(온디맨드) 글작성 원클릭 도구
+│   ├── upload-naver.sh         # 🟢 네이버 블로그 Playwright 자동 등록 스크립트
+│   ├── upload-tistory.sh       # 🟠 티스토리 블로그 Playwright 자동 등록 스크립트
+│   ├── upload-wordpress.sh     # 🔵 워드프레스 블로그 Playwright 자동 등록 스크립트
 │   ├── install-launchd.sh      # launchd LaunchAgent 적재 (매일 00:00 실행)
 │   ├── uninstall-launchd.sh    # launchd 등록 해제 스크립트
 │   └── launchd/                # com.user.daily-naver-blog.plist
-└── tools/                      # [도구] 보조 분석 및 자동화 스크립트
+└── tools/                      # [도구] 배치 엔진 및 브라우저 세션 도구
     ├── daily_naver_batch.py    # 네이버 실시간 트렌드 수집 & 일별 포스팅 자동 생성 배치
-    ├── daily_tistory_batch.py  # 티스토리 Google Trends 상승 검색어 평가 & 7단계 글 생성 배치
-    ├── daily_wordpress_batch.py# 워드프레스 코너스톤 SEO(Slug/Meta/FAQ) 글 생성 배치
+    ├── daily_tistory_batch.py  # 티스토리 Google Trends 상승 검색어 평가 & 글 생성 배치
+    ├── daily_wordpress_batch.py# 워드프레스 코너스톤 SEO 글 생성 배치
+    ├── upload_naver_playwright.py      # 네이버 스마트에디터 ONE 서식복사 자동 업로더
+    ├── upload_tistory_playwright.py    # 티스토리 에디터 서식복사 자동 업로더
+    ├── upload_wordpress_playwright.py  # 워드프레스 구텐베르크 네이티브 블록 자동 업로더
+    ├── setup_browser_login.py  # 네이버 1회 브라우저 로그인 세션 생성기
+    ├── setup_tistory_login.py  # 티스토리 1회 브라우저 로그인 세션 생성기
+    ├── setup_wordpress_login.py# 워드프레스 1회 브라우저 로그인 세션 생성기
+    ├── write_ondemand.py       # 온디맨드(수시) 포스팅 생성 엔진
     ├── generate_html.py        # docs/index.html 가이드 뷰어 갱신 빌더
     └── blog_helper.py          # 글자수, 키워드 밀도, SEO 구조 분석 CLI 도구
+```
+
+---
+
+## ⚡ 플랫폼별 일일 자동 발행 목표 기준
+
+| 플랫폼 | 주중 (월~금) | 주말 (토/일) | 핵심 전략 및 알고리즘 타겟 |
+| :--- | :---: | :---: | :--- |
+| **🟢 네이버 블로그** | **15개** | **30개** | 실시간 검색어 Top 3 의무 반영 + 스마트블록/시니어 헬스케어·연금 집중 유입 |
+| **🟠 티스토리** | **15개** | **15개** | Google Trends 급상승 검색어 기반 Q&A 검색형 정보성 글 (주중/주말 균등 공급) |
+| **🔵 워드프레스** | **15개** | **30개** | E-E-A-T 기반 장기 코너스톤 SEO 심층 가이드 & 구글 자연 검색 자산화 |
+
+---
+
+## 🛠️ 배치 수동 실행 및 Playwright 자동 등록 명령어
+
+### 1. 배치 수동 실행 명령어 (원고 생성 및 대시보드 갱신)
+
+터미널에서 언제든지 수동으로 당일자 포스팅을 생성하고 대시보드를 갱신할 수 있습니다.
+
+```bash
+# 1) 3대 플랫폼 전체 통합 배치 즉시 실행 (네이버 15/30, 티스토리 15, WP 15/30)
+python3 tools/daily_naver_batch.py --force
+# 또는 원클릭 스크립트 실행
+./scripts/write-post.sh --batch
+
+# 2) 플랫폼별 개별 수동 배치 실행
+python3 tools/daily_naver_batch.py --naver-only --force   # 네이버만 실행 (주중 15 / 주말 30)
+python3 tools/daily_tistory_batch.py --force             # 티스토리만 실행 (매일 15편)
+python3 tools/daily_wordpress_batch.py --force           # 워드프레스만 실행 (주중 15 / 주말 30)
+
+# 3) 수시(온디맨드) 단건 또는 N건 추가 작성
+./scripts/write-post.sh                                  # 대화형 대시보드 메뉴 실행
+./scripts/write-post.sh -p naver                         # 네이버 1편 추가
+./scripts/write-post.sh -p tistory -k "기초연금 신청"     # 티스토리 특정 키워드 1편 작성
+./scripts/write-post.sh -p wordpress                     # 워드프레스 1편 추가
+./scripts/write-post.sh -p all -c 2                      # 3대 플랫폼에 2편씩 동시 추가
+```
+
+---
+
+### 2. Playwright 자동 글 등록(포스팅) 명령어
+
+Playwright 브라우저 자동화 엔진을 통해 로컬 뷰어의 **에디터 서식복사 기능**을 호출하여, 마크다운 기호(`**`, `---` 등) 없이 **초록/파랑 요약 콜아웃 박스, 포인트 바 소제목(▍), 비교표(Table), 볼드 서식**이 완벽히 유지된 상태로 **즉시 정식 발행(PUBLISH)**됩니다.
+
+#### 1단계: 최초 1회 브라우저 로그인 세션 생성 (영구 저장)
+```bash
+./scripts/upload-naver.sh --login        # 네이버 1회 브라우저 로그인 (state.json 저장)
+./scripts/upload-tistory.sh --login      # 티스토리 1회 카카오 계정 로그인
+./scripts/upload-wordpress.sh --login    # 워드프레스 1회 계정 로그인
+```
+> 세션 파일(`.browser_session/*/state.json`)이 한 번 생성되면 이후에는 로그인 창 없이 백그라운드에서 바로 자동 글쓰기 및 발행이 진행됩니다.
+
+#### 2단계: 오늘 작성된 글 전체 즉시 정식 발행 (기본 모드: PUBLISH)
+```bash
+# 🟢 네이버 블로그 전체 정식 발행 (주중 15편 / 주말 30편)
+./scripts/upload-naver.sh --publish
+
+# 🟠 티스토리 블로그 전체 정식 발행 (매일 15편)
+./scripts/upload-tistory.sh --publish
+
+# 🔵 워드프레스 블로그 전체 정식 발행 (주중 15편 / 주말 30편)
+./scripts/upload-wordpress.sh --publish
+```
+
+#### 3단계: 단건 시험 발행 및 기타 옵션
+```bash
+# 1번 포스트만 1편 시험 정식 발행
+./scripts/upload-naver.sh --test
+./scripts/upload-tistory.sh --test
+./scripts/upload-wordpress.sh --test
+
+# 정식 발행이 아닌 임시저장(Draft)으로 등록할 때
+./scripts/upload-naver.sh --draft
+./scripts/upload-tistory.sh --draft
+./scripts/upload-wordpress.sh --draft
 ```
 
 ---
@@ -88,16 +175,10 @@ ai-blog-notes/
 ## 🚀 AI 파트너와 함께 일하는 방법 (AI Native Workflow)
 
 1. **포털 열람 (`open index.html`)**:
-   - 브라우저에서 통합 포털을 열어 오늘의 네이버 블로그 포스팅과 실시간 검색어 Top 10을 확인합니다.
-2. **원클릭 스마트에디터 복사**:
-   - `blog/naver/posts/YYYYMM/YYYY-MM-DD.html`에서 **[🟢 네이버 스마트에디터 서식 복사]** 버튼을 눌러 `**` 기호 없이 서식 그대로 네이버 블로그에 붙여넣습니다.
+   - 브라우저에서 통합 포털을 열어 오늘의 네이버, 티스토리, 워드프레스 포스팅과 실시간 트렌드를 확인합니다.
+2. **원클릭 자동 발행**:
+   - `./scripts/upload-naver.sh`, `./scripts/upload-tistory.sh`, `./scripts/upload-wordpress.sh` 명령어로 각 플랫폼에 정식 서식으로 즉시 발행합니다.
 3. **휴먼 터치 퇴고**:
-   - AI가 작성한 초안에 나의 실제 경험담, 느낀 점, 사진을 1~2장 추가하여 나만의 특별한 글을 완성합니다.
+   - AI가 작성한 글에 나의 실제 경험담, 느낀 점, 사진을 1~2장 추가하여 나만의 특별한 글을 완성합니다.
 4. **품질 점검**:
-   - `python tools/blog_helper.py draft.md`로 글자수, 소제목 구조, 키워드 빈도를 확인하고 최종 발행합니다.
-
-Focus Keyphrase: 퇴직 후 건강보험료 계산
-Slug: /retirement-health-insurance-calculation-guide
-Meta Description: 퇴직 후 건강보험료 계산 기준과 절감 방법 총정리. 
-직장가입자 피부양자 자격 요건(연 소득 2,000만 원·재산 과표 5.4억 이하), 
-임의계속가입 신청 기한(2개월 이내), 지역가입자 모의계산 비교표를 확인하세요.
+   - `python tools/blog_helper.py draft.md`로 글자수, 소제목 구조, 키워드 빈도를 확인하고 주간 성과를 분석합니다.
