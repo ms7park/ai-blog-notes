@@ -32,3 +32,6 @@ scratch/
 logs/*.log
 logs/*.out
 logs/*.err
+
+# Playwright Browser Sessions (Sensitive cookies & auth storage)
+.browser_session/
