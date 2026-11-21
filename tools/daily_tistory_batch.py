@@ -2651,8 +2651,41 @@ def fetch_google_trends_for_tistory(existing_sigs=None):
                 "news_title": news_title,
                 "news_url": news_url
             })
+
+        # 1-2. 네이버 랭킹 뉴스(85개)에서 실시간 핫토픽 키워드 추가 발굴 (최대 50개 풀 확장)
+        naver_list = data.get("naver", [])
+        seen_kws = {t["keyword"].lower() for t in raw_trends}
+        for art in naver_list:
+            if len(raw_trends) >= 50:
+                break
+            art_title = art.get("title", "").strip()
+            art_link = art.get("link", "")
+            quotes = re.findall(r'[\'\"‘“]([^\'\"’”]{2,15})[\'\"’”]', art_title)
+            candidate_kw = None
+            for q in quotes:
+                q_clean = q.strip()
+                if len(q_clean) >= 2 and q_clean.lower() not in seen_kws and not any(w in q_clean for w in ['단독', '종합', '속보', '포토', '영상']):
+                    candidate_kw = q_clean
+                    break
+            if not candidate_kw:
+                clean_t = re.sub(r'\[[^\]]*\]', '', art_title)
+                m_words = re.findall(r'[가-힣A-Za-z0-9]{2,10}', clean_t)
+                for w in m_words:
+                    if w.lower() not in seen_kws and len(w) >= 3 and not any(stop in w for stop in ['오늘', '내일', '경찰', '수사', '논란', '의혹', '발표', '기자', '정부']):
+                        candidate_kw = w
+                        break
+            if candidate_kw and candidate_kw.lower() not in seen_kws:
+                seen_kws.add(candidate_kw.lower())
+                rank_num = len(raw_trends) + 1
+                raw_trends.append({
+                    "keyword": candidate_kw,
+                    "traffic": f"실시간 핫토픽 {rank_num}위",
+                    "news_title": art_title,
+                    "news_url": art_link
+                })
+
         if raw_trends:
-            log(f"⚡ Signal.bz 실시간 검색어 Top {len(raw_trends)} 수집 완료 (티스토리)")
+            log(f"⚡ Signal.bz 실시간 검색어 및 핫토픽 총 {len(raw_trends)}개 수집 완료 (티스토리)")
     except Exception as e:
         log(f"⚠️ Signal.bz 실시간 검색어 수집 실패 (Google Trends RSS 시도): {e}")
 
@@ -2708,7 +2741,7 @@ def fetch_google_trends_for_tistory(existing_sigs=None):
                     break
 
     evaluated = []
-    for idx, item in enumerate(raw_trends[:10], 1):
+    for idx, item in enumerate(raw_trends[:50], 1):
         ev = evaluate_trend_for_tistory(item["keyword"], item.get("news_title", ""), existing_sigs=existing_sigs, rank=idx)
         evaluated.append({
             "rank": idx,
@@ -5128,8 +5161,8 @@ def update_root_portal_with_tistory(today_str, tistory_posts):
         f.write(content)
     log("✅ 루트 index.html 포털에 티스토리 작업실 및 최신 포스팅 연동 완료")
 
-def run_tistory_batch(target_date=None, force=False):
-    """티스토리 일별 배치 메인 실행"""
+def run_tistory_batch(target_date=None, force=False, target_count=None):
+    """티스토리 일별 배치 메인 실행 (평일 5편, 주말(토/일) 30편 집중 발행 지원)"""
     lock_file_path = "/tmp/daily_tistory_batch.lock"
     try:
         lock_file = open(lock_file_path, "w")
@@ -5142,8 +5175,12 @@ def run_tistory_batch(target_date=None, force=False):
     today_date = datetime.strptime(target_date, "%Y-%m-%d") if target_date else now
     today_str = today_date.strftime("%Y-%m-%d")
     weekday_str = WEEKDAYS_KR[today_date.weekday()]
+    is_weekend = today_date.weekday() in (5, 6) # 토(5), 일(6)
 
-    log(f"🚀 [티스토리 배치 시작] Google Trends 상승 검색어 기반 티스토리 글 생성 (기준일: {today_str} {weekday_str}요일, force={force})")
+    # 목표 글 수 결정: 지정값 우선, 없으면 주말 30편, 평일 5편
+    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 5)
+
+    log(f"🚀 [티스토리 배치 시작] Google Trends 상승 검색어 기반 티스토리 글 생성 (기준일: {today_str} {weekday_str}요일, 목표: {TARGET_MIN_POSTS}편, force={force})")
 
     ym = today_str[:7].replace("-", "")
     target_ym_dir = os.path.join(POSTS_DIR, ym)
@@ -5179,8 +5216,8 @@ def run_tistory_batch(target_date=None, force=False):
         selected_kws.add(p_kw)
         log(f"🔥 [티스토리 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{t['keyword']}] -> '{p_title}'")
 
-    # 2. [규칙 2] 나머지 글(Top 4~10) 중 설정 주제와 연관이 있는 글 작성!
-    rest_trends = evaluated_trends[3:10]
+    # 2. [규칙 2] 4위부터 확장된 전체 트렌드(최대 50위) 중 주제 연관 글 선별 작성!
+    rest_trends = evaluated_trends[3:]
     for t in rest_trends:
         if not t["eval"]["is_selected"]:
             continue
@@ -5194,11 +5231,11 @@ def run_tistory_batch(target_date=None, force=False):
         selected_items.append(t)
         selected_titles.add(p_title)
         selected_kws.add(p_kw)
-        log(f"⭐ [티스토리 Top 4~10 주제 연관 글] #{t.get('rank')}위 [{t['keyword']}] ({t['eval']['cat_name']}) -> '{p_title}'")
+        log(f"⭐ [티스토리 트렌드 연관 글] #{t.get('rank')}위 [{t['keyword']}] ({t['eval']['cat_name']}) -> '{p_title}'")
+        if len(selected_items) >= TARGET_MIN_POSTS:
+            break
 
-    # 3. [규칙 3 - 작성 글 수 확대]
-    # 하루 최소 5편 이상 풍성하게 작성되도록 상록수 미작성 주제 풀(TISTORY_EVERGREEN_POOL)에서 1차 보충
-    TARGET_MIN_POSTS = 5
+    # 3. [규칙 3 - 상록수 풀 1차 미작성 보충]
     if len(selected_items) < TARGET_MIN_POSTS:
         for pool_item in TISTORY_EVERGREEN_POOL:
             p_title = pool_item["final_title"]
@@ -5237,22 +5274,21 @@ def run_tistory_batch(target_date=None, force=False):
                 if len(selected_items) >= TARGET_MIN_POSTS:
                     break
 
-    # 4. [규칙 4 - 상록수 풀 소진 시 순환 개정판 보강]
-    # 워드프레스와 동일하게 상록수 풀이 소진되어 5편 미만일 때 '(2026 최신 개정판)'으로 보강하여 하루 5편 발행을 엄격히 보장!
-    if len(selected_items) < TARGET_MIN_POSTS:
+    # 4. [규칙 4 - 상록수 풀 순환 개정판 다회차 보강: 주말 30편 등 대량 발행 엄격 보장]
+    cycle = 1
+    while len(selected_items) < TARGET_MIN_POSTS and cycle <= 5:
+        added_in_cycle = 0
+        tag = " (2026 최신 개정판)" if cycle == 1 else f" (2026 최신 개정판 v{cycle})"
         for pool_item in TISTORY_EVERGREEN_POOL:
             p_title = pool_item["final_title"]
-            p_kw = pool_item["keyword"].strip().lower()
-            if p_kw in selected_kws:
-                continue
-            rev_title = f"{p_title} (2026 최신 개정판)"
+            rev_title = f"{p_title}{tag}"
             if rev_title in selected_titles:
                 continue
 
             fallback_item = {
                 "rank": len(selected_items) + 1,
                 "keyword": pool_item["keyword"],
-                "traffic": "상록수 추천 (개정판)",
+                "traffic": f"상록수 추천 (개정판 v{cycle})",
                 "news_title": pool_item["search_question"],
                 "news_url": pool_item["official_refs"][0][1] if pool_item["official_refs"] else "",
                 "is_revision": True,
@@ -5275,10 +5311,13 @@ def run_tistory_batch(target_date=None, force=False):
             }
             selected_items.append(fallback_item)
             selected_titles.add(rev_title)
-            selected_kws.add(p_kw)
-            log(f"📚 [티스토리 글 수 확대 보강 (순환 개정판)] 상록수 테마 [{pool_item['keyword']}] -> '{rev_title}'")
+            added_in_cycle += 1
+            log(f"📚 [티스토리 글 수 확대 (개정판)] 테마 [{pool_item['keyword']}] -> '{rev_title}'")
             if len(selected_items) >= TARGET_MIN_POSTS:
                 break
+        cycle += 1
+        if added_in_cycle == 0:
+            break
 
     created_count = 0
     for idx, t_item in enumerate(selected_items, 1):
@@ -5288,7 +5327,7 @@ def run_tistory_batch(target_date=None, force=False):
         if create_tistory_post(post_id, today_str, weekday_str, t_item, post_num=idx, force=force, existing_sigs=existing_sigs, is_top3=is_top3, is_revision=is_revision):
             created_count += 1
 
-    log(f"📝 오늘 작성된 티스토리 검색형 포스팅: 총 {created_count}편 (Top 3 무조건 3편 + 주제 연관 및 보강 {created_count - 3}편)")
+    log(f"📝 오늘 작성된 티스토리 검색형 포스팅: 총 {created_count}편 (목표: {TARGET_MIN_POSTS}편)")
 
     posts = scan_tistory_posts()
     update_tistory_index_html(today_str, evaluated_trends, posts)
@@ -5300,9 +5339,17 @@ def run_tistory_batch(target_date=None, force=False):
         log("✅ 전체 가이드 뷰어(docs/index.html) 동기화 완료")
 
     log(f"🎉 [티스토리 배치 완료] {today_str} 티스토리 블로그 작업이 완료되었습니다.\n")
+    return created_count
 
 if __name__ == "__main__":
     force_mode = "--force" in sys.argv
-    date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    target_count_arg = None
+    for arg in sys.argv[1:]:
+        if arg.startswith("--target-count="):
+            target_count_arg = int(arg.split("=")[1])
+        elif arg.isdigit():
+            target_count_arg = int(arg)
+
+    date_args = [a for a in sys.argv[1:] if not a.startswith("--") and not a.isdigit()]
     t_date = date_args[0] if date_args else None
-    run_tistory_batch(t_date, force=force_mode)
+    run_tistory_batch(t_date, force=force_mode, target_count=target_count_arg)

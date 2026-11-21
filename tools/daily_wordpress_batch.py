@@ -3652,8 +3652,40 @@ def fetch_trending_keywords_for_wp():
                 "badge": badge,
                 "news_title": news_title
             })
+
+        # 1-2. 네이버 랭킹 뉴스(85개)에서 실시간 핫토픽 키워드 추가 발굴 (최대 50개 풀 확장)
+        naver_list = data.get("naver", [])
+        seen_kws = {t["keyword"].lower() for t in trends}
+        for art in naver_list:
+            if len(trends) >= 50:
+                break
+            art_title = art.get("title", "").strip()
+            quotes = re.findall(r'[\'\"‘“]([^\'\"’”]{2,15})[\'\"’”]', art_title)
+            candidate_kw = None
+            for q in quotes:
+                q_clean = q.strip()
+                if len(q_clean) >= 2 and q_clean.lower() not in seen_kws and not any(w in q_clean for w in ['단독', '종합', '속보', '포토', '영상']):
+                    candidate_kw = q_clean
+                    break
+            if not candidate_kw:
+                clean_t = re.sub(r'\[[^\]]*\]', '', art_title)
+                m_words = re.findall(r'[가-힣A-Za-z0-9]{2,10}', clean_t)
+                for w in m_words:
+                    if w.lower() not in seen_kws and len(w) >= 3 and not any(stop in w for stop in ['오늘', '내일', '경찰', '수사', '논란', '의혹', '발표', '기자', '정부']):
+                        candidate_kw = w
+                        break
+            if candidate_kw and candidate_kw.lower() not in seen_kws:
+                seen_kws.add(candidate_kw.lower())
+                rank_num = len(trends) + 1
+                trends.append({
+                    "rank": rank_num,
+                    "keyword": candidate_kw,
+                    "badge": f"실시간 핫토픽 {rank_num}위",
+                    "news_title": art_title
+                })
+
         if trends:
-            log(f"⚡ Signal.bz 실시간 검색어 Top {len(trends)} 수집 완료 (워드프레스)")
+            log(f"⚡ Signal.bz 실시간 검색어 및 핫토픽 총 {len(trends)}개 수집 완료 (워드프레스)")
     except Exception as e:
         log(f"⚠️ Signal.bz 실시간 검색어 수집 실패: {e}")
 
@@ -3826,15 +3858,19 @@ def create_wp_item_from_trend(trend, seq, theme_info=None):
         ]
     }
 
-def fetch_daily_wp_articles(today_str, force=False):
+def fetch_daily_wp_articles(today_str, force=False, target_count=None):
     """
     [규칙 1] 실시간 검색어 Top 10 중 상위 3개(1위, 2위, 3위)는 무조건 워드프레스 코너스톤 글 작성!
-    [규칙 2] Top 4~10 중 설정 주제와 연관이 있는 글 작성!
-    [규칙 3] 작성 글 수 확대를 위해 하루 최소 5편(TARGET_MIN_POSTS = 5) 발행 보장!
+    [규칙 2] 4위부터 확장된 전체 트렌드 중 설정 주제와 연관이 있는 글 작성!
+    [규칙 3] 평일 5편, 주말(토/일) 30편 목표 글 수 자동 적용 및 순환 보강!
     """
+    today_date = datetime.strptime(today_str, "%Y-%m-%d")
+    is_weekend = today_date.weekday() in (5, 6)
+    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 5)
+
     existing_titles = get_existing_wp_titles(exclude_date=today_str if force else None)
     trends = fetch_trending_keywords_for_wp()
-    log(f"📊 실시간 트렌드 {len(trends)}개 수집 완료 (워드프레스)")
+    log(f"📊 실시간 트렌드 및 핫토픽 {len(trends)}개 수집 완료 (워드프레스, 목표: {TARGET_MIN_POSTS}편)")
 
     selected_items = []
     selected_titles = set()
@@ -3858,8 +3894,8 @@ def fetch_daily_wp_articles(today_str, force=False):
         existing_titles.add(p_title)
         log(f"🔥 [워드프레스 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{t['keyword']}] -> '{p_title}'")
 
-    # 2. [규칙 2] 나머지 글(Top 4~10) 중 설정 주제와 연관이 있는 글 작성!
-    rest_trends = trends[3:10]
+    # 2. [규칙 2] 4위부터 확장된 전체 트렌드 중 설정 주제와 연관이 있는 글 작성!
+    rest_trends = trends[3:]
     for t in rest_trends:
         theme_info = match_wp_theme(t["keyword"], t.get("news_title", ""))
         if not theme_info:
@@ -3877,35 +3913,41 @@ def fetch_daily_wp_articles(today_str, force=False):
         selected_titles.add(p_title)
         selected_kws.add(p_kw)
         existing_titles.add(p_title)
-        log(f"⭐ [워드프레스 Top 4~10 주제 연관 글] #{t.get('rank')}위 [{t['keyword']}] ({theme_info['category']}) -> '{p_title}'")
+        log(f"⭐ [워드프레스 트렌드 연관 글] #{t.get('rank')}위 [{t['keyword']}] ({theme_info['category']}) -> '{p_title}'")
+        if len(selected_items) >= TARGET_MIN_POSTS:
+            break
 
-    # 3. [규칙 3 - 작성 글 수 확대]
-    # 하루 최소 5편 이상 풍성하게 작성되도록 WP_ARTICLES 풀에서 추가 보강
-    TARGET_MIN_POSTS = 5
-    if len(selected_items) < TARGET_MIN_POSTS:
+    # 3. [규칙 3 - 코너스톤 풀 다회차 순환 보강 (주말 30편 등 대량 발행 엄격 보장)]
+    cycle = 1
+    while len(selected_items) < TARGET_MIN_POSTS and cycle <= 6:
+        added_in_cycle = 0
+        tag = " (2026 최신 개정판)" if cycle == 1 else f" (2026 최신 개정판 v{cycle})"
+        slug_tag = "-update" if cycle == 1 else f"-update-v{cycle}"
         for p_item in WP_ARTICLES:
             p_title = p_item["final_title"]
-            p_kw = p_item["topic"].strip().lower()
-            if p_title in selected_titles or p_kw in selected_kws:
+            target_title = f"{p_title}{tag}" if (p_title in existing_titles or cycle > 1) else p_title
+            if target_title in selected_titles:
                 continue
 
             item_copy = p_item.copy()
             item_copy["seq"] = len(selected_items) + 1
-            if p_title in existing_titles:
-                item_copy["final_title"] = f"{p_title} (2026 최신 개정판)"
-                item_copy["slug"] = f"{item_copy['slug']}-update"
+            item_copy["final_title"] = target_title
+            item_copy["slug"] = f"{item_copy['slug']}{slug_tag}"
 
             selected_items.append(item_copy)
-            selected_titles.add(item_copy["final_title"])
-            selected_kws.add(p_kw)
-            existing_titles.add(item_copy["final_title"])
-            log(f"📚 [워드프레스 글 수 확대 보강] 코너스톤 테마 [{p_item['topic']}] -> '{item_copy['final_title']}'")
+            selected_titles.add(target_title)
+            existing_titles.add(target_title)
+            added_in_cycle += 1
+            log(f"📚 [워드프레스 글 수 확대 (개정판)] 테마 [{p_item['topic']}] -> '{target_title}'")
             if len(selected_items) >= TARGET_MIN_POSTS:
                 break
+        cycle += 1
+        if added_in_cycle == 0:
+            break
 
     return selected_items
 
-def run_wordpress_batch(target_date=None, force=False):
+def run_wordpress_batch(target_date=None, force=False, target_count=None):
     lock_file_path = "/tmp/daily_wordpress_batch.lock"
     try:
         lock_file = open(lock_file_path, "w")
@@ -3932,7 +3974,7 @@ def run_wordpress_batch(target_date=None, force=False):
             except OSError:
                 pass
 
-    articles_to_create = fetch_daily_wp_articles(today_str, force=force)
+    articles_to_create = fetch_daily_wp_articles(today_str, force=force, target_count=target_count)
     created_count = 0
 
     for idx, item in enumerate(articles_to_create, 1):
@@ -3961,8 +4003,16 @@ def run_wordpress_batch(target_date=None, force=False):
 
     update_root_portal_with_wordpress(today_str, posts)
     log(f"🎉 [워드프레스 배치 완료] {today_str} 워드프레스 코너스톤 SEO 포스팅 처리 완료 (신규/갱신 {len(articles_to_create)}편)")
+    return len(articles_to_create)
 
 if __name__ == "__main__":
     force_mode = "--force" in sys.argv
-    date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    run_wordpress_batch(date_args[0] if date_args else None, force=force_mode)
+    target_count_arg = None
+    for arg in sys.argv[1:]:
+        if arg.startswith("--target-count="):
+            target_count_arg = int(arg.split("=")[1])
+        elif arg.isdigit():
+            target_count_arg = int(arg)
+
+    date_args = [a for a in sys.argv[1:] if not a.startswith("--") and not a.isdigit()]
+    run_wordpress_batch(date_args[0] if date_args else None, force=force_mode, target_count=target_count_arg)

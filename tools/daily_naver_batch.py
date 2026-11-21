@@ -1127,8 +1127,39 @@ def fetch_trending_keywords():
                 "traffic": badge_text,
                 "news_title": news_title
             })
+
+        # 1-2. 네이버 랭킹 뉴스(85개)에서 실시간 핫토픽 키워드 추가 발굴 (최대 50개 풀 확장)
+        naver_list = data.get("naver", [])
+        seen_kws = {t["keyword"].lower() for t in trends}
+        for art in naver_list:
+            if len(trends) >= 50:
+                break
+            art_title = art.get("title", "").strip()
+            quotes = re.findall(r'[\'\"‘“]([^\'\"’”]{2,15})[\'\"’”]', art_title)
+            candidate_kw = None
+            for q in quotes:
+                q_clean = q.strip()
+                if len(q_clean) >= 2 and q_clean.lower() not in seen_kws and not any(w in q_clean for w in ['단독', '종합', '속보', '포토', '영상']):
+                    candidate_kw = q_clean
+                    break
+            if not candidate_kw:
+                clean_t = re.sub(r'\[[^\]]*\]', '', art_title)
+                m_words = re.findall(r'[가-힣A-Za-z0-9]{2,10}', clean_t)
+                for w in m_words:
+                    if w.lower() not in seen_kws and len(w) >= 3 and not any(stop in w for stop in ['오늘', '내일', '경찰', '수사', '논란', '의혹', '발표', '기자', '정부']):
+                        candidate_kw = w
+                        break
+            if candidate_kw and candidate_kw.lower() not in seen_kws:
+                seen_kws.add(candidate_kw.lower())
+                rank_num = len(trends) + 1
+                trends.append({
+                    "keyword": candidate_kw,
+                    "traffic": f"실시간 핫토픽 {rank_num}위",
+                    "news_title": art_title
+                })
+
         if trends:
-            log(f"⚡ Signal.bz 실시간 검색어 Top {len(trends)} 수집 완료")
+            log(f"⚡ Signal.bz 실시간 검색어 및 핫토픽 총 {len(trends)}개 수집 완료")
     except Exception as e:
         log(f"⚠️ Signal.bz 실시간 검색어 수집 실패 (Google Trends RSS로 대체 시도): {e}")
 
@@ -1178,7 +1209,7 @@ def fetch_trending_keywords():
 
     # 키워드별 테마 분석 및 블로그 추천 제목 생성 (상위 3개는 무조건 작성 제목 보장)
     results = []
-    for i, t in enumerate(trends[:10], 1):
+    for i, t in enumerate(trends[:50], 1):
         kw = t["keyword"]
         news = t.get("news_title", "")
         theme_info = match_blog_theme(kw, news)
@@ -3368,8 +3399,8 @@ def git_commit_and_push(today_str, title):
     except Exception as e:
         log(f"⚠️ Git 자동 커밋 및 푸시 중 오류 발생: {e}")
 
-def run_batch(target_date=None, force=False, naver_only=False):
-    """배치 메인 실행 함수"""
+def run_batch(target_date=None, force=False, naver_only=False, target_count=None):
+    """배치 메인 실행 함수 (평일 5편, 주말(토/일) 30편 집중 발행 지원)"""
     # 동시 실행 방지 파일 락 (LaunchAgent + Cron 이중 구동 시 상호 배타 보장)
     lock_file_path = "/tmp/daily_naver_batch.lock"
     try:
@@ -3387,8 +3418,10 @@ def run_batch(target_date=None, force=False, naver_only=False):
 
     today_str = today_date.strftime("%Y-%m-%d")
     weekday_str = WEEKDAYS_KR[today_date.weekday()]
+    is_weekend = today_date.weekday() in (5, 6)
+    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 5)
 
-    log(f"🚀 [배치 시작] 네이버 블로그 일별 자동화 배치 실행 (기준일: {today_str} {weekday_str}요일, force={force})")
+    log(f"🚀 [배치 시작] 네이버 블로그 일별 자동화 배치 실행 (기준일: {today_str} {weekday_str}요일, 목표: {TARGET_MIN_POSTS}편, force={force})")
 
     # force 모드일 경우 당일자 기존 포스팅 파일 정리 (새로운 트렌드 결과에 맞춰 정확히 재작성)
     ym = today_str[:7].replace("-", "")
@@ -3433,14 +3466,13 @@ def run_batch(target_date=None, force=False, naver_only=False):
         existing_sigs["keywords"].add(kw_low)
         log(f"🔥 [실시간 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{kw}] -> '{rec_title}'")
 
-    # 3. [사용자 지침 2] 나머지 글(Top 4~10) 중에서 내가 설정한 주제(품미인생 테마)와 연관이 있는 글 작성!
-    rest_trends = trends[3:10]
+    # 3. [사용자 지침 2] 4위부터 확장된 전체 트렌드 중 주제 연관 글 선별 작성!
+    rest_trends = trends[3:]
     for t in rest_trends:
         kw = t["keyword"].strip()
         kw_low = kw.lower()
         theme_info = t.get("theme") or match_blog_theme(kw, t.get("news", ""))
         
-        # 내가 설정한 주제와 연관이 없으면 건너뜀
         if not theme_info:
             continue
             
@@ -3448,7 +3480,6 @@ def run_batch(target_date=None, force=False, naver_only=False):
         t["recommended_title"] = rec_title
         t["theme"] = theme_info
         
-        # 중복 방지
         if rec_title in existing_sigs["titles"] or kw_low in existing_sigs["keywords"]:
             continue
         if kw_low in selected_kws or rec_title in selected_titles:
@@ -3459,12 +3490,11 @@ def run_batch(target_date=None, force=False, naver_only=False):
         selected_titles.add(rec_title)
         existing_sigs["titles"].add(rec_title)
         existing_sigs["keywords"].add(kw_low)
-        log(f"⭐ [Top 4~10 주제 연관 글] #{t.get('rank')}위 [{kw}] ({theme_info['theme_name']}) -> '{rec_title}'")
+        log(f"⭐ [트렌드 연관 글] #{t.get('rank')}위 [{kw}] ({theme_info['theme_name']}) -> '{rec_title}'")
+        if len(selected_items) >= TARGET_MIN_POSTS:
+            break
 
-    # 4. [사용자 지침 3 - 작성 글 수 확대]
-    # "현재 작성된 글 수가 너무 적어서 작성 글수를 늘릴려고 합니다."
-    # 하루 최소 5편 이상 풍성하게 작성될 수 있도록 보장 (4~10위에서 연관 글이 적을 때 큐레이티드 주제 풀에서 추가 선별)
-    TARGET_MIN_POSTS = 5
+    # 4. [사용자 지침 3 - 큐레이티드 풀 1차 미작성 보충]
     if len(selected_items) < TARGET_MIN_POSTS:
         for cur in NAVER_CURATED_TOPICS:
             kw = cur["keyword"].strip()
@@ -3492,35 +3522,37 @@ def run_batch(target_date=None, force=False, naver_only=False):
             if len(selected_items) >= TARGET_MIN_POSTS:
                 break
 
-    # 5. [큐레이티드 풀 소진 시 순환 개정판 보강]
-    # 큐레이티드 주제가 모두 소진되었을 때 워드프레스/티스토리와 동일하게 (2026 최신 개정판)으로 하루 5편 엄격 보장
-    if len(selected_items) < TARGET_MIN_POSTS:
+    # 5. [큐레이티드 풀 순환 다회차 개정판 보강: 주말 30편 등 대량 발행 엄격 보장]
+    cycle = 1
+    while len(selected_items) < TARGET_MIN_POSTS and cycle <= 5:
+        added_in_cycle = 0
+        tag = " (2026 최신 개정판)" if cycle == 1 else f" (2026 최신 개정판 v{cycle})"
         for cur in NAVER_CURATED_TOPICS:
             kw = cur["keyword"].strip()
-            kw_low = kw.lower()
-            if kw_low in selected_kws:
-                continue
             theme_info = match_blog_theme(kw, cur["news_title"])
             if not theme_info:
                 continue
             base_title = generate_blog_title_for_trend(kw, cur["news_title"], theme_info)
-            rec_title = f"{base_title} (2026 최신 개정판)"
+            rec_title = f"{base_title}{tag}"
             if rec_title in selected_titles:
                 continue
             t_obj = {
                 "rank": len(selected_items) + 1,
                 "keyword": kw,
-                "badge": cur["traffic"],
+                "badge": f"추천 테마 (개정판 v{cycle})",
                 "news": cur["news_title"],
                 "recommended_title": rec_title,
                 "theme": theme_info
             }
             selected_items.append((t_obj, theme_info, "CURATED_EXPANSION_REVISION"))
-            selected_kws.add(kw_low)
             selected_titles.add(rec_title)
-            log(f"📚 [글 수 확대 보강 (순환 개정판)] 큐레이티드 테마 [{kw}] ({theme_info['theme_name']}) -> '{rec_title}'")
+            added_in_cycle += 1
+            log(f"📚 [글 수 확대 (개정판)] 큐레이티드 [{kw}] -> '{rec_title}'")
             if len(selected_items) >= TARGET_MIN_POSTS:
                 break
+        cycle += 1
+        if added_in_cycle == 0:
+            break
 
     created_count = 0
     for idx, (t_item, th_info, _src_type) in enumerate(selected_items, 1):
@@ -3546,6 +3578,8 @@ def run_batch(target_date=None, force=False, naver_only=False):
         t_cmd = [sys.executable, tistory_script, today_str]
         if force:
             t_cmd.append("--force")
+        if target_count:
+            t_cmd.append(f"--target-count={target_count}")
         subprocess.run(t_cmd, cwd=BASE_DIR)
 
     # 5-3. 워드프레스(WordPress) 코너스톤 SEO 작업실 배치 연동 실행
@@ -3554,6 +3588,8 @@ def run_batch(target_date=None, force=False, naver_only=False):
         wp_cmd = [sys.executable, wp_script, today_str]
         if force:
             wp_cmd.append("--force")
+        if target_count:
+            wp_cmd.append(f"--target-count={target_count}")
         subprocess.run(wp_cmd, cwd=BASE_DIR)
 
     # 5-4. 타투 작업실(Tattoo) 네이버 블로그 일일 배치 연동 실행
@@ -3575,11 +3611,19 @@ def run_batch(target_date=None, force=False, naver_only=False):
     git_commit_and_push(today_str, latest_title)
 
     log(f"🎉 [통합 배치 완료] {today_str} 네이버 · 티스토리 · 워드프레스 일별 블로그 작업이 성공적으로 끝났습니다.\n")
+    return created_count
 
 if __name__ == "__main__":
     force_mode = "--force" in sys.argv
     naver_only_mode = "--naver-only" in sys.argv
-    date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    target_count_arg = None
+    for arg in sys.argv[1:]:
+        if arg.startswith("--target-count="):
+            target_count_arg = int(arg.split("=")[1])
+        elif arg.isdigit():
+            target_count_arg = int(arg)
+
+    date_args = [a for a in sys.argv[1:] if not a.startswith("--") and not a.isdigit()]
     t_date = date_args[0] if date_args else None
-    run_batch(t_date, force=force_mode, naver_only=naver_only_mode)
+    run_batch(t_date, force=force_mode, naver_only=naver_only_mode, target_count=target_count_arg)
 

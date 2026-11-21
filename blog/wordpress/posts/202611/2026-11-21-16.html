@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[2026-11-21] 워드프레스 포스팅 #16 | 주택연금 가입 조건(공시가격 12억 이하) 및 월 수령액 모의계산·지급방식 비교표 (2026 최신 개정판)</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+  <style>
+    :root {
+      --wp: #0073aa;
+      --wp-dark: #005177;
+      --wp-light: #f0f7fb;
+      --wp-border: #bae6fd;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.75;
+      padding-bottom: 80px;
+    }
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .brand-tag {
+      background: var(--wp);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .nav-title { font-size: 15px; font-weight: 700; }
+    .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-main);
+    }
+    .btn:hover { background: #f3f4f6; }
+    .btn-wp { background: var(--wp); color: #fff; border-color: var(--wp); }
+    .btn-wp:hover { background: var(--wp-dark); color: #fff; }
+    .container { max-width: 880px; margin: 32px auto 0; padding: 0 16px; }
+    .meta-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--wp);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .meta-badges { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--wp-light);
+      color: var(--wp-dark);
+      border: 1px solid var(--wp-border);
+    }
+    .post-title { font-size: 23px; font-weight: 800; line-height: 1.4; margin-bottom: 14px; color: #111827; }
+    .meta-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      background: var(--bg);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .meta-info-item span { color: var(--text-muted); margin-right: 6px; }
+    .editor-preview {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .editor-preview h1 { font-size: 24px; font-weight: 800; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--wp); }
+    .editor-preview h2 { font-size: 19.5px; font-weight: 750; margin: 34px 0 14px; color: #111827; border-left: 4px solid var(--wp); padding-left: 12px; }
+    .editor-preview h3 { font-size: 16.5px; font-weight: 700; margin: 24px 0 10px; color: #1f2937; }
+    .editor-preview p { margin-bottom: 16px; font-size: 15.5px; line-height: 1.85; color: #374151; word-break: keep-all; }
+    .editor-preview ul, .editor-preview ol { margin: 12px 0 20px 22px; }
+    .editor-preview li { margin-bottom: 8px; font-size: 15px; line-height: 1.75; color: #374151; }
+    .editor-preview blockquote {
+      border: 1px solid var(--wp-border);
+      border-left: 5px solid var(--wp);
+      background: var(--wp-light);
+      padding: 16px 20px;
+      margin: 20px 0 24px;
+      border-radius: 6px;
+      color: #0c4a6e;
+      font-size: 15.5px;
+      line-height: 1.8;
+      text-align: left;
+    }
+    .editor-preview blockquote p { margin-bottom: 0; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; }
+    .editor-preview hr { border: 0; border-top: 1px solid #f1f5f9; margin: 26px 0; }
+    .editor-preview table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px; }
+    .editor-preview th { background: var(--wp-light); color: #0c4a6e; font-weight: 700; border: 1px solid var(--wp-border); padding: 10px 12px; text-align: left; }
+    .editor-preview td { border: 1px solid #e5e7eb; padding: 10px 12px; color: #374151; vertical-align: top; }
+    .editor-preview tr:nth-child(even) td { background: #f9fafb; }
+    .editor-preview pre { background: #1e293b; color: #f8fafc; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 16px 0; }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #111827; color: #fff; padding: 12px 24px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="brand-tag">WORDPRESS · #16편</span>
+      <span class="nav-title">2026-11-21 (토) · Retirement & Pension (은퇴·연금·건보료)</span>
+    </div>
+    <div class="nav-actions">
+      <a href="../../index.html" class="btn">📂 워드프레스 작업실 홈</a>
+      <a href="2026-11-21-16.md" target="_blank" class="btn">📄 원본 MD 열기</a>
+      <button class="btn" id="copyTitleOnlyBtn" style="border-color: #cbd5e1; background: #f8fafc; color: #1e293b;" title="워드프레스 제목 입력란에 붙여넣을 제목만 복사합니다">📋 제목만 복사</button>
+      <button class="btn btn-wp" id="copyWpBtn" title="워드프레스 구텐베르크 에디터에 적정 소제목 크기(20px)·요약박스·표 서식 그대로 붙여넣기 됩니다">🔵 워드프레스 구텐베르크 서식 복사</button>
+      <button class="btn" id="copyCleanTextBtn" title="** 나 ### 등 마크다운 기호를 모두 지운 깨끗한 텍스트로 복사합니다">📄 순수 텍스트 복사 (** 제거)</button>
+      <button class="btn" id="copyMdBtn">📝 마크다운 원문 복사</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="meta-card">
+      <div class="meta-badges">
+        <span class="badge">🔵 WordPress Cornerstone SEO</span>
+        <span class="badge">📂 Retirement & Pension (은퇴·연금·건보료)</span>
+        <span class="badge">🔗 Slug: /housing-pension-eligibility-calculation-guide-update</span>
+        <span class="badge">🎯 평가 점수: 94/100점</span>
+      </div>
+      <h1 class="post-title">주택연금 가입 조건(공시가격 12억 이하) 및 월 수령액 모의계산·지급방식 비교표 (2026 최신 개정판)</h1>
+      <div class="meta-info-grid">
+        <div class="meta-info-item"><span>Focus Keyphrase:</span><strong>주택연금 가입 조건 수령액</strong></div>
+        <div class="meta-info-item"><span>URL Slug:</span><strong>/housing-pension-eligibility-calculation-guide-update</strong></div>
+        <div class="meta-info-item"><span>구조:</span><strong>Key Takeaways + 비교표 + FAQ 3문 3답</strong></div>
+        <div class="meta-info-item"><span>타겟:</span><strong>Google 글로벌/국내 SEO & AdSense</strong></div>
+      </div>
+    </div>
+
+    <article class="editor-preview" id="postArticle"></article>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다!</div>
+
+  <script id="rawMarkdown" type="text/plain">
+# 주택연금 가입 조건(공시가격 12억 이하) 및 월 수령액 모의계산·지급방식 비교표 (2026 최신 개정판)
+
+> **💡 Key Takeaways (핵심 요약)**: 한국주택금융공사(HF) 주택연금은 **① 부부 중 1명이라도 만 55세 이상(연금액 산정은 연소자 연령 기준)**이고 **② 부부 합산 보유 주택의 공시가격이 12억 원 이하**라면 내 집에 평생 거주하면서 매월 국가가 보증하는 연금을 받을 수 있는 제도입니다. 특히 주택연금 수령액은 법적으로 **대출금(부채)**으로 분류되므로 **기초연금 수급 자격이나 건강보험료 피부양자 소득 산정 시 불이익이 전혀 없다**는 것이 큰 장점입니다.
+
+---
+
+## 1. 내 집 한 채로 평생 월급을 만드는 '주택연금', 왜 공시가격 12억 기준을 확인해야 할까요?
+
+은퇴 후 가장 큰 고민은 자산의 대부분이 거주 중인 아파트나 주택 한 채에 묶여 있어 매달 쓸 현금 흐름이 부족하다는 점입니다. 집을 팔고 외곽으로 이사하자니 생활 인프라가 아쉽고, 자녀에게 손 벌리기도 부담스러울 때 가장 확실한 대안이 바로 **한국주택금융공사(HF) 주택연금**입니다.
+
+주택연금은 내 집에 그대로 살면서 집을 담보로 평생(부부 모두 사망 시까지) 매월 연금을 받는 국가 보증 역모기지 제도입니다. 특히 **공시가격 12억 원 이하(시세 기준 약 16억~17억 원 안팎)**까지 가입 문턱이 넓어졌으므로, 정확한 자격 조건과 예상 수령액 조회 절차를 확인해 보시기 바랍니다.
+
+---
+
+## 2. 한국주택금융공사에서 예상 주택연금 조회하는 4단계 순서
+
+### 1단계: 연령 및 주택 공시가격(12억 원 이하) 요건 먼저 확인하기
+주택연금은 **부부 중 1명 이상이 만 55세 이상**인 대한민국 국민이면 신청할 수 있으며, 주택 가격 기준(12억 원 이하)은 실거래 시세가 아니라 **공시가격**으로 판정합니다.
+1. 국토교통부 [부동산공시가격 알리미(realtyprice.kr)](https://www.realtyprice.kr/)에 접속합니다.
+2. 거주 중인 아파트(공동주택) 또는 단독주택·주거목적 오피스텔 주소를 입력해 올해 공시가격이 **12억 원 이하**인지 확인합니다. 다주택자라도 부부 합산 공시가격이 12억 원 이하이면 가입할 수 있으며, 합산 공시가격 12억 원을 초과하는 2주택자는 3년 이내 1주택을 처분하는 조건으로 가입이 가능합니다.
+
+### 2단계: 한국주택금융공사(HF) 홈페이지에서 예상연금 모의계산하기
+1. [한국주택금융공사 공식 홈페이지(hf.go.kr)](https://www.hf.go.kr/)에 접속한 뒤 **[주택연금]** → **[예상연금조회]** 메뉴를 클릭합니다.
+2. 본인과 배우자의 생년월일(월 수령액은 부부 중 **나이가 적은 연소자** 기준으로 산정), 주택 구분(일반주택·주거용 오피스텔), 그리고 **주택 시세(한국부동산원 또는 KB시세)**를 입력합니다.
+3. 지급방식(종신지급방식·정액형 등)을 선택하고 **[조회하기]**를 누르면 예상 월 수령액을 즉시 확인할 수 있습니다.
+
+### 3단계: 지급방식(종신 정액형 vs 초기증액형 vs 우대형) 비교 선택하기
+1. 물가와 상관없이 평생 동일한 금액을 받고 싶다면 **종신지급방식(정액형)**을 선택합니다.
+2. 은퇴 직후(국민연금 수령 전 등)에 생활비가 더 많이 필요하다면 초기 일정 기간(3·5·7·10년) 더 많이 받고 이후 70% 수준을 받는 **초기증액형**을 비교합니다.
+3. 부부 기준 **시세 2.5억 원 미만 1주택자**이면서 기초연금 수급자라면 일반형보다 최대 20% 가까이 더 받는 **우대형 주택연금** 대상인지 확인합니다.
+
+### 4단계: 공사 지사 상담 예약 및 보증 신청하기
+1. 한국주택금융공사 콜센터(`1688-8114`) 또는 지사 방문 상담을 예약합니다.
+2. 심사를 거쳐 보증서가 발급되면 협약 금융기관(시중은행)에서 약정을 체결하고 첫 연금을 수령합니다.
+
+---
+
+## 3. 주택연금 주요 지급유형별 특징 비교표
+
+| 구분 | ① 종신지급방식 (정액형) | ② 종신 혼합방식 (인출한도 설정) | ③ 우대형 주택연금 |
+| --- | --- | --- | --- |
+| **핵심 특징** | 인출한도 없이 매월 동일한 금액을 평생 수령 | 대출한도의 50% 이내를 수시인출금으로 빼두고 나머지를 월 연금으로 수령 | 저가 1주택 보유 고령층에게 월 지급금을 최대 20% 우대 지급 |
+| **추천 대상** | 기존 주택담보대출이 없는 일반 은퇴 부부 | 기존 주담대 상환이나 자녀 결혼·의료비 등 목돈이 필요한 분 | 부부 기준 **주택 시세 2.5억 원 미만** 1주택 & 기초연금 수급자 |
+| **월 수령액 수준** | 가장 높음 (100% 연금 재원 활용) | 인출한도 설정 비율만큼 월 수령액 감소 | 일반 정액형 대비 **최대 약 20% 증액** |
+| **거주 보장** | 부부 모두 사망 시까지 100% 거주 보장 | 부부 모두 사망 시까지 100% 거주 보장 | 부부 모두 사망 시까지 100% 거주 보장 |
+
+---
+
+## 4. 가입 전 반드시 알아야 할 정산 구조와 예외 조건
+
+1. **사후 정산 시 '남으면 상속인에게, 부족해도 청구 없음(비소구 원칙)'**
+   - 부부 모두 사망한 뒤 주택을 처분한 금액이 그동안 받은 연금 총액(원리금)보다 **많으면 남은 금액은 자녀(상속인)에게 돌려주고**, 반대로 집값이 떨어져 처분 금액이 부족하더라도 **부족분을 상속인에게 절대 청구하지 않습니다.**
+2. **가입 시점의 주택 가격과 연령이 평생 수령액을 결정**
+   - 주택연금은 가입 당시 평가된 주택 시세와 부부 중 **연소자 나이**를 기준으로 월 지급금이 확정되므로, 가입 이후 집값이 오르거나 내려도 매달 받는 연금액은 변하지 않습니다.
+3. **실거주 의무 확인**
+   - 원칙적으로 가입자 또는 배우자가 해당 주택에 실제 거주해야 하며, 병원 입원·요양원 입소 등 공사가 인정하는 불가피한 사유가 있을 때만 예외적으로 거주를 이전하거나 임대할 수 있습니다.
+
+---
+
+## 5. 자주 묻는 질문
+
+### Q1. 남편은 만 65세이고 아내는 만 53세인데 주택연금에 가입할 수 있나요?
+**A.** 네, 부부 중 1명만 만 55세 이상이면 가입 자격은 충족합니다. 다만 월 수령액은 부부 중 나이가 적은 배우자 연령을 기준으로 계산되며, 연소자가 만 55세 미만인 경우에는 만 55세 연령 기준 수령액이 적용됩니다.
+
+### Q2. 주택연금을 받으면 건강보험 피부양자에서 탈락하거나 기초연금이 깎이나요?
+**A.** 전혀 그렇지 않습니다. 주택연금 수령액은 세법 및 국민건강보험법상 소득이 아니라 **담보대출(부채)**로 분류됩니다. 따라서 건강보험 피부양자 소득(연 2,000만 원)에 합산되지 않으며, 기초연금 산정 시에는 오히려 연금 수령 누계액이 **부채로 차감**되어 유리하게 작용합니다.
+
+### Q3. 재건축·재개발 예정인 아파트도 주택연금 유지가 가능한가요?
+**A.** 네, 재건축·재개발이 진행되더라도 주택연금 계약을 해지할 필요 없이 공사 기간 중 이주비 대출 및 분담금 납부 절차를 거쳐 신축 주택으로 담보주택을 변경해 연금을 계속 유지할 수 있습니다.
+
+---
+
+## 6. 참고 자료 및 공식 확인 사이트
+
+- [한국주택금융공사(HF) 주택연금 예상연금조회 공식 페이지](https://www.hf.go.kr/)
+- [국토교통부 부동산공시가격 알리미](https://www.realtyprice.kr/)
+- [금융감독원 통합연금포털](https://100lifeplan.fss.or.kr/)
+
+  </script>
+
+  <script>
+    const mdSource = document.getElementById("rawMarkdown").textContent.trim();
+    const articleEl = document.getElementById("postArticle");
+
+    // 1) marked.js가 한글 문장 내 범위 물결표(예: 60~70% ... 3.3~5.5%)를 취소선(<del>)으로 오인하는 버그 완벽 차단
+    // 2) CommonMark에서 **괄호)**조사, **[대괄호]**조사, *"따옴표"*조사 형태일 때 별표가 남는 버그 완벽 보정
+    function parseMarkdownSafe(md) {
+      let html = marked.parse(md);
+      html = html
+        .replace(/<del>([\s\S]*?)<\/del>/gi, '~$1~')
+        .replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+      return html;
+    }
+
+    articleEl.innerHTML = parseMarkdownSafe(mdSource);
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => showToast("🏷️ 워드프레스 SEO 슬러그 및 메타 설명이 복사되었습니다!"));
+    }
+
+    function convertMarkdownTablesToReadableList(mdText) {
+      const lines = mdText.split("\n");
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.startsWith("|") && line.endsWith("|") && i + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[i + 1].trim())) {
+          const headers = line.slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+          i += 2;
+          while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+            const cells = lines[i].trim().slice(1, -1).split("|").map(c => c.trim().replace(/\*\*(.*?)\*\*/g, "$1"));
+            const rowTitle = cells[0] || "항목";
+            out.push(`■ [${rowTitle}]`);
+            for (let c = 1; c < headers.length; c++) {
+              out.push(`  • ${headers[c] || "항목"}: ${cells[c] || "-"}`);
+            }
+            out.push("");
+            i++;
+          }
+        } else {
+          out.push(lines[i]);
+          i++;
+        }
+      }
+      return out.join("\n");
+    }
+
+    function getCleanPlainText() {
+      return convertMarkdownTablesToReadableList(mdSource)
+        .replace(/\*\*([^*]+?)\*\*/g, '$1')
+        .replace(/\*([^*\n]+?)\*/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/^>\s+/gm, '')
+        .replace(/^---\s*$/gm, '')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    }
+
+    function normalizeTableForWordPress(tableEl) {
+      const newTable = document.createElement("table");
+      newTable.setAttribute("border", "1");
+      newTable.setAttribute("cellpadding", "0");
+      newTable.setAttribute("cellspacing", "0");
+      newTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 20px 0 24px; border: 1px solid #d1d5db; font-size: 14.5px; line-height: 1.6;");
+      const tbody = document.createElement("tbody");
+      const allRows = Array.from(tableEl.querySelectorAll("tr"));
+      allRows.forEach((row, rIdx) => {
+        const tr = document.createElement("tr");
+        const cells = Array.from(row.querySelectorAll("th, td"));
+        const colCount = cells.length;
+        let widths = [];
+        if (colCount === 3) widths = ["22%", "39%", "39%"];
+        else if (colCount === 4) widths = ["22%", "26%", "26%", "26%"];
+        else if (colCount > 0) widths = Array(colCount).fill(Math.floor(100 / colCount) + "%");
+
+        cells.forEach((cell, cIdx) => {
+          const td = document.createElement("td");
+          const wStyle = widths[cIdx] ? `width: ${widths[cIdx]}; ` : "";
+          const isHeader = (rIdx === 0 || cell.tagName.toLowerCase() === "th");
+          const cleanHtml = cell.innerHTML.replace(/[]\s*/g, "").trim();
+          if (isHeader) {
+            td.setAttribute("style", `${wStyle}background-color: #f0f7fb; color: #0c4a6e; font-weight: bold; border: 1px solid #bae6fd; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = `<strong>${cleanHtml}</strong>`;
+          } else {
+            const bg = (rIdx % 2 === 0) ? "#f9fafb" : "#ffffff";
+            const fontW = (cIdx === 0) ? "font-weight: bold; color: #111827; " : "color: #374151; ";
+            td.setAttribute("style", `${wStyle}background-color: ${bg}; ${fontW}border: 1px solid #d1d5db; padding: 10px 12px; text-align: left; vertical-align: middle; word-break: keep-all;`);
+            td.innerHTML = (cIdx === 0 && !cleanHtml.includes("<strong")) ? `<strong>${cleanHtml}</strong>` : cleanHtml;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      newTable.appendChild(tbody);
+      return newTable;
+    }
+
+    // 워드프레스 구텐베르크 에디터 붙여넣기 최적화:
+    // 1) 최상단 중복 제목(H1) 제거 (제목 입력란에 별도 입력)
+    // 2) H2가 워드프레스 기본 테마에서 40px 초대형 글씨로 나오는 문제를 해결하기 위해
+    //    네이버·티스토리와 동일한 크기(약 20px, H3 레벨 + <strong> + 파란색 포인트 바 ▍)로 변환
+    // 3) 기존 H3(1단계, 2단계 등)는 17px 굵은 문단(▪ 1단계: ...)으로 변환하여 위계 질서 확립
+    // 4) <blockquote>(Key Takeaways)가 테두리 없는 일반 글씨로 풀리는 문제를 해결하기 위해 1x1 요약 박스 테이블로 변환
+    // 5) 검은색 실선(<hr>)을 깔끔한 문단 여백으로 대체
+    function getWordPressOptimizedHtml(forCustomHtmlBlock = false) {
+      const clone = articleEl.cloneNode(true);
+
+      // 1. 본문 최상단 중복 H1 제거
+      clone.querySelectorAll("h1").forEach(el => el.remove());
+
+      // 2. 검은색 가로줄(<hr>) 제거
+      clone.querySelectorAll("hr").forEach(el => el.remove());
+
+      // 3. 본문 내 일반 표(Table) 정규화
+      clone.querySelectorAll("table").forEach(el => {
+        el.replaceWith(normalizeTableForWordPress(el));
+      });
+
+      // 4. <blockquote>(핵심 요약)를 테두리가 유지되는 1x1 요약 박스 테이블로 변환
+      clone.querySelectorAll("blockquote").forEach(bq => {
+        const boxTable = document.createElement("table");
+        boxTable.setAttribute("border", "1");
+        boxTable.setAttribute("cellpadding", "0");
+        boxTable.setAttribute("cellspacing", "0");
+        boxTable.setAttribute("style", "border-collapse: collapse; width: 100%; margin: 14px 0 26px; border: 1px solid #bae6fd; background-color: #f0f7fb;");
+        const innerHtml = bq.innerHTML
+          .replace(/<p[^>]*>/gi, "")
+          .replace(/<\/p>/gi, "<br>")
+          .replace(/(<br>\s*)+$/i, "");
+        boxTable.innerHTML = `<tbody><tr><td style="border: 1px solid #bae6fd; border-left: 5px solid #0073aa; background-color: #f0f7fb; padding: 16px 20px; color: #0c4a6e; font-size: 15.5px; line-height: 1.8; text-align: left; word-break: keep-all;">${innerHtml}</td></tr></tbody>`;
+        bq.replaceWith(boxTable);
+      });
+
+      // 5. 기존 H3, H4(1단계, 2단계, Q1 등)를 먼저 17px 굵은 서브헤딩 문단으로 변환 (H2 -> H3 변환과 충돌 방지)
+      clone.querySelectorAll("h3, h4").forEach(el => {
+        const pSub = document.createElement("p");
+        pSub.setAttribute("style", "font-size: 17px; font-weight: bold; color: #1e293b; margin: 22px 0 10px 0; line-height: 1.5; word-break: keep-all;");
+        const cleanTxt = el.innerHTML.trim();
+        const prefix = (cleanTxt.startsWith("▪") || cleanTxt.startsWith("①") || cleanTxt.startsWith("②") || cleanTxt.startsWith("③")) ? "" : "▪ ";
+        pSub.innerHTML = `<strong><span style="color: #0073aa;">${prefix}</span>${cleanTxt}</strong>`;
+        el.replaceWith(pSub);
+      });
+
+      // 6. H2 중간제목(1. ..., 2. ..., 3. ...)을 워드프레스에서 과도하게 커지지 않는 적정 크기(20px, H3 + <strong>)로 변환
+      clone.querySelectorAll("h2").forEach(el => {
+        if (forCustomHtmlBlock) {
+          el.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 32px 0 14px 0; padding-left: 12px; border-left: 4px solid #0073aa; line-height: 1.45; word-break: keep-all;");
+        } else {
+          const h3 = document.createElement("h3");
+          h3.setAttribute("style", "font-size: 20px; font-weight: bold; color: #111827; margin: 30px 0 14px 0; line-height: 1.45; word-break: keep-all;");
+          h3.innerHTML = `<strong><span style="color: #0073aa; font-weight: 900; margin-right: 6px;">▍</span>${el.innerHTML}</strong>`;
+          el.replaceWith(h3);
+        }
+      });
+
+      // 7. 문단 및 목록 스타일 정리
+      clone.querySelectorAll("p").forEach(el => {
+        if (!el.getAttribute("style")) {
+          el.setAttribute("style", "font-size: 16px; line-height: 1.85; color: #374151; margin: 0 0 16px 0; word-break: keep-all;");
+        }
+      });
+      clone.querySelectorAll("ul, ol").forEach(el => el.setAttribute("style", "margin: 12px 0 20px 22px; color: #374151;"));
+      clone.querySelectorAll("li").forEach(el => el.setAttribute("style", "font-size: 15.5px; line-height: 1.8; margin-bottom: 8px; color: #374151; word-break: keep-all;"));
+      clone.querySelectorAll("a").forEach(el => el.setAttribute("style", "color: #0073aa; font-weight: bold; text-decoration: underline;"));
+
+      return clone.innerHTML;
+    }
+
+    async function copyWpRichHtml(htmlContent, plainText) {
+      let copied = false;
+      try {
+        const tempDiv = document.createElement("div");
+        tempDiv.contentEditable = "true";
+        tempDiv.style.position = "fixed";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.top = "0";
+        tempDiv.style.opacity = "0";
+        tempDiv.style.backgroundColor = "#ffffff";
+        tempDiv.style.color = "#1f2937";
+        tempDiv.innerHTML = htmlContent;
+        document.body.appendChild(tempDiv);
+
+        const range = document.createRange();
+        range.selectNodeContents(tempDiv);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copied = document.execCommand("copy");
+        sel.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      } catch (e) {}
+
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainText], { type: 'text/plain' });
+          await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+          copied = true;
+        } catch (e) {}
+      }
+
+      if (!copied && navigator.clipboard) {
+        await navigator.clipboard.writeText(plainText);
+      }
+      return copied;
+    }
+
+    document.getElementById("copyTitleOnlyBtn").addEventListener("click", async () => {
+      const postTitle = document.querySelector(".post-title")?.innerText?.trim() || "";
+      await navigator.clipboard.writeText(postTitle);
+      showToast("📋 제목이 복사되었습니다! 워드프레스 제목 입력란에 붙여넣으세요.");
+    });
+
+    document.getElementById("copyWpBtn").addEventListener("click", async () => {
+      const htmlContent = getWordPressOptimizedHtml(false);
+      const plainText = getCleanPlainText();
+      await copyWpRichHtml(htmlContent, plainText);
+      showToast("🔵 워드프레스 구텐베르크 서식(중간제목 크기 축소·요약박스·취소선 오류 제거)이 복사되었습니다!");
+    });
+
+    document.getElementById("copyCleanTextBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(getCleanPlainText()).then(() => showToast("📄 ** 및 # 기호가 완전히 제거된 순수 텍스트가 복사되었습니다!"));
+    });
+
+    document.getElementById("copyMdBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(mdSource).then(() => showToast("📝 마크다운 원문이 복사되었습니다!"));
+    });
+  </script>
+</body>
+</html>
