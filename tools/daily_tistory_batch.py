@@ -5162,7 +5162,7 @@ def update_root_portal_with_tistory(today_str, tistory_posts):
     log("✅ 루트 index.html 포털에 티스토리 작업실 및 최신 포스팅 연동 완료")
 
 def run_tistory_batch(target_date=None, force=False, target_count=None):
-    """티스토리 일별 배치 메인 실행 (평일 5편, 주말(토/일) 30편 집중 발행 지원)"""
+    """티스토리 일별 배치 메인 실행 (주중/주말 15편 매일 발행 지원)"""
     lock_file_path = "/tmp/daily_tistory_batch.lock"
     try:
         lock_file = open(lock_file_path, "w")
@@ -5177,8 +5177,8 @@ def run_tistory_batch(target_date=None, force=False, target_count=None):
     weekday_str = WEEKDAYS_KR[today_date.weekday()]
     is_weekend = today_date.weekday() in (5, 6) # 토(5), 일(6)
 
-    # 목표 글 수 결정: 지정값 우선, 없으면 주말 30편, 평일 5편
-    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 5)
+    # 목표 글 수 결정: 지정값 우선, 없으면 주중/주말 매일 15편
+    TARGET_MIN_POSTS = target_count if target_count else 15
 
     log(f"🚀 [티스토리 배치 시작] Google Trends 상승 검색어 기반 티스토리 글 생성 (기준일: {today_str} {weekday_str}요일, 목표: {TARGET_MIN_POSTS}편, force={force})")
 

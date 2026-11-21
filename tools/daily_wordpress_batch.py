@@ -3862,11 +3862,11 @@ def fetch_daily_wp_articles(today_str, force=False, target_count=None):
     """
     [규칙 1] 실시간 검색어 Top 10 중 상위 3개(1위, 2위, 3위)는 무조건 워드프레스 코너스톤 글 작성!
     [규칙 2] 4위부터 확장된 전체 트렌드 중 설정 주제와 연관이 있는 글 작성!
-    [규칙 3] 평일 5편, 주말(토/일) 30편 목표 글 수 자동 적용 및 순환 보강!
+    [규칙 3] 주중 15편, 주말(토/일) 30편 목표 글 수 자동 적용 및 순환 보강!
     """
     today_date = datetime.strptime(today_str, "%Y-%m-%d")
     is_weekend = today_date.weekday() in (5, 6)
-    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 5)
+    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 15)
 
     existing_titles = get_existing_wp_titles(exclude_date=today_str if force else None)
     trends = fetch_trending_keywords_for_wp()

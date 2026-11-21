@@ -3400,7 +3400,7 @@ def git_commit_and_push(today_str, title):
         log(f"⚠️ Git 자동 커밋 및 푸시 중 오류 발생: {e}")
 
 def run_batch(target_date=None, force=False, naver_only=False, target_count=None):
-    """배치 메인 실행 함수 (평일 5편, 주말(토/일) 30편 집중 발행 지원)"""
+    """배치 메인 실행 함수 (주중 15편, 주말(토/일) 30편 집중 발행 지원)"""
     # 동시 실행 방지 파일 락 (LaunchAgent + Cron 이중 구동 시 상호 배타 보장)
     lock_file_path = "/tmp/daily_naver_batch.lock"
     try:
@@ -3419,7 +3419,7 @@ def run_batch(target_date=None, force=False, naver_only=False, target_count=None
     today_str = today_date.strftime("%Y-%m-%d")
     weekday_str = WEEKDAYS_KR[today_date.weekday()]
     is_weekend = today_date.weekday() in (5, 6)
-    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 5)
+    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 15)
 
     log(f"🚀 [배치 시작] 네이버 블로그 일별 자동화 배치 실행 (기준일: {today_str} {weekday_str}요일, 목표: {TARGET_MIN_POSTS}편, force={force})")
 
