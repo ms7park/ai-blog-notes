@@ -4,8 +4,7 @@
 티스토리 블로그 1회성 브라우저 로그인 세션 생성 도구 (tools/setup_tistory_login.py)
 
 사용자가 화면에 열린 Chromium 브라우저에서 카카오/티스토리에 직접 로그인하면,
-로그인 인증 세션을 .browser_session/tistory/state.json 에 영구 저장합니다.
-이후 자동 업로드 시에는 재로그인 없이 바로 글쓰기가 가능해집니다.
+로그인 인증 세션을 .browser_session/tistory/state.json 및 프로필에 영구 저장합니다.
 """
 
 import os
@@ -33,20 +32,18 @@ def setup_tistory_session(blog_name=DEFAULT_BLOG):
     print("==========================================================", flush=True)
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(
+        context = p.chromium.launch_persistent_context(
+            user_data_dir=SESSION_DIR,
             headless=False,
+            viewport={"width": 1280, "height": 900},
+            permissions=["clipboard-read", "clipboard-write"],
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--no-sandbox"
             ]
         )
 
-        context = browser.new_context(
-            viewport={"width": 1280, "height": 900},
-            permissions=["clipboard-read", "clipboard-write"]
-        )
-
-        page = context.new_page()
+        page = context.pages[0] if context.pages else context.new_page()
 
         # 티스토리 로그인 페이지로 이동
         print("🚀 티스토리 로그인 페이지를 여는 중입니다...", flush=True)
@@ -62,48 +59,55 @@ def setup_tistory_session(blog_name=DEFAULT_BLOG):
         except Exception:
             pass
 
-        print("\n⏳ 화면에 열린 브라우저 창에서 카카오 로그인을 완료해 주세요...", flush=True)
+        print("\n⏳ 화면에 열린 브라우저 창에서 카카오 로그인을 진행해 주세요...", flush=True)
         print("💡 로그인 완료 시 자동으로 감지하여 세션을 저장합니다 (최대 10분 대기).", flush=True)
 
         logged_in = False
         for i in range(300):
             time.sleep(2)
             try:
-                if page.is_closed():
-                    print("⚠️ 사용자에 의해 브라우저 창이 닫혔습니다.", flush=True)
+                # 활성 창 목록 확인
+                all_pages = [p for p in context.pages if not p.is_closed()]
+                if not all_pages:
+                    print("⚠️ 브라우저 창이 닫혔습니다.", flush=True)
                     break
 
-                curr_url = page.url
-                # 카카오 로그인 완료 후 티스토리나 서브도메인으로 리다이렉트되었는지 확인
-                if "manage/newpost" in curr_url or "manage/post" in curr_url or ("tistory.com" in curr_url and "auth/login" not in curr_url and "accounts.kakao.com" not in curr_url):
-                    cookies = context.cookies()
-                    cookie_names = [c["name"] for c in cookies]
-                    if any(k in cookie_names for k in ["TSSESSION", "_karmas", "TIARA"]):
-                        print("\n🎉 [1단계 감지] 카카오/티스토리 로그인 토큰 확인 완료!", flush=True)
-                        context.storage_state(path=STATE_FILE)
-                        logged_in = True
-                        break
+                active_urls = [p.url for p in all_pages]
+                cookies = context.cookies()
+                cookie_names = set(c["name"] for c in cookies)
+
+                # 카카오 또는 티스토리 인증 쿠키 감지
+                has_tistory_token = "TSSESSION" in cookie_names
+                has_kakao_token = any(k in cookie_names for k in ["_karmas", "_kawlt", "TIARA", "kaweb_id"])
+                reached_editor = any("manage/newpost" in u or "manage/post" in u for u in active_urls)
+
+                if has_tistory_token or (has_kakao_token and not any("accounts.kakao.com/login" in u for u in active_urls)):
+                    print(f"\n🎉 [1단계 감지] 로그인 인증 토큰 확인 완료! (쿠키 수: {len(cookies)})", flush=True)
+                    context.storage_state(path=STATE_FILE)
+                    logged_in = True
+                    break
             except Exception:
                 pass
 
         if not logged_in:
-            print("⚠️ 로그인이 완료되지 않았거나 창이 닫혔습니다. 다시 시도해 주세요.", flush=True)
+            print("⚠️ 로그인이 확인되지 않았습니다. 다시 시도해 주세요.", flush=True)
             try:
-                browser.close()
+                context.close()
             except Exception:
                 pass
             return False
 
         # 2단계: 블로그 글쓰기 에디터 진입 권한 검증
-        print(f"🔍 [2단계 검증] 티스토리 글쓰기 에디터 진입 확인 중 (https://{blog_name}.tistory.com/manage/newpost)...", flush=True)
+        print(f"🔍 [2단계 검증] 티스토리 글쓰기 에디터 진입 확인 중...", flush=True)
+        target_page = context.pages[0] if context.pages else context.new_page()
         try:
-            page.goto(f"https://{blog_name}.tistory.com/manage/newpost")
+            target_page.goto(f"https://{blog_name}.tistory.com/manage/newpost")
             time.sleep(3)
-            if "auth/login" in page.url or "accounts.kakao.com" in page.url:
-                print("⚠️ 글쓰기 페이지 진입 실패 (세션 만료 또는 로그인 권한 필요)", flush=True)
+            if "auth/login" in target_page.url or "accounts.kakao.com" in target_page.url:
+                print("⚠️ 글쓰기 페이지 진입 실패 (세션 만료 또는 권한 필요)", flush=True)
                 logged_in = False
             else:
-                print(f"✅ 티스토리 글쓰기 에디터 진입 성공! (URL: {page.url})", flush=True)
+                print(f"✅ 티스토리 글쓰기 에디터 진입 성공! (URL: {target_page.url})", flush=True)
                 context.storage_state(path=STATE_FILE)
                 logged_in = True
         except Exception as e:
@@ -111,10 +115,10 @@ def setup_tistory_session(blog_name=DEFAULT_BLOG):
 
         if logged_in:
             print(f"\n✅ 티스토리 로그인 세션이 안전하게 저장되었습니다: {STATE_FILE}", flush=True)
-            print("5초 후 로그인 창이 자동으로 닫히며 등록 준비가 완료됩니다...", flush=True)
-            time.sleep(5)
+            print("3초 후 로그인 창이 자동으로 닫히며 즉시 정식 글 등록을 시작합니다...", flush=True)
+            time.sleep(3)
 
-        browser.close()
+        context.close()
         return logged_in
 
 def main():
