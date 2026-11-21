@@ -4,9 +4,12 @@
 워드프레스 구텐베르크 자동 업로더 (tools/upload_wordpress_playwright.py)
 
 로컬 HTTP 데몬(127.0.0.1)을 띄워 HTML 뷰어를 열고,
-'워드프레스 에디터 서식 복사(#copyWpBtn)' 기능을 실행하여
-중간제목(H3 ▍), 파란 요약박스(Callout Box), 표(Table), 볼드 서식을
-클립보드에 완벽하게 복사한 후, 워드프레스 구텐베르크 에디터에 붙여넣어 정식 발행(PUBLISH)합니다.
+'워드프레스 에디터 서식 복사' 기능(getWordPressOptimizedHtml)을 호출하여
+중간제목(H3 ▍), 파란 요약박스(Callout Box), 표(Table), 볼드 서식을 추출한 후,
+워드프레스 Gutenberg 공식 API(wp.data & wp.blocks)를 통해 네이티브 블록으로 변환 주입하고
+즉시 정식 발행(PUBLISH)합니다.
+
+마크다운 기호(**, --- 등)가 일체 노출되지 않으며 워드프레스 구텐베르크 정식 블록으로 등록됩니다.
 """
 
 import os
@@ -34,17 +37,17 @@ class LocalServerHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
-def start_local_server(port=9997):
-    """localhost에 임시 HTTP 서버를 백그라운드로 실행하여 isSecureContext 보장"""
+def start_local_server(port=9996):
+    """localhost에 임시 HTTP 서버를 백그라운드로 실행"""
     server = http.server.HTTPServer(("127.0.0.1", port), LocalServerHandler)
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)
     server_thread.start()
     return server
 
-def copy_wp_post_via_server(viewer_page, server_port, rel_path):
+def get_wp_post_data_via_server(viewer_page, server_port, rel_path):
     """
     http://127.0.0.1:{server_port}/{rel_path} 를 열고
-    #copyWpBtn 을 클릭하여 브라우저 클립보드에 구텐베르크 리치 서식 복사
+    제목과 구텐베르크 최적화 리치 서식 HTML을 추출
     """
     url = f"http://127.0.0.1:{server_port}/{rel_path}"
     viewer_page.goto(url, wait_until="domcontentloaded")
@@ -57,106 +60,76 @@ def copy_wp_post_via_server(viewer_page, server_port, rel_path):
         return parts.length > 1 ? parts.slice(1).join('|').trim() : document.title.trim();
     }""")
 
-    try:
-        copy_btn = viewer_page.locator("#copyWpBtn").first
-        copy_btn.click()
-        time.sleep(0.5)
-        print("  📋 [에디터 서식 복사] 버튼 클릭 완료 (구텐베르크 요약박스·소제목·볼드 서식 복사)", flush=True)
-    except Exception as e:
-        print(f"  ⚠️ 서식 복사 버튼 클릭 오류: {e}", flush=True)
+    html_content = viewer_page.evaluate("() => typeof getWordPressOptimizedHtml === 'function' ? getWordPressOptimizedHtml(false) : document.querySelector('#postArticle')?.innerHTML || ''")
 
-    return title.strip()
+    return title.strip(), html_content
 
-def dismiss_gutenberg_dialogs(page):
-    """구텐베르크 시작 가이드 팝업 닫기"""
-    try:
-        close_btn = page.locator('button[aria-label="대화 상자 닫기"], button[aria-label="Close dialog"], button.components-modal__close-button').first
-        if close_btn.is_visible(timeout=2000):
-            close_btn.click()
-            time.sleep(0.5)
-            print("  ℹ️ 구텐베르크 안내 팝업 닫기 완료", flush=True)
-    except Exception:
-        pass
-
-def upload_post_to_wordpress(page, site, title, mode="publish"):
-    """워드프레스 구텐베르크 에디터에 접속하여 제목 및 서식 본문 주입 후 발행"""
+def upload_post_to_wordpress(page, site, title, html_content, mode="publish"):
+    """워드프레스 Gutenberg API에 접속하여 제목 및 서식 블록 주입 후 발행"""
     print(f"\n📝 워드프레스 포스팅 작업: [{title[:35]}...]", flush=True)
     
     # 1. 새 글 작성 페이지 진입
     write_url = f"https://{site}/wp-admin/post-new.php"
     page.goto(write_url, wait_until="domcontentloaded")
     time.sleep(4)
-    
-    # 2. 팝업 닫기
-    dismiss_gutenberg_dialogs(page)
 
-    # 3. 제목 입력
-    print("  ✍️ 제목 입력 중...", flush=True)
+    # 2. 구텐베르크 네이티브 블록 주입 및 저장/발행 실행
+    target_status = "publish" if mode == "publish" else "draft"
+    print(f"  ✍️ 구텐베르크 블록 변환 및 주입 중 (모드: {target_status.upper()})...", flush=True)
+
     try:
-        title_el = page.locator('h1.editor-post-title__input, textarea.editor-post-title__input, .wp-block-post-title').first
-        title_el.wait_for(state="visible", timeout=8000)
-        title_el.click()
-        time.sleep(0.2)
-        page.keyboard.press("Meta+A")
-        page.keyboard.press("Backspace")
-        page.keyboard.insert_text(title)
-        time.sleep(0.4)
-        print("  ✅ 제목 입력 완료", flush=True)
-    except Exception as e:
-        print(f"  ⚠️ 제목 입력 오류: {e}", flush=True)
-        return False
+        res = page.evaluate("""async ([title, html, status]) => {
+            // Gutenberg API 검증
+            if (!window.wp || !window.wp.data || !window.wp.blocks) {
+                return { success: false, error: 'WP Gutenberg API not available' };
+            }
 
-    # 4. 본문 서식 붙여넣기 (Meta+v / Control+v)
-    print("  📄 에디터 서식 붙여넣기(Cmd+V) 실행 중...", flush=True)
-    try:
-        # 제목에서 아래로 내려가거나 첫 블록 선택
-        page.keyboard.press("Enter")
-        time.sleep(0.3)
-        
-        body_appender = page.locator('.block-editor-default-block-appender__content, p.wp-block-paragraph, .is-root-container p').first
-        if body_appender.is_visible(timeout=3000):
-            body_appender.click()
-            time.sleep(0.2)
-            
-        page.keyboard.press("Meta+v")
-        time.sleep(0.5)
-        page.keyboard.press("Control+v")
-        time.sleep(2.5)
-        print("  ✅ 본문 서식(요약박스/소제목/표) 붙여넣기 완료", flush=True)
-    except Exception as e:
-        print(f"  ⚠️ 본문 붙여넣기 오류: {e}", flush=True)
-        return False
+            // 1. 제목 설정
+            wp.data.dispatch('core/editor').editPost({ title: title });
 
-    # 5. 모드에 따른 저장 (draft: 임시글 저장, publish: 정식 발행)
-    if mode == "draft":
-        print("  💾 [임시글로 저장] 버튼 클릭 중...", flush=True)
-        try:
-            save_draft_btn = page.locator('button.editor-post-save-draft, button:has-text("임시글로 저장"), button:has-text("Save draft")').first
-            save_draft_btn.click()
-            time.sleep(3)
-            print("  🎉 [임시저장 성공] 워드프레스 임시글 저장 완료!", flush=True)
-            return True
-        except Exception as e:
-            print(f"  ❌ 임시저장 실패: {e}", flush=True)
+            // 2. HTML을 네이티브 구텐베르크 블록으로 자동 파싱
+            const blocks = wp.blocks.rawHandler({ HTML: html });
+            wp.data.dispatch('core/editor').resetBlocks(blocks);
+
+            // 3. 상태 설정 (publish 또는 draft)
+            wp.data.dispatch('core/editor').editPost({ status: status });
+
+            // 4. 저장/발행 실행
+            await wp.data.dispatch('core/editor').savePost();
+
+            return {
+                success: true,
+                blocksCount: blocks.length,
+                status: status
+            };
+        }""", [title, html_content, target_status])
+
+        if not res or not res.get("success"):
+            print(f"  ❌ 구텐베르크 주입 실패: {res.get('error', 'unknown error')}", flush=True)
             return False
 
-    elif mode == "publish":
-        print("  🚀 [정식 발행] 버튼 클릭 중...", flush=True)
-        try:
-            # 1단계: 상단 발행 패널 토글 버튼 클릭
-            publish_toggle = page.locator('button.editor-post-publish-panel__toggle, button:has-text("공개…"), button:has-text("발행…"), button:has-text("Publish…")').first
-            publish_toggle.click()
-            time.sleep(1.5)
+        time.sleep(3.5)
 
-            # 2단계: 패널 내 최종 발행 확인 버튼 클릭
-            final_publish = page.locator('button.editor-post-publish-button, button:has-text("공개"), button:has-text("발행"), button:has-text("Publish")').first
-            final_publish.click()
-            time.sleep(5)
-            print("  🎉 [발행 성공] 워드프레스에 포스팅이 실제 정식 발행되었습니다!", flush=True)
-            return True
-        except Exception as e:
-            print(f"  ❌ 발행 버튼 클릭 실패: {e}", flush=True)
-            return False
+        # 3. 발행 결과 확인
+        post_info = page.evaluate("""() => {
+            const post = wp.data.select('core/editor').getCurrentPost();
+            return {
+                id: post.id,
+                status: post.status,
+                link: post.link
+            };
+        }""")
+
+        blocks_cnt = res.get("blocksCount", 0)
+        print(f"  ✅ 본문 구텐베르크 서식(요약박스/소제목/표) 블록 생성 완료 (총 {blocks_cnt}개 블록)", flush=True)
+        print(f"  🎉 [{target_status.upper()} 성공] 워드프레스 정식 등록 완료! (ID: {post_info.get('id')}, 상태: {post_info.get('status')})", flush=True)
+        if post_info.get("link"):
+            print(f"  🔗 글 링크: {post_info.get('link')}", flush=True)
+        return True
+
+    except Exception as e:
+        print(f"  ❌ 워드프레스 발행 처리 오류: {e}", flush=True)
+        return False
 
 def main():
     parser = argparse.ArgumentParser(description="워드프레스 Playwright 자동 등록 도구")
@@ -213,7 +186,7 @@ def main():
     print("==========================================================", flush=True)
 
     # 로컬 HTTP 데몬 서버 시작
-    server_port = 9997
+    server_port = 9996
     server = start_local_server(server_port)
 
     try:
@@ -228,8 +201,7 @@ def main():
 
             context = browser.new_context(
                 storage_state=STATE_FILE,
-                viewport={"width": 1280, "height": 900},
-                permissions=["clipboard-read", "clipboard-write"]
+                viewport={"width": 1280, "height": 900}
             )
 
             viewer_page = context.new_page()
@@ -237,7 +209,7 @@ def main():
 
             print("🔍 워드프레스 로그인 상태 확인 중...", flush=True)
             page.goto(f"https://{args.site}/wp-admin/post-new.php")
-            time.sleep(3)
+            time.sleep(4)
 
             if "log-in" in page.url or "wp-login" in page.url:
                 print("⚠️ 워드프레스 로그인이 만료되었거나 세션이 없습니다.", flush=True)
@@ -252,15 +224,15 @@ def main():
                 html_path = fpath if fpath.endswith(".html") else fpath[:-3] + ".html"
                 rel_path = os.path.relpath(html_path, BASE_DIR).replace("\\", "/")
                 
-                title = copy_wp_post_via_server(viewer_page, server_port, rel_path)
+                title, html_content = get_wp_post_data_via_server(viewer_page, server_port, rel_path)
                 
                 print(f"\n[{i}/{len(files_to_upload)}] {os.path.basename(fpath)}", flush=True)
-                ok = upload_post_to_wordpress(page, args.site, title, mode=args.mode)
+                ok = upload_post_to_wordpress(page, args.site, title, html_content, mode=args.mode)
                 if ok:
                     success_count += 1
                 
                 if i < len(files_to_upload):
-                    delay = 4 if args.mode == "publish" else 2
+                    delay = 3 if args.mode == "publish" else 1.5
                     print(f"  ⏳ 다음 글 등록 대기 중 ({delay}초)...", flush=True)
                     time.sleep(delay)
 
