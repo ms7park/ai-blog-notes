@@ -4,8 +4,9 @@
 네이버 블로그 스마트에디터 ONE 자동 업로더 (tools/upload_naver_playwright.py)
 
 Playwright의 저장된 브라우저 세션(.browser_session/naver/state.json)을 사용하여
-오늘 작성된 네이버 블로그 포스트를 스마트에디터 ONE에 주입하고
-임시저장(Draft, 권장) 또는 정식 발행(Publish)합니다.
+오늘 작성된 네이버 블로그 포스트를 로컬 뷰어의 '에디터 서식복사(#copyNaverBtn)' 기능을 통해
+초록 요약박스, 소제목, 표, 볼드 서식을 클립보드에 복사한 뒤,
+스마트에디터 ONE에 Cmd+V로 깔끔하게 붙여넣고 정식 발행(PUBLISH)합니다.
 """
 
 import os
@@ -22,40 +23,31 @@ SESSION_DIR = os.path.join(BASE_DIR, ".browser_session", "naver")
 STATE_FILE = os.path.join(SESSION_DIR, "state.json")
 POSTS_DIR = os.path.join(BASE_DIR, "blog", "naver", "posts")
 
-def extract_post_data(file_path):
-    """파일 경로(.md 또는 .html)에서 제목과 본문 문단 목록을 추출"""
-    md_path = file_path if file_path.endswith(".md") else file_path[:-5] + ".md"
-    
-    if os.path.exists(md_path):
-        with open(md_path, "r", encoding="utf-8") as f:
-            lines = [line.rstrip() for line in f]
-        
-        title = "네이버 블로그 포스팅"
-        body_lines = []
-        in_body = False
-        
-        for line in lines:
-            if not in_body:
-                if line.startswith("# "):
-                    title = line[2:].strip()
-                    in_body = True
-            else:
-                body_lines.append(line)
-        
-        return title, body_lines
-    
-    with open(file_path, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    m_title = re.search(r'<title>([^<]+)</title>', content)
-    title = m_title.group(1).strip() if m_title else "네이버 블로그 포스팅"
-    
-    m_body = re.search(r'<div class="article-body"[^>]*>([\s\S]*?)</div>\s*<div class="action-footer">', content)
-    body_raw = m_body.group(1) if m_body else content
-    clean_text = re.sub(r'<[^>]+>', '', body_raw)
-    body_lines = [l.strip() for l in clean_text.splitlines() if l.strip()]
-    
-    return title, body_lines
+def copy_naver_post_via_viewer(viewer_page, html_path):
+    """
+    로컬 네이버 HTML 뷰어를 열고 '네이버 서식 복사' 버튼(#copyNaverBtn)을 클릭하여
+    클립보드에 초록 요약박스, 소제목, 볼드, 줄간격 서식을 복사하고 제목 반환
+    """
+    file_url = f"file://{os.path.abspath(html_path)}"
+    viewer_page.goto(file_url, wait_until="domcontentloaded")
+    time.sleep(0.5)
+
+    title = viewer_page.evaluate("""() => {
+        const titleEl = document.querySelector('.post-title, #postArticle h1, article h1');
+        if (titleEl) return titleEl.innerText.trim();
+        const parts = document.title.split('|');
+        return parts.length > 1 ? parts.slice(1).join('|').trim() : document.title.trim();
+    }""")
+
+    try:
+        copy_btn = viewer_page.locator("#copyNaverBtn").first
+        copy_btn.click()
+        time.sleep(0.5)
+        print("  📋 [에디터 서식 복사] 버튼 클릭 완료 (초록 요약박스·소제목·볼드 서식 클립보드 복사)", flush=True)
+    except Exception as e:
+        print(f"  ⚠️ 서식 복사 버튼 클릭 오류: {e}", flush=True)
+
+    return title.strip()
 
 def dismiss_popups(frame):
     """작성 중인 글 이어쓰기 팝업 및 도움말 팝업을 안전하게 닫기"""
@@ -86,9 +78,9 @@ def dismiss_popups(frame):
     except Exception:
         pass
 
-def upload_post_to_naver(page, title, body_lines, mode="draft"):
-    """스마트에디터 ONE에 접속하여 제목과 본문을 주입하고 임시저장/발행"""
-    print(f"\n📝 포스팅 작업: [{title[:35]}...]", flush=True)
+def upload_post_to_naver(page, title, mode="publish"):
+    """스마트에디터 ONE에 접속하여 제목 입력 및 클립보드 서식(Cmd+V) 붙여넣기 후 정식 발행"""
+    print(f"\n📝 네이버 포스팅 작업: [{title[:35]}...]", flush=True)
     
     # 1. 스마트에디터 ONE 진입
     page.goto("https://blog.naver.com/GoBlogWrite.naver")
@@ -104,40 +96,32 @@ def upload_post_to_naver(page, title, body_lines, mode="draft"):
     print("  ✍️ 제목 입력 중...", flush=True)
     try:
         title_el = frame.locator('.se-documentTitle .se-text-paragraph').first
-        title_el.click(timeout=3000)
+        title_el.wait_for(state="visible", timeout=6000)
+        title_el.click()
         time.sleep(0.2)
-        page.keyboard.type(title, delay=3)
-        time.sleep(0.3)
+        page.keyboard.press("Meta+A")
+        page.keyboard.press("Backspace")
+        page.keyboard.insert_text(title)
+        time.sleep(0.4)
+        print("  ✅ 제목 입력 완료", flush=True)
     except Exception as e:
         print(f"  ⚠️ 제목 입력 오류: {e}", flush=True)
         return False
 
-    # 5. 본문 입력
-    print(f"  📄 본문 입력 중 (총 {len(body_lines)}개 라인)...", flush=True)
+    # 5. 본문 에디터 서식 붙여넣기 (Meta+v)
+    print("  📄 에디터 서식 붙여넣기(Cmd+V) 실행 중...", flush=True)
     try:
         body_el = frame.locator('.se-main-container .se-text-paragraph, .se-content .se-text-paragraph').first
-        body_el.click(timeout=3000)
-        time.sleep(0.2)
-        
-        for line in body_lines:
-            if not line:
-                page.keyboard.press("Enter")
-            else:
-                clean_line = line
-                if clean_line.startswith("## "):
-                    clean_line = clean_line[3:]
-                elif clean_line.startswith("### "):
-                    clean_line = clean_line[4:]
-                elif clean_line.startswith("> "):
-                    clean_line = clean_line[2:]
-                
-                page.keyboard.type(clean_line, delay=1)
-                page.keyboard.press("Enter")
-        
+        body_el.wait_for(state="visible", timeout=6000)
+        body_el.click()
+        time.sleep(0.4)
+        page.keyboard.press("Meta+v")
+        time.sleep(2)
+        page.keyboard.press("Enter")
         time.sleep(0.5)
-        print("  ✅ 본문 입력 완료", flush=True)
+        print("  ✅ 본문 서식(요약박스/소제목/표) 붙여넣기 완료", flush=True)
     except Exception as e:
-        print(f"  ⚠️ 본문 입력 오류: {e}", flush=True)
+        print(f"  ⚠️ 본문 붙여넣기 오류: {e}", flush=True)
         return False
 
     # 6. 모드에 따른 저장 (draft: 임시저장, publish: 정식발행)
@@ -167,7 +151,7 @@ def upload_post_to_naver(page, title, body_lines, mode="draft"):
             # 2. 발행 설정 패널 내의 최종 초록색 [발행] 확인 버튼 클릭
             final_btn = frame.locator('button[data-testid="seOnePublishBtn"]').first
             final_btn.click()
-            time.sleep(5)
+            time.sleep(4)
             print("  🎉 [발행 성공] 네이버 블로그에 포스팅이 실제 정식 발행되었습니다!", flush=True)
             return True
         except Exception as e:
@@ -176,7 +160,7 @@ def upload_post_to_naver(page, title, body_lines, mode="draft"):
 
 def main():
     parser = argparse.ArgumentParser(description="네이버 블로그 Playwright 자동 등록 도구")
-    parser.add_argument("--single", type=int, default=None, help="등록할 특정 포스트 번호 (예: 1이면 2026-11-21.md)")
+    parser.add_argument("--single", type=int, default=None, help="등록할 특정 포스트 번호 (예: 1이면 2026-11-21.html)")
     parser.add_argument("--all", action="store_true", help="오늘 작성된 모든 포스트 등록")
     parser.add_argument("--date", type=str, default=None, help="대상 날짜 (기본: 오늘)")
     parser.add_argument("--mode", choices=["draft", "publish"], default="publish", help="저장 모드 (draft: 임시저장, publish: 정식발행 - 기본: publish)")
@@ -195,28 +179,36 @@ def main():
         print("먼저 `./scripts/upload-naver.sh --login`을 실행하여 1회 로그인을 완료해 주세요.", flush=True)
         sys.exit(1)
 
+    def sort_key(path):
+        m = re.search(r'(\d{4}-\d{2}-\d{2})(?:-(\d+))?\.', path)
+        if m:
+            date_part = m.group(1)
+            num = int(m.group(2)) if m.group(2) else 1
+            return (date_part, num)
+        return (path, 0)
+
     if args.single is not None:
         idx_suffix = "" if args.single == 1 else f"-{args.single}"
-        target_file = os.path.join(target_dir, f"{today_str}{idx_suffix}.md")
+        target_file = os.path.join(target_dir, f"{today_str}{idx_suffix}.html")
         if not os.path.exists(target_file):
-            target_file = os.path.join(target_dir, f"{today_str}{idx_suffix}.html")
+            target_file = os.path.join(target_dir, f"{today_str}{idx_suffix}.md")
         if not os.path.exists(target_file):
             print(f"❌ 대상 파일이 존재하지 않습니다: {target_file}", flush=True)
             sys.exit(1)
         files_to_upload = [target_file]
     else:
-        pattern = os.path.join(target_dir, f"{today_str}*.md")
-        all_today = sorted(glob.glob(pattern), key=lambda x: (len(x), x))
+        pattern_html = os.path.join(target_dir, f"{today_str}*.html")
+        all_today = sorted(glob.glob(pattern_html), key=sort_key)
         if not all_today:
-            pattern_html = os.path.join(target_dir, f"{today_str}*.html")
-            all_today = sorted(glob.glob(pattern_html), key=lambda x: (len(x), x))
+            pattern_md = os.path.join(target_dir, f"{today_str}*.md")
+            all_today = sorted(glob.glob(pattern_md), key=sort_key)
         if not all_today:
             print(f"❌ 오늘({today_str}) 작성된 네이버 포스트가 없습니다.", flush=True)
             sys.exit(1)
         files_to_upload = all_today
 
     print("==========================================================", flush=True)
-    print(f" 🚀 네이버 블로그 자동 등록기 (대상: {len(files_to_upload)}편, 모드: {args.mode.upper()})", flush=True)
+    print(f" 🚀 네이버 블로그 서식복사 자동 등록기 (대상: {len(files_to_upload)}편, 모드: {args.mode.upper()})", flush=True)
     print("==========================================================", flush=True)
 
     with sync_playwright() as p:
@@ -230,9 +222,11 @@ def main():
 
         context = browser.new_context(
             storage_state=STATE_FILE,
-            viewport={"width": 1280, "height": 900}
+            viewport={"width": 1280, "height": 900},
+            permissions=["clipboard-read", "clipboard-write"]
         )
 
+        viewer_page = context.new_page()
         page = context.new_page()
 
         print("🔍 네이버 로그인 상태 확인 중...", flush=True)
@@ -249,9 +243,15 @@ def main():
 
         success_count = 0
         for i, fpath in enumerate(files_to_upload, 1):
-            title, body_lines = extract_post_data(fpath)
+            html_path = fpath if fpath.endswith(".html") else fpath[:-3] + ".html"
+            if os.path.exists(html_path):
+                title = copy_naver_post_via_viewer(viewer_page, html_path)
+            else:
+                from tools.upload_tistory_playwright import extract_title_and_body
+                title, _ = extract_title_and_body(fpath)
+            
             print(f"\n[{i}/{len(files_to_upload)}] {os.path.basename(fpath)}", flush=True)
-            ok = upload_post_to_naver(page, title, body_lines, mode=args.mode)
+            ok = upload_post_to_naver(page, title, mode=args.mode)
             if ok:
                 success_count += 1
             
