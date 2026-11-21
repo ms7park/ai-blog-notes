@@ -137,7 +137,24 @@ python3 tools/daily_wordpress_batch.py --force           # 워드프레스만 �
 
 Playwright 브라우저 자동화 엔진을 통해 로컬 뷰어의 **에디터 서식복사 기능**을 호출하여, 마크다운 기호(`**`, `---` 등) 없이 **초록/파랑 요약 콜아웃 박스, 포인트 바 소제목(▍), 비교표(Table), 볼드 서식**이 완벽히 유지된 상태로 **즉시 정식 발행(PUBLISH)**됩니다.
 
-#### 1단계: 최초 1회 브라우저 로그인 세션 생성 (영구 저장)
+#### 🌟 [초강력 추천] 단 1번의 명령어로 3대 플랫폼 전체 자동 발행 (All-in-One)
+로그인 세션 확인부터 네이버, 티스토리, 워드프레스 순차 정식 발행까지 **단 한 줄의 명령어**로 처리됩니다.
+```bash
+# 🚀 3대 플랫폼 오늘 작성된 글 전체 즉시 정식 발행 (원클릭 끝!)
+./scripts/upload-all.sh
+
+# 🔐 3대 플랫폼 로그인 세션 상태 일괄 점검
+./scripts/upload-all.sh --login
+
+# 🧪 3대 플랫폼 1번 글 단건 시험 발행 (정상 동작 테스트)
+./scripts/upload-all.sh --test
+```
+
+---
+
+#### 📌 플랫폼별 개별 실행 명령어 (필요 시)
+
+##### 1단계: 최초 1회 브라우저 로그인 세션 생성 (영구 저장)
 ```bash
 ./scripts/upload-naver.sh --login        # 네이버 1회 브라우저 로그인 (state.json 저장)
 ./scripts/upload-tistory.sh --login      # 티스토리 1회 카카오 계정 로그인
@@ -145,7 +162,7 @@ Playwright 브라우저 자동화 엔진을 통해 로컬 뷰어의 **에디터 
 ```
 > 세션 파일(`.browser_session/*/state.json`)이 한 번 생성되면 이후에는 로그인 창 없이 백그라운드에서 바로 자동 글쓰기 및 발행이 진행됩니다.
 
-#### 2단계: 오늘 작성된 글 전체 즉시 정식 발행 (기본 모드: PUBLISH)
+##### 2단계: 오늘 작성된 글 전체 즉시 정식 발행 (기본 모드: PUBLISH)
 ```bash
 # 🟢 네이버 블로그 전체 정식 발행 (주중 15편 / 주말 30편)
 ./scripts/upload-naver.sh --publish
@@ -157,7 +174,7 @@ Playwright 브라우저 자동화 엔진을 통해 로컬 뷰어의 **에디터 
 ./scripts/upload-wordpress.sh --publish
 ```
 
-#### 3단계: 단건 시험 발행 및 기타 옵션
+##### 3단계: 단건 시험 발행 및 기타 옵션
 ```bash
 # 1번 포스트만 1편 시험 정식 발행
 ./scripts/upload-naver.sh --test
