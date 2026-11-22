@@ -47,3 +47,5 @@ Gemini AI는 사용자와 1:1로 페어 워킹하며 다음 역할을 수행합�
    - **네이버 블로그**: **하루 1~2편(최대 3편) 엄선 발행** (네이버 어뷰징 탐지 및 계정 보호조치 방지를 위해 단시간 대량 발행 절대 금지. 1순위: `./scripts/copy-naver.sh` 1-Click 서식 복사 수동 등록 / 2순위: `./scripts/upload-naver.sh` 안티디텍트 안전 모드 1편 등록)
    - **티스토리**: 주중 및 주말 매일 15편 (Playwright 자동 발행 유지)
    - **워드프레스**: 주중 15편, 주말(토/일) 30편 (Playwright 자동 발행 유지)
+6. **Git 푸시 및 Production(main) 배포 동기화 원칙**:
+   - 원격 저장소(`origin`)로 푸시할 때는 항상 개발 브랜치(`develop`)와 프로덕션 배포 브랜치(`main`)에 동시 푸시(`git push origin develop main` 또는 `git push origin develop:main`)하여 Vercel 및 라이브 운영 사이트가 즉각 최신화되도록 동기화합니다.

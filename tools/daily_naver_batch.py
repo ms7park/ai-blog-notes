@@ -3390,12 +3390,20 @@ def git_commit_and_push(today_str, title):
         branch_res = subprocess.run(["git", "branch", "--show-current"], cwd=BASE_DIR, capture_output=True, text=True)
         current_branch = branch_res.stdout.strip() or "develop"
 
-        # 5. 원격 푸시
+        # 5. 원격 푸시 (develop 및 production 배포용 main 동시 푸시)
         push_res = subprocess.run(["git", "push", "origin", current_branch], cwd=BASE_DIR, capture_output=True, text=True)
         if push_res.returncode == 0:
             log(f"🚀 Git 원격 저장소 푸시 완료 (origin/{current_branch})")
         else:
-            log(f"⚠️ git push 실패: {push_res.stderr.strip()}")
+            log(f"⚠️ git push ({current_branch}) 실패: {push_res.stderr.strip()}")
+
+        # production 배포를 위해 main 브랜치에도 동시 푸시
+        if current_branch != "main":
+            push_main_res = subprocess.run(["git", "push", "origin", f"{current_branch}:main"], cwd=BASE_DIR, capture_output=True, text=True)
+            if push_main_res.returncode == 0:
+                log("🚀 Production 배포용 main 브랜치 동시 푸시 완료 (origin/main)")
+            else:
+                log(f"⚠️ main 브랜치 푸시 실패: {push_main_res.stderr.strip()}")
     except Exception as e:
         log(f"⚠️ Git 자동 커밋 및 푸시 중 오류 발생: {e}")
 
