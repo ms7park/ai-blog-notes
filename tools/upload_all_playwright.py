@@ -69,7 +69,7 @@ def check_and_ensure_sessions(selected_platforms, force_login=False):
 
     return all_ready
 
-def run_uploads(selected_platforms, mode="publish", is_test=False, date_str=None, single_num=None):
+def run_uploads(selected_platforms, mode="publish", is_test=False, date_str=None, single_num=None, naver_reserve=False):
     """선택된 플랫폼들에 순차적으로 자동 포스팅 실행"""
     print("\n==========================================================", flush=True)
     mode_str = "1편 시험 발행(TEST)" if is_test else f"전체 즉시 정식 발행({mode.upper()})"
@@ -83,11 +83,24 @@ def run_uploads(selected_platforms, mode="publish", is_test=False, date_str=None
         print(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", flush=True)
 
         cmd = [sys.executable, "-u", p["upload_script"], f"--mode={mode}"]
-        if is_test or single_num:
-            num = single_num if single_num else 1
-            cmd.append(f"--single={num}")
+        
+        # 플랫폼별 안전 가드레일 분기
+        if p["id"] == "naver":
+            # 네이버 블로그: 보호조치(아이디 잠금) 방지를 위해 기본 1편 안전 등록
+            if is_test or single_num:
+                num = single_num if single_num else 1
+                cmd.append(f"--single={num}")
+            else:
+                cmd.append("--limit=1")
+            if naver_reserve:
+                cmd.append("--reserve")
         else:
-            cmd.append("--all")
+            # 티스토리 / 워드프레스: 전체 발행 허용
+            if is_test or single_num:
+                num = single_num if single_num else 1
+                cmd.append(f"--single={num}")
+            else:
+                cmd.append("--all")
 
         if date_str:
             cmd.append(f"--date={date_str}")
@@ -128,17 +141,21 @@ def main():
     parser.add_argument("--single", type=int, default=None, help="특정 포스트 번호만 등록")
     parser.add_argument("--date", type=str, default=None, help="대상 날짜 (기본: 오늘)")
     parser.add_argument("--platforms", type=str, default="all", help="대상 플랫폼 (예: all, naver, tistory, wordpress)")
+    parser.add_argument("--skip-naver", action="store_true", help="네이버 블로그 등록 건너뛰기 (티스토리·워드프레스만 등록)")
+    parser.add_argument("--naver-reserve", action="store_true", help="네이버 블로그 등록 시 예약 발행 모드 적용")
 
     args = parser.parse_args()
 
     # 대상 플랫폼 필터링
     if args.platforms == "all":
-        selected = PLATFORMS
+        selected = [p for p in PLATFORMS if not (args.skip_naver and p["id"] == "naver")] if args.skip_naver else PLATFORMS
     else:
         target_ids = [p.strip().lower() for p in args.platforms.split(",")]
         selected = [p for p in PLATFORMS if p["id"] in target_ids]
+        if args.skip_naver:
+            selected = [p for p in selected if p["id"] != "naver"]
         if not selected:
-            print(f"❌ 유효하지 않은 플랫폼 지정: {args.platforms}", flush=True)
+            print(f"❌ 유효하지 않은 플랫폼 지정 또는 대상 플랫폼이 비어있습니다: {args.platforms}", flush=True)
             sys.exit(1)
 
     # 1. 로그인 점검 모드
@@ -157,7 +174,7 @@ def main():
     is_test = args.test
 
     # 4. 전체 자동 업로드 실행
-    ok = run_uploads(selected, mode=mode, is_test=is_test, date_str=args.date, single_num=args.single)
+    ok = run_uploads(selected, mode=mode, is_test=is_test, date_str=args.date, single_num=args.single, naver_reserve=args.naver_reserve)
     if not ok:
         sys.exit(1)
 
