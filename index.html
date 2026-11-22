@@ -712,7 +712,8 @@
 
     /* Automation Command Hub */
     .cmd-hub-section {
-      margin-bottom: 36px;
+      margin-top: 48px;
+      margin-bottom: 24px;
     }
     .cmd-grid {
       display: grid;
@@ -855,7 +856,6 @@
         <div class="brand-title">AI Blog Notes</div>
       </div>
       <div class="header-links">
-        <a href="#cmd-hub" class="header-link" style="background: #fef3c7; color: #92400e; border-color: #fde68a; font-weight: 700;">⚡ 자동화 명령어</a>
         <a href="#topic-roadmap" class="header-link" style="background: #eef2ff; color: #4338ca; border-color: #c7d2fe; font-weight: 700;">🎯 주제 확장 로드맵</a>
         <a href="docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
         <a href="blog/naver/index.html" class="header-link header-link-naver">🟢 네이버 블로그 포털</a>
@@ -876,181 +876,6 @@
         경험을 자산으로, AI를 파트너로 삼아 매일 안정적인 노후 수입 파이프라인을 구축합니다.
         현재 운영 중인 네이버 블로그를 시작으로 향후 티스토리(애드센스)와 워드프레스(독립 사이트)까지 단계적으로 확장합니다.
       </p>
-    </section>
-
-    <!-- Automation Command Hub Section -->
-    <section class="cmd-hub-section" id="cmd-hub">
-      <div class="section-header" style="margin-bottom: 14px;">
-        <div class="section-title">
-          ⚡ 블로그 자동화 & 1-Click 실행 센터 (Terminal Commands)
-        </div>
-        <div class="section-subtitle">새벽배치 crontab 및 네이버 계정 보호(방안 A/방안 C) 통합 명령어</div>
-      </div>
-
-      <div class="cmd-grid">
-
-        <!-- Command Card 1: Crontab & Midnight Batch -->
-        <div class="cmd-card batch-card">
-          <div>
-            <div class="cmd-card-header">
-              <div class="cmd-title-wrap">
-                <span class="cmd-badge cmd-badge-indigo">AUTO BATCH</span>
-                <div class="cmd-card-title">🕒 새벽배치 crontab 설정</div>
-              </div>
-              <span class="status-badge badge-active">매일 00:00 자정</span>
-            </div>
-            <p class="cmd-desc">
-              매일 자정 네이버, 티스토리(15편), 워드프레스(주중15/주말30편) 원고 및 대시보드를 자동 생성하고 Git에 백업합니다.
-            </p>
-
-            <!-- Option 1: 1-Click Auto Installer -->
-            <div class="cmd-box">
-              <div class="cmd-box-label">
-                <span>🌟 [추천] 원클릭 스케줄러 등록 (launchd+cron)</span>
-                <span style="color: #6ee7b7; font-size: 10px;">1회 등록</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code">./scripts/install-launchd.sh</span>
-                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/install-launchd.sh', this)">복사</button>
-              </div>
-            </div>
-
-            <!-- Option 2: Manual Crontab Entry -->
-            <div class="cmd-box">
-              <div class="cmd-box-label">
-                <span>📋 [수동] crontab 직접 등록 (<code style="background:none; color:#cbd5e1;">crontab -e</code>)</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code" style="font-size: 11px;">0 0 * * * /Users/user/CursorProjects/ai-blog-notes/scripts/daily-naver-blog.sh &gt;&gt; /Users/user/CursorProjects/ai-blog-notes/logs/launchd.out 2&gt;&amp;1</span>
-                <button type="button" class="cmd-copy-btn" onclick="copyCommand('0 0 * * * /Users/user/CursorProjects/ai-blog-notes/scripts/daily-naver-blog.sh &gt;&gt; /Users/user/CursorProjects/ai-blog-notes/logs/launchd.out 2&gt;&amp;1', this)">복사</button>
-              </div>
-            </div>
-
-            <!-- Option 3: Immediate Batch -->
-            <div class="cmd-box">
-              <div class="cmd-box-label">
-                <span>🧪 [테스트] 3대 플랫폼 전체 원고 수동 즉시 생성</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code">./scripts/write-post.sh --batch</span>
-                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/write-post.sh --batch', this)">복사</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="cmd-notes">
-            💡 <strong>등록 확인</strong>: 터미널에서 <code>crontab -l</code>로 확인 가능
-          </div>
-        </div>
-
-        <!-- Command Card 2: Option A - Safe 1-Click Copy for Naver -->
-        <div class="cmd-card naver-safe-card">
-          <div>
-            <div class="cmd-card-header">
-              <div class="cmd-title-wrap">
-                <span class="cmd-badge cmd-badge-naver">방안 A · 100% 안전</span>
-                <div class="cmd-card-title">🛡️ 네이버 1-Click 서식 복사</div>
-              </div>
-              <span class="status-badge badge-active" style="background: #e8f9f0; color: #02b14f;">보호조치 0%</span>
-            </div>
-            <p class="cmd-desc">
-              사람이 평소 쓰던 일반 브라우저에서 <strong>30초 만에 서식 복사 및 글쓰기 창 오픈</strong>! 네이버 봇 탐지를 100% 원천 차단합니다.
-            </p>
-
-            <!-- Option A Command -->
-            <div class="cmd-box" style="border: 1px solid rgba(3, 199, 90, 0.4); background: #042416;">
-              <div class="cmd-box-label">
-                <span style="color: #6ee7b7; font-weight: 800;">🌟 [초강력 추천] 네이버 1번 포스트 뷰어 &amp; 글쓰기 즉시 오픈</span>
-                <span style="background: #02b14f; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 10px;">가장 안전</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code cmd-code-green" style="font-size: 13.5px;">./scripts/copy-naver.sh</span>
-                <button type="button" class="cmd-copy-btn" style="background: #02b14f; border-color: #03c75a;" onclick="copyCommand('./scripts/copy-naver.sh', this)">복사</button>
-              </div>
-            </div>
-
-            <!-- Option A Post 2 -->
-            <div class="cmd-box">
-              <div class="cmd-box-label">
-                <span>📄 특정 번호(예: 2번 글) 열람 및 서식 복사</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code">./scripts/copy-naver.sh 2</span>
-                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/copy-naver.sh 2', this)">복사</button>
-              </div>
-            </div>
-
-            <!-- Option A Manual Tip -->
-            <div class="cmd-box">
-              <div class="cmd-box-label">
-                <span>✍️ 네이버 스마트에디터 ONE 글쓰기 직접 열기</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code" style="font-size: 11px;">open https://blog.naver.com/GoBlogWrite.naver</span>
-                <button type="button" class="cmd-copy-btn" onclick="copyCommand('open https://blog.naver.com/GoBlogWrite.naver', this)">복사</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="cmd-notes">
-            💡 <strong>방법</strong>: 뷰어 상단 [서식 복사] 클릭 ➔ 네이버 본문에 <code>Cmd+V</code> ➔ 발행 완료!
-          </div>
-        </div>
-
-        <!-- Command Card 3: Option C - Playwright Anti-Detect All-in-One -->
-        <div class="cmd-card upload-card">
-          <div>
-            <div class="cmd-card-header">
-              <div class="cmd-title-wrap">
-                <span class="cmd-badge cmd-badge-emerald">방안 C · 안티디텍트</span>
-                <div class="cmd-card-title">🚀 3대 블로그 Playwright 자동 등록</div>
-              </div>
-              <span class="status-badge badge-active">정식 발행(PUBLISH)</span>
-            </div>
-            <p class="cmd-desc">
-              실제 브라우저 화면 표시(Headless 해제) 및 타이핑 지연, 네이버 1편 안전 가드레일이 탑재된 자동 등록기입니다.
-            </p>
-
-            <!-- upload-all.sh -->
-            <div class="cmd-box">
-              <div class="cmd-box-label">
-                <span style="color: #93c5fd; font-weight: 700;">🚀 3대 플랫폼 동시 등록 (네이버 1편 안전제한 + 티스토리/WP 전체)</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code">./scripts/upload-all.sh</span>
-                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/upload-all.sh', this)">복사</button>
-              </div>
-            </div>
-
-            <!-- skip naver -->
-            <div class="cmd-box">
-              <div class="cmd-box-label">
-                <span style="color: #fef08a;">🛡️ [계정 보호 모드] 네이버 제외, 티스토리·WP만 자동 발행</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code" style="color: #fef08a;">./scripts/upload-all.sh --skip-naver</span>
-                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/upload-all.sh --skip-naver', this)">복사</button>
-              </div>
-            </div>
-
-            <!-- reserve naver -->
-            <div class="cmd-box">
-              <div class="cmd-box-label">
-                <span>⏰ 네이버 포스트 안티디텍트 예약 발행(Schedule)</span>
-              </div>
-              <div class="cmd-code-row">
-                <span class="cmd-code">./scripts/upload-naver.sh --reserve</span>
-                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/upload-naver.sh --reserve', this)">복사</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="cmd-notes">
-            💡 네이버는 1회 1편 안전 제한되며, 네이버 보호조치가 풀리기 전까지는 <code>--skip-naver</code>를 추천합니다.
-          </div>
-        </div>
-
-      </div>
     </section>
 
     <!-- Section 1: Multi-Platform Channels -->
@@ -1708,6 +1533,181 @@
           <div class="doc-card-title">실전 프롬프트 모음</div>
           <div class="doc-card-desc">제목 후킹, 본문 확장, SEO 즉시 복사 프롬프트</div>
         </a>
+      </div>
+    </section>
+
+    <!-- Automation Command Hub Section (Moved to Bottom) -->
+    <section class="cmd-hub-section" id="cmd-hub">
+      <div class="section-header" style="margin-bottom: 14px;">
+        <div class="section-title">
+          ⚡ 블로그 자동화 & 1-Click 실행 센터 (Terminal Commands)
+        </div>
+        <div class="section-subtitle">새벽배치 crontab 및 네이버 계정 보호(방안 A/방안 C) 통합 명령어</div>
+      </div>
+
+      <div class="cmd-grid">
+
+        <!-- Command Card 1: Crontab & Midnight Batch -->
+        <div class="cmd-card batch-card">
+          <div>
+            <div class="cmd-card-header">
+              <div class="cmd-title-wrap">
+                <span class="cmd-badge cmd-badge-indigo">AUTO BATCH</span>
+                <div class="cmd-card-title">🕒 새벽배치 crontab 설정</div>
+              </div>
+              <span class="status-badge badge-active">매일 00:00 자정</span>
+            </div>
+            <p class="cmd-desc">
+              매일 자정 네이버, 티스토리(15편), 워드프레스(주중15/주말30편) 원고 및 대시보드를 자동 생성하고 Git에 백업합니다.
+            </p>
+
+            <!-- Option 1: 1-Click Auto Installer -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>🌟 [추천] 원클릭 스케줄러 등록 (launchd+cron)</span>
+                <span style="color: #6ee7b7; font-size: 10px;">1회 등록</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/install-launchd.sh</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/install-launchd.sh', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- Option 2: Manual Crontab Entry -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>📋 [수동] crontab 직접 등록 (<code style="background:none; color:#cbd5e1;">crontab -e</code>)</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code" style="font-size: 11px;">0 0 * * * /Users/user/CursorProjects/ai-blog-notes/scripts/daily-naver-blog.sh &gt;&gt; /Users/user/CursorProjects/ai-blog-notes/logs/launchd.out 2&gt;&amp;1</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('0 0 * * * /Users/user/CursorProjects/ai-blog-notes/scripts/daily-naver-blog.sh &gt;&gt; /Users/user/CursorProjects/ai-blog-notes/logs/launchd.out 2&gt;&amp;1', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- Option 3: Immediate Batch -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>🧪 [테스트] 3대 플랫폼 전체 원고 수동 즉시 생성</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/write-post.sh --batch</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/write-post.sh --batch', this)">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cmd-notes">
+            💡 <strong>등록 확인</strong>: 터미널에서 <code>crontab -l</code>로 확인 가능
+          </div>
+        </div>
+
+        <!-- Command Card 2: Option A - Safe 1-Click Copy for Naver -->
+        <div class="cmd-card naver-safe-card">
+          <div>
+            <div class="cmd-card-header">
+              <div class="cmd-title-wrap">
+                <span class="cmd-badge cmd-badge-naver">방안 A · 100% 안전</span>
+                <div class="cmd-card-title">🛡️ 네이버 1-Click 서식 복사</div>
+              </div>
+              <span class="status-badge badge-active" style="background: #e8f9f0; color: #02b14f;">보호조치 0%</span>
+            </div>
+            <p class="cmd-desc">
+              사람이 평소 쓰던 일반 브라우저에서 <strong>30초 만에 서식 복사 및 글쓰기 창 오픈</strong>! 네이버 봇 탐지를 100% 원천 차단합니다.
+            </p>
+
+            <!-- Option A Command -->
+            <div class="cmd-box" style="border: 1px solid rgba(3, 199, 90, 0.4); background: #042416;">
+              <div class="cmd-box-label">
+                <span style="color: #6ee7b7; font-weight: 800;">🌟 [초강력 추천] 네이버 1번 포스트 뷰어 &amp; 글쓰기 즉시 오픈</span>
+                <span style="background: #02b14f; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 10px;">가장 안전</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code cmd-code-green" style="font-size: 13.5px;">./scripts/copy-naver.sh</span>
+                <button type="button" class="cmd-copy-btn" style="background: #02b14f; border-color: #03c75a;" onclick="copyCommand('./scripts/copy-naver.sh', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- Option A Post 2 -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>📄 특정 번호(예: 2번 글) 열람 및 서식 복사</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/copy-naver.sh 2</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/copy-naver.sh 2', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- Option A Manual Tip -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>✍️ 네이버 스마트에디터 ONE 글쓰기 직접 열기</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code" style="font-size: 11px;">open https://blog.naver.com/GoBlogWrite.naver</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('open https://blog.naver.com/GoBlogWrite.naver', this)">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cmd-notes">
+            💡 <strong>방법</strong>: 뷰어 상단 [서식 복사] 클릭 ➔ 네이버 본문에 <code>Cmd+V</code> ➔ 발행 완료!
+          </div>
+        </div>
+
+        <!-- Command Card 3: Option C - Playwright Anti-Detect All-in-One -->
+        <div class="cmd-card upload-card">
+          <div>
+            <div class="cmd-card-header">
+              <div class="cmd-title-wrap">
+                <span class="cmd-badge cmd-badge-emerald">방안 C · 안티디텍트</span>
+                <div class="cmd-card-title">🚀 3대 블로그 Playwright 자동 등록</div>
+              </div>
+              <span class="status-badge badge-active">정식 발행(PUBLISH)</span>
+            </div>
+            <p class="cmd-desc">
+              실제 브라우저 화면 표시(Headless 해제) 및 타이핑 지연, 네이버 1편 안전 가드레일이 탑재된 자동 등록기입니다.
+            </p>
+
+            <!-- upload-all.sh -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span style="color: #93c5fd; font-weight: 700;">🚀 3대 플랫폼 동시 등록 (네이버 1편 안전제한 + 티스토리/WP 전체)</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/upload-all.sh</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/upload-all.sh', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- skip naver -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span style="color: #fef08a;">🛡️ [계정 보호 모드] 네이버 제외, 티스토리·WP만 자동 발행</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code" style="color: #fef08a;">./scripts/upload-all.sh --skip-naver</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/upload-all.sh --skip-naver', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- reserve naver -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>⏰ 네이버 포스트 안티디텍트 예약 발행(Schedule)</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/upload-naver.sh --reserve</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/upload-naver.sh --reserve', this)">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cmd-notes">
+            💡 네이버는 1회 1편 안전 제한되며, 네이버 보호조치가 풀리기 전까지는 <code>--skip-naver</code>를 추천합니다.
+          </div>
+        </div>
+
       </div>
     </section>
 
