@@ -709,6 +709,136 @@
     .top10-table tr:hover {
       background: #fdfefe;
     }
+
+    /* Automation Command Hub */
+    .cmd-hub-section {
+      margin-bottom: 36px;
+    }
+    .cmd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 600px) {
+      .cmd-grid { grid-template-columns: 1fr; }
+    }
+    .cmd-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cmd-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .cmd-card.batch-card {
+      border-top: 4px solid #6366f1;
+    }
+    .cmd-card.upload-card {
+      border-top: 4px solid #059669;
+    }
+    .cmd-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .cmd-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cmd-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .cmd-badge-indigo { background: #e0e7ff; color: #4338ca; }
+    .cmd-badge-emerald { background: #d1fae5; color: #065f46; }
+    .cmd-card-title {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .cmd-desc {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+    .cmd-box {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .cmd-box-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cmd-code-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .cmd-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      color: #38bdf8;
+      word-break: break-all;
+      line-height: 1.45;
+    }
+    .cmd-code-green {
+      color: #34d399;
+      font-weight: 700;
+    }
+    .cmd-copy-btn {
+      background: rgba(255, 255, 255, 0.12);
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .cmd-copy-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
+    }
+    .cmd-copy-btn.copied {
+      background: #10b981;
+      border-color: #10b981;
+      color: #fff;
+    }
+    .cmd-notes {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+    .cmd-notes code {
+      background: #f1f5f9;
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: #0f172a;
+      font-family: monospace;
+    }
   </style>
 </head>
 <body>
@@ -721,6 +851,7 @@
         <div class="brand-title">AI Blog Notes</div>
       </div>
       <div class="header-links">
+        <a href="#cmd-hub" class="header-link" style="background: #fef3c7; color: #92400e; border-color: #fde68a; font-weight: 700;">⚡ 자동화 명령어</a>
         <a href="#topic-roadmap" class="header-link" style="background: #eef2ff; color: #4338ca; border-color: #c7d2fe; font-weight: 700;">🎯 주제 확장 로드맵</a>
         <a href="docs/index.html" class="header-link">📚 지침서 & 가이드 뷰어</a>
         <a href="blog/naver/index.html" class="header-link header-link-naver">🟢 네이버 블로그 포털</a>
@@ -741,6 +872,128 @@
         경험을 자산으로, AI를 파트너로 삼아 매일 안정적인 노후 수입 파이프라인을 구축합니다.
         현재 운영 중인 네이버 블로그를 시작으로 향후 티스토리(애드센스)와 워드프레스(독립 사이트)까지 단계적으로 확장합니다.
       </p>
+    </section>
+
+    <!-- Automation Command Hub Section -->
+    <section class="cmd-hub-section" id="cmd-hub">
+      <div class="section-header" style="margin-bottom: 14px;">
+        <div class="section-title">
+          ⚡ 블로그 자동화 & 1-Click 실행 센터 (Terminal Commands)
+        </div>
+        <div class="section-subtitle">새벽 00시 자동 생성 배치(crontab) 및 3대 플랫폼 즉시 정식 발행 명령어</div>
+      </div>
+
+      <div class="cmd-grid">
+
+        <!-- Command Card 1: Crontab & Midnight Batch -->
+        <div class="cmd-card batch-card">
+          <div>
+            <div class="cmd-card-header">
+              <div class="cmd-title-wrap">
+                <span class="cmd-badge cmd-badge-indigo">AUTO BATCH</span>
+                <div class="cmd-card-title">🕒 새벽배치 crontab 설정 (원고 자동 생성)</div>
+              </div>
+              <span class="status-badge badge-active">매일 00:00 자정</span>
+            </div>
+            <p class="cmd-desc">
+              매일 자정 네이버(주중 15/주말 30편), 티스토리(15편), 워드프레스(주중 15/주말 30편)의 글과 대시보드를 자동 생성하고 Git에 백업합니다.
+            </p>
+
+            <!-- Option 1: 1-Click Auto Installer -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>🌟 [추천] 원클릭 스케줄러 자동 등록 (launchd + crontab 이중 안전망)</span>
+                <span style="color: #6ee7b7; font-size: 10px;">1회 실행으로 끝</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/install-launchd.sh</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/install-launchd.sh', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- Option 2: Manual Crontab Entry -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>📋 [수동] crontab 직접 등록 (<code style="background:none; color:#cbd5e1; font-weight:700;">crontab -e</code> 실행 후 한 줄 추가)</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code" style="font-size: 11.5px;">0 0 * * * /Users/user/CursorProjects/ai-blog-notes/scripts/daily-naver-blog.sh &gt;&gt; /Users/user/CursorProjects/ai-blog-notes/logs/launchd.out 2&gt;&amp;1</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('0 0 * * * /Users/user/CursorProjects/ai-blog-notes/scripts/daily-naver-blog.sh &gt;&gt; /Users/user/CursorProjects/ai-blog-notes/logs/launchd.out 2&gt;&amp;1', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- Option 3: Manual Immediate Batch -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>🧪 [테스트] 지금 즉시 3대 플랫폼 전체 원고 수동 생성</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/write-post.sh --batch</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/write-post.sh --batch', this)">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cmd-notes">
+            💡 <strong>등록 확인</strong>: 터미널에서 <code>crontab -l</code> 입력 시 스케줄이 정상 출력되면 설정 완료입니다.
+          </div>
+        </div>
+
+        <!-- Command Card 2: 1-Click All-in-One Publish -->
+        <div class="cmd-card upload-card">
+          <div>
+            <div class="cmd-card-header">
+              <div class="cmd-title-wrap">
+                <span class="cmd-badge cmd-badge-emerald">1-CLICK PUBLISH</span>
+                <div class="cmd-card-title">🚀 3대 블로그 통합 자동 등록 (Playwright)</div>
+              </div>
+              <span class="status-badge badge-active">정식 발행(PUBLISH)</span>
+            </div>
+            <p class="cmd-desc">
+              에디터 서식복사 방식으로 마크다운 기호 없이 요약 박스·소제목 바·비교표 서식을 유지하여 3대 플랫폼에 즉시 정식 발행합니다.
+            </p>
+
+            <!-- Core Command: upload-all.sh -->
+            <div class="cmd-box" style="border: 1px solid rgba(52, 211, 153, 0.4); background: #062419;">
+              <div class="cmd-box-label">
+                <span style="color: #6ee7b7; font-weight: 800;">🚀 [핵심] 단 1번의 명령어로 3대 플랫폼 전체 정식 발행 (올인원)</span>
+                <span style="background: #059669; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 10px;">강력 추천</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code cmd-code-green" style="font-size: 14px;">./scripts/upload-all.sh</span>
+                <button type="button" class="cmd-copy-btn" style="background: #059669; border-color: #10b981;" onclick="copyCommand('./scripts/upload-all.sh', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- Option: Check Login Sessions -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>🔐 3대 플랫폼 로그인 세션 상태 일괄 점검</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/upload-all.sh --login</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/upload-all.sh --login', this)">복사</button>
+              </div>
+            </div>
+
+            <!-- Option: Single Test Post -->
+            <div class="cmd-box">
+              <div class="cmd-box-label">
+                <span>🧪 3대 플랫폼 1번 글 단건 시험 발행 (동작 테스트)</span>
+              </div>
+              <div class="cmd-code-row">
+                <span class="cmd-code">./scripts/upload-all.sh --test</span>
+                <button type="button" class="cmd-copy-btn" onclick="copyCommand('./scripts/upload-all.sh --test', this)">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cmd-notes">
+            💡 네이버·티스토리·워드프레스 세션이 영구 저장되어 있어 로그인 창 없이 백그라운드에서 순차 등록됩니다.
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <!-- Section 1: Multi-Platform Channels -->
@@ -1402,6 +1655,44 @@
     </section>
 
   </div>
+
+  <script>
+    function copyCommand(text, btn) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+
+      function onSuccess() {
+        var orig = btn.innerText;
+        btn.innerText = '✅ 복사됨!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.innerText = orig;
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+
+      function fallbackCopy() {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          onSuccess();
+        } catch (err) {
+          alert('복사에 실패했습니다. 수동으로 복사해 주세요: ' + text);
+        }
+        textArea.remove();
+      }
+    }
+  </script>
 
 </body>
 </html>
