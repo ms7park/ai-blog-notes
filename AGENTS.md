@@ -8,5 +8,5 @@ Gemini AI, Antigravity CLI (`agy`), Cursor, and all agent systems are granted fu
 - **Full Read Permission**: Permitted to inspect and read all code, assets, docs, and configurations.
 - **Full Write Permission**: Permitted to create, edit, update, delete, and refactor any file or subfolder autonomously.
 - **Full Command Execution Permission**: Permitted to execute shell/terminal commands (git operations, python scripts, analysis tools) freely and autonomously.
-- **Git Push & Production Deployment Synchronization**:
-  - Whenever pushing to `origin`, always push to both `develop` and `main` branches (`git push origin develop main` or `git push origin develop:main`) so Vercel / Production deployments are always up to date with the latest code.
+- **Git Push & Production Deployment Synchronization (Auto Commit & Push)**:
+  - Whenever files are created, modified, or updated, automatically commit and push to both `develop` and `main` branches (`git push origin develop main` or `git push origin develop:main`) without asking for separate confirmation, ensuring Vercel / Production deployments are always up to date with the latest code.
