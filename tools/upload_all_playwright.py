@@ -16,6 +16,7 @@
 
 import os
 import sys
+import json
 import time
 import argparse
 import subprocess
@@ -47,23 +48,52 @@ PLATFORMS = [
     },
 ]
 
+def is_session_healthy(platform):
+    """세션 파일이 유효한지(필수 인증 쿠키 존재 여부) 정밀 검사"""
+    session_file = platform["session_file"]
+    if not os.path.exists(session_file):
+        return False, "세션 파일 부재"
+    
+    try:
+        with open(session_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        cookies = data.get("cookies", [])
+        cookie_names = {c.get("name") for c in cookies}
+
+        if platform["id"] == "tistory":
+            if "TSSESSION" not in cookie_names:
+                return False, "카카오/티스토리 인증 토큰(TSSESSION) 만료"
+        elif platform["id"] == "naver":
+            if not ("NID_AUT" in cookie_names and "NID_SES" in cookie_names):
+                return False, "네이버 인증 토큰(NID_AUT/SES) 만료"
+        elif platform["id"] == "wordpress":
+            has_wp = any("wordpress_logged_in" in name for name in cookie_names)
+            if not has_wp:
+                return False, "워드프레스 인증 토큰(wordpress_logged_in) 만료"
+        return True, "유효함"
+    except Exception as e:
+        return False, f"세션 파일 파싱 오류 ({e})"
+
 def check_and_ensure_sessions(selected_platforms, force_login=False):
     """선택된 플랫폼들의 로그인 세션을 점검하고 필요 시 로그인 창 실행"""
     print("==========================================================", flush=True)
-    print(" 🔐 3대 블로그 로그인 세션 통합 점검", flush=True)
+    print(" 🔐 3대 블로그 로그인 세션 통합 점검 (정밀 검증)", flush=True)
     print("==========================================================", flush=True)
 
     all_ready = True
     for p in selected_platforms:
-        exists = os.path.exists(p["session_file"])
-        if force_login or not exists:
-            print(f"\n👉 [{p['name']}] 세션 {'재설정' if force_login else '생성'}이 필요합니다. 로그인 창을 엽니다...", flush=True)
+        is_healthy, reason = is_session_healthy(p)
+        if force_login or not is_healthy:
+            status_msg = "재설정 요청" if force_login else f"만료 감지 ({reason})"
+            print(f"\n👉 [{p['name']}] 세션 {status_msg} -> 브라우저 로그인 창을 엽니다...", flush=True)
             res = subprocess.run([sys.executable, "-u", p["login_script"]], cwd=BASE_DIR)
-            if res.returncode != 0 or not os.path.exists(p["session_file"]):
-                print(f"❌ [{p['name']}] 로그인 세션 생성 실패", flush=True)
+            
+            is_healthy_after, reason_after = is_session_healthy(p)
+            if res.returncode != 0 or not is_healthy_after:
+                print(f"❌ [{p['name']}] 로그인 세션 생성 실패 ({reason_after})", flush=True)
                 all_ready = False
             else:
-                print(f"✅ [{p['name']}] 로그인 세션 저장 완료!", flush=True)
+                print(f"✅ [{p['name']}] 로그인 세션 갱신 완료!", flush=True)
         else:
             print(f"✅ [{p['name']}] 기존 로그인 세션 유효함 ({os.path.basename(p['session_file'])})", flush=True)
 

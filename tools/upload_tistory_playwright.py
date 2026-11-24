@@ -14,6 +14,7 @@ import glob
 import time
 import re
 import argparse
+import subprocess
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 
@@ -251,17 +252,59 @@ def main():
         page.goto(test_write_url)
         
         logged_in = False
-        for _ in range(10):
+        for _ in range(8):
             time.sleep(1)
             if "manage/newpost" in page.url or "manage/post" in page.url:
                 logged_in = True
                 break
 
+        # 1차 복구: auth/login 리다이렉트 시 카카오 SSO 원클릭 자동 재연결 시도
         if not logged_in and ("auth/login" in page.url or "accounts.kakao.com" in page.url):
-            print("⚠️ 티스토리 로그인이 풀려있거나 세션이 만료되었습니다.", flush=True)
-            print("👉 `./scripts/upload-tistory.sh --login`을 먼저 실행해 주세요.", flush=True)
+            try:
+                kakao_btn = page.locator("a:has-text('카카오계정으로 로그인'), button:has-text('카카오계정으로 로그인')").first
+                if kakao_btn.is_visible(timeout=2000):
+                    print("  🔄 카카오 SSO 자동 세션 재연결 시도 중...", flush=True)
+                    kakao_btn.click()
+                    time.sleep(3)
+                    if "manage/newpost" in page.url or "manage/post" in page.url:
+                        logged_in = True
+                        print("  🎉 카카오 원클릭 재연결 성공!", flush=True)
+                        context.storage_state(path=STATE_FILE)
+            except Exception:
+                pass
+
+        # 2차 복구: 세션이 완전 만료된 경우 자율 복구 (로그인 창 자동 팝업)
+        if not logged_in and ("auth/login" in page.url or "accounts.kakao.com" in page.url):
+            print("⚠️ 티스토리 세션 만료 감지 -> 자동 로그인 복구 창을 엽니다...", flush=True)
+            try:
+                viewer_page.close()
+            except Exception:
+                pass
             browser.close()
-            sys.exit(1)
+
+            # 로그인 창 실행
+            res = subprocess.run([sys.executable, "-u", os.path.join(BASE_DIR, "tools", "setup_tistory_login.py"), f"--blog={args.blog}"])
+            if res.returncode != 0 or not os.path.exists(STATE_FILE):
+                print("❌ 티스토리 로그인 세션 복구 실패. 프로그램을 종료합니다.", flush=True)
+                sys.exit(1)
+
+            print("🚀 로그인 세션 복구 완료! 포스팅 작업을 재개합니다...", flush=True)
+            browser = p.chromium.launch(
+                headless=headless_mode,
+                args=[
+                    "--disable-blink-features=AutomationControlled",
+                    "--no-sandbox"
+                ]
+            )
+            context = browser.new_context(
+                viewport={"width": 1280, "height": 900},
+                permissions=["clipboard-read", "clipboard-write"],
+                storage_state=STATE_FILE
+            )
+            page = context.new_page()
+            viewer_page = context.new_page()
+            page.goto(test_write_url)
+            time.sleep(2)
 
         print(f"✅ 티스토리 로그인 세션 확인 완료! (에디터 진입 성공: {page.url})", flush=True)
 
@@ -282,11 +325,22 @@ def main():
             ok = upload_post_to_tistory(page, args.blog, title, mode=args.mode)
             if ok:
                 success_count += 1
+                # 글 등록 완료 시마다 최신 세션 상태를 디스크에 실시간 갱신 저장
+                try:
+                    context.storage_state(path=STATE_FILE)
+                except Exception:
+                    pass
 
             if i < total_files:
                 delay_sec = args.delay
                 print(f"  ⏳ 다음 글 등록 대기 중 ({delay_sec}초 대기)...", flush=True)
                 time.sleep(delay_sec)
+
+        # 최종 세션 저장
+        try:
+            context.storage_state(path=STATE_FILE)
+        except Exception:
+            pass
 
         try:
             viewer_page.close()
