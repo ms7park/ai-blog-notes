@@ -3427,7 +3427,7 @@ def run_batch(target_date=None, force=False, naver_only=False, target_count=None
     today_str = today_date.strftime("%Y-%m-%d")
     weekday_str = WEEKDAYS_KR[today_date.weekday()]
     is_weekend = today_date.weekday() in (5, 6)
-    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 15)
+    TARGET_MIN_POSTS = target_count if target_count else 3  # 네이버 계정 보호 및 고품질 엄선: 1일 3편 (중복 0%)
 
     log(f"🚀 [배치 시작] 네이버 블로그 일별 자동화 배치 실행 (기준일: {today_str} {weekday_str}요일, 목표: {TARGET_MIN_POSTS}편, force={force})")
 
@@ -3529,38 +3529,6 @@ def run_batch(target_date=None, force=False, naver_only=False, target_count=None
             log(f"📚 [글 수 확대 보강] 큐레이티드 테마 [{kw}] ({theme_info['theme_name']}) -> '{rec_title}'")
             if len(selected_items) >= TARGET_MIN_POSTS:
                 break
-
-    # 5. [큐레이티드 풀 순환 다회차 개정판 보강: 주말 30편 등 대량 발행 엄격 보장]
-    cycle = 1
-    while len(selected_items) < TARGET_MIN_POSTS and cycle <= 5:
-        added_in_cycle = 0
-        tag = " (2026 최신 개정판)" if cycle == 1 else f" (2026 최신 개정판 v{cycle})"
-        for cur in NAVER_CURATED_TOPICS:
-            kw = cur["keyword"].strip()
-            theme_info = match_blog_theme(kw, cur["news_title"])
-            if not theme_info:
-                continue
-            base_title = generate_blog_title_for_trend(kw, cur["news_title"], theme_info)
-            rec_title = f"{base_title}{tag}"
-            if rec_title in selected_titles:
-                continue
-            t_obj = {
-                "rank": len(selected_items) + 1,
-                "keyword": kw,
-                "badge": f"추천 테마 (개정판 v{cycle})",
-                "news": cur["news_title"],
-                "recommended_title": rec_title,
-                "theme": theme_info
-            }
-            selected_items.append((t_obj, theme_info, "CURATED_EXPANSION_REVISION"))
-            selected_titles.add(rec_title)
-            added_in_cycle += 1
-            log(f"📚 [글 수 확대 (개정판)] 큐레이티드 [{kw}] -> '{rec_title}'")
-            if len(selected_items) >= TARGET_MIN_POSTS:
-                break
-        cycle += 1
-        if added_in_cycle == 0:
-            break
 
     created_count = 0
     for idx, (t_item, th_info, _src_type) in enumerate(selected_items, 1):

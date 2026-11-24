@@ -5177,8 +5177,8 @@ def run_tistory_batch(target_date=None, force=False, target_count=None):
     weekday_str = WEEKDAYS_KR[today_date.weekday()]
     is_weekend = today_date.weekday() in (5, 6) # 토(5), 일(6)
 
-    # 목표 글 수 결정: 지정값 우선, 없으면 주중/주말 매일 15편
-    TARGET_MIN_POSTS = target_count if target_count else 15
+    # 목표 글 수 결정: 지정값 우선, 없으면 1일 5편 엄선 (키워드 자기잠식 방지)
+    TARGET_MIN_POSTS = target_count if target_count else 5
 
     log(f"🚀 [티스토리 배치 시작] Google Trends 상승 검색어 기반 티스토리 글 생성 (기준일: {today_str} {weekday_str}요일, 목표: {TARGET_MIN_POSTS}편, force={force})")
 
@@ -5273,51 +5273,6 @@ def run_tistory_batch(target_date=None, force=False, target_count=None):
                 log(f"📚 [티스토리 글 수 확대 보강] 상록수 테마 [{pool_item['keyword']}] -> '{p_title}'")
                 if len(selected_items) >= TARGET_MIN_POSTS:
                     break
-
-    # 4. [규칙 4 - 상록수 풀 순환 개정판 다회차 보강: 주말 30편 등 대량 발행 엄격 보장]
-    cycle = 1
-    while len(selected_items) < TARGET_MIN_POSTS and cycle <= 5:
-        added_in_cycle = 0
-        tag = " (2026 최신 개정판)" if cycle == 1 else f" (2026 최신 개정판 v{cycle})"
-        for pool_item in TISTORY_EVERGREEN_POOL:
-            p_title = pool_item["final_title"]
-            rev_title = f"{p_title}{tag}"
-            if rev_title in selected_titles:
-                continue
-
-            fallback_item = {
-                "rank": len(selected_items) + 1,
-                "keyword": pool_item["keyword"],
-                "traffic": f"상록수 추천 (개정판 v{cycle})",
-                "news_title": pool_item["search_question"],
-                "news_url": pool_item["official_refs"][0][1] if pool_item["official_refs"] else "",
-                "is_revision": True,
-                "eval": {
-                    "is_selected": True,
-                    "cat_key": pool_item["cat_key"],
-                    "cat_name": TISTORY_CATEGORIES[pool_item["cat_key"]]["name"],
-                    "cat_ratio": TISTORY_CATEGORIES[pool_item["cat_key"]]["ratio"],
-                    "matched_keyword": pool_item["keyword"],
-                    "scores": pool_item["scores"].copy(),
-                    "total_score": pool_item["total_score"],
-                    "rec_level": "높음 (상록수 개정 보강)",
-                    "search_question": pool_item["search_question"],
-                    "title_candidates": [rev_title] + pool_item["title_candidates"],
-                    "final_title": rev_title,
-                    "official_refs": pool_item["official_refs"],
-                    "custom_core_summary": pool_item["core_summary"],
-                    "custom_body_sections": pool_item["body_sections"]
-                }
-            }
-            selected_items.append(fallback_item)
-            selected_titles.add(rev_title)
-            added_in_cycle += 1
-            log(f"📚 [티스토리 글 수 확대 (개정판)] 테마 [{pool_item['keyword']}] -> '{rev_title}'")
-            if len(selected_items) >= TARGET_MIN_POSTS:
-                break
-        cycle += 1
-        if added_in_cycle == 0:
-            break
 
     created_count = 0
     for idx, t_item in enumerate(selected_items, 1):

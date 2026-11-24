@@ -3866,7 +3866,7 @@ def fetch_daily_wp_articles(today_str, force=False, target_count=None):
     """
     today_date = datetime.strptime(today_str, "%Y-%m-%d")
     is_weekend = today_date.weekday() in (5, 6)
-    TARGET_MIN_POSTS = target_count if target_count else (30 if is_weekend else 15)
+    TARGET_MIN_POSTS = target_count if target_count else 5  # 구글 SEO 및 키워드 자기잠식 방지: 1일 5편 엄선 (중복 0%)
 
     existing_titles = get_existing_wp_titles(exclude_date=today_str if force else None)
     trends = fetch_trending_keywords_for_wp()
@@ -3915,34 +3915,6 @@ def fetch_daily_wp_articles(today_str, force=False, target_count=None):
         existing_titles.add(p_title)
         log(f"⭐ [워드프레스 트렌드 연관 글] #{t.get('rank')}위 [{t['keyword']}] ({theme_info['category']}) -> '{p_title}'")
         if len(selected_items) >= TARGET_MIN_POSTS:
-            break
-
-    # 3. [규칙 3 - 코너스톤 풀 다회차 순환 보강 (주말 30편 등 대량 발행 엄격 보장)]
-    cycle = 1
-    while len(selected_items) < TARGET_MIN_POSTS and cycle <= 6:
-        added_in_cycle = 0
-        tag = " (2026 최신 개정판)" if cycle == 1 else f" (2026 최신 개정판 v{cycle})"
-        slug_tag = "-update" if cycle == 1 else f"-update-v{cycle}"
-        for p_item in WP_ARTICLES:
-            p_title = p_item["final_title"]
-            target_title = f"{p_title}{tag}" if (p_title in existing_titles or cycle > 1) else p_title
-            if target_title in selected_titles:
-                continue
-
-            item_copy = p_item.copy()
-            item_copy["seq"] = len(selected_items) + 1
-            item_copy["final_title"] = target_title
-            item_copy["slug"] = f"{item_copy['slug']}{slug_tag}"
-
-            selected_items.append(item_copy)
-            selected_titles.add(target_title)
-            existing_titles.add(target_title)
-            added_in_cycle += 1
-            log(f"📚 [워드프레스 글 수 확대 (개정판)] 테마 [{p_item['topic']}] -> '{target_title}'")
-            if len(selected_items) >= TARGET_MIN_POSTS:
-                break
-        cycle += 1
-        if added_in_cycle == 0:
             break
 
     return selected_items
