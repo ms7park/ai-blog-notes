@@ -172,17 +172,20 @@ def main():
     parser.add_argument("--date", type=str, default=None, help="대상 날짜 (기본: 오늘)")
     parser.add_argument("--platforms", type=str, default="all", help="대상 플랫폼 (예: all, naver, tistory, wordpress)")
     parser.add_argument("--skip-naver", action="store_true", help="네이버 블로그 등록 건너뛰기 (티스토리·워드프레스만 등록)")
+    parser.add_argument("--include-naver", action="store_true", help="네이버 블로그 등록 포함")
     parser.add_argument("--naver-reserve", action="store_true", help="네이버 블로그 등록 시 예약 발행 모드 적용")
 
     args = parser.parse_args()
 
     # 대상 플랫폼 필터링
+    should_skip_naver = args.skip_naver and not args.include_naver
+
     if args.platforms == "all":
-        selected = [p for p in PLATFORMS if not (args.skip_naver and p["id"] == "naver")] if args.skip_naver else PLATFORMS
+        selected = [p for p in PLATFORMS if not (should_skip_naver and p["id"] == "naver")]
     else:
         target_ids = [p.strip().lower() for p in args.platforms.split(",")]
         selected = [p for p in PLATFORMS if p["id"] in target_ids]
-        if args.skip_naver:
+        if should_skip_naver:
             selected = [p for p in selected if p["id"] != "naver"]
         if not selected:
             print(f"❌ 유효하지 않은 플랫폼 지정 또는 대상 플랫폼이 비어있습니다: {args.platforms}", flush=True)
