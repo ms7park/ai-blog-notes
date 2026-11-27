@@ -5201,24 +5201,8 @@ def run_tistory_batch(target_date=None, force=False, target_count=None):
     selected_titles = set()
     selected_kws = set()
 
-    # 1. [규칙 1] 실시간 검색어 Top 10 중 상위 3개(1위, 2위, 3위)는 무조건 글 작성!
-    top3_trends = evaluated_trends[:3]
-    for t in top3_trends:
-        p_title = t["eval"]["final_title"]
-        p_kw = t["keyword"].strip().lower()
-        if p_title in existing_sigs["titles"]:
-            p_title = f"{p_title} (최신 핵심 요약)"
-            t["eval"]["final_title"] = p_title
-
-        t["is_top3"] = True
-        selected_items.append(t)
-        selected_titles.add(p_title)
-        selected_kws.add(p_kw)
-        log(f"🔥 [티스토리 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{t['keyword']}] -> '{p_title}'")
-
-    # 2. [규칙 2] 4위부터 확장된 전체 트렌드(최대 50위) 중 주제 연관 글 선별 작성!
-    rest_trends = evaluated_trends[3:]
-    for t in rest_trends:
+    # 1. 실시간 트렌드 중 카테고리 적합성 및 검색 가치가 검증된 주제만 엄선 (무관한 연예/스포츠 Top 3 강제 작성 배제)
+    for t in evaluated_trends:
         if not t["eval"]["is_selected"]:
             continue
         p_title = t["eval"]["final_title"]

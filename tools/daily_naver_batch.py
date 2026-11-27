@@ -3452,35 +3452,13 @@ def run_batch(target_date=None, force=False, naver_only=False, target_count=None
     selected_kws = set()
     selected_titles = set()
 
-    # 2. [사용자 지침 1] 실시간 검색어 Top 10 중 상위 3개(1위, 2위, 3위)는 무조건 글 작성!
-    top3_trends = trends[:3]
-    for t in top3_trends:
-        kw = t["keyword"].strip()
-        kw_low = kw.lower()
-        theme_info = t.get("theme") or match_blog_theme(kw, t.get("news", ""))
-        rec_title = t.get("recommended_title") or generate_blog_title_for_trend(kw, t.get("news", ""), theme_info, rank=t.get("rank"))
-        t["recommended_title"] = rec_title
-        t["theme"] = theme_info
-
-        # 상위 3개 무조건 작성 원칙: 만약 과거 동일 제목이 있더라도 업데이트 표기로 글 작성 보장
-        if rec_title in existing_sigs["titles"]:
-            rec_title = f"{rec_title} (최신 핵심 요약)"
-            t["recommended_title"] = rec_title
-
-        selected_items.append((t, theme_info, "TOP3_MANDATORY"))
-        selected_kws.add(kw_low)
-        selected_titles.add(rec_title)
-        existing_sigs["titles"].add(rec_title)
-        existing_sigs["keywords"].add(kw_low)
-        log(f"🔥 [실시간 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{kw}] -> '{rec_title}'")
-
-    # 3. [사용자 지침 2] 4위부터 확장된 전체 트렌드 중 주제 연관 글 선별 작성!
-    rest_trends = trends[3:]
-    for t in rest_trends:
+    # 2. 실시간 트렌드 중 블로그 테마(노후자산·건강·식품·취미·인생2막·테크)와 일치하는 키워드만 엄선 선별
+    for t in trends:
         kw = t["keyword"].strip()
         kw_low = kw.lower()
         theme_info = t.get("theme") or match_blog_theme(kw, t.get("news", ""))
         
+        # 무관한 실시간 키워드(스포츠/연예/단순 사건사고 등)는 품질 보호를 위해 배제
         if not theme_info:
             continue
             

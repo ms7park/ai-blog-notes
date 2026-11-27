@@ -3876,27 +3876,8 @@ def fetch_daily_wp_articles(today_str, force=False, target_count=None):
     selected_titles = set()
     selected_kws = set()
 
-    # 1. [규칙 1] 실시간 검색어 Top 10 중 상위 3개는 무조건 글 작성!
-    top3_trends = trends[:3]
-    for t in top3_trends:
-        theme_info = match_wp_theme(t["keyword"], t.get("news_title", ""))
-        item = create_wp_item_from_trend(t, len(selected_items) + 1, theme_info=theme_info)
-        p_title = item["final_title"]
-        p_kw = t["keyword"].strip().lower()
-
-        if p_title in existing_titles:
-            p_title = f"{p_title} (최신 핵심 요약)"
-            item["final_title"] = p_title
-
-        selected_items.append(item)
-        selected_titles.add(p_title)
-        selected_kws.add(p_kw)
-        existing_titles.add(p_title)
-        log(f"🔥 [워드프레스 Top 3 무조건 작성] #{t.get('rank', 1)}위 [{t['keyword']}] -> '{p_title}'")
-
-    # 2. [규칙 2] 4위부터 확장된 전체 트렌드 중 설정 주제와 연관이 있는 글 작성!
-    rest_trends = trends[3:]
-    for t in rest_trends:
+    # 1. 실시간 트렌드 중 워드프레스 코너스톤 테마와 부합하는 주제만 선별 (무관한 연예/스포츠 Top 3 강제 작성 배제)
+    for t in trends:
         theme_info = match_wp_theme(t["keyword"], t.get("news_title", ""))
         if not theme_info:
             continue
@@ -3916,6 +3897,23 @@ def fetch_daily_wp_articles(today_str, force=False, target_count=None):
         log(f"⭐ [워드프레스 트렌드 연관 글] #{t.get('rank')}위 [{t['keyword']}] ({theme_info['category']}) -> '{p_title}'")
         if len(selected_items) >= TARGET_MIN_POSTS:
             break
+
+    # 2. 목표 편수 부족 시 검증된 코너스톤 전문 원고(WP_ARTICLES) 풀에서 보충
+    if len(selected_items) < TARGET_MIN_POSTS:
+        for wp_art in WP_ARTICLES:
+            p_title = wp_art["final_title"]
+            p_kw = wp_art["focus_keyphrase"].strip().lower()
+            if p_title in existing_titles or p_title in selected_titles or p_kw in selected_kws:
+                continue
+            item = wp_art.copy()
+            item["seq"] = len(selected_items) + 1
+            selected_items.append(item)
+            selected_titles.add(p_title)
+            selected_kws.add(p_kw)
+            existing_titles.add(p_title)
+            log(f"📚 [워드프레스 코너스톤 보강] No.{wp_art['seq']} [{wp_art['topic']}] -> '{p_title}'")
+            if len(selected_items) >= TARGET_MIN_POSTS:
+                break
 
     return selected_items
 
