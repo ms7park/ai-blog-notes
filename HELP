@@ -394,7 +394,11 @@
    - `tools/daily_naver_batch.py`: 무관한 실시간 Top 3 강제 작성 규칙을 영구 폐지하고, 블로그 테마(노후자산·건강·식품·취미·인생2막·테크) 부합 키워드만 선별, 부족 시 큐레이티드 및 사전 검증 고품질 풀에서만 보강하도록 개편.
    - `tools/daily_tistory_batch.py`: 무관한 Top 3 강제 작성 배제, `is_selected` 및 카테고리 적합도 검증된 주제 또는 상록수 풀 보강으로 개선.
    - `tools/daily_wordpress_batch.py`: 무관한 Top 3 강제 작성 배제 및 코너스톤 전문 풀(`WP_ARTICLES`) 자동 연계 보강 로직 탑재.
-4. 대시보드 및 Git/Vercel 동기화:
+4. 사용자 지정 [네이버 블로그 전문 콘텐츠 작성 및 검증 지침] 공식 탑재:
+   - `docs/04-prompts/02-naver-expert-content-guidelines.md` 가이드 정식 등록 및 `GEMINI.md` 수행 원칙 반영.
+   - `tools/daily_naver_batch.py`에 `verify_naver_blog_post()` 5대 자체 검증 엔진(주제 적합성·사실 정확성·문장 품질·껍데기 상투어 배제·공식 출처) 내장 및 `FORBIDDEN_BOILERPLATE_PATTERNS` 상투어 원천 차단 필터 탑재.
+   - `NAVER_TOPIC_ARTICLES`에 2026년 3대 킬러 주제(국민연금 조기수령, 건보료 피부양자, 시니어 눈/관절 헬스케어) 영구 등록 및 검증 통과 완료.
+5. 대시보드 및 Git/Vercel 동기화:
    - 네이버(152편), 티스토리(94편), 워드프레스, 타투(40편) 대시보드 및 메인 포털(`index.html`), `docs/index.html` 전면 최신화 완료.
    - `develop` 및 `main` 브랜치에 동시 커밋·푸시 완료.
 
