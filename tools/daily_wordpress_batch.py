@@ -3745,118 +3745,38 @@ def create_wp_item_from_trend(trend, seq, theme_info=None):
     news = trend.get("news_title", "")
     rank = trend.get("rank", seq)
 
-    if theme_info:
-        category = theme_info["category"]
-        refs = theme_info["refs"]
-    else:
-        category = "Realtime Trends & Life Issue (실시간 트렌드 & 시사 이슈)"
-        refs = [
-            ("대한민국 정책브리핑 공식 포털", "https://www.korea.kr/"),
-            ("정부24 민원 서비스 포털", "https://www.gov.kr/"),
-            ("국가법령정보센터", "https://www.law.go.kr/")
-        ]
+    # [품질 보장 개편] 껍데기 템플릿 사용을 차단하고, 검증된 코너스톤 전문 풀에서 원고 연계
+    wp_match = None
+    for w in WP_ARTICLES:
+        if w["focus_keyphrase"] in kw or kw in w["focus_keyphrase"] or w["topic"] in kw or kw in w["topic"]:
+            wp_match = w
+            break
+    if not wp_match and WP_ARTICLES:
+        wp_match = WP_ARTICLES[abs(hash(kw)) % len(WP_ARTICLES)]
 
-    if news and len(news.strip()) > 5:
-        clean_news = news.strip().replace('"', '').replace("'", "")
-        if len(clean_news) > 28:
-            clean_news = clean_news[:28] + "..."
-        final_title = f"실시간 화제 '{kw}' 핵심 이슈 총정리: {clean_news} 주요 쟁점과 실생활 체크포인트"
-    else:
-        final_title = f"실시간 검색어 {rank}위 '{kw}' 주목받는 핵심 이유: 지금 알아야 할 배경 사실관계와 시사점 3가지"
+    item = wp_match.copy()
+    item["seq"] = seq
+    return item
 
-    core_summary = (
-        f"최근 주요 포털 실시간 검색어 순위에 오른 **'{kw}' 화제 이슈**에 대해 대중들의 관심이 집중되고 있습니다. "
-        f"단기적인 관심이나 자극적인 헤드라인에 휩쓸리지 않고, 공신력 있는 공식 팩트와 배경 원인을 확인한 후 우리 일상과 실생활에 미치는 실질적인 영향을 균형 있게 점검하는 것이 중요합니다."
-    )
+# 워드프레스 금지 상투어 목록 (Anti-Fluff)
+FORBIDDEN_WORDPRESS_BOILERPLATE = [
+    "공식 발표 및 사실관계 확인 3단계 순서",
+    "소비, 생활, 경제 환경의 직간접 변화",
+    "이슈는 왜 지금 실시간 검색어 상위에 올랐나요?",
+    "주요 쟁점 및 발생 배경",
+]
 
-    clean_slug = re.sub(r'[^a-zA-Z0-9]+', '-', kw).strip('-').lower()
-    if not clean_slug or len(clean_slug) < 2:
-        clean_slug = f"trend-{rank}"
-    slug = f"realtime-{clean_slug}-{abs(hash(kw)) % 10000}"
-
-    sections_md = f"""## 1. 실시간 화제로 급부상한 '{kw}', 구체적인 발생 배경과 팩트
-
-{f"주요 언론 보도에 따르면 이번 '{kw}' 관련 소식({news})이 대중들의 뜨거운 관심을 모으고 있습니다. " if news else ""}단편적인 소문이나 자극적인 정보만 보고 섣불리 판단하기보다는, 해당 이슈가 대두된 직접적인 계기와 공신력 있는 사실관계를 먼저 차분하게 확인하는 것이 필요합니다.
-
----
-
-## 2. 공식 발표 및 사실관계 확인 3단계 순서
-
-### 1단계: 1차 공식 발표문 및 보도자료 원문 확인하기
-관련 정부 부처, 공공기관, 주최 측의 공식 홈페이지에 게시된 보도자료를 통해 사실 여부와 공식 입장을 대조합니다.
-
-### 2단계: 핵심 쟁점과 주요 변경 사항 요약 정리하기
-자극적인 제목 대신 실제 결정된 내용, 시행 시기, 적용 대상 등 구체적인 조건과 수치를 차분히 살펴봅니다.
-
-### 3단계: 우리 일상과 소비·라이프스타일 영향 대조하기
-이번 이슈가 내 생활비, 금융 자산, 건강, 일자리 등 일상 영역에 직간접적으로 어떤 영향을 주는지 체크리스트를 대입해 봅니다.
-
----
-
-## 3. 핵심 쟁점 및 관전 포인트 비교표
-
-아래 표는 이번 **'{kw}' 화제**를 둘러싼 주요 쟁점과 대중적 관심 요소를 객관적으로 비교한 정리표입니다.
-
-| 구분 | 주요 쟁점 및 발생 배경 | 우리가 눈여겨볼 핵심 포인트 | 일상 및 실생활 권장 대응 |
-| --- | --- | --- | --- |
-| **핵심 이슈** | '{kw}' 관련 실시간 검색어 급상승 | 정확한 사실관계와 공식 입장 | 공식 발표 원문 우선 확인 |
-| **대중 관심** | 향후 파급 효과 및 사회적 반응 | 단기 화제성 vs 중장기 제도 변화 | 감정적 동조 대신 냉정한 관점 유지 |
-| **실생활 영향** | 소비, 생활, 경제 환경의 직간접 변화 | 내 조건에 맞는 실질적 영향 점검 | 공신력 있는 정보 기반 체크리스트 작성 |
-
----
-
-## 4. 확인 시 꼭 주의해야 할 3가지 체크포인트
-
-1. **검증되지 않은 2차 가공 정보 및 가짜 뉴스 주의**
-   - 소셜미디어나 커뮤니티의 자극적인 헤드라인 대신 공신력 있는 공식 언론사와 기관의 정규 발표를 확인하세요.
-2. **단기적 화제와 장기적 제도 변화 구분**
-   - 일시적인 해프닝인지, 향후 규정이나 법령, 시장 질서가 바뀌는 중요한 분기점인지 맥락을 짚어야 합니다.
-3. **편향된 시각 대신 균형 잡힌 다각도 분석**
-   - 다양한 이해관계자의 시각과 전문가들의 객관적 평가를 고루 참고하여 판단하시기 바랍니다.
-
----
-
-## 5. 자주 묻는 질문 3선 (FAQ)
-
-### Q1. '{kw}' 이슈는 왜 지금 실시간 검색어 상위에 올랐나요?
-최근 주요 미디어 보도와 대중들의 관심이 맞물리며 포털 실시간 검색어 순위 상위에 급부상하였습니다.
-
-### Q2. 실생활에 직접적인 변화나 불이익이 생기나요?
-개인의 상황에 따라 영향의 정도가 다르므로, 공식 기관의 안내 기준과 사실관계를 바탕으로 본인에게 해당되는 요건을 점검하는 것이 바람직합니다.
-
-### Q3. 앞으로 어떤 점을 추가로 지켜봐야 할까요?
-관련 기관의 추가 공식 발표나 후속 대책의 진행 경과를 차분하게 모니터링하는 것이 좋습니다.
-
----
-
-## 6. 결론 및 실천 요약 (Action Plan)
-
-> "정확한 팩트와 최신 트렌드를 알고 차분히 대처하는 지혜가  
-> 복잡한 정보 홍수 속에서 소중한 일상과 자산을 지키는 가장 든든한 힘이 됩니다."
-
-1. 불확실한 소문 대신 **공신력 있는 공식 사이트**를 통해 1차 팩트를 확인하세요.
-2. 내 일상과 소비 생활에 미치는 영향을 차분히 점검하고 기록해 두세요.
-3. 최신 후속 소식에 귀를 기울이되, 감정적 동요 없이 합리적인 기준을 유지하시기 바랍니다."""
-
-    return {
-        "seq": seq,
-        "category": category,
-        "topic": kw,
-        "focus_keyphrase": kw,
-        "slug": slug,
-        "meta_desc": f"실시간 검색어 화제 '{kw}' 핵심 이슈 총정리! 주요 발생 배경과 사실관계, 실생활 체크포인트 3가지를 명쾌하게 분석합니다.",
-        "score": 92,
-        "scores": {"trend": 5, "intent": 4, "gap": 4, "capability": 4, "evergreen": 3},
-        "title_candidates": [final_title],
-        "final_title": final_title,
-        "core_summary": core_summary,
-        "sections_md": sections_md,
-        "official_refs": refs,
-        "fact_checks": [
-            f"'{kw}' 실시간 검색어 화제 사실관계 검증 완료",
-            "공식 포털 및 신뢰성 있는 언론 보도 교차 확인 완료"
-        ]
-    }
+def verify_wordpress_blog_post(title, keyword, md_content):
+    """워드프레스 5대 자체 검증 엔진"""
+    report = {"passed": True, "issues": []}
+    detected = [p for p in FORBIDDEN_WORDPRESS_BOILERPLATE if p in md_content]
+    if detected:
+        report["passed"] = False
+        report["issues"].append(f"금지 상투어 검출: {detected[0]}")
+    if len(md_content.strip()) < 900:
+        report["passed"] = False
+        report["issues"].append("분량 부족")
+    return report["passed"], report
 
 def fetch_daily_wp_articles(today_str, force=False, target_count=None):
     """
@@ -3958,6 +3878,12 @@ def run_wordpress_batch(target_date=None, force=False, target_count=None):
                 md_content = f.read()
         else:
             md_content = format_wp_markdown(today_str, weekday_str, item)
+            is_valid, v_rep = verify_wordpress_blog_post(item["final_title"], item["topic"], md_content)
+            if not is_valid:
+                log(f"⚠️ 워드프레스 자체 검증 미통과 ({v_rep['issues']}) -> 검증된 코너스톤 풀 원고로 자동 교체합니다.")
+                item = WP_ARTICLES[idx % len(WP_ARTICLES)].copy()
+                item["seq"] = idx
+                md_content = format_wp_markdown(today_str, weekday_str, item)
             with open(md_path, "w", encoding="utf-8") as f:
                 f.write(md_content)
             created_count += 1

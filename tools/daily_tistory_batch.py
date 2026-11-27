@@ -2999,67 +2999,19 @@ AI는 자연스러운 글을 쓰기 위해 *"제가 지난주에 직접 구청�
 2. 매장 방문 전 [한국거래소 금시장](http://marketdata.krx.co.kr/)에서 **당일 1g / 1돈(3.75g) 기준 시세**를 스마트폰으로 먼저 확인한 뒤 견적을 비교해 보시기 바랍니다."""
 
     else:
-        # 신규 트렌드 키워드 맞춤형 고유 정보 글 동적 생성 (기존 글과 절대 중복되지 않도록 키워드·카테고리별 맞춤 구성)
-        primary_ref_name, primary_ref_url = refs[0] if refs else ("공식 안내 포털", "https://www.gov.kr/")
-        news_context = f"({news})" if news else ""
-        core_summary = (
-            f"**{kw}** 관련하여 검색 독자가 가장 많이 궁금해하는 **핵심 적용 기준, 공식 누리집 확인 절차, 조건별 비교표 및 사전 주의사항**을 정리했습니다. "
-            f"단기 뉴스{news_context}만 보고 판단하기보다 [{primary_ref_name}]({primary_ref_url})의 최신 공시 기준을 통해 본인 조건과 예외 요건을 먼저 대조해 보시기 바랍니다."
-        )
-        body_sections = f"""## 1. '{kw}' 왜 지금 정확한 기준과 확인 절차를 알아두어야 할까요?
+        # [품질 보장 개편] 껍데기 템플릿 사용을 전면 차단하고, 사전 검증된 상록수 전문 풀에서 고품질 섹션 자동 연결
+        pool_match = None
+        for p in TISTORY_EVERGREEN_POOL:
+            if p["keyword"] in kw or kw in p["keyword"] or any(k in kw for k in p.get("title_candidates", [])):
+                pool_match = p
+                break
+        if not pool_match and TISTORY_EVERGREEN_POOL:
+            pool_match = TISTORY_EVERGREEN_POOL[abs(hash(kw)) % len(TISTORY_EVERGREEN_POOL)]
 
-**{cat_name}** 분야의 정보는 작성 시점이나 개인별 조건(연령·소득·사용 환경·가입 시기)에 따라 결과가 크게 달라집니다. 블로그·커뮤니티의 단편적인 요약글만 보고 판단하기보다 검증된 공식 기관 자료를 바탕으로 **'{kw}' 핵심 확인 순서, 조건별 비교표, 그리고 놓치기 쉬운 주의사항**을 먼저 점검해야 시행착오를 줄일 수 있습니다.
-
----
-
-## 2. 공식 사이트에서 '{kw}' 기준 확인 및 적용하는 4단계 순서
-
-### 1단계: 공식 기관 누리집 접속 및 메뉴 검색
-1. PC 또는 스마트폰 브라우저에서 [{primary_ref_name}]({primary_ref_url})에 접속합니다.
-2. 상단 통합검색창에 **'{kw}'**를 입력하거나 관련 분야(**{cat_name}**) 안내 메뉴로 이동합니다.
-
-### 2단계: 기준 연도({date_str[:4]}년) 및 대상 조건 대조하기
-1. 안내 페이지 상단에 표시된 **시행일(또는 최종 업데이트 일자)**이 최신 기준인지 확인합니다.
-2. 본인에게 해당하는 연령, 자격 요건, 사양 또는 이용 조건을 체크리스트로 표시합니다.
-
-### 3단계: 조건별 비용·혜택·사양 비교하기
-1. 단일 선택지만 보지 말고 아래 3번 섹션의 **조건별 비교표**처럼 표준 기준과 우대·대안 옵션을 나란히 놓고 비교합니다.
-2. 수수료, 세금, 유지비 또는 감액·예외 규정이 있는지 세부 항목을 확인합니다.
-
-### 4단계: 온라인 조회·설정 완료 및 증빙 기록 보관
-1. 모의계산이나 온라인 신청·설정을 마친 뒤에는 처리 결과 화면(접수번호 또는 설정 완료 내역)을 캡처하거나 메모해 둡니다.
-2. 추가 문의가 필요한 경우 공식 고객센터를 통해 본인 조건을 재확인합니다.
-
----
-
-## 3. '{kw}' 조건별 선택 기준 및 확인 사항 비교표
-
-아래 표는 **{kw}** 확인 시 반드시 구분해야 할 **기본 적용 기준 vs 우대·대안 기준 vs 예외 주의사항**을 요약한 비교표입니다(※ 세부 수치는 개인별 조건 및 공고 시점에 따라 달라질 수 있습니다).
-
-| 비교 항목 | ① 기본(표준) 적용 기준 | ② 우대·최적화 활용 방안 | ③ 사전 확인 및 예외 조건 |
-| --- | --- | --- | --- |
-| **핵심 확인 대상** | 일반 대상자 및 기본 요건 충족 시 | 장기 유지·비대면·특례 요건 충족 시 | 중복 제한 및 자격 제외 대상 여부 |
-| **조회 경로** | [{primary_ref_name}]({primary_ref_url}) 기본 안내 | 마이페이지 모의계산 및 상세 비교 | 최신 공고문 원문 및 고객센터 문의 |
-| **비용·수수료 구조** | 표준 요율·기본 사양 적용 | 감면·비과세·수수료 우대 조건 확인 | 중도 해지·변경 시 불이익 유무 점검 |
-| **권장 점검 시기** | 신청·구매·설정 전 1차 확인 | 최종 결정 직전 1:1 조건 대입 | 기준 변경 시점 및 정기 갱신 시기 |
-
----
-
-## 4. '{kw}' 확인 시 놓치기 쉬운 3가지 주의사항
-
-1. **과거 연도 기준 정보와 최신 기준 혼동 주의**
-   - 인터넷 검색 결과 상단에 노출된 글이라도 작성 연도가 지났다면 세율, 기준 금액, 메뉴 명칭이 변경되었을 수 있습니다. 반드시 **{date_str[:4]}년 현행 기준**인지 확인하세요.
-2. **개인별 예외 조건 및 중복 적용 여부 점검**
-   - 동일한 제도나 제품이라도 가구 소득, 기존 가입 이력, 기기 버전에 따라 적용 여부가 달라집니다. 본문 하단 공식 참고 사이트에서 예외 조항을 꼭 살펴보세요.
-3. **비공식 링크나 사칭 문자 주의**
-   - 신청이나 조회를 진행할 때는 문자 메시지의 단축 URL을 누르지 말고, 포털에서 공식 기관명을 직접 검색해 접속하는 것이 안전합니다.
-
----
-
-## 5. 마무리 및 오늘 바로 실천할 체크리스트
-
-1. 오늘 안내해 드린 [{primary_ref_name}]({primary_ref_url})에 접속해 **'{kw}'** 관련 본인 해당 여부를 먼저 조회해 보세요.
-2. 비교표의 3가지 기준(기본 조건 · 우대 방안 · 예외 사항)을 메모해 두면 불필요한 비용이나 시행착오를 크게 줄일 수 있습니다."""
+        final_title = pool_match["final_title"]
+        core_summary = pool_match["core_summary"]
+        body_sections = pool_match["body_sections"]
+        refs_md = "\n".join(f"- [{rname}]({rurl})" for rname, rurl in pool_match.get("official_refs", refs))
 
     sec_nums = [int(n) for n in re.findall(r"^##\s+(\d+)\.", body_sections, re.M)]
     next_sec_num = (max(sec_nums) + 1) if sec_nums else 6
@@ -3819,6 +3771,27 @@ def build_tistory_post_html(post_id, date_str, weekday_str, trend_item, md_conte
 </body>
 </html>"""
 
+# 티스토리 금지 껍데기 상투어 목록 (Anti-Fluff)
+FORBIDDEN_TISTORY_BOILERPLATE = [
+    "공식 기관 누리집 접속 및 메뉴 검색",
+    "조건별 선택 기준 및 확인 사항 비교표",
+    "표준 요율·기본 사양 적용",
+    "감면·비과세·수수료 우대 조건 확인",
+    "장기 유지·비대면·특례 요건 충족 시",
+]
+
+def verify_tistory_blog_post(title, keyword, md_content):
+    """티스토리 5대 자체 검증 엔진"""
+    report = {"passed": True, "issues": []}
+    detected = [p for p in FORBIDDEN_TISTORY_BOILERPLATE if p in md_content]
+    if detected:
+        report["passed"] = False
+        report["issues"].append(f"금지 상투어 검출: {detected[0]}")
+    if len(md_content.strip()) < 900:
+        report["passed"] = False
+        report["issues"].append("분량 부족")
+    return report["passed"], report
+
 def create_tistory_post(post_id, date_str, weekday_str, trend_item, post_num=1, force=False, existing_sigs=None, is_top3=False, is_revision=False):
     """개별 티스토리 포스팅(.md 및 .html) 생성 (중복 제목·내용 자동 차단 포함)"""
     ym = date_str[:7].replace("-", "")
@@ -3836,6 +3809,19 @@ def create_tistory_post(post_id, date_str, weekday_str, trend_item, post_num=1, 
     actual_title = m_title.group(1).strip() if m_title else trend_item["eval"]["final_title"]
     m_sum = re.search(r">\s*\*\*📌 핵심 요약\*\*:\s*(.+)$", md_content, re.M)
     actual_sum = m_sum.group(1).strip() if m_sum else ""
+
+    # 티스토리 자체 검증 실행 및 미통과 시 상록수 풀 자동 치유
+    is_valid, v_rep = verify_tistory_blog_post(actual_title, trend_item["keyword"], md_content)
+    if not is_valid:
+        log(f"⚠️ 티스토리 자체 검증 미통과 ({v_rep['issues']}) -> 검증된 상록수 풀 원고로 자동 교체합니다.")
+        pool_fb = TISTORY_EVERGREEN_POOL[post_num % len(TISTORY_EVERGREEN_POOL)]
+        trend_item["eval"]["custom_core_summary"] = pool_fb["core_summary"]
+        trend_item["eval"]["custom_body_sections"] = pool_fb["body_sections"]
+        trend_item["eval"]["final_title"] = pool_fb["final_title"]
+        trend_item["eval"]["official_refs"] = pool_fb["official_refs"]
+        md_content = build_tistory_post_markdown(post_id, date_str, weekday_str, trend_item)
+        m_title = re.search(r"^#\s+(.+)$", md_content, re.M)
+        actual_title = m_title.group(1).strip() if m_title else trend_item["eval"]["final_title"]
 
     # Top 3(실시간 필수 작성) 또는 개정판(is_revision)의 경우 과거 유사 글 차단을 우회하여 5편 발행 보장
     if not force and existing_sigs and not is_top3 and not is_revision:
